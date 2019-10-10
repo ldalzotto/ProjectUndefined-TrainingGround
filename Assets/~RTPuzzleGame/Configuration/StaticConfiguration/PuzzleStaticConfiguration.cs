@@ -10,6 +10,7 @@ namespace RTPuzzle
         public RangeColorConfiguration RangeColorConfiguration;
         public PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
         public PuzzleMaterialConfiguration PuzzleMaterialConfiguration;
+        public PuzzleGlobalStaticConfiguration PuzzleGlobalStaticConfiguration;
     }
 }
 

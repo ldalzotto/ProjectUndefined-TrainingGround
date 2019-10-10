@@ -1,4 +1,4 @@
-﻿using RTPuzzle;
+﻿using InteractiveObjectTest;
 using System;
 using System.Collections;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace Tests
 
             if (playerMovementTestPositionId.HasValue)
             {
-                GameObject.FindObjectOfType<PlayerManagerDataRetriever>().GetPlayerRigidBody()
+                PlayerInteractiveObjectManager.Get().GetPlayerGameObject().Rigidbody
                       .MovePosition(GameObject.FindObjectsOfType<PlayerMovementTestPosition>().Select((m) => m).Where((m) => m.PlayerMovementTestPositionId == playerMovementTestPositionId.Value).First().transform.position);
             }
             yield return null;

@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using InteractiveObjectTest;
 using RTPuzzle;
 using System;
 using System.Collections;
@@ -91,8 +92,7 @@ namespace Tests
 
         public static IEnumerator MovePlayerAndWaitForFixed(Vector3 playerPosition, Func<IEnumerator> OnPlayerMoved)
         {
-            var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            playerManagerDataRetriever.GetPlayerRigidBody().position = playerPosition;
+            PlayerInteractiveObjectManager.Get().GetPlayerGameObject().Rigidbody.position = playerPosition;
             if (OnPlayerMoved != null)
             {
                 yield return new WaitForFixedUpdate();
@@ -256,43 +256,7 @@ namespace Tests
             yield return OnFearEnded.Invoke();
         }
         #endregion
-
-        #region Player escape
-        public static IEnumerator EscapeFromPlayerYield(PlayerManager playerManager, AIObjectType nPCAIManager, Func<IEnumerator> OnBeforeSettingPosition, 
-                Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached, Func<AIObjectType> OnDestinationReachedAIObjectType)
-        {
-            if (OnBeforeSettingPosition != null)
-            {
-                yield return OnBeforeSettingPosition.Invoke();
-            }
-            nPCAIManager.GetAgent().Warp(playerManager.transform.position);
-            yield return null;
-            if (OnSamePositionSetted != null)
-            {
-                yield return OnSamePositionSetted.Invoke();
-            }
-            if (OnDestinationReached != null)
-            {
-                var agent = OnDestinationReachedAIObjectType.Invoke().GetAgent();
-                TestHelperMethods.SetAgentDestinationPositionReached(agent);
-                yield return null;
-                yield return new WaitForFixedUpdate();
-                yield return OnDestinationReached.Invoke();
-            }
-        }
-
-        public static IEnumerator EscapeFromPlayerIgnoreTargetYield(PlayerManager playerManager, AIObjectType nPCAIManager, InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePosition,
-            Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
-        {
-            yield return PuzzleSceneTestHelper.ProjectileYield(InteractiveObjectInitialization, projectilePosition,
-                OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
-                {
-                    return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, nPCAIManager, OnBeforeSettingPosition, OnSamePositionSetted, null, null);
-                },
-                OnDistanceReached: OnDestinationReached,
-                OnDistanceReaderAIObjectType: () => nPCAIManager);
-        }
-        #endregion
+        
 
         #region AI disarm object
         public static IEnumerator DisarmObjectYield(InteractiveObjectInitialization disarmObjectInitialization, Vector3 worldPosition, Func<InteractiveObjectType, IEnumerator> OnDisarmObjectSpawn,

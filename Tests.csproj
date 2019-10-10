@@ -81,9 +81,7 @@
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TimelineActions\TestTimelineAction.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\WorkflowActions\TestWorkflowAction.cs" />
     <Compile Include="Assets\Tests\~CoreGame\Intersection\IntersectionTests.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\_1_Town_StartTutorial_AIBehaviorTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIAgentAlgorithmTest.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIBehaviorTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIFOVManagerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIPatrolTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\AbstractPuzzleSceneTest.cs" />
@@ -106,7 +104,6 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\SceneMock.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\TestPosition.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Environment\Ground\GroundEffectManagerTest.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\_1_Level_StartTutorial_InteractiveObjectTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\PuzzleInteractiveObjectSelectionTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\AbstractPlayerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PhysicsPlayerMovementTest.cs" />

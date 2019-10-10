@@ -184,7 +184,6 @@ namespace RTPuzzle
     {
         public NavMeshAgent selfAgent;
         public PuzzleEventsManager PuzzleEventsManager;
-        public PlayerManagerDataRetriever PlayerManagerDataRetriever;
         public InteractiveObjectContainer InteractiveObjectContainer;
         public AIObjectID aiID;
         public AIPositionsManager AIPositionsManager;
@@ -198,14 +197,13 @@ namespace RTPuzzle
         public AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter() { return this.AssociatedAIObjectType; }
         public AIObjectDataRetriever AIObjectDataRetriever() { return this.AssociatedAIObjectType; }
 
-        public AIBheaviorBuildInputData(NavMeshAgent selfAgent, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
+        public AIBheaviorBuildInputData(NavMeshAgent selfAgent, PuzzleEventsManager puzzleEventsManager,
             InteractiveObjectContainer InteractiveObjectContainer, AIObjectID aiID, AIPositionsManager AIPositionsManager, TransformMoveManagerComponentV3 TransformMoveManagerComponent,
             AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener, InteractiveObjectType AssociatedInteractiveObject, AIObjectType AssociatedAIObjectType,
             IFovManagerCalcuation FovManagerCalcuation)
         {
             this.selfAgent = selfAgent;
             PuzzleEventsManager = puzzleEventsManager;
-            this.PlayerManagerDataRetriever = PlayerManagerDataRetriever;
             this.InteractiveObjectContainer = InteractiveObjectContainer;
             this.aiID = aiID;
             this.AIPositionsManager = AIPositionsManager;

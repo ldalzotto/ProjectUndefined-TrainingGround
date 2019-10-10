@@ -1,83 +1,58 @@
-using CoreGame;
+﻿using CoreGame;
+using RTPuzzle;
 using UnityEngine;
-using UnityEngine.AI;
 
-namespace RTPuzzle
+namespace InteractiveObjectTest
 {
-    public class PlayerManager : PlayerManagerType, IInteractiveObjectAnimationSpeedProvider
+    public class PlayerInteractiveObject : CoreInteractiveObject
     {
+        public PlayerInteractiveObjectInitializerData PlayerInteractiveObjectInitializerData { get; private set; }
 
         #region External Dependencies
         private PlayerActionManager PlayerActionManager;
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         #endregion
 
-        #region Internal Components
-        private Rigidbody playerRigidbody;
-        private NavMeshAgent navMeshAgent;
-        private Animator associatedAnimator;
-        private RootPuzzleLogicCollider rootPuzzleLogicCollider;
-        private InteractiveObjectType associatedInteractiveObject;
-        #endregion
-
-        private PlayerPhysicsMovementComponent playerPhysicsMovementComponent;
-
-        #region Player Common component
-        private PlayerCommonComponents PlayerCommonComponents;
-        private DataComponentContainer PlayerDataComponentContainer;
-        #endregion
-
         private PlayerInputMoveManager PlayerInputMoveManager;
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
-
-        #region Level Reset Manager
         private LevelResetManager LevelResetManager;
+
+        #region Systems
+        private AnimationObjectSystem AnimationObjectSystem;
         #endregion
 
-        public void Init(IGameInputManager gameInputManager)
+        public PlayerInteractiveObject(InteractiveGameObject interactiveGameObject) : base(interactiveGameObject, false)
         {
+            this.InteractiveObjectTag = new InteractiveObjectTag { IsPlayer = true };
+
+            this.PlayerInteractiveObjectInitializerData = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerInteractiveObjectInitializerData;
+
             #region External Dependencies
-            PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
+            this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
             var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
             this.BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
+            var GameInputManager = CoreGameSingletonInstances.GameInputManager;
             #endregion
 
-            this.playerRigidbody = GetComponent<Rigidbody>();
-            this.associatedAnimator = GetComponentInChildren<Animator>();
-            this.navMeshAgent = GetComponent<NavMeshAgent>();
-            this.rootPuzzleLogicCollider = GetComponentInChildren<RootPuzzleLogicCollider>();
-            this.associatedInteractiveObject = GetComponent<InteractiveObjectType>();
+            this.AnimationObjectSystem = new AnimationObjectSystem(this);
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
-            this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
-            this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
-            this.PlayerDataComponentContainer.Init();
-            this.rootPuzzleLogicCollider.Init();
 
-            #region Data Components
-            var TransformMoveManagerComponentV3 = this.GetComponent<InteractiveObjectSharedDataType>().InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent;
-            this.playerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
-            #endregion
-
-            PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
-            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.rootPuzzleLogicCollider.GetRootCollider(), playerPhysicsMovementComponent);
-            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PuzzleEventsManager, PlayerActionManager);
-            LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
-
-            //IInteractiveObjectAnimationModuleEvents
-            this.associatedInteractiveObject.GetIInteractiveObjectAnimationModuleEvent().IfNotNull((IInteractiveObjectAnimationModuleEvent) => IInteractiveObjectAnimationModuleEvent.SetIInteractiveObjectAnimationSpeedProvider(this));
-            // GenericAnimatorHelper.SetMovementLayer(animator, coreConfigurationManager.AnimationConfiguration(), LevelType.PUZZLE);
+            this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.Rigidbody);
+            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.Rigidbody, interactiveGameObject.GetLogicCollider(), PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
+            this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, PuzzleEventsManager, this.PlayerActionManager);
+            this.LevelResetManager = new LevelResetManager(GameInputManager, PuzzleEventsManager);
         }
 
-        public void Tick(float d)
+        public override void TickAlways(float d)
         {
             if (!LevelResetManager.Tick(d))
             {
 
-                if (!PlayerActionManager.IsActionExecuting() && !this.IsPlayerDirectedByCutscene())
+                if (!PlayerActionManager.IsActionExecuting() && !this.BlockingCutscenePlayer.Playing)
                 {
                     if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
                     {
@@ -97,16 +72,14 @@ namespace RTPuzzle
                     PlayerInputMoveManager.ResetSpeed();
                 }
             }
+            this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(new AnimationObjectSetUnscaledSpeedMagnitudeEvent { UnscaledSpeedMagnitude = this.GetNormalizedSpeed() });
+            this.AnimationObjectSystem.TickAlways(d);
         }
 
-        public void FixedTick(float d)
+        public override void FixedTick(float d)
         {
             PlayerInputMoveManager.FixedTick(d);
             PlayerBodyPhysicsEnvironment.FixedTick(d);
-        }
-
-        public void LateTick(float d)
-        {
         }
 
         #region Logical Conditions
@@ -114,27 +87,11 @@ namespace RTPuzzle
         {
             return PlayerInputMoveManager.HasMoved;
         }
-        public bool IsPlayerDirectedByCutscene()
-        {
-            return this.associatedInteractiveObject.GetModule<InteractiveObjectCutsceneControllerModule>().IsCutscenePlaying() || this.BlockingCutscenePlayer.Playing;
-        }
-        #endregion
-
-        #region Data Retrieval
-        public Animator GetPlayerAnimator()
-        {
-            return this.associatedAnimator;
-        }
-        #endregion
-
         public float GetNormalizedSpeed()
         {
             return PlayerInputMoveManager.PlayerSpeedMagnitude;
         }
-        public Rigidbody PlayerRigidbody { get => playerRigidbody; }
-        public Collider PlayerPuzzleLogicRootCollier { get => this.rootPuzzleLogicCollider.GetRootCollider(); }
-        public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent { get => playerPhysicsMovementComponent; }
-        public NavMeshAgent NavMeshAgent { get => navMeshAgent; }
+        #endregion
     }
 
     #region Player Action Selection Manager
@@ -219,4 +176,3 @@ namespace RTPuzzle
     }
     #endregion
 }
-

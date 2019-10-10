@@ -12,9 +12,7 @@ namespace RTPuzzle
         #region Persistance Dependencies
         private AInventoryMenu InventoryMenu;
         #endregion
-
-        private PlayerManager PlayerManager;
-        private PlayerManagerDataRetriever PlayerManagerDataRetriever;
+        
         private AIManagerContainer NPCAIManagerContainer;
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
@@ -57,11 +55,9 @@ namespace RTPuzzle
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
-
-            PlayerManager = PuzzleGameSingletonInstances.PlayerManager;
+            
             NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
-            PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
             TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
             GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
             InRangeEffectManager = PuzzleGameSingletonInstances.InRangeEffectManager;
@@ -87,15 +83,17 @@ namespace RTPuzzle
 
             //Initialisations
             PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.Init();
-
+            
             CameraMovementManager.Init();
             GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
             PuzzleGameSingletonInstances.RangeEventsManager.Init();
+            
+            RangeObjectV2Manager.Get().Init();
+            InteractiveObjectV2Manager.Get().Init();
+
             InteractiveObjectContainer.Init();
-            PlayerManagerDataRetriever.Init();
-            PlayerManager.Init(gameInputManager);
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
-            TimeFlowManager.Init(PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
+            TimeFlowManager.Init(gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
             GameOverManager.Init();
             PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
             PlayerActionManager.Init();
@@ -115,9 +113,6 @@ namespace RTPuzzle
             TutorialManager.Init();
             InteractiveObjectSelectionManager.Init(CoreGameSingletonInstances.GameInputManager);
             PuzzleDiscussionManager.Init();
-
-            RangeObjectV2Manager.Get().Init();
-            InteractiveObjectV2Manager.Get().Init();
 
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
@@ -141,7 +136,7 @@ namespace RTPuzzle
                     BlockingCutscenePlayer.Tick(d);
 
                     PlayerActionManager.Tick(d);
-                    PlayerManager.Tick(d);
+                    PlayerInteractiveObjectManager.Get().TickAlways(d);
 
                     CameraMovementManager.Tick(d);
 
@@ -149,9 +144,6 @@ namespace RTPuzzle
 
                     ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
                     RangeIntersectionCalculationManagerV2.Get().Tick(d);
-                  //  ObstaclesListenerManager.Tick(d); //Position Change Check
-                  //  SquareObstaclesManager.Tick(d); //Position Change Check
-                  //  ObstacleFrustumCalculationManager.Tick(d); //Multi threaded calculation when needed
 
                     TimeFlowManager.Tick(d);
                     GameOverManager.Tick(d);
@@ -202,7 +194,8 @@ namespace RTPuzzle
             var d = Time.deltaTime;
             if (!GameOverManager.OnGameOver)
             {
-                PlayerManager.LateTick(d);
+                PlayerInteractiveObjectManager.Get().LateTick(d);
+                InteractiveObjectV2Manager.Get().LateTick(d);
                 PlayerActionManager.LateTick(d);
             }
             
@@ -215,7 +208,8 @@ namespace RTPuzzle
             var d = Time.fixedDeltaTime;
             if (!GameOverManager.OnGameOver)
             {
-                PlayerManager.FixedTick(d);
+                PlayerInteractiveObjectManager.Get().FixedTick(d);
+                InteractiveObjectV2Manager.Get().FixedTick(d);
             }
         }
 
@@ -239,6 +233,7 @@ namespace RTPuzzle
             SquareObstacleSystemManager.Get().OnDestroy();
             ObstaclesListenerManager.Get().OnDestroy();
             RangeIntersectionCalculationManagerV2.Get().OnDestroy();
+            PlayerInteractiveObjectManager.Get().OnDestroy();
         }
 
         private void OnDrawGizmos()

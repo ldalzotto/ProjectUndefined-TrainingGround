@@ -21,9 +21,6 @@ namespace RTPuzzle
         public List<PlayerActionIdWrapper> playerActionIds = new List<PlayerActionIdWrapper>();
 
         [SerializeField]
-        public LevelCompletionInherentData LevelCompletionInherentData;
-
-        [SerializeField]
         public LevelRangeEffectInherentData LevelRangeEffectInherentData;
 
         [NonSerialized]
@@ -108,15 +105,6 @@ namespace RTPuzzle
             EditorGUILayout.PropertyField(serializedObject.FindProperty("playerActionIds"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelRangeEffectInherentData"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelCompletionInherentData"));
-
-            if (myTarget.LevelCompletionInherentData != null)
-            {
-                EditorGUI.indentLevel += 1;
-                Editor.CreateEditor(myTarget.LevelCompletionInherentData).OnInspectorGUI();
-                EditorGUI.indentLevel -= 1;
-            }
-
-
             serializedObject.ApplyModifiedProperties();
         }
     }

@@ -9,10 +9,10 @@ namespace CoreGame
         private StickGroundBodyPositioner StickGroundBodyPositioner;
         private SlopeVelocityAdjuster SlopeVelocityAdjuster;
         
-        public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, Collider collider, PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent)
+        public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, Collider collider, float MinimumDistanceToStick)
         {
             GroundRayCaster = new GroundRayCaster(rigidbody, collider);
-            StickGroundBodyPositioner = new StickGroundBodyPositioner(PlayerPhysicsMovementComponent, rigidbody);
+            StickGroundBodyPositioner = new StickGroundBodyPositioner(MinimumDistanceToStick, rigidbody);
             SlopeVelocityAdjuster = new SlopeVelocityAdjuster(rigidbody);
         }
 
@@ -74,17 +74,17 @@ namespace CoreGame
     class StickGroundBodyPositioner
     {
         private Rigidbody rigidbody;
-        private PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent;
+        private float MinimumDistanceToStick;
 
-        public StickGroundBodyPositioner(PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent, Rigidbody rigidbody)
+        public StickGroundBodyPositioner(float MinimumDistanceToStick, Rigidbody rigidbody)
         {
             this.rigidbody = rigidbody;
-            this.PlayerPhysicsMovementComponent = PlayerPhysicsMovementComponent;
+            this.MinimumDistanceToStick = MinimumDistanceToStick;
         }
 
         public void FixedTick(Vector3 hitPosition)
         {
-            if (Vector3.Distance(rigidbody.position, hitPosition) > PlayerPhysicsMovementComponent.MinimumDistanceToStick)
+            if (Vector3.Distance(rigidbody.position, hitPosition) > this.MinimumDistanceToStick)
             {
                 rigidbody.position = hitPosition;
             }

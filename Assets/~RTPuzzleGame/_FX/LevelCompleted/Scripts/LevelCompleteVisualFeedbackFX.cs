@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using InteractiveObjectTest;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +10,7 @@ namespace RTPuzzle
         public override void Init()
         {
             base.Init();
-            var playerPosition = PuzzleGameSingletonInstances.PlayerManagerDataRetriever.GetPlayerTransform();
-            this.transform.position = playerPosition.transform.position;
+            this.transform.position = PlayerInteractiveObjectManager.Get().GetPlayerGameObject().GetTransform().WorldPosition;
         }
     }
 

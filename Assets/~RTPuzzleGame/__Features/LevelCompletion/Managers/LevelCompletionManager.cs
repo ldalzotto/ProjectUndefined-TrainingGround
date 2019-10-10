@@ -16,7 +16,6 @@ namespace RTPuzzle
         #endregion
 
         private LevelConfigurationData currentLevelConfiguration;
-        private LevelCompletionConditionResolutionInput levelCompletionConditionResolutionInput;
 
         public void Init()
         {
@@ -24,7 +23,6 @@ namespace RTPuzzle
             var PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;;
             var NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
-            var PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
 
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.ILevelCompletionManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
@@ -33,18 +31,11 @@ namespace RTPuzzle
             #endregion
 
             this.currentLevelConfiguration = PuzzleGameConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()];
-            this.levelCompletionConditionResolutionInput = new LevelCompletionConditionResolutionInput(NPCAIManagerContainer, InteractiveObjectContainer, PlayerManagerDataRetriever);
         }
 
         public void ConditionRecalculationEvaluate()
         {
-            if (this.currentLevelConfiguration.LevelCompletionInherentData != null && this.currentLevelConfiguration.LevelCompletionInherentData.ConditionGraphEditorProfile != null)
-            {
-                if (this.currentLevelConfiguration.LevelCompletionInherentData.ConditionGraphEditorProfile.Resolve(ref this.levelCompletionConditionResolutionInput))
-                {
-                    this.OnLevelCompleted();
-                }
-            }
+            
         }
 
         private void OnLevelCompleted()

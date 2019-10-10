@@ -78,12 +78,12 @@ namespace AdventureGame
             
             this.PlayerPointOfInterestSelectionManager.AdventureInit(CoreGameSingletonInstances.GameInputManager, this.pointOfInterestTrackerModule);
 
-            this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
+            this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3.SpeedMultiplicationFactor, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.pointOfInterestTrackerModule);
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
-            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, playerCollider, PlayerPhysicsMovementComponent);
+            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, playerCollider, PlayerPhysicsMovementComponent.MinimumDistanceToStick);
         }
 
         public void Tick(float d)

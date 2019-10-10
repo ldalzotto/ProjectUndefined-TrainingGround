@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using InteractiveObjectTest;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -19,13 +20,16 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         #endregion
 
-        public void Init(PlayerManagerDataRetriever RTPlayerManagerDataRetriever, PlayerManager RTPlayerManager,
-               IGameInputManager gameInputManager, PuzzleGameConfigurationManager puzzleConfigurationManager, TimeFlowBarManager TimeFlowBarManager,
+        public void Init(IGameInputManager gameInputManager, PuzzleGameConfigurationManager puzzleConfigurationManager, TimeFlowBarManager TimeFlowBarManager,
               LevelManager LevelManager)
         {
+            #region External Dependencies
+            var playerInteractiveObjectManager = PlayerInteractiveObjectManager.Get();
+            #endregion
+
             this.TimeFlowBarManager = TimeFlowBarManager;
             this.LevelManager = LevelManager;
-            TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, RTPlayerManagerDataRetriever, RTPlayerManager);
+            TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, playerInteractiveObjectManager);
             TimeFlowValueTracker = new TimeFlowValueTracker(puzzleConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()].AvailableTimeAmount);
         }
 
@@ -60,7 +64,7 @@ namespace RTPuzzle
             return this.TimeFlowValueTracker.CurrentAvailableTime;
         }
         #endregion
-        
+
 
 #if UNITY_EDITOR
         #region Debug CHEAT
@@ -76,14 +80,12 @@ namespace RTPuzzle
     class TimeFlowInputManager
     {
         private IGameInputManager GameInputManager;
-        private PlayerManagerDataRetriever RTPlayerManagerDataRetriever;
-        private PlayerManager RTPlayerManager;
+        private PlayerInteractiveObjectManager PlayerInteractiveObjectManager;
 
-        public TimeFlowInputManager(IGameInputManager gameInputManager, PlayerManagerDataRetriever rTPlayerManagerDataRetriever, PlayerManager rTPlayerManager)
+        public TimeFlowInputManager(IGameInputManager gameInputManager, PlayerInteractiveObjectManager PlayerInteractiveObjectManager)
         {
             GameInputManager = gameInputManager;
-            RTPlayerManagerDataRetriever = rTPlayerManagerDataRetriever;
-            RTPlayerManager = rTPlayerManager;
+            this.PlayerInteractiveObjectManager = PlayerInteractiveObjectManager;
         }
 
         private float currentTimeAttenuation;
@@ -94,9 +96,9 @@ namespace RTPuzzle
             {
                 currentTimeAttenuation = 1;
             }
-            else if (RTPlayerManager.HasPlayerMovedThisFrame())
+            else if (this.PlayerInteractiveObjectManager.HasPlayerMovedThisFrame())
             {
-                currentTimeAttenuation = RTPlayerManagerDataRetriever.GetPlayerSpeedMagnitude();
+                currentTimeAttenuation = this.PlayerInteractiveObjectManager.GetNormalizedSpeed();
             }
             else
             {
@@ -106,7 +108,7 @@ namespace RTPuzzle
 
         public bool IsAbleToFlowTime()
         {
-            return RTPlayerManager.HasPlayerMovedThisFrame() || IsTimeFlowPressed();
+            return this.PlayerInteractiveObjectManager.HasPlayerMovedThisFrame() || IsTimeFlowPressed();
         }
 
         private bool IsTimeFlowPressed()

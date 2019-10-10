@@ -11,5 +11,8 @@ namespace CoreGame
     {
         [CustomEnum()]
         public LevelZonesID NewGameStartLevelID;
+
+        public CameraFollowManagerComponent CameraFollowManagerComponent;
     }
+
 }

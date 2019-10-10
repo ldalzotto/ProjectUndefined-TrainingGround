@@ -80,7 +80,6 @@ namespace RTPuzzle
             var NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var interactiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
-            var playerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
             var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
             var coreStaticConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration;
             var aiPositionsManager = PuzzleGameSingletonInstances.AIPositionsManager;
@@ -105,7 +104,7 @@ namespace RTPuzzle
 
             this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
 
-            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
+            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager,
                      interactiveObjectContainer, this.AiID, aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);

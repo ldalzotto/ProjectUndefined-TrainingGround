@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using InteractiveObjectTest;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace RTPuzzle
 
             #region External Dependencies
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
-            var playerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
+            var playerInteractiveGameObject = PlayerInteractiveObjectManager.Get().GetPlayerGameObject();
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
             var animationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
@@ -61,15 +62,15 @@ namespace RTPuzzle
                         this.InteractiveObjectContainer.transform);
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
-            this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerPuzzleLogicRootCollier());
-            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, this.attractiveObject, this.PuzzleGameConfigurationManager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration,
+            this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerInteractiveGameObject.Rigidbody, playerInteractiveGameObject.GetLogicCollider());
+            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerInteractiveGameObject, attractiveObjectInherentConfigurationData, this, this.attractiveObject, this.PuzzleGameConfigurationManager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration,
                  this.InteractiveObjectContainer);
 
             var attractiveObjectRangeInteractiveObjectInherentData =
                 VisualFeedbackEmitterModuleInstancer.BuildVisualFeedbackEmitterFromRange(RangeObjectInitializationDataBuilderV2.SphereRangeWithObstacleListener(attractiveObjectInherentConfigurationData.EffectRange, RangeTypeID.ATTRACTIVE_OBJECT));
             this.attractiveObjectRangeInteractiveObject =
                 InteractiveObjectType.Instantiate(attractiveObjectRangeInteractiveObjectInherentData, new InteractiveObjectInitializationObject(), puzzleStaticConfiguration.PuzzlePrefabConfiguration, this.PuzzleGameConfigurationManager.PuzzleGameConfiguration);
-            this.attractiveObjectRangeInteractiveObject.transform.position = playerDataRetriever.GetPlayerWorldPosition();
+            this.attractiveObjectRangeInteractiveObject.transform.position = playerInteractiveGameObject.GetTransform().WorldPosition;
         }
 
         public override void GizmoTick()
@@ -137,17 +138,17 @@ namespace RTPuzzle
 
         public bool IsOkInputAnimationRunning { get => isOkInputAnimationRunning; }
 
-        public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData,
+        public AttractiveObjectPlayerAnimationManager(InteractiveGameObject PlayerInteractiveGameObject, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData,
                 AttractiveObjectAction attractiveObjectActionRef, InteractiveObjectType attractiveObjectRef, PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration, InteractiveObjectContainer InteractiveObjectContainer)
         {
             this.PocketObjectOutAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PreActionAnimationGraph].PuzzleCutsceneGraph.GetRootActions(),
                         new PuzzleCutsceneActionInput(InteractiveObjectContainer,
-                            PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, playerManagerDataRetriever.GetPlayerAnimator()).transform,
+                            PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, PlayerInteractiveGameObject.Animator).transform,
                                attractiveObjectRef.gameObject, attractiveObjectInherentConfigurationData.PreActionAnimation)));
 
             this.PocketObjectLayAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PostActionAnimationGraph].PuzzleCutsceneGraph.GetRootActions(),
               new PuzzleCutsceneActionInput(InteractiveObjectContainer,
-                  PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, playerManagerDataRetriever.GetPlayerAnimator()).transform,
+                  PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, PlayerInteractiveGameObject.Animator).transform,
                      attractiveObjectRef.gameObject, attractiveObjectInherentConfigurationData.PostActionAnimation)),
                     onFinished: attractiveObjectActionRef.OnObjectAnimationlayed);
 

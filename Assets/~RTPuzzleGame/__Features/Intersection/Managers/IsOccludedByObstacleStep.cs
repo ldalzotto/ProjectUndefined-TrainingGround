@@ -41,7 +41,7 @@ public struct RangeObstacleOcclusionIntersection
            
             IsOccludedByObstacleJobData = new IsOccludedByObstacleJobData
             {
-                TestedBoxCollider = new BoxDefinition(rangeIntersectionCalculatorV2.TrackedInteractiveObject.InteractiveGameObject.LogicCollider),
+                TestedBoxCollider = new BoxDefinition(rangeIntersectionCalculatorV2.TrackedInteractiveObject.InteractiveGameObject.GetLogicColliderAsBox()),
                 ObstacleFrustumPointsPositionsBeginIndex = ObstacleFrustumPointsPositionsBeginIndex,
                 ObstacleFrustumPointsPositionsEndIndex = currentObstacleFrustumPointsCounter
             };

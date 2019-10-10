@@ -4,10 +4,8 @@ namespace RTPuzzle
 {
     public static class PuzzleGameSingletonInstances
     {
-        private static PlayerManager playerManager;
         private static PuzzleEventsManager puzzleEventsManager;
         private static TimeFlowManager timeFlowManager;
-        private static PlayerManagerDataRetriever playerManagerDataRetriever;
         private static PuzzleGameConfigurationManager puzzleGameConfigurationManager;
         private static BlockingCutscenePlayerManager blockingCutscenePlayer;
         private static PuzzleStaticConfigurationContainer puzzleStaticConfigurationContainer;
@@ -35,11 +33,9 @@ namespace RTPuzzle
         private static DottedLineContainer dottedLineContainer;
         private static PuzzleDiscussionWindowsContainer puzzleDiscussionWindowsContainer;
         private static PuzzleDiscussionManager puzzleDiscussionManager;
-
-        public static PlayerManager PlayerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerManager, obj => playerManager = obj); }
+        
         public static PuzzleEventsManager PuzzleEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleEventsManager, obj => puzzleEventsManager = obj); }
         public static TimeFlowManager TimeFlowManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowManager, obj => timeFlowManager = obj); }
-        public static PlayerManagerDataRetriever PlayerManagerDataRetriever { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerManagerDataRetriever, obj => playerManagerDataRetriever = obj); }
         public static PuzzleGameConfigurationManager PuzzleGameConfigurationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleGameConfigurationManager, obj => puzzleGameConfigurationManager = obj); }
         public static BlockingCutscenePlayerManager BlockingCutscenePlayer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(blockingCutscenePlayer, obj => blockingCutscenePlayer = obj); }
         public static PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleStaticConfigurationContainer, obj => puzzleStaticConfigurationContainer = obj); }

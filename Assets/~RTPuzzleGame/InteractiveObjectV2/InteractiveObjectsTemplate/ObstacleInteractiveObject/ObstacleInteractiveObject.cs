@@ -11,7 +11,7 @@ namespace InteractiveObjectTest
 
         public ObstacleInteractiveObject(InteractiveGameObject interactiveGameObject, ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData) : base(interactiveGameObject)
         {
-            this.ObstacleCollider = interactiveGameObject.LogicCollider;
+            this.ObstacleCollider = interactiveGameObject.GetLogicColliderAsBox();
             this.InteractiveObjectTag = new InteractiveObjectTag { IsObstacle = true };
             this.SquareObstacleSystem = new SquareObstacleSystem(this, ObstacleInteractiveObjectInitializerData.SquareObstacleSystemInitializationData);
         }

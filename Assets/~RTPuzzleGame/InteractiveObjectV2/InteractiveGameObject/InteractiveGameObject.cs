@@ -13,9 +13,13 @@ namespace InteractiveObjectTest
         public ExtendedBounds AverageModelBounds { get; private set; }
         public Animator Animator { get; private set; }
         public List<Renderer> Renderers { get; private set; }
-        public BoxCollider LogicCollider { get; private set; }
+        private Collider LogicCollider { get; set; }
+        public Rigidbody Rigidbody { get; private set; }
         public NavMeshAgent Agent { get; private set; }
         #endregion
+
+        public Collider GetLogicCollider() { return this.LogicCollider; }
+        public BoxCollider GetLogicColliderAsBox() { return (BoxCollider)this.LogicCollider; }
 
         public InteractiveGameObject(GameObject InteractiveGameObjectParent)
         {
@@ -36,7 +40,7 @@ namespace InteractiveObjectTest
             var InteractiveGameObjectLogicColliderTag = InteractiveGameObjectParent.GetComponentInChildren<InteractiveGameObjectLogicColliderTag>();
             if (InteractiveGameObjectLogicColliderTag != null)
             {
-                this.LogicCollider = InteractiveGameObjectLogicColliderTag.GetComponent<BoxCollider>();
+                this.LogicCollider = InteractiveGameObjectLogicColliderTag.GetComponent<Collider>();
                 MonoBehaviour.Destroy(InteractiveGameObjectLogicColliderTag);
             }
             this.Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
@@ -45,6 +49,8 @@ namespace InteractiveObjectTest
                 this.Agent.updatePosition = false;
                 this.Agent.updateRotation = false;
             }
+
+            this.Rigidbody = InteractiveGameObjectParent.GetComponent<Rigidbody>();
         }
 
         public TransformStruct GetTransform()
@@ -53,9 +59,10 @@ namespace InteractiveObjectTest
         }
 
         public Matrix4x4 GetLocalToWorld() { return this.InteractiveGameObjectParent.transform.localToWorldMatrix; }
+
         public BoxDefinition GetLogicColliderBoxDefinition()
         {
-            return new BoxDefinition(this.LogicCollider);
+            return new BoxDefinition(this.GetLogicColliderAsBox());
         }
 
         public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)

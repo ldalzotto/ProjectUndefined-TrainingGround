@@ -7,7 +7,7 @@ namespace InteractiveObjectTest
     {
         protected abstract CoreInteractiveObject GetInteractiveObject();
 
-        public void Init()
+        public virtual void Init()
         {
             InteractiveObjectV2Manager.Get().OnInteractiveObjectCreated(this.GetInteractiveObject());
         }

@@ -19,11 +19,7 @@ namespace Experimental.Editor_NodeEditor
             if (GUILayout.Button("OPEN IN EDITOR"))
             {
 
-                if (this.target.GetType() == typeof(ConditionGraphEditorProfile))
-                {
-                    ConditionNodeEditor.Init((NodeEditorProfile)this.target);
-                }
-                else if (this.target.GetType() == typeof(LevelAvailabilityNodeEditorProfile))
+                if (this.target.GetType() == typeof(LevelAvailabilityNodeEditorProfile))
                 {
                     LevelAvailabilityNodeEditor.Init((NodeEditorProfile)this.target, typeof(LevelAvailabilityNodeEditor));
                 }

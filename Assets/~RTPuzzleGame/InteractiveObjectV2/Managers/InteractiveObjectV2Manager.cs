@@ -29,11 +29,25 @@ namespace InteractiveObjectTest
             }
         }
 
+        public void FixedTick(float d)
+        {
+            for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
+            {
+                if (this.InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
+                {
+                    this.InteractiveObjects[InteractiveObjectIndex].FixedTick(d);
+                }
+            }
+        }
+
         public void TickAlways(float d)
         {
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
             {
-                this.InteractiveObjects[InteractiveObjectIndex].TickAlways(d);
+                if (this.InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
+                {
+                    this.InteractiveObjects[InteractiveObjectIndex].TickAlways(d);
+                }
             }
         }
 
@@ -41,7 +55,10 @@ namespace InteractiveObjectTest
         {
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
             {
-                this.InteractiveObjects[InteractiveObjectIndex].Tick(d, timeAttenuationFactor);
+                if (this.InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
+                {
+                    this.InteractiveObjects[InteractiveObjectIndex].Tick(d, timeAttenuationFactor);
+                }
             }
         }
 
@@ -49,7 +66,10 @@ namespace InteractiveObjectTest
         {
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
             {
-                this.InteractiveObjects[InteractiveObjectIndex].TickWhenTimeIsStopped();
+                if (this.InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
+                {
+                    this.InteractiveObjects[InteractiveObjectIndex].TickWhenTimeIsStopped();
+                }
             }
         }
 
@@ -57,7 +77,10 @@ namespace InteractiveObjectTest
         {
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
             {
-                this.InteractiveObjects[InteractiveObjectIndex].AfterTicks();
+                if (this.InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
+                {
+                    this.InteractiveObjects[InteractiveObjectIndex].AfterTicks();
+                }
             }
 
             List<CoreInteractiveObject> InteractiveObjectsToDelete = null;
@@ -79,16 +102,27 @@ namespace InteractiveObjectTest
             }
         }
 
+        public void LateTick(float d)
+        {
+            for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
+            {
+                if (this.InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
+                {
+                    this.InteractiveObjects[InteractiveObjectIndex].LateTick(d);
+                }
+            }
+        }
+
         public void OnInteractiveObjectCreated(CoreInteractiveObject InteractiveObject)
         {
             this.InteractiveObjects.Add(InteractiveObject);
-            this.InteractiveObjectsIndexedByLogicCollider.Add(InteractiveObject.InteractiveGameObject.LogicCollider, InteractiveObject);
+            this.InteractiveObjectsIndexedByLogicCollider.Add(InteractiveObject.InteractiveGameObject.GetLogicColliderAsBox(), InteractiveObject);
         }
 
         public void OnInteractiveObjectDestroyed(CoreInteractiveObject InteractiveObject)
         {
             this.InteractiveObjects.Remove(InteractiveObject);
-            this.InteractiveObjectsIndexedByLogicCollider.Remove(InteractiveObject.InteractiveGameObject.LogicCollider);
+            this.InteractiveObjectsIndexedByLogicCollider.Remove(InteractiveObject.InteractiveGameObject.GetLogicColliderAsBox());
             RangeObjectV2ManagerOperations.ClearAllReferencesOfInteractiveObject(InteractiveObject);
         }
 

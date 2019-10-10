@@ -5,7 +5,7 @@ namespace CoreGame
     #region Player Movement
     public abstract class PlayerMoveManager
     {
-        private TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent;
+        private float SpeedMultiplicationFactor;
         protected Rigidbody PlayerRigidBody;
         private bool hasMoved;
         protected float playerSpeedMagnitude;
@@ -13,9 +13,9 @@ namespace CoreGame
 
         protected abstract PlayerSpeedProcessingInput ComputePlayerSpeedProcessingInput();
 
-        public PlayerMoveManager(TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
+        public PlayerMoveManager(float SpeedMultiplicationFactor, Rigidbody playerRigidBody)
         {
-            this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
+            this.SpeedMultiplicationFactor = SpeedMultiplicationFactor;
             PlayerRigidBody = playerRigidBody;
         }
 
@@ -43,7 +43,7 @@ namespace CoreGame
             }
 
             //move rigid body
-            PlayerRigidBody.velocity = playerSpeedProcessingInput.PlayerMovementOrientation * playerSpeedProcessingInput.PlayerSpeedMagnitude * PlayerInputMoveManagerComponent.SpeedMultiplicationFactor;
+            PlayerRigidBody.velocity = playerSpeedProcessingInput.PlayerMovementOrientation * playerSpeedProcessingInput.PlayerSpeedMagnitude * this.SpeedMultiplicationFactor;
             if (playerSpeedProcessingInput.PlayerSpeedMagnitude <= float.Epsilon)
             {
                 hasMoved = false;
@@ -56,8 +56,8 @@ namespace CoreGame
         private Transform CameraPivotPoint;
         private IGameInputManager GameInputManager;
 
-        public PlayerInputMoveManager(TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
-             : base(PlayerInputMoveManagerComponent, playerRigidBody)
+        public PlayerInputMoveManager(float SpeedMultiplicationFactor, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
+             : base(SpeedMultiplicationFactor, playerRigidBody)
         {
             CameraPivotPoint = cameraPivotPoint;
             GameInputManager = gameInputManager;

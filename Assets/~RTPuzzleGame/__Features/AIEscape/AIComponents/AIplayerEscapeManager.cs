@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,7 +7,6 @@ namespace RTPuzzle
     public class AIPlayerEscapeManager : AbstractPlayerEscapeManager
     {
         #region External dependencies
-        private PlayerManagerDataRetriever playerManagerDataRetriever;
         private IFovManagerCalcuation fovManagerCalcuation;
         private InteractiveObjectContainer InteractiveObjectContainer;
         private PuzzleEventsManager puzzleEventsManager;
@@ -39,7 +37,6 @@ namespace RTPuzzle
         {
             this.selfAgent = AIBheaviorBuildInputData.selfAgent;
             this.puzzleAIBehaviorExternalEventManager = AIBheaviorBuildInputData.GenericPuzzleAIBehaviorExternalEventManager;
-            this.playerManagerDataRetriever = AIBheaviorBuildInputData.PlayerManagerDataRetriever;
             this.fovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.InteractiveObjectContainer = AIBheaviorBuildInputData.InteractiveObjectContainer;
             this.escapeDestinationManager = new EscapeDestinationManager(this.selfAgent);
@@ -51,12 +48,14 @@ namespace RTPuzzle
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
+            /*
             bool isInRange = Vector3.Distance(this.selfAgent.transform.position, this.playerManagerDataRetriever.GetPlayerRigidBody().position) <= this.AssociatedAIComponent.PlayerDetectionRadius;
             //The event is triggered only when AI is not already escaping
             if (isInRange && !this.isNearPlayer && this.escapeDestinationManager.IsDistanceReached())
             {
                 this.puzzleAIBehaviorExternalEventManager.ReceiveEvent(new PlayerEscapeStartAIBehaviorEvent(this.playerManagerDataRetriever.GetPlayerRigidBody().position, this.AssociatedAIComponent));
             }
+            */
         }
 
         #region External Event
@@ -64,7 +63,7 @@ namespace RTPuzzle
         {
             this.isNearPlayer = true;
             this.escapeDestinationManager.ResetDistanceComputation(this.AssociatedAIComponent.EscapeDistance);
-            this.fovManagerCalcuation.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngle);
+          // this.fovManagerCalcuation.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngle);
             this.CalculateEscapeDirection();
         }
         #endregion

@@ -1,5 +1,6 @@
 using CoreGame;
 using GameConfigurationID;
+using InteractiveObjectTest;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ namespace RTPuzzle
             #region External Dependencies
             this.IPlayerActionManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
-            var PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
+            var PlayerInteractiveGameObject = PlayerInteractiveObjectManager.Get().GetPlayerGameObject();
             var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var levelManager = CoreGameSingletonInstances.LevelManager;
             #endregion
@@ -42,7 +43,7 @@ namespace RTPuzzle
             PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
             PlayerActionsAvailableManager = new PlayerActionsAvailableManager(levelManager.GetCurrentLevel(), puzzleGameConfigurationManager);
             PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel, puzzleGameConfigurationManager);
-            PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent, SelectionWheel, PlayerManagerDataRetriever.GetPlayerTransform(), Camera.main);
+            PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent, SelectionWheel, PlayerInteractiveGameObject.InteractiveGameObjectParent.transform, Camera.main);
         }
 
         public void Tick(float d)

@@ -10,17 +10,21 @@ namespace InteractiveObjectTest
         public InteractiveObjectTag InteractiveObjectTag { get; protected set; }
 
         public bool IsAskingToBeDestroyed { get; protected set; }
+        public bool IsUpdatedInMainManager;
 
-        public CoreInteractiveObject(InteractiveGameObject interactiveGameObject)
+        public CoreInteractiveObject(InteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
         {
             this.IsAskingToBeDestroyed = false;
+            this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
         }
 
+        public virtual void FixedTick(float d) { }
         public virtual void TickAlways(float d) { }
         public virtual void Tick(float d, float timeAttenuationFactor) { }
         public virtual void TickWhenTimeIsStopped() { }
         public virtual void AfterTicks() { }
+        public virtual void LateTick(float d) { }
 
         public virtual void Destroy()
         {
@@ -69,6 +73,7 @@ namespace InteractiveObjectTest
         public bool IsAttractiveObject;
         public bool IsAi;
         public bool IsObstacle;
+        public bool IsPlayer;
     }
 
     [System.Serializable]
@@ -77,19 +82,22 @@ namespace InteractiveObjectTest
         public int IsAttractiveObject;
         public int IsAi;
         public int IsObstacle;
+        public int IsPlayer;
 
-        public InteractiveObjectTagStruct(int isAttractiveObject = -1, int isAi = -1, int isObstacle = -1)
+        public InteractiveObjectTagStruct(int isAttractiveObject = -1, int isAi = -1, int isObstacle = -1, int isPlayer = -1)
         {
             IsAttractiveObject = isAttractiveObject;
             IsAi = isAi;
             IsObstacle = isObstacle;
+            IsPlayer = isPlayer;
         }
 
         public bool Compare(InteractiveObjectTag InteractiveObjectTag)
         {
             return (this.IsAttractiveObject == -1 || this.IsAttractiveObject == Convert.ToInt32(InteractiveObjectTag.IsAttractiveObject))
                 && (this.IsAi == -1 || this.IsAi == Convert.ToInt32(InteractiveObjectTag.IsAi))
-                && (this.IsObstacle == -1 || this.IsObstacle == Convert.ToInt32(InteractiveObjectTag.IsObstacle));
+                && (this.IsObstacle == -1 || this.IsObstacle == Convert.ToInt32(InteractiveObjectTag.IsObstacle))
+                && (this.IsPlayer == -1 || this.IsPlayer == Convert.ToInt32(InteractiveObjectTag.IsPlayer));
         }
     }
 }
