@@ -3,6 +3,7 @@ using InteractiveObjectTest;
 using OdinSerializer;
 using System.Collections.Generic;
 using UnityEngine;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace RTPuzzle
 {
@@ -10,14 +11,14 @@ namespace RTPuzzle
     public abstract class AIPatrolGraphV2 : SerializedScriptableObject
     {
         public Vector3 RootWorldPosition;
-        protected CoreInteractiveObject CoreInteractiveObject;
+        protected CoreInteractiveObject InvolvedInteractiveObject;
 
         public void Init(CoreInteractiveObject CoreInteractiveObject)
         {
-            this.CoreInteractiveObject = CoreInteractiveObject;
+            this.InvolvedInteractiveObject = CoreInteractiveObject;
         }
 
-        public TransformStruct TrasnformToWorldPosition(TransformStruct AIPatrolGraphPosition)
+        protected TransformStruct TransformToWorldPosition(TransformStruct AIPatrolGraphPosition)
         {
             return new TransformStruct
             {
@@ -27,5 +28,18 @@ namespace RTPuzzle
             };
         }
         public abstract List<SequencedAction> AIPatrolGraphActions();
+
+        protected AIMoveToActionV2 CreateAIMoveToActionV2(CoreInteractiveObject InvolvedInteractiveObject, AIMoveToActionInputData AIMoveToActionInputData, List<SequencedAction> nextActions)
+        {
+            return new AIMoveToActionV2(InvolvedInteractiveObject, this.TransformToWorldPosition(AIMoveToActionInputData.WorldPoint), AIMoveToActionInputData.AIMovementSpeed, nextActions);
+        }
+    }
+
+
+    [System.Serializable]
+    public struct AIMoveToActionInputData
+    {
+        public TransformStruct WorldPoint;
+        public AIMovementSpeedDefinition AIMovementSpeed;
     }
 }
