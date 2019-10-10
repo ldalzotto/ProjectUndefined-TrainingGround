@@ -21,7 +21,7 @@ namespace CoreGame
         public bool FramePerfectEndDetection = false;
 
         [NonSerialized]
-        private AnimationID resolvedAnimationID;
+        private AnimationID PlayedAnimationID;
         [NonSerialized]
         private bool animationEnded = false;
         [NonSerialized]
@@ -48,11 +48,11 @@ namespace CoreGame
         {
             this.animationEnded = false;
             this.pointOfInterestCutsceneController = this.GetAbstractCutsceneController(ContextActionInput);
-            this.resolvedAnimationID = this.AnimationIdV2.Resolve(ContextActionInput.graphParameters);
+            this.PlayedAnimationID = this.AnimationIdV2.Resolve(ContextActionInput.graphParameters);
             if (this.SkipToNextNode)
             {
                 this.animationEnded = true;
-                this.pointOfInterestCutsceneController.Play(this.resolvedAnimationID, this.CrossFade, this.PlayImmediately);
+                this.pointOfInterestCutsceneController.Play(this.PlayedAnimationID, this.CrossFade, this.PlayImmediately);
             }
             else
             {
@@ -63,7 +63,7 @@ namespace CoreGame
 
         private IEnumerator PlayAnimation(AbstractCutsceneController cutsceneController)
         {
-            this.animationCoroutine = Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.resolvedAnimationID, this.CrossFade, animationEndCallback: () =>
+            this.animationCoroutine = Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.PlayedAnimationID, this.CrossFade, animationEndCallback: () =>
             {
                 if (this.InfiniteLoop)
                 {
@@ -89,7 +89,7 @@ namespace CoreGame
             {
                 Coroutiner.Instance.StopCoroutine(this.animationCoroutine);
                 this.animationCoroutine = null;
-                this.pointOfInterestCutsceneController.StopAnimation(this.resolvedAnimationID);
+                this.pointOfInterestCutsceneController.StopAnimation(this.PlayedAnimationID);
             }
         }
 

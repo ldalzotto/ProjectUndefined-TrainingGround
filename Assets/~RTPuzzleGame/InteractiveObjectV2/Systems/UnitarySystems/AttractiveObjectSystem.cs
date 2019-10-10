@@ -101,4 +101,29 @@ namespace InteractiveObjectTest
             if (OnAttractiveSystemInterestedNothing != null) { OnAttractiveSystemInterestedNothing.Invoke(intersectionCalculator.TrackedInteractiveObject); }
         }
     }
+
+    class AttractiveObjectLifetimeTimer
+    {
+        private float effectiveTime;
+
+        public AttractiveObjectLifetimeTimer(float effectiveTime)
+        {
+            this.effectiveTime = effectiveTime;
+        }
+
+        private float elapsedTime;
+
+        #region Logical Condition
+        public bool IsTimeOver()
+        {
+            return elapsedTime >= effectiveTime;
+        }
+        #endregion
+
+        public void Tick(float d, float timeAttenuationFactor)
+        {
+            this.elapsedTime += (d * timeAttenuationFactor);
+        }
+
+    }
 }

@@ -19,8 +19,9 @@ namespace RTPuzzle
                 if (abstractDiscussionTextOnlyNode.GetType() == typeof(PuzzleDiscussionTextOnlyNode))
                 {
                     var PuzzleDiscussionTextOnlyNode = (PuzzleDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode;
-                    var modelObject = PuzzleDiscussionTextOnlyNode.ParametrizedTalker.Resolve(this.discussionGraphParameters, PuzzleGameSingletonInstances.InteractiveObjectContainer).GetModelObjectModule();
-                    worldPosition = modelObject.transform.position + new Vector3(0, modelObject.GetAverageModelBoundLocalSpace().SideDistances.y, 0);
+                    var talkerInteractiveObject = PuzzleDiscussionTextOnlyNode.Talker;
+                    worldPosition = talkerInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition
+                            + new Vector3(0, talkerInteractiveObject.InteractiveGameObject.AverageModelBounds.SideDistances.y, 0);
                     WindowPositionType = WindowPositionType.WORLD;
                     return true;
                 }

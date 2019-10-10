@@ -12,7 +12,7 @@ namespace CoreGame
     {
 
         [FormerlySerializedAs("CutscenePositionMarkerID")]
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public ID PositionMarkerID;
 
 #if UNITY_EDITOR

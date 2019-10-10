@@ -8,7 +8,7 @@ namespace CoreGame
     public class AnimationConfigurationData : ScriptableObject
     {
         public string AnimationName;
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public AnimationLayerID AnimationLayer;
 
         public int GetLayerIndex(Animator animator)

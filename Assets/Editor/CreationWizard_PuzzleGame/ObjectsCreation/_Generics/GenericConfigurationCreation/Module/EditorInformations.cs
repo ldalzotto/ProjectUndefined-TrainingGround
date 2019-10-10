@@ -68,11 +68,6 @@ namespace Editor_GenericConfigurationCreation
                     var windowRect = new Rect(GUIUtility.GUIToScreenPoint(dropDownRect.position), new Vector2(0, dropDownRect.height));
                     windowInstance.ShowAsDropDown(windowRect, new Vector2(dropDownRect.width, 500));
                 }
-
-                if (GUILayout.Button("Create ID"))
-                {
-                    EnumIDGeneration.Init(EditorInformationsData.SelectedKey.GetType());
-                }
             }
             EditorInformationsData.SelectedConfiguration = this.EditorInformationsData.CommonGameConfigurations.GetConfiguration(this.AllConfigurationTypes[this.selectedTypeIndex]);
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(this.EditorInformationsData)).FindPropertyRelative(nameof(EditorInformationsData.CommonGameConfigurations)), true);

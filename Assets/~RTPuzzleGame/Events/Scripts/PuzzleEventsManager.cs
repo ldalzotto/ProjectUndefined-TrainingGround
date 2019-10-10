@@ -4,12 +4,9 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener,
-                                ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGameOverManagerEventListener,
-                                ILevelCompletionManagerEventListener, IActionInteractableObjectModuleEventListener, IPlayerActionManagerEventListener
+    public class PuzzleEventsManager : MonoBehaviour, IGameOverManagerEventListener
     {
         #region External Dependencies
-        private InteractiveObjectContainer InteractiveObjectContainer;
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
@@ -27,7 +24,6 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
@@ -40,114 +36,6 @@ namespace RTPuzzle
             this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
             this.IInteractiveObjectSelectionEvent = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
         }
-
-        #region Fear Events
-        public void PZ_EVT_AI_FearedStunned_Start(AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Start"));
-            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new FearedStartAIBehaviorEvent(
-                eventProcessedCallback: () =>
-                {
-                    AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetInteractiveObjectCutsceneControllerModule()
-                        .IfNotNull(InteractiveObjectCutsceneControllerModule => InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(AnimationID.FEAR, 0f, false));
-                }
-            ));
-
-        }
-
-        public void PZ_EVT_AI_FearedForced(AIObjectDataRetriever AIObjectDataRetriever, float fearTime)
-        {
-            Debug.Log(MyLog.Format("PZ_EVT_AI_FearedForced"));
-            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new FearedForcedAIBehaviorEvent(fearTime));
-        }
-
-        public void PZ_EVT_AI_FearedStunned_Ended(AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Ended"));
-            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new FearedStartAIBehaviorEvent(
-                eventProcessedCallback: () =>
-                {
-                    AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetInteractiveObjectCutsceneControllerModule()
-                        .IfNotNull(InteractiveObjectCutsceneControllerModule => InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(AnimationID.POSE_OVERRIVE_LISTENING, 0f, false));
-                }
-            ));
-        }
-        #endregion
-
-        #region IAIAttractiveObjectEventListener
-        public void AI_AttractedObject_Start(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
-
-            var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
-            if (ILineVisualFeedbackEvent != null)
-            {
-                ILineVisualFeedbackEvent.CreateLineFollowingModelObject(DottedLineID.ATTRACTIVE_OBJECT, InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule(), (MonoBehaviour)AIObjectDataRetriever);
-            }
-
-            var IContextMarkVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetIContextMarkVisualFeedbackEvent();
-            if (IContextMarkVisualFeedbackEvent != null)
-            {
-                IContextMarkVisualFeedbackEvent.CreateGenericMark(InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule());
-            }
-        }
-
-        public void AI_AttractedObject_End(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
-            var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
-            if (ILineVisualFeedbackEvent != null)
-            {
-                ILineVisualFeedbackEvent.DestroyLine((MonoBehaviour)AIObjectDataRetriever);
-            }
-
-            var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
-            if (IContextMarkVisualFeedbackEvent != null)
-            {
-                IContextMarkVisualFeedbackEvent.Delete();
-            }
-        }
-        #endregion
-
-        #region ILaunchProjectileAIEventListener
-        public virtual void PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            this.PZ_EVT_AI_EscapingStart(AIObjectDataRetriever, AnimationID.HITTED_BY_PROJECTILE_1ST);
-        }
-
-        public void PZ_EVT_AI_Projectile_NoMoreAffected(AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            this.PZ_EVT_AI_NoMoreEscaping(AIObjectDataRetriever);
-        }
-        #endregion
-
-        #region IAgentEscapeEvent
-        public void PZ_EVT_AI_EscapingStart(AIObjectDataRetriever AIObjectDataRetriever, AnimationID playedAnimation)
-        {
-            var interactiveObjectTypeDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
-            var IContextMarkVisualFeedbackEvent = interactiveObjectTypeDataRetrieval.GetIContextMarkVisualFeedbackEvent();
-            if (IContextMarkVisualFeedbackEvent != null)
-            {
-                IContextMarkVisualFeedbackEvent.CreateDoubleExclamationMark();
-            }
-
-            var InteractiveObjectCutsceneControllerModule = interactiveObjectTypeDataRetrieval.GetInteractiveObjectCutsceneControllerModule();
-            if (InteractiveObjectCutsceneControllerModule != null)
-            {
-                InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(playedAnimation, 0f, false);
-            }
-        }
-
-        public void PZ_EVT_AI_NoMoreEscaping(AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            var interactiveObjectTypeDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
-            var IContextMarkVisualFeedbackEvent = interactiveObjectTypeDataRetrieval.GetIContextMarkVisualFeedbackEvent();
-            if (IContextMarkVisualFeedbackEvent != null)
-            {
-                IContextMarkVisualFeedbackEvent.Delete();
-            }
-        }
-        #endregion
 
         #region IActionInteractableObjectModuleEventListener
         public void PZ_EVT_OnActionInteractableEnter(ISelectableModule actionInteractableObjectModule)
@@ -190,7 +78,6 @@ namespace RTPuzzle
         }
         #endregion
         
-
         #region IGameOverManagerEventListener
         public void PZ_EVT_GameOver()
         {
@@ -215,7 +102,6 @@ namespace RTPuzzle
 
         private void OnPuzzleToAdventureLevel(LevelZonesID levelZonesID)
         {
-            this.InteractiveObjectContainer.OnGameOver();
             this.IDottedLineRendererManagerEvent.OnLevelExit();
             this.GroundEffectsManagerV2.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
@@ -223,7 +109,6 @@ namespace RTPuzzle
 
         private void OnPuzzleToPuzzleLevel(LevelZonesID levelZonesID)
         {
-            this.InteractiveObjectContainer.OnGameOver();
             this.IDottedLineRendererManagerEvent.OnLevelExit();
             this.GroundEffectsManagerV2.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);

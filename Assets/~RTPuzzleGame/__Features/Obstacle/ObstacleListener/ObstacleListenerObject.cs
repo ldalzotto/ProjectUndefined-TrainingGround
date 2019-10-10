@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ObstacleListener
+    public class ObstacleListenerObject
     {
         public int ObstacleListenerUniqueID { get; private set; }
         public float Radius;
@@ -22,7 +22,7 @@ namespace RTPuzzle
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
         #endregion
 
-        public ObstacleListener(RangeObjectV2 associatedRangeObject)
+        public ObstacleListenerObject(RangeObjectV2 associatedRangeObject)
         {
             AssociatedRangeObject = associatedRangeObject;
 

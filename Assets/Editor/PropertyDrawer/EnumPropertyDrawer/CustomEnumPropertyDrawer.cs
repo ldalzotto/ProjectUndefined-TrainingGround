@@ -21,10 +21,6 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
     {
         CustomEnum searchableEnum = (CustomEnum)attribute;
         lineNB = 0;
-        if (searchableEnum.IsCreateable)
-        {
-            lineNB += 1;
-        }
         if (searchableEnum.IsSearchable)
         {
             lineNB += 1;
@@ -74,18 +70,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
                 currentLineNB += 1;
             }
-
-            if (searchableEnum.IsCreateable)
-            {
-                Rect lineRect = this.GetRectFromLineNb(currentLineNB, position);
-
-                if (GUI.Button(lineRect, "Create ID"))
-                {
-                    EnumIDGeneration.Init(targetEnum.GetType());
-                }
-                currentLineNB += 1;
-            }
-
+            
             if (searchableEnum.ChoosedOpenRepertoire)
             {
                 Rect lineRect = this.GetRectFromLineNb(currentLineNB, position);

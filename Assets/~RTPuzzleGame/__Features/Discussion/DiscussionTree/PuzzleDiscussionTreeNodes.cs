@@ -1,22 +1,19 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using UnityEngine;
+using InteractiveObjectTest;
 
 namespace RTPuzzle
 {
     [System.Serializable]
     public class PuzzleDiscussionTextOnlyNode : AbstractDiscussionTextOnlyNode
     {
-        [SerializeField]
-        private ParametrizedInteractiveObject parametrizedTalker;
+        public CoreInteractiveObject Talker { get; private set; }
 
         public PuzzleDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DiscussionTextID displayedText, DiscussionNodeId nextNode,
-            ParametrizedInteractiveObject parametrizedTalker) : base(DiscussionNodeId, displayedText, nextNode)
+            CoreInteractiveObject Talker) : base(DiscussionNodeId, displayedText, nextNode)
         {
-            this.parametrizedTalker = parametrizedTalker;
+            this.Talker = Talker;
         }
-
-        public ParametrizedInteractiveObject ParametrizedTalker { get => parametrizedTalker; set => parametrizedTalker = value; }
 
     }
 }

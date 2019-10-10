@@ -92,6 +92,3 @@ public abstract class ByEnumPropertyCustomEditor<K, V> : Editor where K : Enum
     }
 }
 
-[CustomEditor(typeof(ByEnumProperty<LaunchProjectileID, float>), editorForChildClasses: true)]
-public class ProjectileEscapeRangeCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileID, float> { }
-

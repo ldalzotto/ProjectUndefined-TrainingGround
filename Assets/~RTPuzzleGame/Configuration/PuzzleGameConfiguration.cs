@@ -17,12 +17,6 @@ namespace RTPuzzle
     public class PuzzleGameConfiguration : CoreGame.GameConfiguration
     {
         
-        public RTPuzzle.LaunchProjectileConfiguration LaunchProjectileConfiguration;
-        
-        public RTPuzzle.TargetZoneConfiguration TargetZoneConfiguration;
-        
-        public RTPuzzle.AttractiveObjectConfiguration AttractiveObjectConfiguration;
-        
         public RTPuzzle.LevelConfiguration LevelConfiguration;
         
         public RTPuzzle.PlayerActionConfiguration PlayerActionConfiguration;
@@ -30,17 +24,8 @@ namespace RTPuzzle
         public RTPuzzle.RangeTypeConfiguration RangeTypeConfiguration;
         
         public RTPuzzle.DottedLineConfiguration DottedLineConfiguration;
-        
-        public RTPuzzle.ObjectRepelConfiguration ObjectRepelConfiguration;
-        
+
         public RTPuzzle.PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
-        
-        public RTPuzzle.ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
-        
-        public RTPuzzle.NearPlayerGameOverTriggerConfiguration NearPlayerGameOverTriggerConfiguration;
-        
-        public RTPuzzle.InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
-        
-        public RTPuzzle.AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
+      
     }
 }

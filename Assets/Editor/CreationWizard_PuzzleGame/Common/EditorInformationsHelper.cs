@@ -20,7 +20,6 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.PuzzleDebugModule, "PuzzleDebugModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseInteractiveObjectTypePrefab, "BaseInteractiveObjectPrefab");
             #endregion
 
             #region Adventure Common Prefabs
@@ -101,8 +100,6 @@ namespace Editor_MainGameCreationWizard
         public LevelManager BasePuzzleLevelDynamics;
         [MyReadOnly]
         public LevelChunkType BaseLevelChunkPrefab;
-        [MyReadOnly]
-        public InteractiveObjectType BaseInteractiveObjectTypePrefab;
     }
 
     [System.Serializable]

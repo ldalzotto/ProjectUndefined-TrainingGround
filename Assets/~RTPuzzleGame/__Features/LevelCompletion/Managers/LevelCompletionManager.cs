@@ -6,10 +6,10 @@ using CoreGame;
 namespace RTPuzzle
 {
 
-    public class LevelCompletionManager : MonoBehaviour, ILevelCompletionManagerEvent
+    public class LevelCompletionManager : MonoBehaviour
     {
         #region External dependencies
-        private ILevelCompletionManagerEventListener ILevelCompletionManagerEventListener;
+        private PuzzleEventsManager ILevelCompletionManagerEventListener;
         private FXContainerManager FXContainerManager;
         private LevelManager LevelManager;
         private PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
@@ -20,9 +20,7 @@ namespace RTPuzzle
         public void Init()
         {
             #region External dependencies
-            var PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;;
-            var NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
-            var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            var PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
 
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.ILevelCompletionManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;

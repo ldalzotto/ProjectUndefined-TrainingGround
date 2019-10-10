@@ -5,14 +5,12 @@ using UnityEngine;
 public class CustomEnum : PropertyAttribute
 {
     public bool IsSearchable;
-    public bool IsCreateable;
     public bool ChoosedOpenRepertoire;
     public Type ConfigurationType;
     public bool OpenToConfiguration;
 
-    public CustomEnum(bool isCreateable = false, bool isSearchable = true, bool choosedOpenRepertoire = false, Type configurationType = null, bool openToConfiguration = false)
+    public CustomEnum(bool isSearchable = true, bool choosedOpenRepertoire = false, Type configurationType = null, bool openToConfiguration = false)
     {
-        this.IsCreateable = isCreateable;
         this.IsSearchable = isSearchable;
         this.ChoosedOpenRepertoire = choosedOpenRepertoire;
         this.ConfigurationType = configurationType;

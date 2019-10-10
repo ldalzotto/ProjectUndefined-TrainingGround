@@ -7,7 +7,7 @@ namespace AdventureGame
 {
     public class CutscenePositionsType : AbstractPositionsType<CutscenePositionMarkerID, CutscenePositionMarker>
     {
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public CutsceneId CutsceneId;
     }
 }

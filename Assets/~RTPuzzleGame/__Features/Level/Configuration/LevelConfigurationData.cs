@@ -93,21 +93,6 @@ namespace RTPuzzle
         [Range(-0.5f, 0.5f)]
         public float DeltaMixFactor = 0;
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(LevelConfigurationData))]
-    public class LevelConfigurationDataEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            LevelConfigurationData myTarget = (LevelConfigurationData)target;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("availableTimeAmount"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("playerActionIds"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelRangeEffectInherentData"), true);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelCompletionInherentData"));
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-#endif
+    
 
 }

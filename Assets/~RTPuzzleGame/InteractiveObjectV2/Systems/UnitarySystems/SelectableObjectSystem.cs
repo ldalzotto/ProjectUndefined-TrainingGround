@@ -9,6 +9,9 @@ namespace InteractiveObjectTest
     public class SelectableObjectSystemDefinition
     {
         public float SelectionRange;
+        
+        [Inline()]
+        public PlayerActionInherentData AssociatedPlayerAction;
     }
 
     #region Callback Events
@@ -20,7 +23,7 @@ namespace InteractiveObjectTest
     {
         private CoreInteractiveObject AssociatedInteractiveObject;
         private RangeObjectV2 SphereRange;
-        private RTPPlayerAction GrabObjectAction;
+        private RTPPlayerAction AssociatedPlayerAction;
 
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
@@ -41,7 +44,7 @@ namespace InteractiveObjectTest
                 }
             }, AssociatedInteractiveObject, "SelectionRangeTrigger");
             this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new SelectableObjectPhysicsEventListener(this.OnPlayerTriggerInSelectionEnter, this.OnPlayerTriggerInSelectionExit) });
-            this.GrabObjectAction = new GrabObjectAction(new GrabActionInherentData(PlayerActionId.STONE_PROJECTILE_ACTION_1, SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG, 1f));
+            this.AssociatedPlayerAction = new GrabObjectAction(new GrabActionInherentData(PlayerActionId.STONE_PROJECTILE_ACTION_1, SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG, 1f));
         }
 
         private void OnPlayerTriggerInSelectionEnter(CoreInteractiveObject IntersectedInteractiveObject)
@@ -61,7 +64,7 @@ namespace InteractiveObjectTest
 
         public RTPPlayerAction GetAssociatedPlayerAction()
         {
-            return this.GrabObjectAction;
+            return this.AssociatedPlayerAction;
         }
 
         public ExtendedBounds GetAverageModelBoundLocalSpace()

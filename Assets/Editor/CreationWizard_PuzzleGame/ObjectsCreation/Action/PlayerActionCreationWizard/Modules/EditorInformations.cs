@@ -48,9 +48,9 @@ namespace Editor_PlayerActionCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public PlayerActionId PlayerActionId;
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public LevelZonesID LevelZonesID;
         public CommonGameConfigurations CommonGameConfigurations;
     }

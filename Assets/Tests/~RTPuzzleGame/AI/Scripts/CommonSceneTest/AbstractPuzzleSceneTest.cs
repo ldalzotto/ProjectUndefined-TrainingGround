@@ -10,11 +10,8 @@ namespace Tests
 {
     public abstract class AbstractPuzzleSceneTest : MonoBehaviour
     {
-        private MockPuzzleEventsManager mockPuzzleEventsManagerTest;
         private Action objectDynamicInstancesCreation;
-
-        public MockPuzzleEventsManager MockPuzzleEventsManagerTest { get => mockPuzzleEventsManagerTest; }
-
+        
         public IEnumerator Before(string sceneName, Action objectDynamicInstancesCreation = null)
         {
             var dontDestroyOnLoadObject = new GameObject("go");
@@ -23,8 +20,7 @@ namespace Tests
             {
                 Destroy(root);
             }
-
-            this.mockPuzzleEventsManagerTest = null;
+            
             this.objectDynamicInstancesCreation = objectDynamicInstancesCreation;
             SceneManager.sceneLoaded += this.OnSceneLoadCallBack;
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
@@ -42,26 +38,7 @@ namespace Tests
             if (objectDynamicInstancesCreation != null) { objectDynamicInstancesCreation.Invoke(); }
             var puzzleEventManagerObject = GameObject.FindObjectOfType<PuzzleEventsManager>().gameObject;
             var puzzleEventManager = puzzleEventManagerObject.GetComponent<PuzzleEventsManager>();
-            this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
-            this.mockPuzzleEventsManagerTest.ClearCalls();
         }
-
-        public class MockPuzzleEventsManager : PuzzleEventsManager
-        {
-            
-            public int AiHittedByProjectileCallCount;
-
-            public override void PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever AIObjectDataRetriever)
-            {
-                base.PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever);
-                this.AiHittedByProjectileCallCount += 1;
-            }
-
-            public void ClearCalls()
-            {
-                this.AiHittedByProjectileCallCount = 0;
-            }
-        }
-
+        
     }
 }

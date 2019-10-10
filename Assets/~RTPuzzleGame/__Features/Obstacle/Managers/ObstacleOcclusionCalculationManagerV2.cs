@@ -33,11 +33,11 @@ namespace RTPuzzle
         private JobHandle JobHandle;
         #endregion
 
-        private Dictionary<ObstacleListener, TransformStruct> ObstacleListenerLastFramePositions = new Dictionary<ObstacleListener, TransformStruct>();
+        private Dictionary<ObstacleListenerObject, TransformStruct> ObstacleListenerLastFramePositions = new Dictionary<ObstacleListenerObject, TransformStruct>();
         private Dictionary<SquareObstacleSystem, TransformStruct> SquareObstacleLastFramePositions = new Dictionary<SquareObstacleSystem, TransformStruct>();
 
-        private List<ObstacleListener> obstacleListenersThatHasChangedThisFrame = new List<ObstacleListener>();
-        private Dictionary<ObstacleListener, List<SquareObstacleSystem>> singleObstacleSystemsThatHasChangedThisFrame = new Dictionary<ObstacleListener, List<SquareObstacleSystem>>();
+        private List<ObstacleListenerObject> obstacleListenersThatHasChangedThisFrame = new List<ObstacleListenerObject>();
+        private Dictionary<ObstacleListenerObject, List<SquareObstacleSystem>> singleObstacleSystemsThatHasChangedThisFrame = new Dictionary<ObstacleListenerObject, List<SquareObstacleSystem>>();
 
         //ObstacleListener -> SquareObstacleSystem -> FrustumPositions
         private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedOcclusionFrustums = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
@@ -59,11 +59,11 @@ namespace RTPuzzle
             return this.CalculatedOcclusionFrustums;
         }
 
-        public List<FrustumPointsPositions> GetCalculatedOcclusionFrustums(ObstacleListener ObstacleListener, SquareObstacleSystem SquareObstacleSystem)
+        public List<FrustumPointsPositions> GetCalculatedOcclusionFrustums(ObstacleListenerObject ObstacleListener, SquareObstacleSystem SquareObstacleSystem)
         {
             return this.GetCalculatedOcclusionFrustums()[ObstacleListener.ObstacleListenerUniqueID][SquareObstacleSystem.SquareObstacleSystemUniqueID];
         }
-        public void TryGetCalculatedOcclusionFrustumsForObstacleListener(ObstacleListener ObstacleListener, out Dictionary<int, List<FrustumPointsPositions>> calculatedFrustumPositions)
+        public void TryGetCalculatedOcclusionFrustumsForObstacleListener(ObstacleListenerObject ObstacleListener, out Dictionary<int, List<FrustumPointsPositions>> calculatedFrustumPositions)
         {
             this.GetCalculatedOcclusionFrustums().TryGetValue(ObstacleListener.ObstacleListenerUniqueID, out calculatedFrustumPositions);
         }
@@ -75,7 +75,7 @@ namespace RTPuzzle
             Profiler.EndSample();
         }
 
-        public void ManualCalculation(List<ObstacleListener> ConcernedObstacleListeners, bool forceCalculation)
+        public void ManualCalculation(List<ObstacleListenerObject> ConcernedObstacleListeners, bool forceCalculation)
         {
             int occlusionCalculationCounter = 0;
             int totalFrustumCounter = 0;
@@ -234,7 +234,7 @@ namespace RTPuzzle
         }
 
         private static void AddToArrays(ref NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas, NativeArray<FrustumV2Indexed> AssociatedFrustums,
-            ref int currentOcclusionCalculationCounter, ref int currentFrustumCounter, ObstacleListener obstacleListenerThatChanged, SquareObstacleSystem nearSquareObstacle)
+            ref int currentOcclusionCalculationCounter, ref int currentFrustumCounter, ObstacleListenerObject obstacleListenerThatChanged, SquareObstacleSystem nearSquareObstacle)
         {
             foreach (var nearSquaureObstacleFrustum in nearSquareObstacle.FaceFrustums)
             {
@@ -271,7 +271,7 @@ namespace RTPuzzle
             Instance = null;
         }
 
-        private void ClearAndCreateCalculatedFrustums(ObstacleListener obstacleListener, SquareObstacleSystem SquareObstacleSystem)
+        private void ClearAndCreateCalculatedFrustums(ObstacleListenerObject obstacleListener, SquareObstacleSystem SquareObstacleSystem)
         {
             this.CalculatedOcclusionFrustums.TryGetValue(obstacleListener.ObstacleListenerUniqueID, out Dictionary<int, List<FrustumPointsPositions>> obstalceFrustumPointsPositions);
             if (obstalceFrustumPointsPositions == null)

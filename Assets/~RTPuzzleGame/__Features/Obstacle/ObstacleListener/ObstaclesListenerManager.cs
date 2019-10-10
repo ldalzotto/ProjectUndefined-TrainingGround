@@ -15,16 +15,16 @@ namespace RTPuzzle
 
         private int ObstacleListenerAddedCounter = 0;
 
-        private List<ObstacleListener> obstacleListeners = new List<ObstacleListener>();
+        private List<ObstacleListenerObject> obstacleListeners = new List<ObstacleListenerObject>();
 
-        public int OnObstacleListenerCreation(ObstacleListener obstacleListener)
+        public int OnObstacleListenerCreation(ObstacleListenerObject obstacleListener)
         {
             this.obstacleListeners.Add(obstacleListener);
             this.ObstacleListenerAddedCounter += 1;
             return this.ObstacleListenerAddedCounter;
         }
 
-        public void OnObstacleListenerDestroyed(ObstacleListener obstacleListener)
+        public void OnObstacleListenerDestroyed(ObstacleListenerObject obstacleListener)
         {
             this.obstacleListeners.Remove(obstacleListener);
         }
@@ -51,7 +51,7 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public List<ObstacleListener> GetAllObstacleListeners()
+        public List<ObstacleListenerObject> GetAllObstacleListeners()
         {
             return this.obstacleListeners;
         }

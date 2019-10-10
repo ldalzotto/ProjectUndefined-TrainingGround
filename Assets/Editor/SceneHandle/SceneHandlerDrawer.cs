@@ -8,6 +8,7 @@ using UnityEngine;
 
 public static class SceneHandlerDrawer
 {
+    /*
     public static void Draw(object drawableObject, Transform objectTransform, CommonGameConfigurations CommonGameConfigurations, IObjectGizmoDisplayEnableArea IObjectGizmoDisplayEnableArea)
     {
         var fields = drawableObject.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -147,27 +148,6 @@ public static class SceneHandlerDrawer
 
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
-        //TODO
-        /*
-        frustum.SetCalculationDataForFaceBasedCalculation(transform.position, transform.rotation, transform.lossyScale);
-        var FrustumPointsPositions = frustum.FrustumPointsPositions;
-
-        var oldGizmoColor = Handles.color;
-        Handles.color = MyColors.HotPink;
-        DrawFace(FrustumPointsPositions.FC1, FrustumPointsPositions.FC2, FrustumPointsPositions.FC3, FrustumPointsPositions.FC4);
-        DrawFace(FrustumPointsPositions.FC1, FrustumPointsPositions.FC5, FrustumPointsPositions.FC6, FrustumPointsPositions.FC2);
-        DrawFace(FrustumPointsPositions.FC2, FrustumPointsPositions.FC6, FrustumPointsPositions.FC7, FrustumPointsPositions.FC3);
-        DrawFace(FrustumPointsPositions.FC3, FrustumPointsPositions.FC7, FrustumPointsPositions.FC8, FrustumPointsPositions.FC4);
-        DrawFace(FrustumPointsPositions.FC4, FrustumPointsPositions.FC8, FrustumPointsPositions.FC5, FrustumPointsPositions.FC1);
-        DrawFace(FrustumPointsPositions.FC5, FrustumPointsPositions.FC6, FrustumPointsPositions.FC7, FrustumPointsPositions.FC8);
-
-        if (isRounded)
-        {
-            Handles.DrawWireDisc(transform.position, transform.rotation * Vector3.up, frustum.F2.FaceOffsetFromCenter.z / 2f);
-        }
-
-        Handles.color = oldGizmoColor;
-        */
     }
 
     private static void DrawFace(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4)
@@ -177,4 +157,5 @@ public static class SceneHandlerDrawer
         Handles.DrawLine(C3, C4);
         Handles.DrawLine(C4, C1);
     }
+    */
 }

@@ -13,18 +13,14 @@ namespace RTPuzzle
         private AInventoryMenu InventoryMenu;
         #endregion
         
-        private AIManagerContainer NPCAIManagerContainer;
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
-        private InRangeVisualFeedbackManager InRangeEffectManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
-        private FovInteractionRingRendererManager NpcInteractionRingRendererManager;
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
-        private InteractiveObjectContainer InteractiveObjectContainer;
         private CameraMovementManager CameraMovementManager;
         private CircleFillBarRendererManager CircleFillBarRendererManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
@@ -56,15 +52,11 @@ namespace RTPuzzle
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
             
-            NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
             TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
             GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
-            InRangeEffectManager = PuzzleGameSingletonInstances.InRangeEffectManager;
-            InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
             TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
-            NpcInteractionRingRendererManager = PuzzleGameSingletonInstances.NpcInteractionRingRendererManager;
             GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
             DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
@@ -80,9 +72,7 @@ namespace RTPuzzle
             var TimeFlowBarManager = PuzzleGameSingletonInstances.TimeFlowBarManager;
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var LevelManager = CoreGameSingletonInstances.LevelManager;
-
-            //Initialisations
-            PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.Init();
+            
             
             CameraMovementManager.Init();
             GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
@@ -90,22 +80,15 @@ namespace RTPuzzle
             
             RangeObjectV2Manager.Get().Init();
             InteractiveObjectV2Manager.Get().Init();
-
-            InteractiveObjectContainer.Init();
+            
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
             TimeFlowManager.Init(gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
             GameOverManager.Init();
             PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
             PlayerActionManager.Init();
-            InRangeEffectManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
-            PuzzleGameSingletonInstances.NpcInteractionRingContainer.Init();
-            //TODO here
-            NpcInteractionRingRendererManager.Init();
-            PuzzleGameSingletonInstances.AIPositionsManager.Init();
-            PuzzleGameSingletonInstances.AIManagerContainer.Init();
             PuzzleGameSingletonInstances.LevelCompletionManager.Init();
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Init();
@@ -150,32 +133,23 @@ namespace RTPuzzle
                     CooldownFeedManager.Tick(d);
                     TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
 
-                    NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
                     InteractiveObjectV2Manager.Get().TickAlways(d);
-                    InteractiveObjectContainer.TickAlways(d);
 
                     if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
                     {
-                        InteractiveObjectContainer.TickBeforeAIUpdate(d, TimeFlowManager.GetTimeAttenuation());
-                        NPCAIManagerContainer.EnableAgents();
-                        NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
-                        InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.GetTimeAttenuation());
-                        InteractiveObjectContainer.Tick(d, TimeFlowManager.GetTimeAttenuation());
+                         InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.GetTimeAttenuation());
 
                         PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                     }
                     else
                     {
                         InteractiveObjectV2Manager.Get().TickWhenTimeIsStopped();
-                        NPCAIManagerContainer.DisableAgents();
                     }
 
                     InteractiveObjectV2Manager.Get().AfterTicks();
 
                     PuzzleDiscussionManager.Tick(d);
                     GroundEffectsManagerV2.Tick(d);
-                    InRangeEffectManager.Tick(d);
-                    NpcInteractionRingRendererManager.Tick(d);
                     DottedLineRendererManager.Tick();
                     InteractiveObjectSelectionManager.Tick(d);
                     CircleFillBarRendererManager.Tick(d);
@@ -219,7 +193,6 @@ namespace RTPuzzle
 
             if (!GameOverManager.OnGameOver)
             {
-                NPCAIManagerContainer.EndOfFixedTick();
             }
 
             yield return this.EndOfFixedUpdate();
@@ -238,11 +211,6 @@ namespace RTPuzzle
 
         private void OnDrawGizmos()
         {
-            if (NPCAIManagerContainer != null)
-            {
-                NPCAIManagerContainer.GizmoTick();
-            }
-
             if (PlayerActionManager != null)
             {
                 PlayerActionManager.GizmoTick();
@@ -254,11 +222,7 @@ namespace RTPuzzle
 
         private void OnGUI()
         {
-            if (NPCAIManagerContainer != null)
-            {
-                NPCAIManagerContainer.GUITick();
-            }
-
+            
             if (PlayerActionManager != null)
             {
                 PlayerActionManager.GUITick();

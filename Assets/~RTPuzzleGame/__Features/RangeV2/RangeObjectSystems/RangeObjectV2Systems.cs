@@ -44,12 +44,12 @@ namespace RTPuzzle
     #region Range Obstacle Listener
     public class RangeObstacleListenerSystem : ARangeObjectSystem
     {
-        public ObstacleListener ObstacleListener { get; private set; }
+        public ObstacleListenerObject ObstacleListener { get; private set; }
         private RangeObstaclePhysicsEventListener RangeObstaclePhysicsEventListener;
 
         public RangeObstacleListenerSystem(RangeObjectV2 rangeObjectV2Ref, RangeObjectV2PhysicsEventListener RangeObjectV2PhysicsEventListener) : base(rangeObjectV2Ref)
         {
-            this.ObstacleListener = new ObstacleListener(rangeObjectV2Ref);
+            this.ObstacleListener = new ObstacleListenerObject(rangeObjectV2Ref);
             this.RangeObstaclePhysicsEventListener = new RangeObstaclePhysicsEventListener(this.ObstacleListener);
             RangeObjectV2PhysicsEventListener.AddPhysicsEventListener(this.RangeObstaclePhysicsEventListener);
         }
@@ -63,9 +63,9 @@ namespace RTPuzzle
     public class RangeObstaclePhysicsEventListener : ARangeObjectV2PhysicsEventListener
     {
         private InteractiveObjectTagStruct SelectionGuard;
-        private ObstacleListener AssociatedObstacleListener;
+        private ObstacleListenerObject AssociatedObstacleListener;
 
-        public RangeObstaclePhysicsEventListener(ObstacleListener associatedObstacleListener)
+        public RangeObstaclePhysicsEventListener(ObstacleListenerObject associatedObstacleListener)
         {
             AssociatedObstacleListener = associatedObstacleListener;
             this.SelectionGuard = new InteractiveObjectTagStruct(isObstacle: 1);

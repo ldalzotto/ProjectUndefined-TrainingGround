@@ -13,7 +13,7 @@ using CoreGame;
 namespace RTPuzzle
 {
 
-
+    /*
     public class InteractiveObjectCutsceneControllerModule : RTPuzzle.InteractiveObjectModule
     {
 
@@ -44,4 +44,5 @@ namespace RTPuzzle
             base.BaseInit(ModelObjectModule.AssociatedRigidbody, ModelObjectModule.AssociatedAgent, ModelObjectModule.Animator, InteractiveObjectInitializationObject.TransformMoveManagerComponent.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, null);
         }
     }
+    */
 }

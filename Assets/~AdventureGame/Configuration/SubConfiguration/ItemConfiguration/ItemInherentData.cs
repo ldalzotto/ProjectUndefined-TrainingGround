@@ -12,7 +12,7 @@ namespace AdventureGame
         public Item ItemPrefab;
         public GameObject ItemModel;
 
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public DiscussionTextID ItemReceivedDescriptionTextV2;
         public Sprite ItemMenuIcon;
     }

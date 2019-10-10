@@ -10,16 +10,11 @@ namespace RTPuzzle
         private PuzzleCutsceneID puzzleCutsceneId;
 
         private SequencedActionManager cutscenePlayer;
-        private PuzzleCutsceneActionInput cutscenePlayerInput;
 
         #region State
         private bool isCutsceneActionFinished;
         #endregion
-
-        #region External Dependencies
-        private InteractiveObjectContainer InteractiveObjectContainer;
-        #endregion
-
+        
         public CutsceneAction(CutsceneActionInherentData CutsceneActionInherentData) : base(CutsceneActionInherentData)
         {
             this.puzzleCutsceneId = CutsceneActionInherentData.PuzzleCutsceneId;
@@ -31,14 +26,11 @@ namespace RTPuzzle
             base.FirstExecution();
 
             #region External Dependencies
-            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             #endregion
-
-            this.cutscenePlayerInput = new PuzzleCutsceneActionInput(this.InteractiveObjectContainer);
-
-            this.cutscenePlayer = new SequencedActionManager((action) => this.cutscenePlayer.OnAddAction(action, this.cutscenePlayerInput), null, OnNoMoreActionToPlay: this.OnCutsceneEnded);
-            this.cutscenePlayer.OnAddActions(puzzleConfigurationManager.PuzzleCutsceneConfiguration()[this.puzzleCutsceneId].PuzzleCutsceneGraph.GetRootActions(), this.cutscenePlayerInput);
+            
+            this.cutscenePlayer = new SequencedActionManager((action) => this.cutscenePlayer.OnAddAction(action, null), null, OnNoMoreActionToPlay: this.OnCutsceneEnded);
+            this.cutscenePlayer.OnAddActions(puzzleConfigurationManager.PuzzleCutsceneConfiguration()[this.puzzleCutsceneId].PuzzleCutsceneGraph.GetRootActions(), null);
             this.isCutsceneActionFinished = false;
         }
 

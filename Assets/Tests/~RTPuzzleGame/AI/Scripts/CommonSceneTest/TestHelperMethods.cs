@@ -14,7 +14,8 @@ namespace Tests
             agent.transform.position = agent.destination;
         }
 
-        public static void SetAgentDestinationPositionReached(AIObjectType ai, Vector3 worldPosition)
+        /*
+        public static void SetAgentDestinationPositionReached( AIObjectType ai, Vector3 worldPosition)
         {
             var agent = ai.GetAgent();
             agent.Warp(worldPosition);
@@ -24,6 +25,7 @@ namespace Tests
             agent.ResetPath();
             ai.OnDestinationReached();
         }
+        */
 
         public static void SetAgentPosition(NavMeshAgent agent, Vector3 worldPosition)
         {

@@ -51,7 +51,7 @@ namespace Editor_AdventureBaseLevelCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public LevelZonesID LevelZonesID;
 
         public CommonGameConfigurations CommonGameConfigurations;

@@ -67,7 +67,7 @@ namespace RTPuzzle
             return this.LastInterserctionOperationType;
         }
 
-        public ObstacleListener GetAssociatedObstacleListener() { return this.AssociatedRangeObject.GetObstacleListener(); }
+        public ObstacleListenerObject GetAssociatedObstacleListener() { return this.AssociatedRangeObject.GetObstacleListener(); }
         public RangeObjectV2 GetAssociatedRangeObject() { return this.AssociatedRangeObject; }
         public RangeType GetAssociatedRangeObjectType() { return this.AssociatedRangeObject.RangeType; }
 

@@ -13,7 +13,7 @@ namespace Editor_DiscussionTreeNodeEditor
     {
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() { };
 
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public DiscussionNodeId DiscussionNodeId;
         public PointOfInterestId Talker;
 

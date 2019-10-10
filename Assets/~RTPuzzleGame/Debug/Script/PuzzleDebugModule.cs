@@ -51,24 +51,6 @@ namespace RTPuzzle
                 this.PuzzleEventsManager.PZ_EVT_LevelCompleted();
                 TriggerLevelSuccessEvent = false;
             }
-
-            if (playCutsceneGraph)
-            {
-                playCutsceneGraph = false;
-                this.cutsceneGraphPlayer = new SequencedActionPlayer(this.Graph.GetRootActions(), new PuzzleCutsceneActionInput(PuzzleGameSingletonInstances.InteractiveObjectContainer));
-                this.cutsceneGraphPlayer.Play();
-            }
-            if (this.cutsceneGraphPlayer != null)
-            {
-                this.cutsceneGraphPlayer.Tick(Time.deltaTime);
-            }
-
-            if (PlayerDiscussionTree)
-            {
-                PlayerDiscussionTree = false;
-                var randomInteractiveObject = PuzzleGameSingletonInstances.InteractiveObjectContainer.GetInteractiveObjectFirst(InteractiveObjectID._Town1_Park_GrabbedProjectile);
-                PuzzleGameSingletonInstances.PuzzleDiscussionManager.PlayDiscussion(this.DiscussionTreeID, new System.Collections.Generic.Dictionary<CutsceneParametersName, object>() { { CutsceneParametersName.INTERACTIVE_OBJECT_0, randomInteractiveObject } });
-            }
         }
 #endif
     }

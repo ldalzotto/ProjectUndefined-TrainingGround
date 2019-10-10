@@ -16,9 +16,9 @@ namespace Editor_DiscussionTreeNodeEditor
             typeof(DiscussionConnectionNodeEdge)
         };
 
-        [CustomEnum(isCreateable: true)]
+        [CustomEnum()]
         public DiscussionNodeId DiscussionNodeId;
-        [CustomEnum(isCreateable: true, choosedOpenRepertoire: true)]
+        [CustomEnum(choosedOpenRepertoire: true)]
         public DiscussionTextID DisplayedText;
 
         protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)

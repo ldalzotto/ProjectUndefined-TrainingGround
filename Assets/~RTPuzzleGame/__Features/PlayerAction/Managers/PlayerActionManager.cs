@@ -13,10 +13,21 @@ namespace RTPuzzle
         MultiValueDictionary<PlayerActionId, RTPPlayerAction> GetCurrentAvailablePlayerActions();
     }
 
+    public interface IPlayerActionManagerEvent : SelectableObjectSelectionManagerEventListener<ISelectableModule>
+    {
+        void ExecuteAction(RTPPlayerAction rTPPlayerAction);
+        void StopAction();
+        void OnSelectionWheelAwake();
+        void OnSelectionWheelSleep(bool destroyImmediate);
+        void IncreaseOrAddActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining);
+        void AddActionToAvailable(RTPPlayerAction selectableObjectPlayerAction);
+        void RemoveActionToAvailable(RTPPlayerAction selectableObjectPlayerAction);
+    }
+
     public class PlayerActionManager : MonoBehaviour, IPlayerActionManagerEvent, IPlayerActionManagerDataRetrieval
     {
         #region External Dependencies
-        private IPlayerActionManagerEventListener IPlayerActionManagerEventListener;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         public PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent;
@@ -31,12 +42,14 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            this.IPlayerActionManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             var PlayerInteractiveGameObject = PlayerInteractiveObjectManager.Get().GetPlayerGameObject();
             var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var levelManager = CoreGameSingletonInstances.LevelManager;
             #endregion
+
+            PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.LevelConfiguration()[levelManager.LevelID].Init(PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.PlayerActionConfiguration);
 
             SelectionWheel = PuzzleGameSingletonInstances.PuzzleSelectionWheel;
 
@@ -104,7 +117,7 @@ namespace RTPuzzle
             this.PlayerActionsAvailableManager.AddActionToAvailable(PlayerActionId.NONE, addedAction);
             if (this.PLayerSelectionWheelManager.WheelEnabled)
             {
-                this.IPlayerActionManagerEventListener.PZ_EVT_OnPlayerActionWheelRefresh();
+                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
             }
         }
         public void RemoveActionToAvailable(RTPPlayerAction removedAction)

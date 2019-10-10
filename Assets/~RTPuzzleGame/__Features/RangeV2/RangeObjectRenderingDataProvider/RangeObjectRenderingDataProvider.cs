@@ -9,7 +9,7 @@ namespace RTPuzzle
         protected RangeObjectV2 RangeObjectV2Ref;
         public RangeTypeID RangeTypeID { get; private set; }
         public Collider BoundingCollider { get; private set; }
-        public ObstacleListener ObstacleListener { get; private set; }
+        public ObstacleListenerObject ObstacleListener { get; private set; }
 
         protected ARangeObjectRenderingDataProvider(RangeObjectV2 rangeObjectV2Ref, RangeTypeID RangeTypeID)
         {

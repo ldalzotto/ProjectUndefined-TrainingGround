@@ -38,7 +38,7 @@ namespace CoreGame
 
     }
 
-    public class RotateActionRequiredData
+    public struct RotateActionRequiredData
     {
         public AbstractCutsceneController AbstractCutsceneController;
         public Quaternion TargetQuaternion;

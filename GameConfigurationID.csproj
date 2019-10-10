@@ -62,13 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\@GameConfigurationID\IDs\ActionInteractableObjectID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\AIObjectID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\AIObjectTypeDefinitionID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\AIPositionMarkerID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AnimationID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AnimationLayerID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\AttractiveObjectId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\CutsceneId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\CutscenePositionMarkerID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionNodeId.cs" />
@@ -78,15 +73,10 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionTreeId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DottedLineID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\InputID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\InteractiveObjectID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\InteractiveObjectTypeDefinitionID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ItemID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\LaunchProjectileId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZonesID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\NearPlayerGameOverTriggerID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\ObjectRepelID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PlayerActionId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PointOfInterestDefinitionID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PointOfInterestId.cs" />
@@ -95,7 +85,6 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\RangeTypeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ScenarioTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\SelectionWheelNodeConfigurationId.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\TargetZoneID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\TimelineID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\TutorialStepID.cs" />
     <None Include="Assets\@GameConfigurationID\GameConfigurationID.asmdef" />

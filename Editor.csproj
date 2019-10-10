@@ -63,18 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\ByEnumPropertyEditors\ByEnumPropertyEditors.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\AIComponentGeneration\AIComponentGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\CodeGenerationHelper.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\CommonCodeGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\EnumGeneration\EnumIDGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\GameTypeCodeGenerationConfiguration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\GameTypeGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\IdentifiedObjectGeneration\IdentifiedObjectGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\InteractiveObjectModuleGeneration\InteractiveObjectModuleGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\PathConstants.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\PointOfInterestModuleGeneration\PointOfInterestModuleGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\InteractiveObjectModuleDefinitionCreation.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\PuzzleConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
@@ -157,8 +145,6 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionStartNode\DiscussionStartNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\FixedScreenPositionTextOnlyNode\FixedScreenPositionDiscussionTextOnlyNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\FixedScreenPositionTextOnlyNode\FixedScreenPositionTextOnlyNodeEdge.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\PuzzleDiscussionTextOnlyNode\PuzzleDiscussionTextOnlyNodeEdge.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\PuzzleDiscussionTextOnlyNode\PuzzleDiscussionTextOnlyNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\PuzzleCutsceneNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionEdgeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionNodeProfile.cs" />
@@ -252,8 +238,6 @@
     <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectDefinitionCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\ProjectileInherentDataCutsomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
@@ -299,18 +283,10 @@
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\Helper\Zoom\EditorZoomArea.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\AbstractObjectGizmoDisplay.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\IObjectGizmoDisplayEnableArea.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\ObjectModulesGizmo.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\AIObjectTypeGizmos.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectExplorerModule.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectTypeGizmos.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\PointOfInterestGizmos.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
     <Compile Include="Assets\Editor\MaterialProperties\ShowOnKeywordDrawer.cs" />
-    <Compile Include="Assets\Editor\ObjectDefinition\InteractiveObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\ObjectDefinition\ObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\ObjectDefinition\PointOfInterestDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
@@ -323,14 +299,7 @@
     <Compile Include="Assets\Editor\SceneHandle\SceneHandlerDrawer.cs" />
     <Compile Include="Assets\Editor\ShaderGUI\WaveNoiseV2ShaderGUI.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCustomEditorCondition.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\AdventureGameConfigurationManagerMethodTemplate.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\AIComponents\AI${baseType}Component.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCondition.txt" />
     <None Include="Assets\Editor\Editor.asmdef" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\InteractiveObjectDefinitions\${baseName}ModuleDefinition.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\InteractiveObjectModules\${baseName}Module.cs.txt" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>

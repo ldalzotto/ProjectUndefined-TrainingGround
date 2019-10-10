@@ -10,7 +10,7 @@ namespace RTPuzzle
         void Tick(float d, List<GroundEffectType> affectedGroundEffectsType);
         bool MeshMustBeRebuild();
         List<GroundEffectType> GroundEffectTypeToRender();
-        ObstacleListener GetObstacleListener();
+        ObstacleListenerObject GetObstacleListener();
     }
 
     public abstract class AbstractGroundEffectManager : IAbstractGroundEffectManager
@@ -90,7 +90,7 @@ namespace RTPuzzle
             return this.groundEffectTypesToRender;
         }
 
-        public ObstacleListener GetObstacleListener()
+        public ObstacleListenerObject GetObstacleListener()
         {
             return this.rangeObjectRenderingDataProvider.ObstacleListener;
         }
