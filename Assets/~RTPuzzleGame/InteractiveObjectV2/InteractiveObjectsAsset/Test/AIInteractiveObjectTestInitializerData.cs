@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
@@ -11,5 +12,6 @@ namespace InteractiveObjectTest
         public AIPatrolSystemDefinition AIPatrolSystemDefinition;
         [Inline(CreateAtSameLevelIfAbsent = true)]
         public SightObjectSystemDefinition SightObjectSystemDefinition;
+        public AIMovementSpeedDefinition AISpeedWhenAttracted;
     }
 }

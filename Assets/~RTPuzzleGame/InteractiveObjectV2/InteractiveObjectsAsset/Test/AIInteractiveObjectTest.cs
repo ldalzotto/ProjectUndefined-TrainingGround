@@ -76,20 +76,23 @@ namespace InteractiveObjectTest
         {
             if (!this.AIDisarmObjectState.IsDisarming)
             {
-                this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
-                this.AIPatrollingState.isPatrolling = false;
-                this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
-                this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
+                SwitchToAttractedState(OtherInteractiveObject);
             }
+        }
+
+        private void SwitchToAttractedState(CoreInteractiveObject OtherInteractiveObject)
+        {
+            this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
+            this.AIPatrollingState.isPatrolling = false;
+            this.SetAISpeedAttenuationFactor(this.AIInteractiveObjectInitializerData.AISpeedWhenAttracted);
+            this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
         }
 
         public override void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject)
         {
             if (!this.AIDisarmObjectState.IsDisarming && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
             {
-                this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
-                this.AIPatrollingState.isPatrolling = false;
-                this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+                this.SwitchToAttractedState(OtherInteractiveObject);
                 this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
             }
         }
@@ -132,11 +135,11 @@ namespace InteractiveObjectTest
             if (!this.AIDisarmObjectState.IsDisarming)
             {
                 this.AIPatrollingState.isPatrolling = false;
-                if (IntersectedInteractiveObject.InteractiveObjectTag.IsAttractiveObject)
+                if (IntersectedInteractiveObject.InteractiveObjectTag.IsAttractiveObject && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
                 {
-                    this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, IntersectedInteractiveObject);
+                    this.SwitchToAttractedState(IntersectedInteractiveObject);
+                    this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, IntersectedInteractiveObject);
                 }
-                this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
             }
         }
 

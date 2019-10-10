@@ -104,9 +104,7 @@ namespace RTPuzzle
             this.intersectionCalculatorsIndexedByTrackedInteractiveObject.Remove(PhysicsTriggerInfo.OtherInteractiveObject);
             this.OnTriggerExitSuccess(PhysicsTriggerInfo);
         }
-
-        public sealed override void OnTriggerStay(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo) { }
-
+        
         private void SingleCalculation(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
             var intersectionOperation = intersectionCalculator.Tick();

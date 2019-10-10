@@ -1,5 +1,6 @@
 ﻿using GameConfigurationID;
 using RTPuzzle;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {

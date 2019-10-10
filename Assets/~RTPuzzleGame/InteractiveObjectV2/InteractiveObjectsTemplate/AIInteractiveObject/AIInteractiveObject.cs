@@ -5,12 +5,15 @@ namespace InteractiveObjectTest
 {
     public abstract class A_AIInteractiveObject<INIT> : CoreInteractiveObject where INIT : A_AIInteractiveObjectInitializerData
     {
+        protected INIT AIInteractiveObjectInitializerData;
+
         protected AnimationObjectSystem AnimationObjectSystem;
         protected AIMoveToDestinationSystem AIMoveToDestinationSystem;
         protected LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
         public A_AIInteractiveObject(InteractiveGameObject interactiveGameObject, INIT AIInteractiveObjectInitializerData) : base(interactiveGameObject)
         {
+            this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
             this.AnimationObjectSystem = new AnimationObjectSystem(this);
             this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, this.OnAIDestinationReached);
             this.LineVisualFeedbackSystem = new LineVisualFeedbackSystem(this.InteractiveGameObject);
