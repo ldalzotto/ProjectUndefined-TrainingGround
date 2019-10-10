@@ -16,8 +16,6 @@ namespace RTPuzzle
         public LaunchProjectileModule BaseLaunchProjectileModule;
         public AttractiveObjectModule BaseAttractiveObjectModule;
         public ModelObjectModule BaseModelObjectModule;
-        public DisarmObjectModule BaseDisarmObjectModule;
-        public GrabObjectModule BaseGrabObjectModule;
         public ObjectRepelModule BaseObjectRepelModule;
         public AILogicColliderModule BaseAILogicColliderModule;
         public VisualFeedbackEmitterModule BaseInRangeColliderTrackerModule;

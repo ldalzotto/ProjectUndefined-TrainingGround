@@ -33,20 +33,14 @@ namespace RTPuzzle
         
         public RTPuzzle.ObjectRepelConfiguration ObjectRepelConfiguration;
         
-        public RTPuzzle.DisarmObjectConfiguration DisarmObjectConfiguration;
-        
         public RTPuzzle.PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
         
         public RTPuzzle.ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
-        
-        public RTPuzzle.GrabObjectConfiguration GrabObjectConfiguration;
         
         public RTPuzzle.NearPlayerGameOverTriggerConfiguration NearPlayerGameOverTriggerConfiguration;
         
         public RTPuzzle.InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
         
         public RTPuzzle.AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
-        
-        public RTPuzzle.AIPatrolGraphConfiguration AIPatrolGraphConfiguration;
     }
 }

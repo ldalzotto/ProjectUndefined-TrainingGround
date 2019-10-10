@@ -41,7 +41,7 @@ namespace InteractiveObjectTest
                 }
             }, AssociatedInteractiveObject, "SelectionRangeTrigger");
             this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new SelectableObjectPhysicsEventListener(this.OnPlayerTriggerInSelectionEnter, this.OnPlayerTriggerInSelectionExit) });
-            this.GrabObjectAction = new GrabObjectAction(new GrabActionInherentData(GrabObjectID._Town1_Park_GrabbedProjectile, PlayerActionId.STONE_PROJECTILE_ACTION_1, SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG, 1f));
+            this.GrabObjectAction = new GrabObjectAction(new GrabActionInherentData(PlayerActionId.STONE_PROJECTILE_ACTION_1, SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG, 1f));
         }
 
         private void OnPlayerTriggerInSelectionEnter(CoreInteractiveObject IntersectedInteractiveObject)

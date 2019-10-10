@@ -140,7 +140,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\PlayerActionCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
     <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\AIPatrolNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\CutsceneNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditorProfile.cs" />

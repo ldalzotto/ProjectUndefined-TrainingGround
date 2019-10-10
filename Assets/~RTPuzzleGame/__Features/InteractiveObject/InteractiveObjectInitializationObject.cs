@@ -21,13 +21,9 @@ namespace RTPuzzle
         
         public RTPuzzle.LaunchProjectileInherentData LaunchProjectileInherentData;
         
-        public RTPuzzle.DisarmObjectInherentData DisarmObjectInherentData;
-        
         public CoreGame.BeziersControlPoints ProjectilePath;
         
         public RTPuzzle.ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
-        
-        public RTPuzzle.GrabObjectInherentData GrabObjectInherentData;
         
         public RTPuzzle.InteractiveObjectSharedDataType TransformMoveManagerComponent;
         

@@ -25,9 +25,7 @@ namespace RTPuzzle
                  { 4, this.aIBehaviorManagerContainer.GetAIManager<AbstractPlayerEscapeManager>() },
                  { 5, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIProjectileEscapeManager>() },
                  { 6, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIMoveTowardPlayerManager>() },
-                 { 7, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIDisarmObjectManager>()},
                  { 8, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIAttractiveObjectManager>() },
-                 { 9, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIPatrolComponentManager>() }
             };
             this.aIBehaviorManagerContainer.SetAIManagersByExecutionOrder(new SortedList<int, InterfaceAIManager>(
                 dic.Select(s => s).Where(s => s.Value != null).ToDictionary(s => s.Key, s => s.Value)
@@ -61,7 +59,6 @@ namespace RTPuzzle
 
         public override void OnDestinationReached()
         {
-            this.GetAIManager<AbstractAIPatrolComponentManager>().IfNotNull((aIPatrolComponentManager) => aIPatrolComponentManager.OnDestinationReached());
             this.GetAIManager<AbstractAIProjectileEscapeManager>().IfNotNull((aIProjectileEscapeManager) => aIProjectileEscapeManager.OnDestinationReached());
             this.GetAIManager<AbstractAIEscapeWithoutTriggerManager>().IfNotNull((aIEscapeWithoutTriggerManager) => aIEscapeWithoutTriggerManager.OnDestinationReached());
             this.GetAIManager<AbstractAITargetZoneManager>().IfNotNull((aITargetZoneManager) => aITargetZoneManager.OnDestinationReached());
@@ -83,7 +80,6 @@ namespace RTPuzzle
 
         public override void TickGizmo()
         {
-            this.GetAIManager<AbstractAIPatrolComponentManager>().IfNotNull(aIPatrolComponentManager => aIPatrolComponentManager.GizmoTick());
             this.GetAIManager<AbstractAIProjectileEscapeManager>().IfNotNull(aIProjectileEscapeManager => aIProjectileEscapeManager.GizmoTick());
         }
 
@@ -94,10 +90,7 @@ namespace RTPuzzle
 
         public override string ToString()
         {
-            return String.Format("[StunFeared : {0}, EscapingWithoutTarget : {1}, EscapingFromTargetZone : {2}, ProjEscapingWithTarget : {3}, Attracted : {4}, Patrolling : {5}]",
-                new string[] { this.IsManagerEnabled<AbstractAIFearStunManager>().ToString(), this.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>().ToString(),
-            this.IsManagerEnabled<AbstractAITargetZoneManager>().ToString(), this.IsManagerEnabled<AbstractAIProjectileEscapeManager>().ToString(),
-          this.IsManagerEnabled<AbstractAIAttractiveObjectManager>().ToString(), this.IsManagerEnabled<AbstractAIPatrolComponentManager>().ToString() });
+            return "TE MERE";
         }
     }
 }

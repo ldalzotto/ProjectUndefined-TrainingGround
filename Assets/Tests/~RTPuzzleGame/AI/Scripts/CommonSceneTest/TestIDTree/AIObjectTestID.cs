@@ -12,18 +12,16 @@ namespace Tests
     {
         public AIObjectID AIObjectID;
         public AIObjectTypeDefinitionID AIObjectTypeDefinitionID;
-        public AIPatrolGraphID AIPatrolGraphID;
 
-        public AIObjectTestIDTree(AIObjectID aIObjectID, AIObjectTypeDefinitionID aIObjectTypeDefinitionID, AIPatrolGraphID aIPatrolGraphID)
+        public AIObjectTestIDTree(AIObjectID aIObjectID, AIObjectTypeDefinitionID aIObjectTypeDefinitionID)
         {
             AIObjectID = aIObjectID;
             AIObjectTypeDefinitionID = aIObjectTypeDefinitionID;
-            AIPatrolGraphID = aIPatrolGraphID;
         }
 
         public static Dictionary<AIObjectTestID, AIObjectTestIDTree> AIObjectTestIDs = new Dictionary<AIObjectTestID, AIObjectTestIDTree>()
         {
-            {AIObjectTestID.TEST_1, new AIObjectTestIDTree(AIObjectID.TEST_1, AIObjectTypeDefinitionID.TEST_1, AIPatrolGraphID.TEST_1) }
+            {AIObjectTestID.TEST_1, new AIObjectTestIDTree(AIObjectID.TEST_1, AIObjectTypeDefinitionID.TEST_1) }
         };
     }
 }

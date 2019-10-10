@@ -47,10 +47,6 @@ namespace Experimental.Editor_NodeEditor
                 {
                     TutorialNodeEditor.Init((NodeEditorProfile)this.target);
                 }
-                else if (this.target.GetType() == typeof(AIPatrolGraph))
-                {
-                    AIPatrolNodeEditor.Init((NodeEditorProfile)this.target);
-                }
                 else
                 {
                     Debug.LogError("NodeEditor not defined.");

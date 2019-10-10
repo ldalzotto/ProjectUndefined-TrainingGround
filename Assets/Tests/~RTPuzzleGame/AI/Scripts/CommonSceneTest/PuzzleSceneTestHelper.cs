@@ -257,24 +257,5 @@ namespace Tests
         }
         #endregion
         
-
-        #region AI disarm object
-        public static IEnumerator DisarmObjectYield(InteractiveObjectInitialization disarmObjectInitialization, Vector3 worldPosition, Func<InteractiveObjectType, IEnumerator> OnDisarmObjectSpawn,
-                    Func<InteractiveObjectType, IEnumerator> OnDisarmTimerOver)
-        {
-            var disarmObject = disarmObjectInitialization.InstanciateAndInit(worldPosition);
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForEndOfFrame();
-            if (OnDisarmObjectSpawn != null)
-            {
-                yield return OnDisarmObjectSpawn.Invoke(disarmObject);
-            }
-            if (OnDisarmTimerOver != null)
-            {
-                yield return new WaitForSeconds(disarmObjectInitialization.InteractiveObjectInitializationObject.DisarmObjectInherentData.DisarmTime);
-                yield return OnDisarmTimerOver.Invoke(disarmObject);
-            }
-        }
-        #endregion
     }
 }

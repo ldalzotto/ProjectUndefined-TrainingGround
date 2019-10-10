@@ -14,8 +14,6 @@ namespace RTPuzzle
             {typeof(TargetZoneTriggerStayAIBehaviorEvent).Name, 4 },
             {typeof(TargetZoneTriggerEnterAIBehaviorEvent).Name, 5 },
             {typeof(ProjectileTriggerEnterAIBehaviorEvent).Name, 6 },
-            {typeof(DisarmingObjectEnterAIbehaviorEvent).Name, 7 },
-            {typeof(DisarmingObjectExitAIbehaviorEvent).Name, 8 },
             {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 9 },
             {typeof(AttractiveObjectDestroyedAIBehaviorEvent).Name, 10 },
             {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 11 },
@@ -47,8 +45,6 @@ namespace RTPuzzle
                 {typeof(TargetZoneTriggerEnterAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerEnter },
                 {typeof(TargetZoneTriggerStayAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerStay },
                 {typeof(PlayerEscapeStartAIBehaviorEvent), AgentEscapeAIEvents.PlayerEscape_Start },
-                {typeof(DisarmingObjectEnterAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Enter },
-                {typeof(DisarmingObjectExitAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Exit },
         };
 
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior aiBehavior)

@@ -108,9 +108,7 @@ namespace Tests
             return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID,
                 new List<AbstractAIComponent>()
                 {
-                    new AIPatrolComponent(){ AIPatrolManagerType = AIPatrolManagerType.SCRIPTED, AIPatrolGraphID = AIPatrolGraphID.NONE },
                     new AIMoveTowardPlayerComponent(),
-                    new AIDisarmObjectComponent(),
                     new AIAttractiveObjectComponent(){ AttractiveObjectStrategyType = AttractiveObjectStrategyType.PERSISTANT }
                 },
                 new List<SerializedScriptableObject>()
@@ -124,7 +122,6 @@ namespace Tests
             return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID,
                 new List<AbstractAIComponent>()
                 {
-                     new AIPatrolComponent(){ MaxDistance = 15f, AIPatrolManagerType = AIPatrolManagerType.RANDOM },
                      new AIProjectileEscapeComponent() {
                          EscapeDistanceV2 = new ProjectileEscapeRange(){ Values = Enum.GetValues(typeof(LaunchProjectileID)).Cast<LaunchProjectileID>().ToDictionary(p => p, p => 25f) },
                          EscapeSemiAngleV2 = new ProjectileEscapeSemiAngle(){ Values = new Dictionary<LaunchProjectileID, float>() } },
@@ -145,30 +142,11 @@ namespace Tests
             return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID,
                new List<AbstractAIComponent>()
                {
-                    new AIPatrolComponent(){ AIPatrolManagerType = AIPatrolManagerType.SCRIPTED, AIPatrolGraphID = AIPatrolGraphID.NONE }
                },
                new List<SerializedScriptableObject>()
                {
                }
            );
-        }
-
-        public static AIObjectInitialization AIPathTest(AIObjectTestID AIObjectTestID, InteractiveObjectTestID InteractiveObjectTestID, bool hasAttractive, AIPatrolGraphInherentData aIPatrolGraphInherentData)
-        {
-            var AIObjectIdTree = AIObjectTestIDTree.AIObjectTestIDs[AIObjectTestID];
-            var AIComponents = new List<AbstractAIComponent>();
-
-            AIComponents.Add(new AIPatrolComponent() { AIPatrolGraphID = AIObjectIdTree.AIPatrolGraphID, AIPatrolManagerType = AIPatrolManagerType.SCRIPTED });
-
-            if (hasAttractive)
-            {
-                AIComponents.Add(new AIAttractiveObjectComponent() { AttractiveObjectStrategyType = AttractiveObjectStrategyType.PERSISTANT });
-            }
-
-            AssetFinder.SafeSingleAssetFind<AIPatrolGraphConfiguration>("t:" + typeof(AIPatrolGraphConfiguration).Name)
-                .ConfigurationInherentData[AIObjectIdTree.AIPatrolGraphID] = aIPatrolGraphInherentData;
-
-            return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID, AIComponents, null);
         }
 
         #region Frustum Definitions
@@ -202,51 +180,6 @@ namespace Tests
         };
         #endregion
 
-        #region Patrol Graph Definitions
-        public static AIPatrolGraphInherentData TwoDestinationGraph(AIPositionMarkerID destination1, AIPositionMarkerID destination2)
-        {
-            var AIPtrolGraph = new AIPatrolGraph() { Nodes = new Dictionary<int, NodeProfile>() };
-
-            //Start Node
-            var CutsceneStartNode = new CutsceneStartNode();
-            var CutsceneStartEdge = new CutsceneActionConnectionEdge();
-            CutsceneStartEdge.NodeProfileRef = CutsceneStartNode;
-            CutsceneStartNode.StartEdge = CutsceneStartEdge;
-            AIPtrolGraph.Nodes[0] = CutsceneStartNode;
-
-            //Branch Inifinite loop Node
-            var InitialBranchInfiniteLoop = BuildACutsceneNode
-                    (new BranchInfiniteLoopNode(), new BranchInfiniteLoopAction(new List<SequencedAction>()), new BranchInfiniteLoopEdge(), new List<NodeEdgeProfile>() { CutsceneStartEdge });
-            AIPtrolGraph.Nodes[1] = InitialBranchInfiniteLoop;
-
-            //First Position Node
-            var FirstPositionNode = BuildACutsceneNode(new AIMoveToNode(), new AIMoveToAction(new List<SequencedAction>()) { Position = destination1 }, new AIMoveToEdge(),
-                     new List<NodeEdgeProfile>() { InitialBranchInfiniteLoop.outputCutsceneConnectionEdge });
-            AIPtrolGraph.Nodes[2] = FirstPositionNode;
-
-            var SecondPositionNode = BuildACutsceneNode(new AIMoveToNode(), new AIMoveToAction(new List<SequencedAction>()) { Position = destination2 }, new AIMoveToEdge(),
-                    new List<NodeEdgeProfile>() { FirstPositionNode.outputCutsceneConnectionEdge });
-            AIPtrolGraph.Nodes[3] = SecondPositionNode;
-
-            return new AIPatrolGraphInherentData() { AIPatrolGraph = AIPtrolGraph };
-        }
-
-        public static ACutsceneNode<T, E> BuildACutsceneNode<T, E>(ACutsceneNode<T, E> actionNode, T sequencedAction, E ACutsceneEdge, List<NodeEdgeProfile> backwardConnectedEdges) where T : SequencedAction where E : ACutsceneEdge<T>
-        {
-            var inputCutsceneEdge = new CutsceneActionConnectionEdge() { NodeProfileRef = actionNode, BackwardConnectedNodeEdges = backwardConnectedEdges };
-            actionNode.InputEdges = new List<NodeEdgeProfile>() { inputCutsceneEdge };
-            ACutsceneEdge.associatedAction = sequencedAction;
-            actionNode.actionEdge = ACutsceneEdge;
-            actionNode.inputCutsceneConnectionEdge = new CutsceneActionConnectionEdge() { BackwardConnectedNodeEdges = backwardConnectedEdges, NodeProfileRef = actionNode };
-            actionNode.outputCutsceneConnectionEdge = new CutsceneActionConnectionEdge() { ConnectedNodeEdges = new List<NodeEdgeProfile>(), NodeProfileRef = actionNode };
-            inputCutsceneEdge.NodeProfileRef = actionNode;
-            foreach (var backwardConnectedEdge in backwardConnectedEdges)
-            {
-                if (backwardConnectedEdge.ConnectedNodeEdges == null) { backwardConnectedEdge.ConnectedNodeEdges = new List<NodeEdgeProfile>(); }
-                backwardConnectedEdge.ConnectedNodeEdges.Add(actionNode.inputCutsceneConnectionEdge);
-            }
-            return actionNode;
-        }
-        #endregion
+      
     }
 }

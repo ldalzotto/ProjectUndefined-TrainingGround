@@ -100,16 +100,12 @@ namespace Tests
                        {
                         {typeof(LaunchProjectileModuleDefinition), new LaunchProjectileModuleDefinition(){ LaunchProjectileID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].LaunchProjectileID }},
                         {typeof(AttractiveObjectModuleDefinition), new AttractiveObjectModuleDefinition(){ AttractiveObjectId = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].AttractiveObjectId }},
-                        {typeof(DisarmObjectModuleDefinition), new DisarmObjectModuleDefinition(){ DisarmObjectID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].DisarmObjectID } },
-                        {typeof(GrabObjectModuleDefinition), new GrabObjectModuleDefinition(){ GrabObjectID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].GrabObjectID } },
                         {typeof(ModelObjectModuleDefinition), new ModelObjectModuleDefinition() }
                        },
                         RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
                        {
                         {typeof(LaunchProjectileModuleDefinition), true},
                         {typeof(AttractiveObjectModuleDefinition), true},
-                        {typeof(DisarmObjectModuleDefinition), true},
-                        {typeof(GrabObjectModuleDefinition), true },
                         {typeof(ModelObjectModuleDefinition), true }
                        }
                     },
@@ -128,15 +124,6 @@ namespace Tests
                             EffectRange = attractiveObjectEffectRange,
                             EffectiveTime = attractiveObjectEffectiveTime
                         },
-                        GrabObjectInherentData = new GrabObjectInherentData()
-                        {
-                            EffectRadius = grabObjectRadius
-                        },
-                        DisarmObjectInherentData = new DisarmObjectInherentData()
-                        {
-                            DisarmInteractionRange = disarmInteractionRange,
-                            DisarmTime = disarmTime
-                        }
                     }
                 };
 

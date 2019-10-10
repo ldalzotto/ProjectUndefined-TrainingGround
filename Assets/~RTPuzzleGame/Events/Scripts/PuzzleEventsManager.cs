@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener,
-                                ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGrabObjectEventListener, IGameOverManagerEventListener,
+    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener,
+                                ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGameOverManagerEventListener,
                                 ILevelCompletionManagerEventListener, IActionInteractableObjectModuleEventListener, IPlayerActionManagerEventListener
     {
         #region External Dependencies
@@ -159,18 +159,7 @@ namespace RTPuzzle
             this.IInteractiveObjectSelectionEvent.OnSelectableExit(actionInteractableObjectModule);
         }
         #endregion
-
-        #region GrabObject Events
-        public void PZ_EVT_OnGrabObjectEnter(IGrabObjectModuleDataRetrieval IGrabObjectModuleDataRetrieval)
-        {
-            this.IInteractiveObjectSelectionEvent.OnSelectableEnter(IGrabObjectModuleDataRetrieval);
-        }
-        public void PZ_EVT_OnGrabObjectExit(IGrabObjectModuleDataRetrieval IGrabObjectModuleDataRetrieval)
-        {
-            this.IInteractiveObjectSelectionEvent.OnSelectableExit(IGrabObjectModuleDataRetrieval);
-        }
-        #endregion
-
+        
         #region IPlayerActionManagerEventListener
         public void PZ_EVT_OnPlayerActionWheelRefresh()
         {
@@ -200,31 +189,7 @@ namespace RTPuzzle
             }
         }
         #endregion
-
-        #region Disarm object event
-        public void AI_EVT_DisarmObject_Start(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleDataRetrieval disarmedObjectModule)
-        {
-            var aiLocalPuzzleCutsceneModule = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetILocalPuzzleCutsceneModuleEvent();
-            if (aiLocalPuzzleCutsceneModule != null)
-            {
-                aiLocalPuzzleCutsceneModule.PlayLocalCutscene(disarmedObjectModule.GetInstanceID(), disarmedObjectModule.GetDisarmAnimation(),
-                    disarmedObjectModule.GetDisarmAnimationInputParameters(AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval()));
-            }
-
-            disarmedObjectModule.GetIDisarmObjectModuleEvent().IfNotNull(IDisarmObjectModuleEvent => IDisarmObjectModuleEvent.OnDisarmObjectStart(AIObjectDataRetriever));
-        }
-
-        public void AI_EVT_DisarmObject_End(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleDataRetrieval disarmedObjectModule)
-        {
-            var aiLocalPuzzleCutsceneModule = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetILocalPuzzleCutsceneModuleEvent();
-            if (aiLocalPuzzleCutsceneModule != null)
-            {
-                aiLocalPuzzleCutsceneModule.StopLocalCutscene(disarmedObjectModule.GetInstanceID());
-            }
-
-            disarmedObjectModule.GetIDisarmObjectModuleEvent().IfNotNull(IDisarmObjectModuleEvent => IDisarmObjectModuleEvent.OnDisarmObjectEnd(AIObjectDataRetriever));
-        }
-        #endregion
+        
 
         #region IGameOverManagerEventListener
         public void PZ_EVT_GameOver()

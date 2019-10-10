@@ -179,14 +179,12 @@ namespace RTPuzzle
             this.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<LaunchProjectileModule>().IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
             this.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule interactiveObjectCutsceneControllerModule) => interactiveObjectCutsceneControllerModule.Tick(d, timeAttenuationFactor));
-            this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) => DisarmObjectModule.Tick(d, timeAttenuationFactor));
         }
 
         public void TickAlways(float d)
         {
             this.GetModule<InteractiveObjectAnimationModule>().IfNotNull((InteractiveObjectAnimationModule InteractiveObjectAnimationModule) => InteractiveObjectAnimationModule.TickAlways(d));
             this.GetModule<LocalPuzzleCutsceneModule>().IfNotNull((LocalPuzzleCutsceneModule LocalPuzzleCutsceneModule) => LocalPuzzleCutsceneModule.TickAlways(d));
-            this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.TickAlways(d));
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.TickAlways(d));
             this.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.TickAlways(d));
             this.GetModule<VisualFeedbackEmitterModule>().IfNotNull((VisualFeedbackEmitterModule VisualFeedbackEmitterModule) => VisualFeedbackEmitterModule.TickAlways(d));

@@ -30,9 +30,6 @@ namespace RTPuzzle
             GrabActionInherentData GrabActionInherentData = (GrabActionInherentData)this.playerActionInherentData;
             this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
             this.PlayerActionManager.IncreaseOrAddActionsRemainingExecutionAmount(GrabActionInherentData.PlayerActionToIncrementOrAdd, 1);
-
-            var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
-            InteractiveObjectContainer.OnInteractiveObjectDestroyed(InteractiveObjectContainer.GrabObjectModules[GrabActionInherentData.GrabObjectID].ParentInteractiveObject);
         }
         
         public override void Tick(float d)
