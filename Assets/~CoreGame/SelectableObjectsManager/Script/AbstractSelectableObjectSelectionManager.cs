@@ -4,7 +4,13 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public abstract class AbstractSelectableObjectSelectionManager<T> : MonoBehaviour where T : IRenderBoundRetrievable
+    public interface ISelectable
+    {
+        ExtendedBounds GetAverageModelBoundLocalSpace();
+        Transform GetTransform();
+    }
+
+    public abstract class AbstractSelectableObjectSelectionManager<T> : MonoBehaviour where T : ISelectable
     {
         #region Internal State
         private T CurrentSelectedObject;
@@ -138,7 +144,7 @@ namespace CoreGame
 
     }
 
-    public interface SelectableObjectSelectionManagerEventListener<T> where T : IRenderBoundRetrievable
+    public interface SelectableObjectSelectionManagerEventListener<T> where T : ISelectable
     {
         void OnSelectableObjectSelected(T SelectableObject);
         void OnSelectableObjectDeSelected(T SelectableObject);

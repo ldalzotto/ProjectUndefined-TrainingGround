@@ -7,7 +7,7 @@ using UnityEngine;
 namespace AdventureGame
 {
 
-    public class PointOfInterestType : APointOfInterestType, IVisualMovementPermission, IRenderBoundRetrievable
+    public class PointOfInterestType : APointOfInterestType, IVisualMovementPermission, IRenderBoundRetrievable, ISelectable
     {
         [CustomEnum(ConfigurationType = typeof(PointOfInterestDefinitionConfiguration), OpenToConfiguration = true)]
         public PointOfInterestDefinitionID PointOfInterestDefinitionID;
@@ -263,11 +263,15 @@ namespace AdventureGame
             }
             return default(ExtendedBounds);
         }
+        public Transform GetTransform()
+        {
+            return this.GetRootObject().transform;
+        }
         #endregion
 
         internal List<AContextAction> GetContextActions()
         {
-            return ContextActionSynchronizerManager.ContextActions;
+            return  ContextActionSynchronizerManager.ContextActions;
         }
 
         private void DisablePOI()

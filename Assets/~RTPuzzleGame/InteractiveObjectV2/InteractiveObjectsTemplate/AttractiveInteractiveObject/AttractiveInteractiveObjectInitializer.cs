@@ -6,6 +6,7 @@
         public AttractiveObjectSystemDefinition AttractiveObjectSystemDefinition;
         public bool IsDisarmable;
         public DisarmSystemDefinition DisarmSystemDefinition;
+        public SelectableObjectSystemDefinition SelectableObjectSystemDefinition;
     }
 
     [System.Serializable]

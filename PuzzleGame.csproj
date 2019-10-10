@@ -359,6 +359,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrol\AIPatrolSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />

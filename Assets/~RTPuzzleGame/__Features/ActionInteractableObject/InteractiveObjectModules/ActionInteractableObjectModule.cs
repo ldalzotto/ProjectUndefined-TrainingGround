@@ -86,6 +86,11 @@ namespace RTPuzzle
                 this.IActionInteractableObjectModuleEventListener.PZ_EVT_OnActionInteractableExit(this);
             }
         }
+
+        public Transform GetTransform()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
 }

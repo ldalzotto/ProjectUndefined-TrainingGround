@@ -4,7 +4,7 @@ using CoreGame;
 
 namespace RTPuzzle
 {
-    public interface ISelectableModule : IRenderBoundRetrievable
+    public interface ISelectableModule : ISelectable
     {
         RTPPlayerAction GetAssociatedPlayerAction();
     }

@@ -7,6 +7,7 @@ namespace InteractiveObjectTest
 
         private AttractiveObjectSystem AttractiveObjectSystem;
         private DisarmObjectSystem DisarmObjectSystem;
+        private SelectableObjectSystem SelectableObjectSystem;
 
         public AttractiveInteractiveObject(InteractiveGameObject interactiveGameObject, AttractiveObjectInitializerData InteractiveObjectInitializerData) : base(interactiveGameObject)
         {
@@ -19,6 +20,7 @@ namespace InteractiveObjectTest
             {
                 this.DisarmObjectSystem = new DisarmObjectSystem(this, InteractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct { IsAi = 1 }, this.OnAssociatedDisarmObjectTriggerEnter, this.OnAssciatedDisarmObjectTriggerExit);
             }
+            this.SelectableObjectSystem = new SelectableObjectSystem(this, InteractiveObjectInitializerData.SelectableObjectSystemDefinition);
         }
 
         public override void TickAlways(float d)
@@ -49,6 +51,7 @@ namespace InteractiveObjectTest
                 this.AttractiveObjectSystem.OnDestroy();
             }
             this.DisarmObjectSystem.OnDestroy();
+            this.SelectableObjectSystem.OnDestroy();
             base.Destroy();
         }
 

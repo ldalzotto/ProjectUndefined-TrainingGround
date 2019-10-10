@@ -23,7 +23,7 @@ namespace CoreGame
         }
 
 
-        public void Tick(float d, IRenderBoundRetrievable currentSelectedObject, bool hasMultipleAvailableSelectionObjects)
+        public void Tick(float d, ISelectable currentSelectedObject, bool hasMultipleAvailableSelectionObjects)
         {
             this.commandBufer.Clear();
 
@@ -43,7 +43,7 @@ namespace CoreGame
                         this.SelectionDoticonMaterialProperty.SetTexture("_MainTex", this.CoreMaterialConfiguration.SelectionDotIconTexture);
                     }
 
-                    var targetTransform = IRenderBoundRetrievableStatic.FromIRenderBoundRetrievable(currentSelectedObject).transform;
+                    var targetTransform = currentSelectedObject.GetTransform();
 
                     //icon
                     this.commandBufer.DrawMesh(this.CoreMaterialConfiguration.ForwardPlane,

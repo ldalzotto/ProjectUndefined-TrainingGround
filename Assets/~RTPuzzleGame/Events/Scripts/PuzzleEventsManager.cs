@@ -150,11 +150,11 @@ namespace RTPuzzle
         #endregion
 
         #region IActionInteractableObjectModuleEventListener
-        public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
+        public void PZ_EVT_OnActionInteractableEnter(ISelectableModule actionInteractableObjectModule)
         {
             this.IInteractiveObjectSelectionEvent.OnSelectableEnter(actionInteractableObjectModule);
         }
-        public void PZ_EVT_OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
+        public void PZ_EVT_OnActionInteractableExit(ISelectableModule actionInteractableObjectModule)
         {
             this.IInteractiveObjectSelectionEvent.OnSelectableExit(actionInteractableObjectModule);
         }
