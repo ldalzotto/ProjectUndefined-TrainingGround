@@ -199,13 +199,7 @@ namespace RTPuzzle
 
         private void OnDestroy()
         {
-            RangeObjectV2Manager.Get().OnDestroy();
-            InteractiveObjectV2Manager.Get().OnDestroy();
-            ObstacleOcclusionCalculationManagerV2.Get().OnDestroy();
-            SquareObstacleSystemManager.Get().OnDestroy();
-            ObstaclesListenerManager.Get().OnDestroy();
-            RangeIntersectionCalculationManagerV2.Get().OnDestroy();
-            PlayerInteractiveObjectManager.Get().OnDestroy();
+            GameSingletonManagers.Get().OnDestroy();
         }
 
         private void OnDrawGizmos()

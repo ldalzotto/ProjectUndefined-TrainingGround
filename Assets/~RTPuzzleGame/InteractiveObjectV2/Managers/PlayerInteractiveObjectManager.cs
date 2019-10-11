@@ -1,14 +1,9 @@
-﻿namespace InteractiveObjectTest
-{
-    public class PlayerInteractiveObjectManager
-    {
-        private static PlayerInteractiveObjectManager Instance;
-        public static PlayerInteractiveObjectManager Get()
-        {
-            if (Instance == null) { Instance = new PlayerInteractiveObjectManager(); }
-            return Instance;
-        }
+﻿using RTPuzzle;
 
+namespace InteractiveObjectTest
+{
+    public class PlayerInteractiveObjectManager : GameSingleton<PlayerInteractiveObjectManager>
+    {
         public PlayerInteractiveObject PlayerInteractiveObject { get; private set; }
 
         public void Init(PlayerInteractiveObject PlayerInteractiveObject)
@@ -19,12 +14,7 @@
         public void FixedTick(float d) { this.PlayerInteractiveObject.FixedTick(d); }
         public void TickAlways(float d) { this.PlayerInteractiveObject.TickAlways(d); }
         public void LateTick(float d) { this.PlayerInteractiveObject.LateTick(d); }
-
-        public void OnDestroy()
-        {
-            Instance = null;
-        }
-
+        
         public InteractiveGameObject GetPlayerGameObject()
         {
             return this.PlayerInteractiveObject.InteractiveGameObject;

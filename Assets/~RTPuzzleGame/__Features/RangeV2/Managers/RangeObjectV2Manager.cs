@@ -3,15 +3,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class RangeObjectV2Manager
+    public class RangeObjectV2Manager : GameSingleton<RangeObjectV2Manager>
     {
-        private static RangeObjectV2Manager RangeObjectV2ManagerInstance;
-        public static RangeObjectV2Manager Get()
-        {
-            if (RangeObjectV2ManagerInstance == null) { RangeObjectV2ManagerInstance = new RangeObjectV2Manager(); }
-            return RangeObjectV2ManagerInstance;
-        }
-
         public List<RangeObjectV2> RangeObjects { get; private set; } = new List<RangeObjectV2>();
 
         public void Init()
@@ -40,9 +33,9 @@ namespace RTPuzzle
             this.RangeObjects.Remove(RangeObjectV2ManagerRemoveRangeEvent.RemovedRangeObject);
         }
 
-        public void OnDestroy()
+        public override void OnDestroy()
         {
-            RangeObjectV2ManagerInstance = null;
+            base.OnDestroy();
             this.RangeObjects.Clear();
             this.RangeObjects = null;
         }

@@ -4,15 +4,8 @@ using System.Collections.Generic;
 
 namespace RTPuzzle
 {
-    public class SquareObstacleSystemManager 
+    public class SquareObstacleSystemManager : GameSingleton<SquareObstacleSystemManager>
     {
-        private static SquareObstacleSystemManager Instance;
-        public static SquareObstacleSystemManager Get()
-        {
-            if (Instance == null) { Instance = new SquareObstacleSystemManager(); }
-            return Instance;
-        }
-
         public List<SquareObstacleSystem> AllSquareObstacleSystems { get; private set; } = new List<SquareObstacleSystem>();
         public int SquareObstacleSystemAddedCounter { get; private set; } = 0;
 
@@ -26,11 +19,6 @@ namespace RTPuzzle
         public void OnSquareObstacleSystemDestroyed(SquareObstacleSystem SquareObstacleSystem)
         {
             this.AllSquareObstacleSystems.Remove(SquareObstacleSystem);
-        }
-
-        public void OnDestroy()
-        {
-            Instance = null;
         }
     }
 

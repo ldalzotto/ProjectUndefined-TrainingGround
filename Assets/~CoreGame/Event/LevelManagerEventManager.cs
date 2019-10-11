@@ -17,6 +17,10 @@ namespace CoreGame
             CoreGameSingletonInstances.StartLevelManager.OnStartLevelChange(nextLevel);
             return CoreGameSingletonInstances.LevelManager.OnPuzzleToAdventureLevel(nextLevel);
         }
+        public List<AsyncOperation> CORE_EVT_OnPuzzleToPuzzleLevel(LevelZonesID nextLevel)
+        {
+            return CoreGameSingletonInstances.LevelManager.OnAdventureToPuzzleLevel(nextLevel);
+        }
         public List<AsyncOperation> CORE_EVT_OnStartMenuToLevel(LevelZonesID nextLevel)
         {
             CoreGameSingletonInstances.StartLevelManager.OnStartLevelChange(nextLevel);

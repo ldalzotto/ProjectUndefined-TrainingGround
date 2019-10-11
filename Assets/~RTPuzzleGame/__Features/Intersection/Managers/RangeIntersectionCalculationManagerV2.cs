@@ -1,22 +1,13 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
 using Unity.Collections;
+using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace RTPuzzle
 {
-    public class RangeIntersectionCalculationManagerV2
+    public class RangeIntersectionCalculationManagerV2 : GameSingleton<RangeIntersectionCalculationManagerV2>
     {
-        private static RangeIntersectionCalculationManagerV2 Instance;
-        public static RangeIntersectionCalculationManagerV2 Get()
-        {
-            if (Instance == null)
-            {
-                Instance = new RangeIntersectionCalculationManagerV2();
-            }
-            return Instance;
-        }
-
         public RangeIntersectionCalculationManagerV2()
         {
             this.RangeIntersectionmanagers = new IIntersectionManager[] {
@@ -193,10 +184,6 @@ namespace RTPuzzle
 
             this.RangeObstacleOcclusionIntersection.Dispose();
         }
-
-        public void OnDestroy()
-        {
-            Instance = null;
-        }
+        
     }
 }

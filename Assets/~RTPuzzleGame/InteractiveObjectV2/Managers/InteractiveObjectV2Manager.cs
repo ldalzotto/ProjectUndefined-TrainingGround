@@ -4,15 +4,8 @@ using UnityEngine;
 
 namespace InteractiveObjectTest
 {
-    public class InteractiveObjectV2Manager
+    public class InteractiveObjectV2Manager : GameSingleton<InteractiveObjectV2Manager>
     {
-        private static InteractiveObjectV2Manager Instance;
-        public static InteractiveObjectV2Manager Get()
-        {
-            if (Instance == null) { Instance = new InteractiveObjectV2Manager(); }
-            return Instance;
-        }
-
         public List<CoreInteractiveObject> InteractiveObjects { get; private set; } = new List<CoreInteractiveObject>();
 
         public Dictionary<Collider, CoreInteractiveObject> InteractiveObjectsIndexedByLogicCollider { get; private set; } = new Dictionary<Collider, CoreInteractiveObject>();
@@ -126,13 +119,13 @@ namespace InteractiveObjectTest
             RangeObjectV2ManagerOperations.ClearAllReferencesOfInteractiveObject(InteractiveObject);
         }
 
-        public void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
             this.InteractiveObjects.Clear();
             this.InteractiveObjects = null;
             this.InteractiveObjectsIndexedByLogicCollider.Clear();
             this.InteractiveObjectsIndexedByLogicCollider = null;
-            Instance = null;
         }
     }
 }

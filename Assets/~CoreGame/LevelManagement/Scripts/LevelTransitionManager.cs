@@ -35,13 +35,17 @@ namespace CoreGame
             isNewZoneLoading = true;
 
             List<AsyncOperation> chunkOperations = null;
-            if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE || LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE)
+            if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE)
             {
                 chunkOperations = CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnAdventureToPuzzleLevel(nextZone);
             }
-            else if (LevelChangeType == LevelChangeType.PUZZLE_TO_ADVENTURE || LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE)
+            else if (LevelChangeType == LevelChangeType.PUZZLE_TO_ADVENTURE)
             {
                 chunkOperations = CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnPuzzleToAdventureLevel(nextZone);
+            }
+            else if (LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE)
+            {
+                chunkOperations = CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnPuzzleToPuzzleLevel(nextZone);
             }
             else if (LevelChangeType == LevelChangeType.FROM_STARTMENU)
             {

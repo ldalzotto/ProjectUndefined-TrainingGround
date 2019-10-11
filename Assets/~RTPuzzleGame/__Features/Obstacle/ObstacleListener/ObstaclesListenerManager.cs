@@ -4,15 +4,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ObstaclesListenerManager
+    public class ObstaclesListenerManager : GameSingleton<ObstaclesListenerManager>
     {
-        private static ObstaclesListenerManager Instance;
-        public static ObstaclesListenerManager Get()
-        {
-            if (Instance == null) { Instance = new ObstaclesListenerManager(); }
-            return Instance;
-        }
-
         private int ObstacleListenerAddedCounter = 0;
 
         private List<ObstacleListenerObject> obstacleListeners = new List<ObstacleListenerObject>();
@@ -57,11 +50,7 @@ namespace RTPuzzle
         }
 
         #endregion
-
-        public void OnDestroy()
-        {
-            Instance = null;
-        }
+        
     }
 
 }

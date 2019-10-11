@@ -86,7 +86,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\Managers\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectCutsceneController\InteractiveObjectModules\InteractiveObjectCutsceneControllerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\IsOccludedByObstacleStep.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\RangeIntersectionCalculationManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\RangeIntersectionJob.cs" />
@@ -142,6 +141,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Managers\DottedLineRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_FX\LevelCompleted\Scripts\LevelCompleteVisualFeedbackFX.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameSingleton.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PuzzleGameSingletonInstances.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />

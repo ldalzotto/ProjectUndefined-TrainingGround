@@ -7,16 +7,8 @@ using UnityEngine.Profiling;
 
 namespace RTPuzzle
 {
-    public class ObstacleOcclusionCalculationManagerV2
+    public class ObstacleOcclusionCalculationManagerV2 : GameSingleton<ObstacleOcclusionCalculationManagerV2>
     {
-        private static ObstacleOcclusionCalculationManagerV2 Instance;
-
-        public static ObstacleOcclusionCalculationManagerV2 Get()
-        {
-            if (Instance == null) { Instance = new ObstacleOcclusionCalculationManagerV2(); }
-            return Instance;
-        }
-
         #region External Dependencies
         private ObstaclesListenerManager ObstaclesListenerManager = ObstaclesListenerManager.Get();
         private SquareObstacleSystemManager SquareObstacleSystemManager = SquareObstacleSystemManager.Get();
@@ -264,11 +256,6 @@ namespace RTPuzzle
         {
             //We trigger the end of calculations
             GetCalculatedOcclusionFrustums();
-        }
-
-        public void OnDestroy()
-        {
-            Instance = null;
         }
 
         private void ClearAndCreateCalculatedFrustums(ObstacleListenerObject obstacleListener, SquareObstacleSystem SquareObstacleSystem)

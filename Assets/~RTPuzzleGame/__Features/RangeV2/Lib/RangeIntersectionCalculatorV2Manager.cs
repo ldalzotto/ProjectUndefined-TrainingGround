@@ -10,18 +10,8 @@ using UnityEditor;
 namespace RTPuzzle
 {
 
-    public class RangeIntersectionCalculatorV2Manager
+    public class RangeIntersectionCalculatorV2Manager : GameSingleton<RangeIntersectionCalculatorV2Manager>
     {
-        private static RangeIntersectionCalculatorV2Manager Instance;
-        public static RangeIntersectionCalculatorV2Manager Get()
-        {
-            if (Instance == null)
-            {
-                Instance = new RangeIntersectionCalculatorV2Manager();
-            }
-            return Instance;
-        }
-
         private int CurrentRangeIntersectionCalculatorV2ManagerCounter = 0;
 
         public List<RangeIntersectionCalculatorV2> AllRangeIntersectionCalculatorV2 = new List<RangeIntersectionCalculatorV2>();
@@ -38,9 +28,9 @@ namespace RTPuzzle
             this.AllRangeIntersectionCalculatorV2.Remove(RangeIntersectionCalculatorV2);
         }
 
-        public void OnDestroy()
+        public override void OnDestroy()
         {
-            Instance = null;
+            base.OnDestroy();
             this.AllRangeIntersectionCalculatorV2.Clear();
         }
 
