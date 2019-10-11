@@ -159,8 +159,8 @@
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCtusceneController.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCutscenePlayerManager.cs" />
-    <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractCutsceneAnimationAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractRotateAction.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Actions\BaseCutsceneAnimationAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\Branch\BranchInfiniteLoopAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowAbortAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowWaitForSecondsAction.cs" />

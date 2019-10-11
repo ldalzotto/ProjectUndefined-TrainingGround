@@ -10,7 +10,7 @@ using NodeGraph_Editor;
 namespace AdventureGame
 {
     [System.Serializable]
-    public class CutsceneAnimationAction : AbstractCutsceneAnimationAction
+    public class CutsceneAnimationAction : BaseCutsceneAnimationAction
     {
         [CustomEnum()]
         public PointOfInterestId PointOfInterestId;
@@ -19,7 +19,7 @@ namespace AdventureGame
         {
         }
 
-        protected override AbstractCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput)
+        protected override BaseCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput)
         {
             return ((CutsceneActionInput)ContextActionInput).PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
         }

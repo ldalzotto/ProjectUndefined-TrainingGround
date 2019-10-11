@@ -39,10 +39,6 @@ namespace Experimental.Editor_NodeEditor
                 {
                     CutsceneNodeEditor.Init((NodeEditorProfile)this.target);
                 }
-                else if (this.target.GetType() == typeof(PuzzleCutsceneGraph))
-                {
-                    PuzzleCutsceneNodeEditor.Init((NodeEditorProfile)this.target);
-                }
                 else if (this.target.GetType() == typeof(TutorialGraph))
                 {
                     TutorialNodeEditor.Init((NodeEditorProfile)this.target);

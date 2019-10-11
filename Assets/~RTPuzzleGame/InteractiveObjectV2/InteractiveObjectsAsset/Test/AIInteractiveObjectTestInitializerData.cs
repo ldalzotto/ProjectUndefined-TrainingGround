@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using RTPuzzle;
+using UnityEngine;
 using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
@@ -13,5 +13,6 @@ namespace InteractiveObjectTest
         [Inline(CreateAtSameLevelIfAbsent = true)]
         public SightObjectSystemDefinition SightObjectSystemDefinition;
         public AIMovementSpeedDefinition AISpeedWhenAttracted;
+        public LocalPuzzleCutsceneTemplate DisarmObjectAnimation;
     }
 }

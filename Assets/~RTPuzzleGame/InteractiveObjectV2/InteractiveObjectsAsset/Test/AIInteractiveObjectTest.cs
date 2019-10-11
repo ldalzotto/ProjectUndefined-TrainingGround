@@ -13,6 +13,7 @@ namespace InteractiveObjectTest
 
         private AIPatrolSystem AIPatrolSystem;
         private SightObjectSystem SightObjectSystem;
+        private LocalCutscenePlayerSystem LocalCutscenePlayerSystem;
 
         public AIInteractiveObjectTest(InteractiveGameObject interactiveGameObject, AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
         {
@@ -24,10 +25,12 @@ namespace InteractiveObjectTest
 
             this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct { IsAttractiveObject = 1 },
                       this.OnSightObjectSystemJustIntersected, this.OnSightObjectSystemIntersectedNothing, this.OnSightObjectSystemNoMoreIntersected);
+            this.LocalCutscenePlayerSystem = new LocalCutscenePlayerSystem();
         }
 
         public override void Tick(float d, float timeAttenuationFactor)
         {
+
             if (!this.AIDisarmObjectState.IsDisarming && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
             {
                 this.AIPatrollingState.isPatrolling = true;
@@ -43,6 +46,7 @@ namespace InteractiveObjectTest
 
         public override void TickAlways(float d)
         {
+            this.LocalCutscenePlayerSystem.TickAlways(d);
             base.TickAlways(d);
         }
 
@@ -128,6 +132,16 @@ namespace InteractiveObjectTest
         public override void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
         {
             this.AIDisarmObjectState.IsDisarming = false;
+        }
+
+        public override void OnAIIsJustDisarmingObject()
+        {
+            this.LocalCutscenePlayerSystem.PlayCutscene(this.AIInteractiveObjectInitializerData.DisarmObjectAnimation.GetSequencedActions(this));
+        }
+
+        public override void OnAIIsNoMoreJustDisarmingObject()
+        {
+            this.LocalCutscenePlayerSystem.KillCurrentCutscene();
         }
 
         protected override void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)

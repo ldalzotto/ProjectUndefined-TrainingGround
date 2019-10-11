@@ -21,6 +21,11 @@ namespace CoreGame
         [NonSerialized]
         private float currentTimeElapsed;
 
+        public CutsceneWorkflowWaitForSecondsAction(float SecondsToWait, List<SequencedAction> nexActions) : base(nexActions)
+        {
+            this.SecondsToWait = SecondsToWait;
+        }
+
         public CutsceneWorkflowWaitForSecondsAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }

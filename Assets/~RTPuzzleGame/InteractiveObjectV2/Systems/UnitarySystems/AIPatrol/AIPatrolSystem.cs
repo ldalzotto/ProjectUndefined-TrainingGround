@@ -11,7 +11,7 @@ namespace InteractiveObjectTest
         public AIPatrolSystem(CoreInteractiveObject AssociatedCoreInteractiveObject, AIPatrolSystemDefinition AIPatrolSystemDefinition)
         {
             AIPatrolSystemDefinition.AIPatrolGraph.Init(AssociatedCoreInteractiveObject);
-            this.SequencedActionPlayer = new SequencedActionPlayer(AIPatrolSystemDefinition.AIPatrolGraph.AIPatrolGraphActions(), null, onFinished: null);
+            this.SequencedActionPlayer = new SequencedActionPlayer(AIPatrolSystemDefinition.AIPatrolGraph.AIPatrolGraphActions(), null, OnCutsceneEnded: null);
             this.SequencedActionPlayer.Play();
         }
 

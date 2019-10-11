@@ -40,10 +40,10 @@ namespace CoreGame
 
     public struct RotateActionRequiredData
     {
-        public AbstractCutsceneController AbstractCutsceneController;
+        public BaseCutsceneController AbstractCutsceneController;
         public Quaternion TargetQuaternion;
 
-        public RotateActionRequiredData(AbstractCutsceneController abstractCutsceneController, Quaternion targetQuaternion)
+        public RotateActionRequiredData(BaseCutsceneController abstractCutsceneController, Quaternion targetQuaternion)
         {
             AbstractCutsceneController = abstractCutsceneController;
             TargetQuaternion = targetQuaternion;

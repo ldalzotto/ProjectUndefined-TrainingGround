@@ -107,12 +107,8 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Configuration\PuzzleCutsceneConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Configuration\PuzzleCutsceneInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\CutsceneGraph\Graph\PuzzleCutsceneGraph.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\PlayerActions\CutsceneAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\PlayerActions\CutsceneActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Configuration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Configuration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionCalculatorV2.cs" />
@@ -165,6 +161,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializerData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AITestDisarmLocalCutscene.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectState.cs" />
@@ -183,6 +180,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\DisarmobjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LocalCutscenePlayerSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystemDefinition.cs" />

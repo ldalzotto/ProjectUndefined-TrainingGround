@@ -49,7 +49,7 @@ namespace AdventureGame
         {
             return this.pointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.InteractionWithPlayerAllowed;
         }
-        public AbstractCutsceneController GetPointOfInterestCutsceneController()
+        public BaseCutsceneController GetPointOfInterestCutsceneController()
         {
             return this.PointOfInteresetModules.PointOfInterestCutsceneController.GetCutsceneController();
         }

@@ -13,12 +13,7 @@ namespace RTPuzzle
         public bool TriggerLevelSuccessEvent;
 
         public bool InfiniteTime;
-
-        [Header("Cutscene Test")]
-        public PuzzleCutsceneGraph Graph;
-        public bool playCutsceneGraph;
-        private SequencedActionPlayer cutsceneGraphPlayer;
-
+        
         [Header("Discussion Test")]
         public DiscussionTreeId DiscussionTreeID;
         public bool PlayerDiscussionTree;

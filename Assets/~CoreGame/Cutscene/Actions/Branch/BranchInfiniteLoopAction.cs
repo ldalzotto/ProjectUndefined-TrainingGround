@@ -42,7 +42,7 @@ namespace CoreGame
 
         private void CreateAndPlayLoopAction(SequencedActionInput ContextActionInput)
         {
-            this.loopActionPlayer = new SequencedActionPlayer(this.loopActions, ContextActionInput, onFinished: () => { this.CreateAndPlayLoopAction(ContextActionInput); });
+            this.loopActionPlayer = new SequencedActionPlayer(this.loopActions, ContextActionInput,  OnCutsceneEnded: () => { this.CreateAndPlayLoopAction(ContextActionInput); });
             this.loopActionPlayer.Play();
         }
 

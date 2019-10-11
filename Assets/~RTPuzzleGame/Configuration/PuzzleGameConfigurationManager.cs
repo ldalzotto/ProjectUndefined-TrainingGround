@@ -8,7 +8,7 @@ namespace RTPuzzle
     public class PuzzleGameConfigurationManager : MonoBehaviour
     {
         public PuzzleGameConfiguration PuzzleGameConfiguration;
-                
+
         public Dictionary<LevelZonesID, LevelConfigurationData> LevelConfiguration()
         {
             return PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData;
@@ -23,13 +23,6 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.DottedLineConfiguration.ConfigurationInherentData;
         }
-
-        public Dictionary<PuzzleCutsceneID, PuzzleCutsceneInherentData> PuzzleCutsceneConfiguration()
-        {
-            return PuzzleGameConfiguration.PuzzleCutsceneConfiguration.ConfigurationInherentData;
-        }
-
-//${addNewEntry}
     }
 
 

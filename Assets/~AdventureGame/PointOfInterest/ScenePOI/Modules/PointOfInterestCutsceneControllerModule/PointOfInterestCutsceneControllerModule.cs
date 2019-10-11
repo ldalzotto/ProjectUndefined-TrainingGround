@@ -13,7 +13,7 @@ namespace AdventureGame
         private PointOfInterestCutsceneController pointOfInterestCutsceneController;
 
         #region Data Retrieval
-        public AbstractCutsceneController GetCutsceneController()
+        public BaseCutsceneController GetCutsceneController()
         {
             return this.pointOfInterestCutsceneController;
         }
@@ -38,7 +38,7 @@ namespace AdventureGame
         }
     }
 
-    class PointOfInterestCutsceneController : AbstractCutsceneController
+    class PointOfInterestCutsceneController : BaseCutsceneController
     {
         public PointOfInterestCutsceneController(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {

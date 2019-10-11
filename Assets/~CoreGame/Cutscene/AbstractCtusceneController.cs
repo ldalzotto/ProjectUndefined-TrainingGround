@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace CoreGame
 {
-    public abstract class AbstractCutsceneController
+    public class BaseCutsceneController
     {
         private Rigidbody Rigidbody;
         private NavMeshAgent Agent;
@@ -33,6 +33,15 @@ namespace CoreGame
 
         public bool IsCutscenePlaying() { return (this.IsAnimationPlaying || this.IsDirectedByAi() || this.IsRotating()); }
         #endregion
+
+        public BaseCutsceneController() { }
+
+        public BaseCutsceneController(Rigidbody rigidbody, NavMeshAgent agent, Animator animator)
+        {
+            Rigidbody = rigidbody;
+            Agent = agent;
+            Animator = animator;
+        }
 
         protected void BaseInit(Rigidbody rigidBody, NavMeshAgent agent, Animator animator, TransformMoveManagerComponentV3 transformMoveManagerComponent = null, PlayerAnimationDataManager playerAnimationDataManager = null)
         {

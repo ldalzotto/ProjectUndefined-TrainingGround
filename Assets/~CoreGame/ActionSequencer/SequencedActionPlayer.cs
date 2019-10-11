@@ -9,13 +9,19 @@ namespace CoreGame
         private SequencedActionInput SequencedActionInput;
         public List<SequencedAction> SequencedActions;
 
-        public SequencedActionPlayer(List<SequencedAction> SequencedActions, SequencedActionInput SequencedActionInput, Action onFinished = null)
+        private Action OnCutsceneEnded;
+        private Action OnCutsceneKilled;
+
+        public SequencedActionPlayer(List<SequencedAction> SequencedActions, SequencedActionInput SequencedActionInput, Action OnCutsceneEnded = null, Action OnCutsceneKilled = null)
         {
+            this.OnCutsceneEnded = OnCutsceneEnded;
+            this.OnCutsceneKilled = OnCutsceneKilled;
+
             this.SequencedActions = SequencedActions;
             this.SequencedActionInput = SequencedActionInput;
-            this.SequencedActionManager = new SequencedActionManager((action) => this.SequencedActionManager.OnAddAction(action, this.SequencedActionInput), null, onFinished);
+            this.SequencedActionManager = new SequencedActionManager((action) => this.SequencedActionManager.OnAddAction(action, this.SequencedActionInput), null, this.OnCutsceneEnded);
         }
-        
+
         public void Play()
         {
             this.SequencedActionManager.OnAddActions(this.SequencedActions, this.SequencedActionInput);
@@ -33,6 +39,7 @@ namespace CoreGame
         {
             this.SequencedActionManager.InterruptAllActions();
             this.SequencedActionManager.CleatAllActions();
+            if (this.OnCutsceneKilled != null) { this.OnCutsceneKilled.Invoke(); }
         }
 
         public bool IsPlaying()
@@ -45,5 +52,4 @@ namespace CoreGame
             return this.SequencedActionManager.GetCurrentActions(includeWorkflowNested);
         }
     }
-
 }

@@ -54,7 +54,7 @@ namespace AdventureGame
             Coroutiner.Instance.StartCoroutine(this.SetDestination(cutsceneController, cutsceneActionInput.CutscenePositionsManager, cutsceneActionInput.CutsceneId));
         }
 
-        private IEnumerator SetDestination(AbstractCutsceneController pointOfInterestCutsceneController,
+        private IEnumerator SetDestination(BaseCutsceneController pointOfInterestCutsceneController,
                         CutscenePositionsManager cutscenePositionsManager, CutsceneId cutsceneId)
         {
             this.destinationReached = false;

@@ -12,7 +12,7 @@ namespace RTPuzzle
         #region Persistance Dependencies
         private AInventoryMenu InventoryMenu;
         #endregion
-        
+
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
@@ -51,7 +51,7 @@ namespace RTPuzzle
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
-            
+
             PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
             TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
             GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
@@ -72,15 +72,15 @@ namespace RTPuzzle
             var TimeFlowBarManager = PuzzleGameSingletonInstances.TimeFlowBarManager;
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var LevelManager = CoreGameSingletonInstances.LevelManager;
-            
-            
+
+
             CameraMovementManager.Init();
             GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
             PuzzleGameSingletonInstances.RangeEventsManager.Init();
-            
+
             RangeObjectV2Manager.Get().Init();
             InteractiveObjectV2Manager.Get().Init();
-            
+
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
             TimeFlowManager.Init(gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
             GameOverManager.Init();
@@ -125,7 +125,7 @@ namespace RTPuzzle
 
                     ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
                     RangeIntersectionCalculationManagerV2.Get().Tick(d);
-                    
+
                     RangeObjectV2Manager.Get().Tick(d);
 
                     TimeFlowManager.Tick(d);
@@ -137,8 +137,7 @@ namespace RTPuzzle
 
                     if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
                     {
-                         InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.GetTimeAttenuation());
-
+                        InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.GetTimeAttenuation());
                         PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                     }
                     else
@@ -172,7 +171,7 @@ namespace RTPuzzle
                 InteractiveObjectV2Manager.Get().LateTick(d);
                 PlayerActionManager.LateTick(d);
             }
-            
+
             ObstacleOcclusionCalculationManagerV2.Get().LateTick();
             RangeIntersectionCalculationManagerV2.Get().LateTick();
         }
@@ -222,7 +221,7 @@ namespace RTPuzzle
 
         private void OnGUI()
         {
-            
+
             if (PlayerActionManager != null)
             {
                 PlayerActionManager.GUITick();

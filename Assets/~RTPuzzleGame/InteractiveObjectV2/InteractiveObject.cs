@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using CoreGame;
+using RTPuzzle;
 using System;
 using static InteractiveObjectTest.AIMovementDefinitions;
 
@@ -9,6 +10,7 @@ namespace InteractiveObjectTest
         public InteractiveGameObject InteractiveGameObject { get; protected set; }
 
         public InteractiveObjectTag InteractiveObjectTag { get; protected set; }
+        public BaseCutsceneController CutsceneController { get; private set; }
 
         public bool IsAskingToBeDestroyed { get; protected set; }
         public bool IsUpdatedInMainManager;
@@ -18,6 +20,7 @@ namespace InteractiveObjectTest
             this.IsAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
+            this.CutsceneController = new BaseCutsceneController(interactiveGameObject.Rigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
         }
 
         public virtual void FixedTick(float d) { }
