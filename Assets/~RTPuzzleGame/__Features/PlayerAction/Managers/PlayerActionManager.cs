@@ -128,7 +128,12 @@ namespace RTPuzzle
         public void RemoveActionToAvailable(RTPPlayerAction removedAction)
         {
             this.PlayerActionsAvailableManager.RemoveActionToAvailable(removedAction);
+            if (this.PLayerSelectionWheelManager.WheelEnabled)
+            {
+                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
+            }
         }
+
         public void RemoveActionsToAvailable(List<RTPPlayerAction> removedActions)
         {
             foreach(var removedAction in removedActions)

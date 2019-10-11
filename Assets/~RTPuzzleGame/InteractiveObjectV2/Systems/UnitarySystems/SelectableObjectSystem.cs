@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using GameConfigurationID;
 using RTPuzzle;
 using UnityEngine;
 
@@ -34,6 +33,7 @@ namespace InteractiveObjectTest
             ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerAction)
         {
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
             this.SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization()
             {
@@ -61,7 +61,7 @@ namespace InteractiveObjectTest
         }
 
         public override void OnDestroy()
-        {
+        { 
             this.SphereRange.OnDestroy();
         }
 
