@@ -1,4 +1,6 @@
-﻿namespace InteractiveObjectTest
+﻿using RTPuzzle;
+
+namespace InteractiveObjectTest
 {
     [System.Serializable]
     public class AttractiveObjectInitializerData
@@ -7,6 +9,7 @@
         public bool IsDisarmable;
         public DisarmSystemDefinition DisarmSystemDefinition;
         public SelectableObjectSystemDefinition SelectableObjectSystemDefinition;
+        public GrabObjectActionInherentData SelectableGrabActionDefinition;
     }
 
     [System.Serializable]

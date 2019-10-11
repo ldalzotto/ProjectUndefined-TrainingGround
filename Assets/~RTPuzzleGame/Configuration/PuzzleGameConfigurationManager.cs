@@ -9,11 +9,6 @@ namespace RTPuzzle
     {
         public PuzzleGameConfiguration PuzzleGameConfiguration;
                 
-        public Dictionary<PlayerActionId, PlayerActionInherentData> PlayerActionConfiguration()
-        {
-            return PuzzleGameConfiguration.PlayerActionConfiguration.ConfigurationInherentData;
-        }
-        
         public Dictionary<LevelZonesID, LevelConfigurationData> LevelConfiguration()
         {
             return PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData;

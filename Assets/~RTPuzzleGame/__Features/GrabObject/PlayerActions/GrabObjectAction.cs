@@ -1,23 +1,14 @@
-using UnityEngine;
-using System.Collections;
-using GameConfigurationID;
-
 namespace RTPuzzle
 {
     public class GrabObjectAction : RTPPlayerAction
     {
         private PlayerActionManager PlayerActionManager;
+        private RTPPlayerAction addedPlayerAction;
 
-        public GrabObjectAction(GrabActionInherentData GrabActionInherentData) : base(GrabActionInherentData)
+        public GrabObjectAction(RTPPlayerAction addedPlayerAction, CorePlayerActionDefinition CorePlayerActionDefinition) : base(CorePlayerActionDefinition)
         {
+            this.addedPlayerAction = addedPlayerAction;
         }
-
-        #region Data Retrieval 
-        public PlayerActionId GetPlayerActionToIncrementOrAdd()
-        {
-            return ((GrabActionInherentData)this.playerActionInherentData).PlayerActionToIncrementOrAdd;
-        }
-        #endregion
 
         public override bool FinishedCondition()
         {
@@ -27,11 +18,11 @@ namespace RTPuzzle
         public override void FirstExecution()
         {
             base.FirstExecution();
-            GrabActionInherentData GrabActionInherentData = (GrabActionInherentData)this.playerActionInherentData;
             this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
-            this.PlayerActionManager.IncreaseOrAddActionsRemainingExecutionAmount(GrabActionInherentData.PlayerActionToIncrementOrAdd, 1);
+            this.PlayerActionManager.IncreaseOrAddActionsRemainingExecutionAmount(this.addedPlayerAction, 1);
+            this.PlayerActionConsumed();
         }
-        
+
         public override void Tick(float d)
         {
         }

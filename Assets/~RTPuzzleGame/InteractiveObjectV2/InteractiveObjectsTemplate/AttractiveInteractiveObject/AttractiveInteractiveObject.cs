@@ -1,17 +1,20 @@
-﻿using UnityEngine;
+﻿using RTPuzzle;
+using UnityEngine;
 
 namespace InteractiveObjectTest
 {
     public class AttractiveInteractiveObject : CoreInteractiveObject
     {
+        private AttractiveObjectInitializerData AttractiveObjectInitializerData;
 
         private AttractiveObjectSystem AttractiveObjectSystem;
         private DisarmObjectSystem DisarmObjectSystem;
         private SelectableObjectSystem SelectableObjectSystem;
-
+        
         public AttractiveInteractiveObject(InteractiveGameObject interactiveGameObject, AttractiveObjectInitializerData InteractiveObjectInitializerData) : base(interactiveGameObject)
         {
             this.InteractiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
+            this.AttractiveObjectInitializerData = InteractiveObjectInitializerData;
 
             var physicsInteractionSelectionGuard = new InteractiveObjectTagStruct(isAi: 1);
             this.AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, InteractiveObjectInitializerData.AttractiveObjectSystemDefinition,
@@ -20,7 +23,7 @@ namespace InteractiveObjectTest
             {
                 this.DisarmObjectSystem = new DisarmObjectSystem(this, InteractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct { IsAi = 1 }, this.OnAssociatedDisarmObjectTriggerEnter, this.OnAssciatedDisarmObjectTriggerExit);
             }
-            this.SelectableObjectSystem = new SelectableObjectSystem(this, InteractiveObjectInitializerData.SelectableObjectSystemDefinition);
+            this.SelectableObjectSystem = new SelectableObjectSystem(this, InteractiveObjectInitializerData.SelectableObjectSystemDefinition, this.ProvideSelectableObjectPlayerAction);
         }
 
         public override void TickAlways(float d)
@@ -88,6 +91,13 @@ namespace InteractiveObjectTest
             this.DisarmObjectSystem.RemoveInteractiveObjectDisarmingThisObject(OtherInteractiveObject);
         }
 
+        #endregion
+
+        #region Selectable Object
+        protected override RTPPlayerAction ProvideSelectableObjectPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
+        {
+            return this.AttractiveObjectInitializerData.SelectableGrabActionDefinition.BuildPlayerAction(PlayerInteractiveObject);
+        }
         #endregion
     }
 

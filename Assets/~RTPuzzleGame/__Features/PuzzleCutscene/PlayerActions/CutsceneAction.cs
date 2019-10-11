@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+
     public class CutsceneAction : RTPPlayerAction
     {
         private PuzzleCutsceneID puzzleCutsceneId;
@@ -15,9 +16,9 @@ namespace RTPuzzle
         private bool isCutsceneActionFinished;
         #endregion
         
-        public CutsceneAction(CutsceneActionInherentData CutsceneActionInherentData) : base(CutsceneActionInherentData)
+        public CutsceneAction(PuzzleCutsceneID PuzzleCutsceneID, CorePlayerActionDefinition CorePlayerActionDefinition) : base(CorePlayerActionDefinition)
         {
-            this.puzzleCutsceneId = CutsceneActionInherentData.PuzzleCutsceneId;
+            this.puzzleCutsceneId = PuzzleCutsceneID;
         }
 
         public override void FirstExecution()

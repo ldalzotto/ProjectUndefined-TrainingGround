@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public interface ICreationWizardEditor
 {
@@ -143,11 +142,7 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor wh
                 {
                     ((ConfigurationModifiedFeedLine)creationWizardFeedLines).RemoveEntry();
                 }
-                else if (creationWizardFeedLines.GetType() == typeof(PlayerActionAddedFeedLine))
-                {
-                    var PlayerActionAddedFeedLine = (PlayerActionAddedFeedLine)creationWizardFeedLines;
-                    PlayerActionAddedFeedLine.LevelConfiguration.ConfigurationInherentData[PlayerActionAddedFeedLine.LevelZonesID].RemovePlayerActionId(PlayerActionAddedFeedLine.PlayerActionId);
-                } else if(creationWizardFeedLines.GetType() == typeof(LevelHierarchyAddFeedLine))
+                else if (creationWizardFeedLines.GetType() == typeof(LevelHierarchyAddFeedLine))
                 {
                     var LevelHierarchyAddFeedLine = (LevelHierarchyAddFeedLine)creationWizardFeedLines;
                     LevelHierarchyAddFeedLine.LevelHierarchyConfiguration.RemovePuzzleChunkLevel(LevelHierarchyAddFeedLine.LevelZonesID, LevelHierarchyAddFeedLine.AddedChunkID);

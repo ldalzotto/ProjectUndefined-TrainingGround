@@ -9,14 +9,12 @@ namespace InteractiveObjectTest
     public class SelectableObjectSystemDefinition
     {
         public float SelectionRange;
-        
-        [Inline()]
-        public PlayerActionInherentData AssociatedPlayerAction;
     }
 
     #region Callback Events
     public delegate void OnPlayerTriggerInSelectionEnterDelegate(CoreInteractiveObject IntersectedInteractiveObject);
     public delegate void OnPlayerTriggerInSelectionExitDelegate(CoreInteractiveObject IntersectedInteractiveObject);
+    public delegate RTPPlayerAction ProvideSelectableObjectPlayerActionDelegate(PlayerInteractiveObject PlayerInteractiveObject);
     #endregion
 
     public class SelectableObjectSystem : AInteractiveObjectSystem, ISelectableModule
@@ -29,8 +27,11 @@ namespace InteractiveObjectTest
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
+        private ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerActionDelegate;
+
         public SelectableObjectSystem(CoreInteractiveObject AssociatedInteractiveObject,
-            SelectableObjectSystemDefinition SelectableObjectSystemDefinition)
+            SelectableObjectSystemDefinition SelectableObjectSystemDefinition,
+            ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerAction)
         {
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
@@ -44,17 +45,19 @@ namespace InteractiveObjectTest
                 }
             }, AssociatedInteractiveObject, "SelectionRangeTrigger");
             this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new SelectableObjectPhysicsEventListener(this.OnPlayerTriggerInSelectionEnter, this.OnPlayerTriggerInSelectionExit) });
-            this.AssociatedPlayerAction = new GrabObjectAction(new GrabActionInherentData(PlayerActionId.STONE_PROJECTILE_ACTION_1, SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG, 1f));
+            this.ProvideSelectableObjectPlayerActionDelegate = ProvideSelectableObjectPlayerAction;
         }
 
         private void OnPlayerTriggerInSelectionEnter(CoreInteractiveObject IntersectedInteractiveObject)
         {
+            this.AssociatedPlayerAction = this.ProvideSelectableObjectPlayerActionDelegate((PlayerInteractiveObject)IntersectedInteractiveObject);
             this.PuzzleEventsManager.PZ_EVT_OnActionInteractableEnter(this);
         }
 
         private void OnPlayerTriggerInSelectionExit(CoreInteractiveObject IntersectedInteractiveObject)
         {
             this.PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
+            this.AssociatedPlayerAction = null;
         }
 
         public override void OnDestroy()

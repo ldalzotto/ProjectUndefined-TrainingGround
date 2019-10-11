@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using RTPuzzle;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace InteractiveObjectTest
@@ -17,6 +18,7 @@ namespace InteractiveObjectTest
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
         private LevelResetManager LevelResetManager;
+        private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager;
 
         #region Systems
         private AnimationObjectSystem AnimationObjectSystem;
@@ -35,6 +37,8 @@ namespace InteractiveObjectTest
             var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
             this.BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
+            var LevelConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.LevelConfiguration;
+            var LevelManager = CoreGameSingletonInstances.LevelManager;
             #endregion
 
             this.AnimationObjectSystem = new AnimationObjectSystem(this);
@@ -45,6 +49,7 @@ namespace InteractiveObjectTest
             this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.Rigidbody, interactiveGameObject.GetLogicCollider(), PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
             this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, PuzzleEventsManager, this.PlayerActionManager);
             this.LevelResetManager = new LevelResetManager(GameInputManager, PuzzleEventsManager);
+            this.LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
         }
 
         public override void TickAlways(float d)
@@ -54,7 +59,7 @@ namespace InteractiveObjectTest
 
                 if (!PlayerActionManager.IsActionExecuting() && !this.BlockingCutscenePlayer.Playing)
                 {
-                    if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
+                    if (!PlayerSelectionWheelManager.AwakeOrSleepWheel(this.LevelDependenatPlayerActionsManager))
                     {
                         if (!PlayerActionManager.IsWheelEnabled())
                         {
@@ -63,7 +68,7 @@ namespace InteractiveObjectTest
                         else
                         {
                             PlayerInputMoveManager.ResetSpeed();
-                            PlayerSelectionWheelManager.TriggerActionOnInput();
+                            PlayerSelectionWheelManager.TriggerActionOnInput(this.LevelDependenatPlayerActionsManager);
                         }
                     }
                 }
@@ -94,7 +99,33 @@ namespace InteractiveObjectTest
         #endregion
     }
 
-    #region Player Action Selection Manager
+    #region Player Action Managers
+    class LevelDependenatPlayerActionsManager
+    {
+        private PlayerInteractiveObject PlayerInteractiveObjectRef;
+        private LevelConfigurationData CurrentLevelConfigurationData;
+        private List<RTPPlayerAction> PlayerActionsAssociatedToLevel;
+
+        public LevelDependenatPlayerActionsManager(PlayerInteractiveObject PlayerInteractiveObjectRef, LevelConfiguration levelConfiguration, LevelManager LevelManager)
+        {
+            this.PlayerInteractiveObjectRef = PlayerInteractiveObjectRef;
+            this.PlayerActionsAssociatedToLevel = new List<RTPPlayerAction>();
+            this.CurrentLevelConfigurationData = levelConfiguration.ConfigurationInherentData[LevelManager.LevelID];
+        }
+
+        public List<RTPPlayerAction> GetPlayerActionsAssociatedToLevel()
+        {
+            if (this.PlayerActionsAssociatedToLevel.Count == 0)
+            {
+                foreach (var levelStaticPlayerActionInherentData in this.CurrentLevelConfigurationData.ConfiguredPlayerActions)
+                {
+                    this.PlayerActionsAssociatedToLevel.Add(levelStaticPlayerActionInherentData.BuildPlayerAction(this.PlayerInteractiveObjectRef));
+                }
+            }
+            return this.PlayerActionsAssociatedToLevel;
+        }
+    }
+
     class PlayerSelectionWheelManager
     {
         #region External Dependencies
@@ -104,6 +135,8 @@ namespace InteractiveObjectTest
         private IGameInputManager GameInputManager;
         private PlayerActionManager PlayerActionManager;
 
+        private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManagerRef;
+
         public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PuzzleEventsManager PuzzleEventsManager, PlayerActionManager PlayerActionManager)
         {
             GameInputManager = gameInputManager;
@@ -111,12 +144,13 @@ namespace InteractiveObjectTest
             this.PlayerActionManager = PlayerActionManager;
         }
 
-        public bool AwakeOrSleepWheel()
+        public bool AwakeOrSleepWheel(LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager)
         {
             if (!PlayerActionManager.IsWheelEnabled())
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
+                    PlayerActionManager.AddActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
                     this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelAwake();
                     return true;
                 }
@@ -124,16 +158,18 @@ namespace InteractiveObjectTest
             else if (GameInputManager.CurrentInput.CancelButtonD())
             {
                 this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelSleep();
+                PlayerActionManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
                 return true;
             }
             return false;
         }
 
-        public void TriggerActionOnInput()
+        public void TriggerActionOnInput(LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager)
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
                 this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelNodeSelected();
+                PlayerActionManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
             }
         }
 

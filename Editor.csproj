@@ -122,10 +122,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\GenericConfigurationCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\GenericConfiugrationCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\Modules\EditorInformations.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\Modules\PlayerActionInherentDataCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\PlayerActionCreationWizard.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\PlayerActionCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
     <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\CutsceneNodeEditor.cs" />
@@ -261,8 +257,6 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\CreatePlayerActions.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\ExplorePlayerActions.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\AssetHelper.cs" />
     <Compile Include="Assets\Editor\Helper\EnumPicker.cs" />

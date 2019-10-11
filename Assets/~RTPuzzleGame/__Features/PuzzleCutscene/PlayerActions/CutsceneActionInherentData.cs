@@ -1,27 +1,19 @@
 ﻿using GameConfigurationID;
-using UnityEngine;
+using InteractiveObjectTest;
 
 namespace RTPuzzle
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "CutsceneActionInherentData", menuName = "Configuration/PuzzleGame/PlayerActionConfiguration/CutsceneActionInherentData", order = 1)]
     public class CutsceneActionInherentData : PlayerActionInherentData
     {
-        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
-        public PuzzleCutsceneID PuzzleCutsceneId;
-
-        public CutsceneActionInherentData(SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
+        public PuzzleCutsceneID PuzzleCutsceneID;
+        public CutsceneActionInherentData(CorePlayerActionDefinition corePlayerActionDefinition) : base(corePlayerActionDefinition)
         {
         }
 
-        public CutsceneActionInherentData()
+        public override RTPPlayerAction BuildPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
         {
+            return new CutsceneAction(this.PuzzleCutsceneID, this.CorePlayerActionDefinition);
         }
-
-        public override RTPPlayerAction BuildPlayerAction()
-        {
-            return new CutsceneAction(this);
-        }
-
     }
 }

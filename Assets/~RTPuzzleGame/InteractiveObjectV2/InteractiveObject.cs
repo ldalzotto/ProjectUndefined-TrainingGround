@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RTPuzzle;
+using System;
 using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
@@ -55,6 +56,10 @@ namespace InteractiveObjectTest
         protected virtual void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
         protected virtual void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject) { }
         protected virtual void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
+        #endregion
+
+        #region Selection Object Events
+        protected virtual RTPPlayerAction ProvideSelectableObjectPlayerAction(PlayerInteractiveObject PlayerInteractiveObject) { return default; }
         #endregion
 
         #region AI Events

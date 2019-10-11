@@ -84,8 +84,8 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\ExposedInterfaces\IGameOverManagerEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\Managers\GameOverManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectCutsceneController\InteractiveObjectModules\InteractiveObjectCutsceneControllerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\IsOccludedByObstacleStep.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\RangeIntersectionCalculationManagerV2.cs" />
@@ -101,8 +101,8 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstaclesListenerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacleSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacleSystemManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Lib\ActionExecution\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionManager.cs" />

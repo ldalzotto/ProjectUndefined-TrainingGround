@@ -10,7 +10,6 @@ namespace RTPuzzle
     {
         RTPPlayerAction GetCurrentSelectedAction();
         RTPPlayerAction GetCurrentRunningAction();
-        MultiValueDictionary<PlayerActionId, RTPPlayerAction> GetCurrentAvailablePlayerActions();
     }
 
     public interface IPlayerActionManagerEvent : SelectableObjectSelectionManagerEventListener<ISelectableModule>
@@ -19,7 +18,7 @@ namespace RTPuzzle
         void StopAction();
         void OnSelectionWheelAwake();
         void OnSelectionWheelSleep(bool destroyImmediate);
-        void IncreaseOrAddActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining);
+        void IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction RTPPlayerAction, int deltaRemaining);
         void AddActionToAvailable(RTPPlayerAction selectableObjectPlayerAction);
         void RemoveActionToAvailable(RTPPlayerAction selectableObjectPlayerAction);
     }
@@ -46,17 +45,15 @@ namespace RTPuzzle
             var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             var PlayerInteractiveGameObject = PlayerInteractiveObjectManager.Get().GetPlayerGameObject();
             var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            var levelManager = CoreGameSingletonInstances.LevelManager;
             #endregion
-
-            PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.LevelConfiguration()[levelManager.LevelID].Init(PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.PlayerActionConfiguration);
 
             SelectionWheel = PuzzleGameSingletonInstances.PuzzleSelectionWheel;
 
             PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
-            PlayerActionsAvailableManager = new PlayerActionsAvailableManager(levelManager.GetCurrentLevel(), puzzleGameConfigurationManager);
+            PlayerActionsAvailableManager = new PlayerActionsAvailableManager();
             PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel, puzzleGameConfigurationManager);
             PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent, SelectionWheel, PlayerInteractiveGameObject.InteractiveGameObjectParent.transform, Camera.main);
+
         }
 
         public void Tick(float d)
@@ -107,22 +104,37 @@ namespace RTPuzzle
             PLayerSelectionWheelManager.OnWheelSleep(destroyImmediate);
         }
 
-        public void IncreaseOrAddActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
+        public void IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction RTPPlayerAction, int deltaRemaining)
         {
-            this.PlayerActionsAvailableManager.IncreaseOrAddActionsRemainingExecutionAmount(playerActionId, deltaRemaining);
+            this.PlayerActionsAvailableManager.IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction, deltaRemaining);
         }
 
         public void AddActionToAvailable(RTPPlayerAction addedAction)
         {
-            this.PlayerActionsAvailableManager.AddActionToAvailable(PlayerActionId.NONE, addedAction);
+            this.PlayerActionsAvailableManager.AddActionToAvailable(addedAction);
             if (this.PLayerSelectionWheelManager.WheelEnabled)
             {
                 this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
             }
         }
+        public void AddActionsToAvailable(List<RTPPlayerAction> addedActions)
+        {
+            foreach(var addedAction in addedActions)
+            {
+                this.AddActionToAvailable(addedAction);
+            }
+        }
+
         public void RemoveActionToAvailable(RTPPlayerAction removedAction)
         {
-            this.PlayerActionsAvailableManager.RemoveActionToAvailable(PlayerActionId.NONE, removedAction);
+            this.PlayerActionsAvailableManager.RemoveActionToAvailable(removedAction);
+        }
+        public void RemoveActionsToAvailable(List<RTPPlayerAction> removedActions)
+        {
+            foreach(var removedAction in removedActions)
+            {
+                this.RemoveActionToAvailable(removedAction);
+            }
         }
 
         public void OnSelectableObjectSelected(ISelectableModule SelectableObject)
@@ -163,12 +175,6 @@ namespace RTPuzzle
                 return PlayerActionExecutionManager.CurrentAction;
             }
         }
-
-        public MultiValueDictionary<PlayerActionId, RTPPlayerAction> GetCurrentAvailablePlayerActions()
-        {
-            return PlayerActionsAvailableManager.CurrentAvailableActions;
-        }
-
         #endregion
     }
 
@@ -246,16 +252,11 @@ namespace RTPuzzle
     class PlayerActionsAvailableManager
     {
 
-        #region External Dependencies
-        private PlayerActionConfiguration PlayerActionConfiguration;
-        #endregion
+        private MultiValueDictionary<PlayerActionType, RTPPlayerAction> currentAvailableActions;
 
-        private MultiValueDictionary<PlayerActionId, RTPPlayerAction> currentAvailableActions;
-
-        public PlayerActionsAvailableManager(LevelZonesID puzzleId, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
+        public PlayerActionsAvailableManager()
         {
-            this.currentAvailableActions = puzzleGameConfigurationManager.LevelConfiguration()[puzzleId].PlayerActions;
-            this.PlayerActionConfiguration = puzzleGameConfigurationManager.PuzzleGameConfiguration.PlayerActionConfiguration;
+            this.currentAvailableActions = new MultiValueDictionary<PlayerActionType, RTPPlayerAction>();
         }
 
         public void Tick(float d, float timeAttenuation)
@@ -269,32 +270,41 @@ namespace RTPuzzle
             }
         }
 
-        public void AddActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToAdd)
+        public void AddActionToAvailable(RTPPlayerAction rTPPlayerActionToAdd)
         {
-            this.currentAvailableActions.MultiValueAdd(playerActionId, rTPPlayerActionToAdd);
+            this.currentAvailableActions.MultiValueAdd(rTPPlayerActionToAdd.PlayerActionType, rTPPlayerActionToAdd);
         }
-        public void RemoveActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToRemove)
+        public void RemoveActionToAvailable(RTPPlayerAction rTPPlayerActionToRemove)
         {
-            this.currentAvailableActions.MultiValueRemove(playerActionId, rTPPlayerActionToRemove);
+            this.currentAvailableActions.MultiValueRemove(rTPPlayerActionToRemove.PlayerActionType, rTPPlayerActionToRemove);
         }
-        public void IncreaseOrAddActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
+        public void IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction RTPPlayerAction, int deltaRemaining)
         {
-            this.currentAvailableActions.TryGetValue(playerActionId, out List<RTPPlayerAction> retrievedActions);
-            if (retrievedActions != null && retrievedActions.Count > 0)
+            if (RTPPlayerAction.PlayerActionType != PlayerActionType.UNCLASSIFIED)
             {
-                foreach (var action in retrievedActions)
+                this.currentAvailableActions.TryGetValue(RTPPlayerAction.PlayerActionType, out List<RTPPlayerAction> retrievedActions);
+                if (retrievedActions != null && retrievedActions.Count > 0)
                 {
-                    action.IncreaseActionRemainingExecutionAmount(deltaRemaining);
+                    foreach (var action in retrievedActions)
+                    {
+                        action.IncreaseActionRemainingExecutionAmount(deltaRemaining);
+                    }
                 }
+                else //Wa add
+                {
+                    this.currentAvailableActions.MultiValueAdd(RTPPlayerAction.PlayerActionType, RTPPlayerAction);
+                }
+
             }
             else //Wa add
             {
-                this.currentAvailableActions.MultiValueAdd(playerActionId, this.PlayerActionConfiguration.ConfigurationInherentData[playerActionId].BuildPlayerAction());
+                this.currentAvailableActions.MultiValueAdd(RTPPlayerAction.PlayerActionType, RTPPlayerAction);
             }
+
 
         }
 
-        public MultiValueDictionary<PlayerActionId, RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }
+        public MultiValueDictionary<PlayerActionType, RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }
     }
     #endregion
 

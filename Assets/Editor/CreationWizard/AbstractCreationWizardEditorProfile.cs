@@ -127,12 +127,7 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         this.creationWizardFeedLines.Add(new ConfigurationModifiedFeedLine(
             AssetDatabase.GetAssetPath(configuration), key, AssetDatabase.GetAssetPath(value)));
     }
-
-    public void AddedPlayerAction(PlayerActionId playerActionId, LevelConfiguration levelConfiguration, LevelZonesID levelZonesID)
-    {
-        this.creationWizardFeedLines.Add(new PlayerActionAddedFeedLine(levelConfiguration, playerActionId, levelZonesID));
-    }
-
+    
     public void LevelHierarchyAdded(LevelHierarchyConfiguration levelHierarchyConfiguration, LevelZonesID levelZonesID, LevelZoneChunkID addedChunkID) {
         this.creationWizardFeedLines.Add(new LevelHierarchyAddFeedLine(levelHierarchyConfiguration, levelZonesID, addedChunkID));
     }
@@ -240,36 +235,6 @@ public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
         this.configurationObject.ClearEntry(this.keySet);
     }
 
-}
-
-[System.Serializable]
-public class PlayerActionAddedFeedLine : ICreationWizardFeedLine
-{
-    [SerializeField]
-    private LevelConfiguration levelConfiguration;
-    [SerializeField]
-    private PlayerActionId playerActionId;
-    [SerializeField]
-    private LevelZonesID levelZonesID;
-
-    public PlayerActionAddedFeedLine(LevelConfiguration levelConfiguration, PlayerActionId playerActionId, LevelZonesID levelZonesID)
-    {
-        this.levelConfiguration = levelConfiguration;
-        this.playerActionId = playerActionId;
-        this.levelZonesID = levelZonesID;
-    }
-
-    public LevelConfiguration LevelConfiguration { get => levelConfiguration; }
-    public PlayerActionId PlayerActionId { get => playerActionId; }
-    public LevelZonesID LevelZonesID { get => levelZonesID; }
-
-    public void GUITick()
-    {
-        EditorGUILayout.LabelField("Added player action ID : " + this.playerActionId.ToString());
-        EditorGUI.indentLevel += 1;
-        EditorGUILayout.ObjectField(this.levelConfiguration, typeof(LevelConfiguration), false);
-        EditorGUI.indentLevel -= 1;
-    }
 }
 
 [System.Serializable]

@@ -6,13 +6,15 @@ namespace RTPuzzle
 {
     public abstract class RTPPlayerAction
     {
+        public PlayerActionType PlayerActionType;
+
         public abstract bool FinishedCondition();
         public abstract void Tick(float d);
         public abstract void LateTick(float d);
         public abstract void GUITick();
         public abstract void GizmoTick();
 
-        protected PlayerActionInherentData playerActionInherentData;
+        protected CorePlayerActionDefinition CorePlayerActionDefinition;
         private SelectionWheelNodeConfigurationData SelectionWheelNodeConfigurationData;
 
         private float onCooldownTimeElapsed;
@@ -22,16 +24,17 @@ namespace RTPuzzle
         private CooldownEventTrackerManager CooldownEventTrackerManager;
 
 
-        protected RTPPlayerAction(PlayerActionInherentData playerActionInherentData)
+        protected RTPPlayerAction(CorePlayerActionDefinition CorePlayerActionDefinition)
         {
+            this.PlayerActionType = CorePlayerActionDefinition.PlayerActionType;
             var SelectionWheelNodeConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.SelectionWheelNodeConfiguration;
-            this.SelectionWheelNodeConfigurationData = SelectionWheelNodeConfiguration.ConfigurationInherentData[playerActionInherentData.ActionWheelNodeConfigurationId];
+            this.SelectionWheelNodeConfigurationData = SelectionWheelNodeConfiguration.ConfigurationInherentData[CorePlayerActionDefinition.ActionWheelNodeConfigurationId];
 
-            this.playerActionInherentData = playerActionInherentData;
+            this.CorePlayerActionDefinition = CorePlayerActionDefinition;
 
-            //on init, it it available
-            this.onCooldownTimeElapsed = this.playerActionInherentData.CoolDownTime * 2;
-            this.remainingExecutionAmout = playerActionInherentData.ExecutionAmount;
+            //on init, it is available
+            this.onCooldownTimeElapsed = this.CorePlayerActionDefinition.CoolDownTime * 2;
+            this.remainingExecutionAmout = this.CorePlayerActionDefinition.ExecutionAmount;
         }
 
         public virtual void FirstExecution()
@@ -67,7 +70,7 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool IsOnCoolDown()
         {
-            return onCooldownTimeElapsed < this.playerActionInherentData.CoolDownTime;
+            return onCooldownTimeElapsed < this.CorePlayerActionDefinition.CoolDownTime;
         }
         public bool CanBeExecuted()
         {
@@ -79,11 +82,11 @@ namespace RTPuzzle
         #region Data Retrieval
         public float GetCooldownRemainingTime()
         {
-            return this.playerActionInherentData.CoolDownTime - onCooldownTimeElapsed;
+            return this.CorePlayerActionDefinition.CoolDownTime - onCooldownTimeElapsed;
         }
         public SelectionWheelNodeConfigurationId GetSelectionWheelConfigurationId()
         {
-            return this.playerActionInherentData.ActionWheelNodeConfigurationId;
+            return this.CorePlayerActionDefinition.ActionWheelNodeConfigurationId;
         }
         public string GetDescriptionText()
         {
