@@ -123,10 +123,10 @@ namespace RTPuzzle
 
                     CameraMovementManager.Tick(d);
 
-                    RangeObjectV2Manager.Get().Tick(d);
-
                     ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
                     RangeIntersectionCalculationManagerV2.Get().Tick(d);
+                    
+                    RangeObjectV2Manager.Get().Tick(d);
 
                     TimeFlowManager.Tick(d);
                     GameOverManager.Tick(d);
