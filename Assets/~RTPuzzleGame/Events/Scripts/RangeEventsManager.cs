@@ -6,13 +6,8 @@ namespace RTPuzzle
     {
 
         #region External dependencies
-        private GroundEffectsManagerV2 GroundEffectsManagerV2;
+        private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
         #endregion
-
-        public void Init()
-        {
-            this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
-        }
 
         #region IRangeTypeObjectEventListener
         public void RANGE_EVT_Range_Created(RangeObjectV2 RangeObjectV2)

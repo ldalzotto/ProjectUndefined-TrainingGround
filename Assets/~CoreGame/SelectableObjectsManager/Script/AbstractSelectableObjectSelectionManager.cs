@@ -32,8 +32,7 @@ namespace CoreGame
             return this.CurrentSelectedObject;
         }
         #endregion
-
-
+        
         public virtual void Init(IGameInputManager GameInputManager)
         {
             #region Exnternal Dependencies

@@ -4,38 +4,40 @@ using UnityEngine.Rendering;
 
 namespace CoreGame
 {
-    public class CircleFillBarRendererManager : MonoBehaviour
+    public class CircleFillBarRendererManager : GameSingleton<CircleFillBarRendererManager>
     {
-        public Material CircleFillBarMaterial;
-
+        #region External Dependencies
+        private CoreMaterialConfiguration CoreMaterialConfiguration;
         private CorePrefabConfiguration CorePrefabConfiguration;
+        #endregion
+
         private List<CircleFillBarType> CircleFillBarTypeToRender = new List<CircleFillBarType>();
 
-        private CommandBuffer commandBuffer;
+        public CommandBuffer CommandBuffer { get; private set; }
         private MaterialPropertyBlock materialProperty;
 
         public void Init()
         {
-            this.commandBuffer = new CommandBuffer();
-            this.commandBuffer.name = this.GetType().Name;
-
-            Camera.main.AddCommandBuffer(CameraEvent.AfterEverything, this.commandBuffer);
+            this.CommandBuffer = new CommandBuffer();
+            this.CommandBuffer.name = this.GetType().Name;
+            
             this.materialProperty = new MaterialPropertyBlock();
 
             this.CorePrefabConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration;
+            this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
         }
 
 
         public void Tick(float d)
         {
-            this.commandBuffer.Clear();
+            this.CommandBuffer.Clear();
 
             foreach (var circleFillBarType in this.CircleFillBarTypeToRender)
             {
                 if (circleFillBarType.CurrentProgression != 0f)
                 {
                     this.materialProperty.SetFloat(Shader.PropertyToID("_Progression"), circleFillBarType.CurrentProgression);
-                    this.commandBuffer.DrawMesh(this.CorePrefabConfiguration.ForwardQuadMesh, circleFillBarType.transform.localToWorldMatrix, this.CircleFillBarMaterial, 0, 0, materialProperty);
+                    this.CommandBuffer.DrawMesh(this.CorePrefabConfiguration.ForwardQuadMesh, circleFillBarType.transform.localToWorldMatrix, this.CoreMaterialConfiguration.CircleProgressionMaterial, 0, 0, materialProperty);
                 }
             }
         }

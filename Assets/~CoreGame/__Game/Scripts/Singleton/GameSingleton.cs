@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RTPuzzle
+namespace CoreGame
 {
     public interface IGameSingleton
     {

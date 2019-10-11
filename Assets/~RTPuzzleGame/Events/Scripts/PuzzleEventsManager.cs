@@ -11,7 +11,7 @@ namespace RTPuzzle
         private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
         private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent;
-        private GroundEffectsManagerV2 GroundEffectsManagerV2;
+        private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
         private PlayerActionEventManager PlayerActionEventManager;
 
         private IPlayerActionManagerEvent IPlayerActionManagerEvent;
@@ -28,7 +28,6 @@ namespace RTPuzzle
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.IDottedLineRendererManagerEvent = PuzzleGameSingletonInstances.DottedLineRendererManager;
-            this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
             this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             this.IPlayerActionManagerEvent = PuzzleGameSingletonInstances.PlayerActionManager;
             this.IPlayerActionManagerDataRetrieval = PuzzleGameSingletonInstances.PlayerActionManager;

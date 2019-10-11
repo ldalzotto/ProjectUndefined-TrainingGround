@@ -16,10 +16,8 @@ namespace CoreGame
         public Texture SelectionDotIconTexture;
         public Texture SelectionDotSwitchIconTexture;
 
-        [Header("Outline Materials")]
-        public ComputeShader OutlineImageEffectComputeShader;
-        public Material BufferScreenSampleMaterial;
-        public Material OutlineColorShader;
+        [Header("Circle Progression Material")]
+        public Material CircleProgressionMaterial;
 
         [Header("InteractionRing Materials")]
         public Material InteractionRingMaterial;

@@ -4,6 +4,10 @@ namespace CoreGame
 {
     public class CircleFillBarType : MonoBehaviour
     {
+        #region External Dependencies
+        private CircleFillBarRendererManager CircleFillBarRendererManager = CircleFillBarRendererManager.Get();
+        #endregion
+
         private Camera cam;
         private float currentProgression;
         
@@ -12,7 +16,7 @@ namespace CoreGame
         public void Init(Camera camera)
         {
             this.cam = camera;
-            CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
+            this.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
         }
 
         public void Tick(float progression)
@@ -23,14 +27,14 @@ namespace CoreGame
 
         public void OnCircleFillBarTypeEnabled()
         {
-            CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
+            this.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
         }
 
         private void OnDisable()
         {
-            if (CoreGameSingletonInstances.CircleFillBarRendererManager != null)
+            if (this.CircleFillBarRendererManager != null)
             {
-                CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeDestroyed(this);
+                this.CircleFillBarRendererManager.OnCircleFillBarTypeDestroyed(this);
             }
         }
 

@@ -10,7 +10,6 @@ namespace RTPuzzle
         private static BlockingCutscenePlayerManager blockingCutscenePlayer;
         private static PuzzleStaticConfigurationContainer puzzleStaticConfigurationContainer;
         private static DottedLineRendererManager dottedLineRendererManager;
-        private static GroundEffectsManagerV2 groundEffectsManagerV2;
         private static RangeEventsManager rangeEventsManager;
         private static PlayerActionManager playerActionManager;
         private static CooldownFeedManager cooldownFeedManager;
@@ -33,7 +32,6 @@ namespace RTPuzzle
         public static BlockingCutscenePlayerManager BlockingCutscenePlayer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(blockingCutscenePlayer, obj => blockingCutscenePlayer = obj); }
         public static PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleStaticConfigurationContainer, obj => puzzleStaticConfigurationContainer = obj); }
         public static DottedLineRendererManager DottedLineRendererManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineRendererManager, obj => dottedLineRendererManager = obj); }
-        public static GroundEffectsManagerV2 GroundEffectsManagerV2 { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(groundEffectsManagerV2, obj => groundEffectsManagerV2 = obj); }
         public static RangeEventsManager RangeEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeEventsManager, obj => rangeEventsManager = obj); }
         public static PlayerActionManager PlayerActionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionManager, obj => playerActionManager = obj); }
         public static CooldownFeedManager CooldownFeedManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cooldownFeedManager, obj => cooldownFeedManager = obj); }

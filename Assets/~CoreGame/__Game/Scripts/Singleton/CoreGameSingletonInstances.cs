@@ -23,7 +23,6 @@ namespace CoreGame
         private static CoreConfigurationManager coreConfigurationManager;
         private static PlayerManagerType playerManagerType;
         private static CoreStaticConfigurationContainer coreStaticConfigurationContainer;
-        private static CircleFillBarRendererManager circleFillBarRendererManager;
         private static AutoSaveIcon autoSaveIcon;
         private static DiscussionPositionsType discussionPositionsType;
         private static FXContainerManager fXContainerManager;
@@ -49,7 +48,6 @@ namespace CoreGame
         public static CoreConfigurationManager CoreConfigurationManager { get => FindAndSetInstanceIfNull(coreConfigurationManager, obj => coreConfigurationManager = obj); }
         public static PlayerManagerType PlayerManagerType { get => FindAndSetInstanceIfNull(playerManagerType, obj => playerManagerType = obj); }
         public static CoreStaticConfigurationContainer CoreStaticConfigurationContainer { get => FindAndSetInstanceIfNull(coreStaticConfigurationContainer, obj => coreStaticConfigurationContainer = obj); }
-        public static CircleFillBarRendererManager CircleFillBarRendererManager { get => FindAndSetInstanceIfNull(circleFillBarRendererManager, obj => circleFillBarRendererManager = obj); }
         public static AutoSaveIcon AutoSaveIcon { get => FindAndSetInstanceIfNull(autoSaveIcon, obj => autoSaveIcon = obj); }
         public static Canvas GameCanvas
         {

@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
     <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
-    <Compile Include="Assets\_Shader\FX\Outline\OutlineComputeShaderConstants.cs" />
     <Compile Include="Assets\_Shader\FX\Range\RangeShaderEditor.cs" />
     <Compile Include="Assets\~AnimationSystem\AnimationActor\AnimationActor.cs" />
     <Compile Include="Assets\~AnimationSystem\AnimationActor\Modules\AbstractAnimationActorModule.cs" />
@@ -77,6 +76,7 @@
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameLogHandler.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\CoreGameSingletonInstances.cs" />
+    <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\GameSingleton.cs" />
     <Compile Include="Assets\~CoreGame\_Collision\CollisionType.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\LayerConstants.cs" />
@@ -123,8 +123,8 @@
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
-    <Compile Include="Assets\~CoreGame\CitscleFillBar\CircleFillBarRendererManager.cs" />
-    <Compile Include="Assets\~CoreGame\CitscleFillBar\CircleFillBarType.cs" />
+    <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarRendererManager.cs" />
+    <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarType.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\Abstract\AbstractObjectDefinitionConfigurationInherentData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
@@ -259,17 +259,15 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
+    <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.hlsl" />
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
-    <None Include="Assets\~CoreGame\CitscleFillBar\CircleBar.shader" />
-    <None Include="Assets\_Shader\FX\Outline\OutlineColorWriteShader.shader" />
+    <None Include="Assets\~CoreGame\CircleFillBar\CircleBar.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2Include.cginc" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
-    <None Include="Assets\_Shader\FX\Outline\BufferScreenSampleShader.shader" />
-    <None Include="Assets\_Shader\FX\Outline\RangeEdgeImageEffectComputeShader.compute" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2VertexDisplacement.cginc" />
     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
@@ -291,6 +289,9 @@
     </Reference>
     <Reference Include="Unity.InputSystem">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.InputSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

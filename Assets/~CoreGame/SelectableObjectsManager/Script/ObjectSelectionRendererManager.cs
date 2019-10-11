@@ -7,16 +7,17 @@ namespace CoreGame
     {
         private SelectableObjectIconAnimation SelectableObjectIconAnimation;
         private CoreMaterialConfiguration CoreMaterialConfiguration;
-        private CommandBuffer commandBufer;
+        public CommandBuffer CommandBufer { get; private set; }
 
         private MaterialPropertyBlock SelectionDoticonMaterialProperty;
 
         public ObjectSelectionRendererManager(CoreMaterialConfiguration CoreMaterialConfiguration)
         {
             this.CoreMaterialConfiguration = CoreMaterialConfiguration;
-            this.commandBufer = new CommandBuffer();
-            this.commandBufer.name = this.GetType().Name;
-            Camera.main.AddCommandBuffer(CameraEvent.AfterForwardAlpha, this.commandBufer);
+            this.CommandBufer = new CommandBuffer();
+            this.CommandBufer.name = this.GetType().Name;
+
+            //Camera.main.AddCommandBuffer(CameraEvent.AfterForwardAlpha, this.commandBufer);
 
             this.SelectableObjectIconAnimation = new SelectableObjectIconAnimation();
             this.SelectionDoticonMaterialProperty = new MaterialPropertyBlock();
@@ -25,7 +26,7 @@ namespace CoreGame
 
         public void Tick(float d, ISelectable currentSelectedObject, bool hasMultipleAvailableSelectionObjects)
         {
-            this.commandBufer.Clear();
+            this.CommandBufer.Clear();
 
             if (currentSelectedObject != null)
             {
@@ -46,7 +47,7 @@ namespace CoreGame
                     var targetTransform = currentSelectedObject.GetTransform();
 
                     //icon
-                    this.commandBufer.DrawMesh(this.CoreMaterialConfiguration.ForwardPlane,
+                    this.CommandBufer.DrawMesh(this.CoreMaterialConfiguration.ForwardPlane,
                         Matrix4x4.TRS(targetTransform.position + Vector3.Project(new Vector3(0, averageBoundsLocalSpace.SideDistances.y * 0.5f, 0), targetTransform.up),
                          Quaternion.LookRotation(Camera.main.transform.position - targetTransform.position) * Quaternion.Euler(0, 0, this.SelectableObjectIconAnimation.GetRotationAngleDeg()), Vector3.one * this.SelectableObjectIconAnimation.GetIconScale()),
                                 this.CoreMaterialConfiguration.SelectionDoticonMaterial,

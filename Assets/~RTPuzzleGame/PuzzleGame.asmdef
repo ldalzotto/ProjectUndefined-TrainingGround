@@ -5,7 +5,8 @@
         "Editor_Common",
         "OdinSerializer",
         "GameConfigurationID",
-        "Unity.Burst"
+        "Unity.Burst",
+        "Unity.RenderPipelines.Lightweight.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

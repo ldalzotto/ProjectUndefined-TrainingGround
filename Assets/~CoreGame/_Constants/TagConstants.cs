@@ -6,4 +6,5 @@
     public const string ADVENTURE_CANVAS = "AdventureCanvas";
     public const string PUZZLE_CANVAS = "PuzzleCanvas";
     public const string START_MENU_CANVAS = "StartMenuCanvas";
+    public const string ROOT_CHUNK_ENVIRONMENT = "RootChunkEnvironment";
 }

@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using CoreGame;
+using RTPuzzle;
 
 namespace InteractiveObjectTest
 {

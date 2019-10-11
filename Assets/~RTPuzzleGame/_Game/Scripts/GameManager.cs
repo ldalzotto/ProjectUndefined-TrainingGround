@@ -15,14 +15,12 @@ namespace RTPuzzle
 
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
-        private GroundEffectsManagerV2 GroundEffectsManagerV2;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
         private CameraMovementManager CameraMovementManager;
-        private CircleFillBarRendererManager CircleFillBarRendererManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private TutorialManager TutorialManager;
@@ -54,13 +52,11 @@ namespace RTPuzzle
 
             PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
             TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
-            GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
             TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
             GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
             DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
-            CircleFillBarRendererManager = CoreGameSingletonInstances.CircleFillBarRendererManager;
             PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
@@ -73,10 +69,8 @@ namespace RTPuzzle
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var LevelManager = CoreGameSingletonInstances.LevelManager;
 
-
             CameraMovementManager.Init();
-            GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
-            PuzzleGameSingletonInstances.RangeEventsManager.Init();
+            GroundEffectsManagerV2.Get().Init(LevelManager.GetCurrentLevel());
 
             RangeObjectV2Manager.Get().Init();
             InteractiveObjectV2Manager.Get().Init();
@@ -91,7 +85,7 @@ namespace RTPuzzle
             TimeFlowPlayPauseManager.Init();
             PuzzleGameSingletonInstances.LevelCompletionManager.Init();
             DottedLineRendererManager.Init();
-            CircleFillBarRendererManager.Init();
+            CircleFillBarRendererManager.Get().Init();
             PuzzleTutorialEventSender.Init();
             TutorialManager.Init();
             InteractiveObjectSelectionManager.Init(CoreGameSingletonInstances.GameInputManager);
@@ -148,10 +142,10 @@ namespace RTPuzzle
                     InteractiveObjectV2Manager.Get().AfterTicks();
 
                     PuzzleDiscussionManager.Tick(d);
-                    GroundEffectsManagerV2.Tick(d);
+                    GroundEffectsManagerV2.Get().Tick(d);
                     DottedLineRendererManager.Tick();
                     InteractiveObjectSelectionManager.Tick(d);
-                    CircleFillBarRendererManager.Tick(d);
+                    CircleFillBarRendererManager.Get().Tick(d);
                 }
 
 #if UNITY_EDITOR

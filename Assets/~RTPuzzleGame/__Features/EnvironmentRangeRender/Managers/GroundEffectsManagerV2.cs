@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.Rendering;
 namespace RTPuzzle
 {
 
-    public class GroundEffectsManagerV2 : MonoBehaviour
+    public class GroundEffectsManagerV2 : GameSingleton<GroundEffectsManagerV2>
     {
 
         #region External Dependencies
@@ -20,7 +21,7 @@ namespace RTPuzzle
         #endregion
 
         #region Command Buffers
-        private CommandBuffer rangeDrawCommand;
+        public CommandBuffer RangeDrawCommand { get; private set; }
         #endregion
 
         private Material MasterRangeMaterial;
@@ -41,6 +42,7 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         public Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>> RangeRenderDatas { get => rangeRenderDatas; }
 #endif
+
         public void Init(LevelZonesID currentLevelID)
         {
             #region Init Values
@@ -53,14 +55,11 @@ namespace RTPuzzle
             #endregion
 
             this.MasterRangeMaterial = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleMaterialConfiguration.MasterRangeMaterial;
+            
+            this.RangeDrawCommand = new CommandBuffer();
+            this.RangeDrawCommand.name = this.GetType().Name + "." + nameof(this.RangeDrawCommand);
 
-            var camera = Camera.main;
-
-            this.rangeDrawCommand = new CommandBuffer();
-            this.rangeDrawCommand.name = this.GetType().Name + "." + nameof(this.rangeDrawCommand);
-            camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.rangeDrawCommand);
-
-            AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>().ToList();
+            AffectedGroundEffectsType = GameObject.FindObjectsOfType<GroundEffectType>().ToList();
             foreach (var affectedGroundEffectType in AffectedGroundEffectsType)
             {
                 affectedGroundEffectType.Init();
@@ -71,7 +70,7 @@ namespace RTPuzzle
             StaticBatchingUtility.Combine(
                     AffectedGroundEffectsType.ConvertAll(groundEffectType => groundEffectType.gameObject)
                     .Union(AffectedGroundEffectsType.ConvertAll(groundEffectType => groundEffectType.AssociatedGroundEffectIgnoredGroundObjectType).SelectMany(s => s).ToList().ConvertAll(groundEffectIgnoredObject => groundEffectIgnoredObject.gameObject))
-                    .ToArray(), this.gameObject);
+                    .ToArray(), GameObject.FindWithTag(TagConstants.ROOT_CHUNK_ENVIRONMENT));
 
             //master range shader color level adjuster
             var LevelRangeEffectInherentData = PuzzleGameConfigurationManager.LevelConfiguration()[currentLevelID].LevelRangeEffectInherentData;
@@ -82,14 +81,10 @@ namespace RTPuzzle
         public void Tick(float d)
         {
             Profiler.BeginSample("GroundEffectsManagerV2Tick");
-
-            foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
+            this.ForEachRangeRenderData((rangeRenderData) =>
             {
-                if (RangeRenderData != null)
-                {
-                    RangeRenderData.Tick(d, this.AffectedGroundEffectsType);
-                }
-            }
+                rangeRenderData.Tick(d, this.AffectedGroundEffectsType);
+            });
 
             #region Buffer data set
             this.OnCommandBufferUpdate();
@@ -100,20 +95,32 @@ namespace RTPuzzle
         }
 
 
-        private void OnCommandBufferUpdate()
+        public void ForEachRangeRenderData(Action<AbstractRangeRenderData> action)
         {
-            this.rangeDrawCommand.Clear();
-            this.rangeDrawCommand.BeginSample("rangeDrawCommand");
-
-            foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
+            if (this.rangeRenderDatas != null)
             {
-                if (RangeRenderData != null)
+                foreach (var rangeRenderDatasByCollider in this.rangeRenderDatas.Values)
                 {
-                    RangeRenderData.ProcessCommandBuffer(this.rangeDrawCommand, ref this.AffectedGroundEffectsType, this.MasterRangeMaterial);
+                    foreach (var rangeRenderData in rangeRenderDatasByCollider.Values)
+                    {
+                        if (rangeRenderData != null)
+                        {
+                            action.Invoke(rangeRenderData);
+                        }
+                    }
                 }
             }
+        }
 
-            this.rangeDrawCommand.EndSample("rangeDrawCommand");
+        public void OnCommandBufferUpdate()
+        {
+            this.RangeDrawCommand.Clear();
+            this.RangeDrawCommand.BeginSample("rangeDrawCommand");
+            this.ForEachRangeRenderData((rangeRenderData) =>
+            {
+                rangeRenderData.ProcessCommandBuffer(this.RangeDrawCommand, ref this.AffectedGroundEffectsType, this.MasterRangeMaterial);
+            });
+            this.RangeDrawCommand.EndSample("rangeDrawCommand");
         }
 
 
@@ -156,16 +163,10 @@ namespace RTPuzzle
         public void OnLevelExit()
         {
             //release buffers
-            if (this.rangeRenderDatas != null)
+            this.ForEachRangeRenderData((rangeRenderData) =>
             {
-                foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
-                {
-                    if (RangeRenderData != null)
-                    {
-                        RangeRenderData.Dispose();
-                    }
-                }
-            }
+                rangeRenderData.Dispose();
+            });
 
         }
 
@@ -182,8 +183,9 @@ namespace RTPuzzle
             }
         }
 
-        private void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
             this.OnLevelExit();
         }
         #endregion
