@@ -6,7 +6,7 @@ namespace InteractiveObjectTest
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "AIInteractiveObjectTestInitializerData", menuName = "Test/AIInteractiveObjectTestInitializerData", order = 1)]
-    public class AIInteractiveObjectTestInitializerData : A_AIInteractiveObjectInitializerData
+    public class AIInteractiveObjectTestInitializerData : AbstractAIInteractiveObjectInitializerData
     {
         [Inline(CreateAtSameLevelIfAbsent = true)]
         public AIPatrolSystemDefinition AIPatrolSystemDefinition;

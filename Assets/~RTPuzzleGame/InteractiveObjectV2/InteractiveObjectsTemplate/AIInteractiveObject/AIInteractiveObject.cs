@@ -3,7 +3,7 @@ using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
-    public abstract class A_AIInteractiveObject<INIT> : CoreInteractiveObject where INIT : A_AIInteractiveObjectInitializerData
+    public abstract class A_AIInteractiveObject<INIT> : CoreInteractiveObject where INIT : AbstractAIInteractiveObjectInitializerData
     {
         protected INIT AIInteractiveObjectInitializerData;
 

@@ -162,11 +162,13 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AITestDisarmLocalCutscene.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AbstractAIInteractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectState.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AttractiveInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AttractiveInteractiveObjectInitializer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\ObstacleInteractiveObject\ObstacleInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\ObstacleInteractiveObject\ObstacleInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\PlayerInteractiveObject\PlayerInteractiveObject.cs" />
@@ -180,6 +182,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\DisarmobjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LevelCompletionZoneSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LocalCutscenePlayerSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystem.cs" />

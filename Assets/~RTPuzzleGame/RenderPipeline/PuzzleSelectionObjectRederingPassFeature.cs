@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.LWRP;
-using CoreGame;
 
 namespace RTPuzzle
 {
@@ -18,7 +18,7 @@ namespace RTPuzzle
             {
 
                 var levelManager = CoreGameSingletonInstances.LevelManager;
-                if (levelManager.CurrentLevelType == LevelType.PUZZLE)
+                if (levelManager != null && levelManager.CurrentLevelType == LevelType.PUZZLE)
                 {
                     var interactiveObjectSelectionManager = InteractiveObjectSelectionManager.Get();
                     if (interactiveObjectSelectionManager.InteractiveObjectSelectionRendererManager != null

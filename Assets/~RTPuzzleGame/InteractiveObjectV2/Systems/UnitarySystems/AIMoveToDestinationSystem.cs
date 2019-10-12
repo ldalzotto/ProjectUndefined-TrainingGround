@@ -14,7 +14,7 @@ namespace InteractiveObjectTest
         private AISpeedEventDispatcher AISpeedEventDispatcher;
         private AIDestinationMoveManager AIDestinationMoveManager;
 
-        public AIMoveToDestinationSystem(CoreInteractiveObject CoreInteractiveObject, A_AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData,
+        public AIMoveToDestinationSystem(CoreInteractiveObject CoreInteractiveObject, AbstractAIInteractiveObjectInitializerData AIInteractiveObjectInitializerData,
             OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached)
         {
             this.AIDestinationMoveManager = new AIDestinationMoveManager(CoreInteractiveObject.InteractiveGameObject.Agent, AIInteractiveObjectInitializerData, OnAIInteractiveObjectDestinationReached);
@@ -57,7 +57,7 @@ namespace InteractiveObjectTest
         private OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached;
         private NavMeshAgent objectAgent;
 
-        public AIDestinationMoveManager(NavMeshAgent objectAgent, A_AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData, OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached)
+        public AIDestinationMoveManager(NavMeshAgent objectAgent, AbstractAIInteractiveObjectInitializerData AIInteractiveObjectInitializerData, OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached)
         {
             this.objectAgent = objectAgent;
             this.lastSuccessfulWorldDestination = new Vector3(9999999, 99999999, 9999999);
@@ -67,7 +67,7 @@ namespace InteractiveObjectTest
         }
 
         #region Configuration Data
-        private A_AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData;
+        private AbstractAIInteractiveObjectInitializerData AIInteractiveObjectInitializerData;
         #endregion
 
         #region State
@@ -226,9 +226,9 @@ namespace InteractiveObjectTest
     class AISpeedEventDispatcher
     {
         private CoreInteractiveObject AssociatedInteractiveObject;
-        private A_AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData;
+        private AbstractAIInteractiveObjectInitializerData AIInteractiveObjectInitializerData;
 
-        public AISpeedEventDispatcher(CoreInteractiveObject associatedInteractiveObject, A_AIInteractiveObjectInitializerData aIInteractiveObjectInitializerData)
+        public AISpeedEventDispatcher(CoreInteractiveObject associatedInteractiveObject, AbstractAIInteractiveObjectInitializerData aIInteractiveObjectInitializerData)
         {
             AssociatedInteractiveObject = associatedInteractiveObject;
             AIInteractiveObjectInitializerData = aIInteractiveObjectInitializerData;

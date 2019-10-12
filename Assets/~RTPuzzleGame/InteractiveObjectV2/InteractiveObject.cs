@@ -61,6 +61,10 @@ namespace InteractiveObjectTest
         protected virtual void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
         #endregion
 
+        #region Level Completion Zone Events
+        protected virtual void OnLevelCompletionTriggerEnterPlayer(CoreInteractiveObject IntersectedInteractiveObject) { }
+        #endregion
+
         #region Selection Object Events
         protected virtual RTPPlayerAction ProvideSelectableObjectPlayerAction(PlayerInteractiveObject PlayerInteractiveObject) { return default; }
         #endregion
@@ -82,6 +86,7 @@ namespace InteractiveObjectTest
         public bool IsAi;
         public bool IsObstacle;
         public bool IsPlayer;
+        public bool IsLevelCompletionZone;
     }
 
     [System.Serializable]
@@ -91,13 +96,15 @@ namespace InteractiveObjectTest
         public int IsAi;
         public int IsObstacle;
         public int IsPlayer;
+        public int IsLevelCompletionZone;
 
-        public InteractiveObjectTagStruct(int isAttractiveObject = -1, int isAi = -1, int isObstacle = -1, int isPlayer = -1)
+        public InteractiveObjectTagStruct(int isAttractiveObject = -1, int isAi = -1, int isObstacle = -1, int isPlayer = -1, int isLevelCompletionZone = -1)
         {
             IsAttractiveObject = isAttractiveObject;
             IsAi = isAi;
             IsObstacle = isObstacle;
             IsPlayer = isPlayer;
+            IsLevelCompletionZone = isLevelCompletionZone;
         }
 
         public bool Compare(InteractiveObjectTag InteractiveObjectTag)
@@ -105,7 +112,8 @@ namespace InteractiveObjectTest
             return (this.IsAttractiveObject == -1 || this.IsAttractiveObject == Convert.ToInt32(InteractiveObjectTag.IsAttractiveObject))
                 && (this.IsAi == -1 || this.IsAi == Convert.ToInt32(InteractiveObjectTag.IsAi))
                 && (this.IsObstacle == -1 || this.IsObstacle == Convert.ToInt32(InteractiveObjectTag.IsObstacle))
-                && (this.IsPlayer == -1 || this.IsPlayer == Convert.ToInt32(InteractiveObjectTag.IsPlayer));
+                && (this.IsPlayer == -1 || this.IsPlayer == Convert.ToInt32(InteractiveObjectTag.IsPlayer))
+                && (this.IsLevelCompletionZone == -1 || this.IsLevelCompletionZone == Convert.ToInt32(InteractiveObjectTag.IsLevelCompletionZone));
         }
     }
 }
