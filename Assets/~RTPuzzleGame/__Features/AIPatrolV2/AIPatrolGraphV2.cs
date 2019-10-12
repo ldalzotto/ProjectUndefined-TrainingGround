@@ -11,12 +11,6 @@ namespace RTPuzzle
     public abstract class AIPatrolGraphV2 : SerializedScriptableObject
     {
         public Vector3 RootWorldPosition;
-        protected CoreInteractiveObject InvolvedInteractiveObject;
-
-        public void Init(CoreInteractiveObject CoreInteractiveObject)
-        {
-            this.InvolvedInteractiveObject = CoreInteractiveObject;
-        }
 
         protected TransformStruct TransformToWorldPosition(TransformStruct AIPatrolGraphPosition)
         {
@@ -27,7 +21,7 @@ namespace RTPuzzle
                 WorldRotation = AIPatrolGraphPosition.WorldRotation
             };
         }
-        public abstract List<SequencedAction> AIPatrolGraphActions();
+        public abstract List<SequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject);
 
         protected AIMoveToActionV2 CreateAIMoveToActionV2(CoreInteractiveObject InvolvedInteractiveObject, AIMoveToActionInputData AIMoveToActionInputData, List<SequencedAction> nextActions)
         {

@@ -5,7 +5,7 @@ namespace InteractiveObjectTest
     [System.Serializable]
     public class LevelCompletionZoneSystemDefinition
     {
-        public BoxRangeTypeDefinition BoxRangeTypeDefinition;
+        public RangeObjectInitialization TriggerRangeObjectInitialization;
     }
 
     #region Callback Events
@@ -17,15 +17,13 @@ namespace InteractiveObjectTest
         private RangeObjectV2 LevelCompletionZoneObject;
 
         public LevelCompletionZoneSystem(CoreInteractiveObject AssociatedInteractiveObject, LevelCompletionZoneSystemDefinition LevelCompletionZoneSystemDefinition,
+            InteractiveObjectTagStruct ComparedInteractiveObjectTagStruct,
             OnLevelCompletionTriggerEnterPlayerDelegate OnLevelCompletionTriggerEnterPlayer)
         {
-            this.LevelCompletionZoneObject = new BoxRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent,
-                new BoxRangeObjectInitialization
-                {
-                    RangeTypeID = GameConfigurationID.RangeTypeID.TARGET_ZONE,
-                    BoxRangeTypeDefinition = LevelCompletionZoneSystemDefinition.BoxRangeTypeDefinition
-                }, AssociatedInteractiveObject, "LevelCompletionZoneListener");
-            this.LevelCompletionZoneObject.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new LevelCompletionZonePhysicsListener(OnLevelCompletionTriggerEnterPlayer) });
+            this.LevelCompletionZoneObject = RangeObjectV2Builder.Build(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent,
+              LevelCompletionZoneSystemDefinition.TriggerRangeObjectInitialization, AssociatedInteractiveObject, "LevelCompletionZoneListener");
+            this.LevelCompletionZoneObject.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new LevelCompletionZonePhysicsListener(ComparedInteractiveObjectTagStruct,
+                OnLevelCompletionTriggerEnterPlayer) });
         }
 
         public override void OnDestroy()
@@ -40,10 +38,11 @@ namespace InteractiveObjectTest
 
         private OnLevelCompletionTriggerEnterPlayerDelegate OnLevelCompletionTriggerEnterPlayer;
 
-        public LevelCompletionZonePhysicsListener(OnLevelCompletionTriggerEnterPlayerDelegate OnLevelCompletionTriggerEnterPlayer)
+        public LevelCompletionZonePhysicsListener(InteractiveObjectTagStruct ComparedInteractiveObjectTagStruct, 
+            OnLevelCompletionTriggerEnterPlayerDelegate OnLevelCompletionTriggerEnterPlayer)
         {
             this.OnLevelCompletionTriggerEnterPlayer = OnLevelCompletionTriggerEnterPlayer;
-            this.ComparedInteractiveObjectTagStruct = new InteractiveObjectTagStruct { IsPlayer = 1 };
+            this.ComparedInteractiveObjectTagStruct = ComparedInteractiveObjectTagStruct;
         }
 
         public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)

@@ -64,7 +64,6 @@ namespace InteractiveObjectTest
 
     class AttractiveObjectV2IntersectionManagerV2 : ARangeIntersectionV2Listener
     {
-        private CoreInteractiveObject SelfInteractiveObject;
         private InteractiveObjectTagStruct InteractiveObjectSelectionGuard;
 
         private OnAssociatedAttractiveSystemJustIntersectedDelegate OnAttractiveSystemJustIntersected;

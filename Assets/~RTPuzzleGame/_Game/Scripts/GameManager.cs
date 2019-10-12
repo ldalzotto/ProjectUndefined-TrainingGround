@@ -81,7 +81,6 @@ namespace RTPuzzle
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
-            PuzzleGameSingletonInstances.LevelCompletionManager.Init();
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Get().Init();
             PuzzleTutorialEventSender.Init();

@@ -6,6 +6,7 @@ namespace InteractiveObjectTest
     [System.Serializable]
     public class AIInteractiveObjectTestInitializer : A_InteractiveObjectInitializer
     {
+        [Inline()]
         public AIInteractiveObjectTestInitializerData AIInteractiveObjectTestInitializerData;
 
         protected override CoreInteractiveObject GetInteractiveObject()

@@ -149,9 +149,9 @@ namespace InteractiveObjectTest
             if (!this.AIDisarmObjectState.IsDisarming)
             {
                 this.AIPatrollingState.isPatrolling = false;
-                if (IntersectedInteractiveObject.InteractiveObjectTag.IsAttractiveObject && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
+                this.SwitchToAttractedState(IntersectedInteractiveObject);
+                if (!this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
                 {
-                    this.SwitchToAttractedState(IntersectedInteractiveObject);
                     this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, IntersectedInteractiveObject);
                 }
             }

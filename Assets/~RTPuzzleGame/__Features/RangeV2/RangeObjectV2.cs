@@ -153,4 +153,24 @@ namespace RTPuzzle
     {
         SPHERE, BOX, FRUSTUM, ROUNDED_FRUSTUM
     }
+
+    public static class RangeObjectV2Builder
+    {
+        public static RangeObjectV2 Build(GameObject AssociatedGameObject, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
+        {
+            switch (RangeObjectInitialization)
+            {
+                case SphereRangeObjectInitialization SphereRangeObjectInitialization:
+                    return new SphereRangeObjectV2(AssociatedGameObject, SphereRangeObjectInitialization, AssociatedInteractiveObject, objectName);
+                case BoxRangeObjectInitialization BoxRangeObjectInitialization:
+                    return new BoxRangeObjectV2(AssociatedGameObject, BoxRangeObjectInitialization, AssociatedInteractiveObject, objectName);
+                case FrustumRangeObjectInitialization FrustumRangeObjectInitialization:
+                    return new FrustumRangeObjectV2(AssociatedGameObject, FrustumRangeObjectInitialization, AssociatedInteractiveObject, objectName);
+                case RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization:
+                    return new RoundedFrustumRangeObjectV2(AssociatedGameObject, RoundedFrustumRangeObjectInitialization, AssociatedInteractiveObject, objectName);
+            }
+
+            return null;
+        }
+    }
 }

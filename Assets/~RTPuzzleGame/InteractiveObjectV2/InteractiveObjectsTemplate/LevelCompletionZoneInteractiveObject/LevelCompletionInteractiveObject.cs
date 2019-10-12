@@ -1,15 +1,20 @@
-﻿using UnityEngine;
+﻿using RTPuzzle;
+using UnityEngine;
 
 namespace InteractiveObjectTest
 {
     public class LevelCompletionInteractiveObject : CoreInteractiveObject
     {
+        #region External Dependencies
+        private LevelCompletionManager LevelCompletionManager = LevelCompletionManager.Get();
+        #endregion
+
         private LevelCompletionZoneSystem LevelCompletionZoneSystem;
 
         public LevelCompletionInteractiveObject(LevelCompletionInitializerData LevelCompletionInitializerData,
             InteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true) : base(interactiveGameObject, IsUpdatedInMainManager)
         {
-            this.LevelCompletionZoneSystem = new LevelCompletionZoneSystem(this, LevelCompletionInitializerData.LevelCompletionZoneSystemDefinition,
+            this.LevelCompletionZoneSystem = new LevelCompletionZoneSystem(this, LevelCompletionInitializerData.LevelCompletionZoneSystemDefinition, new InteractiveObjectTagStruct { IsPlayer = 1 },
                 this.OnLevelCompletionTriggerEnterPlayer);
             this.InteractiveObjectTag = new InteractiveObjectTag { IsLevelCompletionZone = true };
         }
@@ -22,7 +27,7 @@ namespace InteractiveObjectTest
 
         protected override void OnLevelCompletionTriggerEnterPlayer(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            Debug.Log("TRY LEVEL COMPLETION");
+            LevelCompletionManager.OnLevelCompleted();
         }
     }
 

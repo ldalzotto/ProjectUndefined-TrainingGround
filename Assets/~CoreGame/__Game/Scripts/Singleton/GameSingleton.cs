@@ -6,7 +6,7 @@ namespace CoreGame
     {
         void OnDestroy();
     }
-    public abstract class GameSingleton<T> : IGameSingleton where T : IGameSingleton, new() 
+    public abstract class GameSingleton<T> : IGameSingleton where T : IGameSingleton, new()
     {
         private static T Instance;
         public static T Get()
@@ -43,9 +43,12 @@ namespace CoreGame
 
         public void OnDestroy()
         {
-            foreach(var gameSingleton in this.AllGameSingletons)
+            foreach (var gameSingleton in this.AllGameSingletons)
             {
-                gameSingleton.OnDestroy();
+                if (gameSingleton != null)
+                {
+                    gameSingleton.OnDestroy();
+                }
             }
             Instance = null;
         }

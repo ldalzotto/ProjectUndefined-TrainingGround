@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using static InteractiveObjectTest.AIMovementDefinitions;
@@ -95,7 +96,7 @@ namespace InteractiveObjectTest
                 }
             }
         }
-        
+
         public void Tick(float d, float timeAttenuationFactor)
         {
             this.CurrentTimeAttenuated = d * timeAttenuationFactor;
@@ -113,9 +114,9 @@ namespace InteractiveObjectTest
             if (this.lastSuccessfulWorldDestination != AIDestination.WorldPosition)
             {
                 this.currentDestination = AIDestination;
-                NavMeshPath path = new NavMeshPath();
                 objectAgent.ResetPath();
-                objectAgent.CalculatePath(AIDestination.WorldPosition, path);
+                NavMeshPath path = CreateValidNavMeshPathWithFallback(objectAgent, AIDestination.WorldPosition, 50);
+
                 objectAgent.SetPath(path);
 
                 //If direction change is occuring when current destination has been reached
@@ -220,6 +221,19 @@ namespace InteractiveObjectTest
             objectAgent.nextPosition = pathHit.position;
         }
 
+        private static NavMeshPath CreateValidNavMeshPathWithFallback(NavMeshAgent agent, Vector3 WorldDestination, float fallbackNearestPointDistance)
+        {
+            var path = new NavMeshPath();
+            agent.CalculatePath(WorldDestination, path);
+            if (path.status == NavMeshPathStatus.PathInvalid)
+            {
+                if (Physics.Raycast(WorldDestination, WorldDestination + (Vector3.down * fallbackNearestPointDistance), out RaycastHit hit, fallbackNearestPointDistance, 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER)))
+                {
+                    agent.CalculatePath(hit.point, path);
+                }
+            }
+            return path;
+        }
 
     }
 

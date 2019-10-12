@@ -18,7 +18,6 @@ namespace RTPuzzle
         private static PuzzleTutorialEventSender puzzleTutorialEventSender;
         private static TimeFlowBarManager timeFlowBarManager;
         private static PlayerActionEventManager playerActionEventManager;
-        private static LevelCompletionManager levelCompletionManager;
         private static PuzzleDebugModule puzzleDebugModule;
         private static SelectionWheel puzzleSelectionWheel;
         private static DottedLineContainer dottedLineContainer;
@@ -39,7 +38,6 @@ namespace RTPuzzle
         public static PuzzleTutorialEventSender PuzzleTutorialEventSender { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleTutorialEventSender, obj => puzzleTutorialEventSender = obj); }
         public static TimeFlowBarManager TimeFlowBarManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowBarManager, obj => timeFlowBarManager = obj); }
         public static PlayerActionEventManager PlayerActionEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionEventManager, obj => playerActionEventManager = obj); }
-        public static LevelCompletionManager LevelCompletionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(levelCompletionManager, obj => levelCompletionManager = obj); }
         public static PuzzleDebugModule PuzzleDebugModule { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDebugModule, obj => puzzleDebugModule = obj); }
         public static SelectionWheel PuzzleSelectionWheel { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleSelectionWheel, obj => puzzleSelectionWheel = obj); }
         public static DottedLineContainer DottedLineContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineContainer, obj => dottedLineContainer = obj); }
