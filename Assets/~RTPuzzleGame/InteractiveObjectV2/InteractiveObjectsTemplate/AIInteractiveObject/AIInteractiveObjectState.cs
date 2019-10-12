@@ -1,91 +1,35 @@
 ﻿namespace InteractiveObjectTest
 {
-    public struct AIAttractiveObjectState
+    public class AIAttractiveObjectState
     {
-        public delegate void OnAIIsJustAttractedByAttractiveObjectDelegate(CoreInteractiveObject AttractedInteractiveObject);
-        public delegate void OnAIisNoMoreAttractedByAttractiveObjectDelegate(CoreInteractiveObject AttractedInteractiveObject);
+        public CoreInteractiveObject AttractedInteractiveObject { get; private set; }
+        public BoolVariable IsAttractedByAttractiveObject { get; private set; }
 
-        private OnAIIsJustAttractedByAttractiveObjectDelegate OnAIIsJustAttractedByAttractiveObject;
-        private OnAIisNoMoreAttractedByAttractiveObjectDelegate OnAIisNoMoreAttractedByAttractiveObject;
-
-        private CoreInteractiveObject AttractedInteractiveObject;
-
-        public AIAttractiveObjectState(OnAIIsJustAttractedByAttractiveObjectDelegate onAIIsJustAttractedByAttractiveObject, OnAIisNoMoreAttractedByAttractiveObjectDelegate onAIisNoMoreAttractedByAttractiveObject)
+        public AIAttractiveObjectState(BoolVariable isAttractedByAttractiveObject)
         {
-            OnAIIsJustAttractedByAttractiveObject = onAIIsJustAttractedByAttractiveObject;
-            OnAIisNoMoreAttractedByAttractiveObject = onAIisNoMoreAttractedByAttractiveObject;
-            this.IsAttractedByAttractiveObject = false;
-            this.AttractedInteractiveObject = null;
+            IsAttractedByAttractiveObject = isAttractedByAttractiveObject;
         }
-
-        public bool IsAttractedByAttractiveObject { get; private set; }
 
         public void SetIsAttractedByAttractiveObject(bool value, CoreInteractiveObject AttractedInteractiveObject)
         {
-            bool hasChanged = this.IsAttractedByAttractiveObject != value;
-            bool changedTo = value;
-            this.IsAttractedByAttractiveObject = value;
-
-            if (value) { this.AttractedInteractiveObject = AttractedInteractiveObject; }
-
-            if (hasChanged)
-            {
-                if (changedTo)
-                {
-                    this.OnAIIsJustAttractedByAttractiveObject.Invoke(this.AttractedInteractiveObject);
-                }
-                else
-                {
-                    this.OnAIisNoMoreAttractedByAttractiveObject.Invoke(this.AttractedInteractiveObject);
-                }
-            }
+            this.AttractedInteractiveObject = AttractedInteractiveObject;
+            this.IsAttractedByAttractiveObject.SetValue(value);
         }
     }
 
-    public struct AIDisarmObjectState
+    public class AIDisarmObjectState
     {
-        public delegate void OnAIIsJustDisarmingObjectDelegate();
-        public delegate void OnAIIsNoMoreJustDisarmingObjectDelegate();
+        public BoolVariable IsDisarming { get; private set; }
 
-        private OnAIIsJustDisarmingObjectDelegate OnAIIsJustDisarmingObject;
-        private OnAIIsNoMoreJustDisarmingObjectDelegate OnAIIsNoMoreJustDisarmingObject;
-
-        public AIDisarmObjectState(OnAIIsJustDisarmingObjectDelegate onAIIsJustDisarmingObject, OnAIIsNoMoreJustDisarmingObjectDelegate onAIIsNoMoreJustDisarmingObject)
+        public AIDisarmObjectState(BoolVariable IsDisarming)
         {
-            this.OnAIIsJustDisarmingObject = onAIIsJustDisarmingObject;
-            this.OnAIIsNoMoreJustDisarmingObject = onAIIsNoMoreJustDisarmingObject;
-            this.isDisarming = false;
-        }
-
-        private bool isDisarming;
-
-        public bool IsDisarming
-        {
-            get => isDisarming;
-            set
-            {
-                bool hasChanged = this.isDisarming != value;
-                bool changedTo = value;
-                this.isDisarming = value;
-                if (hasChanged)
-                {
-                    if (changedTo)
-                    {
-                        this.OnAIIsJustDisarmingObject.Invoke();
-                    }
-                    else
-                    {
-                        this.OnAIIsNoMoreJustDisarmingObject.Invoke();
-                    }
-                }
-            }
+            this.IsDisarming = IsDisarming;
         }
     }
 
 
-    public struct AIPatrollingState
+    public class AIPatrollingState
     {
         public bool isPatrolling;
     }
-
 }

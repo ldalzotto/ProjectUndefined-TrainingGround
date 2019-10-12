@@ -199,6 +199,7 @@
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Text\GeneratedTextParameter.cs" />
     <Compile Include="Assets\~CoreGame\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
+    <Compile Include="Assets\~CoreGame\EventVariables\BoolVariable.cs" />
     <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />

@@ -17,8 +17,9 @@ namespace InteractiveObjectTest
 
         public AIInteractiveObjectTest(InteractiveGameObject interactiveGameObject, AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
         {
-            this.AIAttractiveObjectState = new AIAttractiveObjectState(this.OnAIIsJustAttractedByAttractiveObject, this.OnAIIsNoMoreAttractedByAttractiveObject);
-            this.AIDisarmObjectState = new AIDisarmObjectState(this.OnAIIsJustDisarmingObject, this.OnAIIsNoMoreJustDisarmingObject);
+            this.AIPatrollingState = new AIPatrollingState();
+            this.AIAttractiveObjectState = new AIAttractiveObjectState(new BoolVariable(false, this.OnAIIsJustAttractedByAttractiveObject, this.OnAIIsNoMoreAttractedByAttractiveObject));
+            this.AIDisarmObjectState = new AIDisarmObjectState(new BoolVariable(false, this.OnAIIsJustDisarmingObject, this.OnAIIsNoMoreJustDisarmingObject));
             this.InteractiveObjectTag = new InteractiveObjectTag { IsAi = true };
 
             this.AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
@@ -31,7 +32,7 @@ namespace InteractiveObjectTest
         public override void Tick(float d, float timeAttenuationFactor)
         {
 
-            if (!this.AIDisarmObjectState.IsDisarming && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
+            if (!this.AIDisarmObjectState.IsDisarming.GetValue() && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
             {
                 this.AIPatrollingState.isPatrolling = true;
             }
@@ -78,7 +79,7 @@ namespace InteractiveObjectTest
         #region Attractive Object
         public override void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
-            if (!this.AIDisarmObjectState.IsDisarming)
+            if (!this.AIDisarmObjectState.IsDisarming.GetValue())
             {
                 SwitchToAttractedState(OtherInteractiveObject);
             }
@@ -94,16 +95,15 @@ namespace InteractiveObjectTest
 
         public override void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject)
         {
-            if (!this.AIDisarmObjectState.IsDisarming && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
+            if (!this.AIDisarmObjectState.IsDisarming.GetValue() && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
             {
                 this.SwitchToAttractedState(OtherInteractiveObject);
-                this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
             }
         }
 
         public override void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
-            if (this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
+            if (this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
             {
                 this.AIMoveToDestinationSystem.ClearPath();
                 this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
@@ -111,9 +111,14 @@ namespace InteractiveObjectTest
             this.LineVisualFeedbackSystem.DestroyLine(OtherInteractiveObject);
         }
 
-        public override void OnAIIsNoMoreAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject)
+        public override void OnAIIsJustAttractedByAttractiveObject()
         {
-            this.LineVisualFeedbackSystem.DestroyLine(AttractedInteractiveObject);
+            this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, this.AIAttractiveObjectState.AttractedInteractiveObject);
+        }
+
+        public override void OnAIIsNoMoreAttractedByAttractiveObject()
+        {
+            this.LineVisualFeedbackSystem.DestroyLine(this.AIAttractiveObjectState.AttractedInteractiveObject);
         }
         #endregion
 
@@ -126,12 +131,12 @@ namespace InteractiveObjectTest
         {
             this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
             this.AIMoveToDestinationSystem.ClearPath();
-            this.AIDisarmObjectState.IsDisarming = true;
+            this.AIDisarmObjectState.IsDisarming.SetValue(true);
         }
 
         public override void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
         {
-            this.AIDisarmObjectState.IsDisarming = false;
+            this.AIDisarmObjectState.IsDisarming.SetValue(false);
         }
 
         public override void OnAIIsJustDisarmingObject()
@@ -146,11 +151,11 @@ namespace InteractiveObjectTest
 
         protected override void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            if (!this.AIDisarmObjectState.IsDisarming)
+            if (!this.AIDisarmObjectState.IsDisarming.GetValue())
             {
                 this.AIPatrollingState.isPatrolling = false;
                 this.SwitchToAttractedState(IntersectedInteractiveObject);
-                if (!this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
+                if (!this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
                 {
                     this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, IntersectedInteractiveObject);
                 }

@@ -70,8 +70,8 @@ namespace InteractiveObjectTest
         #endregion
 
         #region AI Events
-        public virtual void OnAIIsJustAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject) { }
-        public virtual void OnAIIsNoMoreAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject) { }
+        public virtual void OnAIIsJustAttractedByAttractiveObject() { }
+        public virtual void OnAIIsNoMoreAttractedByAttractiveObject() { }
         public virtual void OnAIIsJustDisarmingObject() { }
         public virtual void OnAIIsNoMoreJustDisarmingObject() { }
         public virtual void SetAIDestination(AIDestination AIDestination) { }
