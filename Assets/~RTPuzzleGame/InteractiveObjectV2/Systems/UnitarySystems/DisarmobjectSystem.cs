@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using RTPuzzle;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,11 +13,6 @@ namespace InteractiveObjectTest
         public float DisarmRange;
         public float DisarmTime;
     }
-
-    #region Callback Events
-    public delegate void OnAssociatedDisarmObjectTriggerEnterDelegate(CoreInteractiveObject IntersectedInteractiveObject);
-    public delegate void OnAssociatedDisarmObjectTriggerExitDelegate(CoreInteractiveObject IntersectedInteractiveObject);
-    #endregion
 
     public class DisarmObjectSystem : AInteractiveObjectSystem
     {
@@ -51,8 +47,8 @@ namespace InteractiveObjectTest
         private RangeObjectV2 SphereRange;
 
         public DisarmObjectSystem(CoreInteractiveObject AssociatedInteractiveObject, DisarmSystemDefinition DisarmObjectInitializationData,
-            InteractiveObjectTagStruct PhysicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter,
-            OnAssociatedDisarmObjectTriggerExitDelegate OnAssociatedDisarmObjectTriggerExit)
+            InteractiveObjectTagStruct PhysicsEventListenerGuard, Action<CoreInteractiveObject> OnAssociatedDisarmObjectTriggerEnter,
+            Action<CoreInteractiveObject> OnAssociatedDisarmObjectTriggerExit)
         {
             this.DisarmSystemDefinition = DisarmObjectInitializationData;
             this.SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization
@@ -64,7 +60,9 @@ namespace InteractiveObjectTest
                     Radius = DisarmObjectInitializationData.DisarmRange
                 }
             }, AssociatedInteractiveObject);
-            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new DisarmObjectPhysicsEventListener(PhysicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnter, OnAssociatedDisarmObjectTriggerExit) });
+            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener {
+                ARangeObjectV2PhysicsEventListener = new RangeObjectV2PhysicsEventListener_Delegated(PhysicsEventListenerGuard, onTriggerEnterAction: OnAssociatedDisarmObjectTriggerEnter, onTriggerExitAction: OnAssociatedDisarmObjectTriggerExit)
+            });
 
             this.ProgressBarGameObject = new GameObject("ProgressBar");
             this.ProgressBarGameObject.transform.parent = AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform;
@@ -114,37 +112,6 @@ namespace InteractiveObjectTest
             {
                 CircleFillBarType.EnableInstace(this.progressbar);
             }
-        }
-    }
-
-
-    class DisarmObjectPhysicsEventListener : ARangeObjectV2PhysicsEventListener
-    {
-        private InteractiveObjectTagStruct PhysicsEventListenerGuard;
-        private OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter;
-        private OnAssociatedDisarmObjectTriggerExitDelegate OnAssociatedDisarmObjectTriggerExit;
-
-        public DisarmObjectPhysicsEventListener(InteractiveObjectTagStruct physicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter,
-            OnAssociatedDisarmObjectTriggerExitDelegate OnAssociatedDisarmObjectTriggerExit)
-        {
-            this.OnAssociatedDisarmObjectTriggerEnter = OnAssociatedDisarmObjectTriggerEnter;
-            this.OnAssociatedDisarmObjectTriggerExit = OnAssociatedDisarmObjectTriggerExit;
-            PhysicsEventListenerGuard = physicsEventListenerGuard;
-        }
-
-        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
-        {
-            return this.PhysicsEventListenerGuard.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
-        }
-
-        public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
-        {
-            this.OnAssociatedDisarmObjectTriggerEnter.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
-        }
-
-        public override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
-        {
-            this.OnAssociatedDisarmObjectTriggerExit.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
         }
     }
 }

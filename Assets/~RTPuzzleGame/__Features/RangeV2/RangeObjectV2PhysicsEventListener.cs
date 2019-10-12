@@ -1,4 +1,5 @@
 ﻿using InteractiveObjectTest;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -77,4 +78,34 @@ namespace RTPuzzle
         }
     }
 
+    public class RangeObjectV2PhysicsEventListener_Delegated : ARangeObjectV2PhysicsEventListener
+    {
+        private Action<CoreInteractiveObject> OnTriggerEnterAction = null;
+        private Action<CoreInteractiveObject> OnTriggerExitAction = null;
+
+        protected InteractiveObjectTagStruct InteractiveObjectSelectionGuard;
+
+        public RangeObjectV2PhysicsEventListener_Delegated(InteractiveObjectTagStruct interactiveObjectSelectionGuard,
+            Action<CoreInteractiveObject> onTriggerEnterAction = null, Action<CoreInteractiveObject> onTriggerExitAction = null)
+        {
+            OnTriggerEnterAction = onTriggerEnterAction;
+            OnTriggerExitAction = onTriggerExitAction;
+            InteractiveObjectSelectionGuard = interactiveObjectSelectionGuard;
+        }
+
+        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        {
+            return this.InteractiveObjectSelectionGuard.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
+        }
+
+        public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
+        {
+            if (this.OnTriggerEnterAction != null) { this.OnTriggerEnterAction.Invoke(PhysicsTriggerInfo.OtherInteractiveObject); }
+        }
+
+        public override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
+        {
+            if (this.OnTriggerExitAction != null) { this.OnTriggerExitAction.Invoke(PhysicsTriggerInfo.OtherInteractiveObject); }
+        }
+    }
 }

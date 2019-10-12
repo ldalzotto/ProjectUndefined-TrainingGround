@@ -1,5 +1,6 @@
 ﻿using GameConfigurationID;
 using RTPuzzle;
+using System;
 using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
@@ -10,13 +11,7 @@ namespace InteractiveObjectTest
         public float EffectRange;
         public float EffectiveTime;
     }
-
-    #region Callback Events
-    public delegate void OnAssociatedAttractiveSystemJustIntersectedDelegate(CoreInteractiveObject IntersectedInteractiveObject);
-    public delegate void OnAssociatedAttractiveSystemNoMoreIntersectedDelegate(CoreInteractiveObject IntersectedInteractiveObject);
-    public delegate void OnAssociatedAttractiveSystemInterestedNothingDelegate(CoreInteractiveObject IntersectedInteractiveObject);
-    #endregion
-
+    
     public class AttractiveObjectSystem : AInteractiveObjectSystem
     {
 
@@ -28,8 +23,8 @@ namespace InteractiveObjectTest
         public bool IsAskingTobedestroyed { get; private set; }
 
         public AttractiveObjectSystem(CoreInteractiveObject InteractiveObject, InteractiveObjectTagStruct physicsInteractionSelectionGuard, AttractiveObjectSystemDefinition AttractiveObjectSystemDefinition,
-            OnAssociatedAttractiveSystemJustIntersectedDelegate onAttractiveSystemJustIntersected = null,
-            OnAssociatedAttractiveSystemNoMoreIntersectedDelegate onAttractiveSystemJustNotIntersected = null, OnAssociatedAttractiveSystemInterestedNothingDelegate onAttractiveSystemInterestedNothing = null)
+            Action<CoreInteractiveObject> onAttractiveSystemJustIntersected = null,
+            Action<CoreInteractiveObject> onAttractiveSystemJustNotIntersected = null, Action<CoreInteractiveObject> onAttractiveSystemInterestedNothing = null)
         {
             this.SphereRange = new SphereRangeObjectV2(InteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization
             {
@@ -44,8 +39,8 @@ namespace InteractiveObjectTest
 
             this.SphereRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent
             {
-                ARangeIntersectionV2Listener = new AttractiveObjectV2IntersectionManagerV2(this.SphereRange, physicsInteractionSelectionGuard,
-               onAttractiveSystemJustIntersected, onAttractiveSystemJustNotIntersected, onAttractiveSystemInterestedNothing)
+                ARangeIntersectionV2Listener = new RangeIntersectionV2Listener_Delegated(this.SphereRange, physicsInteractionSelectionGuard, OnJustIntersectedAction: onAttractiveSystemJustIntersected,
+                                         OnJustNotIntersectedAction: onAttractiveSystemJustNotIntersected, OnInterestedNothingAction: onAttractiveSystemInterestedNothing)
             });
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(AttractiveObjectSystemDefinition.EffectiveTime);
         }
@@ -61,47 +56,7 @@ namespace InteractiveObjectTest
             this.SphereRange.OnDestroy();
         }
     }
-
-    class AttractiveObjectV2IntersectionManagerV2 : ARangeIntersectionV2Listener
-    {
-        private InteractiveObjectTagStruct InteractiveObjectSelectionGuard;
-
-        private OnAssociatedAttractiveSystemJustIntersectedDelegate OnAttractiveSystemJustIntersected;
-        private OnAssociatedAttractiveSystemNoMoreIntersectedDelegate OnAttractiveSystemJustNotIntersected;
-        private OnAssociatedAttractiveSystemInterestedNothingDelegate OnAttractiveSystemInterestedNothing;
-
-        public AttractiveObjectV2IntersectionManagerV2(RangeObjectV2 associatedRangeObject,
-            InteractiveObjectTagStruct InteractiveObjectSelectionGuard,
-            OnAssociatedAttractiveSystemJustIntersectedDelegate onAttractiveSystemJustIntersected = null,
-            OnAssociatedAttractiveSystemNoMoreIntersectedDelegate onAttractiveSystemJustNotIntersected = null, OnAssociatedAttractiveSystemInterestedNothingDelegate onAttractiveSystemInterestedNothing = null) : base(associatedRangeObject)
-        {
-            this.InteractiveObjectSelectionGuard = InteractiveObjectSelectionGuard;
-            OnAttractiveSystemJustIntersected = onAttractiveSystemJustIntersected;
-            OnAttractiveSystemJustNotIntersected = onAttractiveSystemJustNotIntersected;
-            OnAttractiveSystemInterestedNothing = onAttractiveSystemInterestedNothing;
-        }
-
-        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
-        {
-            return this.InteractiveObjectSelectionGuard.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
-        }
-
-        protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
-        {
-            if (OnAttractiveSystemJustIntersected != null) { OnAttractiveSystemJustIntersected.Invoke(intersectionCalculator.TrackedInteractiveObject); }
-        }
-
-        protected override void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
-        {
-            if (OnAttractiveSystemJustNotIntersected != null) { OnAttractiveSystemJustNotIntersected.Invoke(intersectionCalculator.TrackedInteractiveObject); }
-        }
-
-        protected override void OnInterestedNothing(RangeIntersectionCalculatorV2 intersectionCalculator)
-        {
-            if (OnAttractiveSystemInterestedNothing != null) { OnAttractiveSystemInterestedNothing.Invoke(intersectionCalculator.TrackedInteractiveObject); }
-        }
-    }
-
+    
     class AttractiveObjectLifetimeTimer
     {
         private float effectiveTime;

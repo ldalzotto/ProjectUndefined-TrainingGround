@@ -1,4 +1,5 @@
 ﻿using InteractiveObjectTest;
+using System;
 using System.Collections.Generic;
 
 namespace RTPuzzle
@@ -104,7 +105,7 @@ namespace RTPuzzle
             this.intersectionCalculatorsIndexedByTrackedInteractiveObject.Remove(PhysicsTriggerInfo.OtherInteractiveObject);
             this.OnTriggerExitSuccess(PhysicsTriggerInfo);
         }
-        
+
         private void SingleCalculation(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
             var intersectionOperation = intersectionCalculator.Tick();
@@ -152,23 +153,57 @@ namespace RTPuzzle
         }
     }
 
+    public class RangeIntersectionV2Listener_Delegated : ARangeIntersectionV2Listener
+    {
+        private Action<CoreInteractiveObject> OnInterestedNothingAction = null;
+        private Action<CoreInteractiveObject> OnJustIntersectedAction = null;
+        private Action<CoreInteractiveObject> OnJustNotIntersectedAction = null;
+        private Action<CoreInteractiveObject> OnTriggerEnterSuccessAction = null;
+        private Action<CoreInteractiveObject> OnTriggerExitSuccessAction = null;
+
+        protected InteractiveObjectTagStruct InteractiveObjectSelectionGuard;
+
+        public RangeIntersectionV2Listener_Delegated(RangeObjectV2 associatedRangeObject, InteractiveObjectTagStruct InteractiveObjectSelectionGuard,
+            Action<CoreInteractiveObject> OnInterestedNothingAction = null, Action<CoreInteractiveObject> OnJustIntersectedAction = null, Action<CoreInteractiveObject> OnJustNotIntersectedAction = null,
+            Action<CoreInteractiveObject> OnTriggerEnterSuccessAction = null, Action<CoreInteractiveObject> OnTriggerExitSuccessAction = null) : base(associatedRangeObject)
+        {
+            this.OnInterestedNothingAction = OnInterestedNothingAction;
+            this.OnJustIntersectedAction = OnJustIntersectedAction;
+            this.OnJustNotIntersectedAction = OnJustNotIntersectedAction;
+            this.OnTriggerEnterSuccessAction = OnTriggerEnterSuccessAction;
+            this.OnTriggerExitSuccessAction = OnTriggerExitSuccessAction;
+            this.InteractiveObjectSelectionGuard = InteractiveObjectSelectionGuard;
+        }
+
+        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        {
+            return this.InteractiveObjectSelectionGuard.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
+        }
+
+        protected override void OnInterestedNothing(RangeIntersectionCalculatorV2 intersectionCalculator)
+        {
+            if (this.OnInterestedNothingAction != null) { this.OnInterestedNothingAction.Invoke(intersectionCalculator.TrackedInteractiveObject); }
+        }
+
+        protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
+        {
+            if (this.OnJustIntersectedAction != null) { this.OnJustIntersectedAction.Invoke(intersectionCalculator.TrackedInteractiveObject); }
+        }
+
+        protected override void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
+        {
+            if (this.OnJustNotIntersectedAction != null) { this.OnJustNotIntersectedAction.Invoke(intersectionCalculator.TrackedInteractiveObject); }
+        }
+
+        protected override void OnTriggerEnterSuccess(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        {
+            if (this.OnTriggerEnterSuccessAction != null) { this.OnTriggerEnterSuccessAction.Invoke(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject); }
+        }
+
+        protected override void OnTriggerExitSuccess(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        {
+            if (this.OnTriggerExitSuccessAction != null) { this.OnTriggerExitSuccessAction.Invoke(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject); }
+        }
+    }
+
 }
-
-/*
- 
-
-            foreach (var intersectionCalculator in this.intersectionCalculators)
-            {
-                intersectionCalculator.OnDestroy();
-            }
-
-            foreach (var justTriggerExitedCalculator in this.justTriggerExitedCalculators)
-            {
-                justTriggerExitedCalculator.OnDestroy();
-            }
-
-            this.intersectionCalculators.Clear();
-            this.intersectionCalculatorsIndexedByTrackedInteractiveObject.Clear();
-            this.justTriggerExitedCalculators.Clear();
-            this.justTriggerExitedCalculatorsIndexedByTrackedInteractiveObject.Clear();
-     */
