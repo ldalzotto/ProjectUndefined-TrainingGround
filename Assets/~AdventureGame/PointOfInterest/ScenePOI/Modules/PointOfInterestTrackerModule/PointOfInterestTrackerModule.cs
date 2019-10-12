@@ -6,16 +6,10 @@ namespace AdventureGame
 {
     public class PointOfInterestTrackerModule : APointOfInterestModule
     {
-        #region External Dependencies
-        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager;
-        #endregion
-
         private PointOfInterestType PointOfInterestTypeRef;
         private POITrackerManager POITrackerManager;
         public void Init(PointOfInterestType pointOfInterestTypeRef)
         {
-            this.PlayerPointOfInterestSelectionManager = AdventureGameSingletonInstances.PlayerPointOfInterestSelectionManager;
-
             this.PointOfInterestTypeRef = pointOfInterestTypeRef;
             var trackerCollider = GetComponent<SphereCollider>();
             this.POITrackerManager = new POITrackerManager(pointOfInterestTypeRef, trackerCollider);

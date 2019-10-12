@@ -10,7 +10,7 @@ namespace CoreGame
         Transform GetTransform();
     }
 
-    public abstract class AbstractSelectableObjectSelectionManager<T> : MonoBehaviour where T : ISelectable
+    public abstract class AbstractSelectableObjectSelectionManager<T> where T : ISelectable
     {
         #region Internal State
         private T CurrentSelectedObject;
@@ -23,7 +23,7 @@ namespace CoreGame
         #endregion
 
         #region Internal Managers
-        private ObjectSelectionRendererManager InteractiveObjectSelectionRendererManager;
+        public ObjectSelectionRendererManager InteractiveObjectSelectionRendererManager { get; private set; }
         #endregion
 
         #region Data Retrieval

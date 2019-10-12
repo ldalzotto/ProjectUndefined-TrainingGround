@@ -45,7 +45,7 @@ namespace AdventureGame
                 PointOfInterestVisualMovementInherentData PointOfInterestVisualMovementInherentData = null;
                 if(PointOfInterestInitializationObject!=null && PointOfInterestInitializationObject.PointOfInterestVisualMovementInherentData != null) { PointOfInterestVisualMovementInherentData = PointOfInterestInitializationObject.PointOfInterestVisualMovementInherentData; }
                 else { PointOfInterestVisualMovementInherentData = AdventureConfigurationManager.PointOfInterestVisualMovementConfiguration()[PointOfInterestDefinitionInherentData.GetDefinitionModule<PointOfInterestVisualMovementModuleDefinition>().PointOfInterestVisualMovementID]; }
-                pointOfInterestVisualMovementModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule, this.pointOfInterestTrackerModule, AdventureGameSingletonInstances.PlayerPointOfInterestSelectionManager, PointOfInterestVisualMovementInherentData);
+                pointOfInterestVisualMovementModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule, this.pointOfInterestTrackerModule, PlayerPointOfInterestSelectionManager.Get(), PointOfInterestVisualMovementInherentData);
             });
             this.pointOfInterestLogicColliderModule.IfNotNull((pointOfInterestLogicColliderModule) => pointOfInterestLogicColliderModule.Init());
         }

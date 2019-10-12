@@ -29,7 +29,6 @@ namespace AdventureGame
         private static AdventureStaticConfigurationContainer adventureStaticConfigurationContainer;
         private static DiscussionManager discussionManager;
         private static DiscussionWindowsContainer discussionWindowsContainer;
-        private static PlayerPointOfInterestSelectionManager playerPointOfInterestSelectionManager;
         private static PointOfInterestAdventureEventManager pointOfInterestAdventureEventManager;
 
         public static InventoryEventManager InventoryEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(inventoryEventManager, obj => inventoryEventManager = obj); }
@@ -57,7 +56,6 @@ namespace AdventureGame
         public static AdventureStaticConfigurationContainer AdventureStaticConfigurationContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(adventureStaticConfigurationContainer, obj => adventureStaticConfigurationContainer = obj); }
         public static DiscussionManager DiscussionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(discussionManager, obj => discussionManager = obj); }
         public static DiscussionWindowsContainer DiscussionWindowsContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(discussionWindowsContainer, obj => discussionWindowsContainer = obj); }
-        public static PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerPointOfInterestSelectionManager, obj => playerPointOfInterestSelectionManager = obj); }
         public static PointOfInterestAdventureEventManager PointOfInterestAdventureEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(pointOfInterestAdventureEventManager, obj => pointOfInterestAdventureEventManager = obj); }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.LWRP;
+using CoreGame;
 
 namespace RTPuzzle
 {
-    public class RangeRenderingPassFeature : ScriptableRendererFeature
+    [CreateAssetMenu(fileName = "PuzzleSelectionObjectRederingPassFeature", menuName = "Rendering/PuzzleSelectionObjectRederingPassFeature")]
+    public class PuzzleSelectionObjectRederingPassFeature : ScriptableRendererFeature
     {
         class CustomRenderPass : ScriptableRenderPass
         {
@@ -14,11 +16,18 @@ namespace RTPuzzle
             // You don't have to call ScriptableRenderContext.submit, the render pipeline will call it at specific points in the pipeline.
             public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
             {
-                var RangeDrawCommand = GroundEffectsManagerV2.Get().RangeDrawCommand;
-                if (RangeDrawCommand != null)
+
+                var levelManager = CoreGameSingletonInstances.LevelManager;
+                if (levelManager.CurrentLevelType == LevelType.PUZZLE)
                 {
-                    context.ExecuteCommandBuffer(RangeDrawCommand);
+                    var interactiveObjectSelectionManager = InteractiveObjectSelectionManager.Get();
+                    if (interactiveObjectSelectionManager.InteractiveObjectSelectionRendererManager != null
+                         && interactiveObjectSelectionManager.InteractiveObjectSelectionRendererManager.CommandBufer != null)
+                    {
+                        context.ExecuteCommandBuffer(interactiveObjectSelectionManager.InteractiveObjectSelectionRendererManager.CommandBufer);
+                    }
                 }
+
             }
         }
 
@@ -28,7 +37,7 @@ namespace RTPuzzle
         {
             m_ScriptablePass = new CustomRenderPass();
             // Configures where the render pass should be injected.
-            m_ScriptablePass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+            m_ScriptablePass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
         }
 
         // Here you can inject one or multiple render passes in the renderer.

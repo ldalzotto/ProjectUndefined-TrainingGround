@@ -14,7 +14,7 @@ namespace AdventureGame
         #endregion
 
         #region Player POI selection manager
-        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager;
+        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager.Get();
         #endregion
 
         #region Animation Managers
@@ -41,7 +41,6 @@ namespace AdventureGame
             ContextActionWheelEventManager ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
             InventoryEventManager inventoryEventManager = AdventureGameSingletonInstances.InventoryEventManager;
             var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
-            this.PlayerPointOfInterestSelectionManager = this.GetComponent<PlayerPointOfInterestSelectionManager>();
             #endregion
 
             #region Load Persisted Position

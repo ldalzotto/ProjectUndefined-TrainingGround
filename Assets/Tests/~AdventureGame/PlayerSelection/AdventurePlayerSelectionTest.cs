@@ -43,7 +43,7 @@ namespace Tests
         {
             yield return this.Before();
 
-            var playerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
+            var playerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager.Get();
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == null);
         }
 
@@ -62,7 +62,7 @@ namespace Tests
                 test1Ghost.OnContextActionAdd(test1DummyContextAction);
             });
 
-            var playerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
+            var playerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager.Get();
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest1);
 
             var mockedInput = GameObject.FindObjectOfType<GameTestMockedInputManager>();
@@ -96,7 +96,7 @@ namespace Tests
                 test2Ghost.OnContextActionAdd(test2DummyContextAction_2);
             });
 
-            var playerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
+            var playerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager.Get();
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest2);
 
             var mockedInput = GameObject.FindObjectOfType<GameTestMockedInputManager>();
@@ -165,7 +165,7 @@ namespace Tests
                 test2Ghost.OnContextActionAdd(test2DummyContextAction_2);
             });
 
-            var playerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
+            var playerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager.Get();
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest2);
 
             var mockedInput = GameObject.FindObjectOfType<GameTestMockedInputManager>();

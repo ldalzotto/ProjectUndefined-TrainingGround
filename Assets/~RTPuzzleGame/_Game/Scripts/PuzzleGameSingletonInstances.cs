@@ -16,7 +16,6 @@ namespace RTPuzzle
         private static TimeFlowPlayPauseManager timeFlowPlayPauseManager;
         private static GameOverManager gameOverManager;
         private static PuzzleTutorialEventSender puzzleTutorialEventSender;
-        private static InteractiveObjectSelectionManager interactiveObjectSelectionManager;
         private static TimeFlowBarManager timeFlowBarManager;
         private static PlayerActionEventManager playerActionEventManager;
         private static LevelCompletionManager levelCompletionManager;
@@ -38,7 +37,6 @@ namespace RTPuzzle
         public static TimeFlowPlayPauseManager TimeFlowPlayPauseManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowPlayPauseManager, obj => timeFlowPlayPauseManager = obj); }
         public static GameOverManager GameOverManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(gameOverManager, obj => gameOverManager = obj); }
         public static PuzzleTutorialEventSender PuzzleTutorialEventSender { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleTutorialEventSender, obj => puzzleTutorialEventSender = obj); }
-        public static InteractiveObjectSelectionManager InteractiveObjectSelectionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(interactiveObjectSelectionManager, obj => interactiveObjectSelectionManager = obj); }
         public static TimeFlowBarManager TimeFlowBarManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowBarManager, obj => timeFlowBarManager = obj); }
         public static PlayerActionEventManager PlayerActionEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionEventManager, obj => playerActionEventManager = obj); }
         public static LevelCompletionManager LevelCompletionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(levelCompletionManager, obj => levelCompletionManager = obj); }

@@ -1,10 +1,20 @@
 using CoreGame;
-using UnityEngine;
 
 namespace AdventureGame
 {
-    public class PlayerPointOfInterestSelectionManager : AbstractSelectableObjectSelectionManager<PointOfInterestType>, SelectableObjectSelectionManagerEventListener<PointOfInterestType>
+    public class PlayerPointOfInterestSelectionManager : AbstractSelectableObjectSelectionManager<PointOfInterestType>, SelectableObjectSelectionManagerEventListener<PointOfInterestType>, IGameSingleton
     {
+        private static PlayerPointOfInterestSelectionManager Instance;
+        public static PlayerPointOfInterestSelectionManager Get()
+        {
+            if (Instance == null)
+            {
+                GameSingletonManagers.Get().OnGameSingletonCreated(Instance);
+                Instance = new PlayerPointOfInterestSelectionManager();
+            }
+            return Instance;
+        }
+
         public override SelectableObjectSelectionManagerEventListener<PointOfInterestType> SelectableObjectSelectionManagerEventListener => this;
 
         private AdventureEventsManager AdventureEventsManager;
@@ -17,7 +27,7 @@ namespace AdventureGame
             this.playerPointOfInterestTrackerModule = playerPointOfInterestTrackerModule;
         }
 
-        public void OnSelectableObjectDeSelected(PointOfInterestType SelectableObject) {  }
+        public void OnSelectableObjectDeSelected(PointOfInterestType SelectableObject) { }
 
         public void OnSelectableObjectSelected(PointOfInterestType SelectableObject)
         {
@@ -26,7 +36,7 @@ namespace AdventureGame
 
         public override void Tick(float d)
         {
-           this.ReplaceSelectableObjects(this.playerPointOfInterestTrackerModule.GetAllPointOfInterestsInRangeAndInteractable());
+            this.ReplaceSelectableObjects(this.playerPointOfInterestTrackerModule.GetAllPointOfInterestsInRangeAndInteractable());
             base.Tick(d);
         }
 
@@ -40,7 +50,13 @@ namespace AdventureGame
             }
             return currentSelectedObject;
         }
+
         #endregion
+
+        public void OnDestroy()
+        {
+            Instance = null;
+        }
     }
 
 

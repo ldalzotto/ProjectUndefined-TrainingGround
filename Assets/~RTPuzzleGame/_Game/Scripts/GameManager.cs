@@ -24,7 +24,6 @@ namespace RTPuzzle
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private TutorialManager TutorialManager;
-        private InteractiveObjectSelectionManager InteractiveObjectSelectionManager;
         private PuzzleDiscussionManager PuzzleDiscussionManager;
 
 #if UNITY_EDITOR
@@ -60,7 +59,6 @@ namespace RTPuzzle
             PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
-            InteractiveObjectSelectionManager = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
             PuzzleDiscussionManager = PuzzleGameSingletonInstances.PuzzleDiscussionManager;
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
@@ -88,7 +86,7 @@ namespace RTPuzzle
             CircleFillBarRendererManager.Get().Init();
             PuzzleTutorialEventSender.Init();
             TutorialManager.Init();
-            InteractiveObjectSelectionManager.Init(CoreGameSingletonInstances.GameInputManager);
+            InteractiveObjectSelectionManager.Get().Init(CoreGameSingletonInstances.GameInputManager);
             PuzzleDiscussionManager.Init();
 
 #if UNITY_EDITOR
@@ -144,7 +142,7 @@ namespace RTPuzzle
                     PuzzleDiscussionManager.Tick(d);
                     GroundEffectsManagerV2.Get().Tick(d);
                     DottedLineRendererManager.Tick();
-                    InteractiveObjectSelectionManager.Tick(d);
+                    InteractiveObjectSelectionManager.Get().Tick(d);
                     CircleFillBarRendererManager.Get().Tick(d);
                 }
 

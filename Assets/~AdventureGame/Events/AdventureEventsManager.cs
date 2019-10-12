@@ -8,14 +8,12 @@ namespace AdventureGame
         #region External Dependencies
         private ContextActionWheelManager ContextActionWheelManager;
         private ContextActionWheelEventManager ContextActionWheelEventManager;
-        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager;
         #endregion
 
         public void Init()
         {
             this.ContextActionWheelManager = AdventureGameSingletonInstances.ContextActionWheelManager;
             this.ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
-            this.PlayerPointOfInterestSelectionManager = AdventureGameSingletonInstances.PlayerPointOfInterestSelectionManager;
         }
 
         #region Selection POI Events

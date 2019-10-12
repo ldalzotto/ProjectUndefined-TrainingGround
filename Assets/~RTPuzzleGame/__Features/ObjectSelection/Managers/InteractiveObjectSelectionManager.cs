@@ -1,10 +1,20 @@
 ﻿using CoreGame;
-using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>, IInteractiveObjectSelectionEvent
+    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>, IInteractiveObjectSelectionEvent, IGameSingleton
     {
+        private static InteractiveObjectSelectionManager Instance;
+        public static InteractiveObjectSelectionManager Get()
+        {
+            if (Instance == null)
+            {
+                GameSingletonManagers.Get().OnGameSingletonCreated(Instance);
+                Instance = new InteractiveObjectSelectionManager();
+            }
+            return Instance;
+        }
+
         #region External Dependencies
         private IPlayerActionManagerEvent IPlayerActionManagerEvent;
         #endregion
@@ -28,6 +38,10 @@ namespace RTPuzzle
             this.RemoveInteractiveObjectFromSelectable(ISelectableModule);
         }
         #endregion
-        
+
+        public void OnDestroy()
+        {
+            Instance = null;
+        }
     }
 }

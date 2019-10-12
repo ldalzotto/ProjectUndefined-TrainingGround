@@ -102,6 +102,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacleSystemManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\DummyAction\DummyPlayerActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Lib\ActionExecution\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionManager.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\PuzzleSelectionObjectRederingPassFeature.cs" />
     <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\RangeRenderingPassFeature.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Actions\PuzzleTutorialTextAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Edges\PuzzleTutorialTextEdge.cs" />

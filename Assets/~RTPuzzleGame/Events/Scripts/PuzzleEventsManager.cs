@@ -19,7 +19,7 @@ namespace RTPuzzle
 
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
-        private IInteractiveObjectSelectionEvent IInteractiveObjectSelectionEvent;
+        private IInteractiveObjectSelectionEvent IInteractiveObjectSelectionEvent = InteractiveObjectSelectionManager.Get();
         #endregion
 
         public void Init()
@@ -33,7 +33,6 @@ namespace RTPuzzle
             this.IPlayerActionManagerDataRetrieval = PuzzleGameSingletonInstances.PlayerActionManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
             this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
-            this.IInteractiveObjectSelectionEvent = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
         }
 
         #region IActionInteractableObjectModuleEventListener

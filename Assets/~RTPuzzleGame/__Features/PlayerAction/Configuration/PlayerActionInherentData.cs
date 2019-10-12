@@ -11,11 +11,6 @@ namespace RTPuzzle
     {
         public CorePlayerActionDefinition CorePlayerActionDefinition;
 
-        protected PlayerActionInherentData(CorePlayerActionDefinition corePlayerActionDefinition)
-        {
-            CorePlayerActionDefinition = corePlayerActionDefinition;
-        }
-
         public abstract RTPPlayerAction BuildPlayerAction(PlayerInteractiveObject PlayerInteractiveObject);
     }
 

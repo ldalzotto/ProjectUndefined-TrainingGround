@@ -9,11 +9,7 @@ namespace RTPuzzle
     public class GrabObjectActionInherentData : PlayerActionInherentData
     {
         public PlayerActionInherentData AddedPlayerActionInherentData;
-
-        public GrabObjectActionInherentData(CorePlayerActionDefinition corePlayerActionDefinition) : base(corePlayerActionDefinition)
-        {
-        }
-
+        
         public override RTPPlayerAction BuildPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
         {
             return new GrabObjectAction(this.AddedPlayerActionInherentData.BuildPlayerAction(PlayerInteractiveObject), this.CorePlayerActionDefinition);
