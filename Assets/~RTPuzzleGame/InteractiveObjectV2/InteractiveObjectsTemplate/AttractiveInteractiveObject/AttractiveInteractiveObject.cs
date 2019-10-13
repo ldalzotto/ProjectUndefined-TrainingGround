@@ -7,8 +7,13 @@ namespace InteractiveObjectTest
     {
         private AttractiveObjectInitializerData AttractiveObjectInitializerData;
 
+        [VE_Nested]
         private AttractiveObjectSystem AttractiveObjectSystem;
+
+        [VE_Nested]
         private DisarmObjectSystem DisarmObjectSystem;
+
+        [VE_Nested]
         private SelectableObjectSystem SelectableObjectSystem;
         
         public AttractiveInteractiveObject(InteractiveGameObject interactiveGameObject, AttractiveObjectInitializerData InteractiveObjectInitializerData) : base(interactiveGameObject)

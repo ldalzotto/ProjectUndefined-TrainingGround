@@ -9,10 +9,13 @@ namespace InteractiveObjectTest
     {
         public InteractiveGameObject InteractiveGameObject { get; protected set; }
 
+        [VE_Nested]
         public InteractiveObjectTag InteractiveObjectTag { get; protected set; }
         public BaseCutsceneController CutsceneController { get; private set; }
 
+        [VE_Ignore]
         public bool IsAskingToBeDestroyed { get; protected set; }
+        [VE_Ignore]
         public bool IsUpdatedInMainManager;
 
         public CoreInteractiveObject(InteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)

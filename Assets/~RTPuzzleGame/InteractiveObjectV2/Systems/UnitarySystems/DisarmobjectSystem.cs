@@ -17,7 +17,10 @@ namespace InteractiveObjectTest
     public class DisarmObjectSystem : AInteractiveObjectSystem
     {
         #region Internal Dependencies
+        [VE_Ignore]
         private GameObject ProgressBarGameObject;
+
+        [VE_Nested]
         private CircleFillBarType progressbar;
         #endregion
 

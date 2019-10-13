@@ -6,12 +6,16 @@ namespace InteractiveObjectTest
     public class AIInteractiveObjectTest : A_AIInteractiveObject<AIInteractiveObjectTestInitializerData>
     {
         #region State
+        [VE_Nested]
         private AIPatrollingState AIPatrollingState;
+        [VE_Nested]
         private AIAttractiveObjectState AIAttractiveObjectState;
+        [VE_Nested]
         private AIDisarmObjectState AIDisarmObjectState;
         #endregion
 
         private AIPatrolSystem AIPatrolSystem;
+        [VE_Nested]
         private SightObjectSystem SightObjectSystem;
         private LocalCutscenePlayerSystem LocalCutscenePlayerSystem;
 
