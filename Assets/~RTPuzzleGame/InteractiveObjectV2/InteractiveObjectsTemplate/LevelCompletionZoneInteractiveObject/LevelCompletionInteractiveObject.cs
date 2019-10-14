@@ -16,7 +16,7 @@ namespace InteractiveObjectTest
         {
             this.LevelCompletionZoneSystem = new LevelCompletionZoneSystem(this, LevelCompletionInitializerData.LevelCompletionZoneSystemDefinition, new InteractiveObjectTagStruct { IsPlayer = 1 },
                 this.OnLevelCompletionTriggerEnterPlayer);
-            this.InteractiveObjectTag = new InteractiveObjectTag { IsLevelCompletionZone = true };
+            this.interactiveObjectTag = new InteractiveObjectTag { IsLevelCompletionZone = true };
         }
 
         public override void Destroy()

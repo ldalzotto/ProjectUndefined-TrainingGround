@@ -24,7 +24,7 @@ namespace InteractiveObjectTest
             this.AIPatrollingState = new AIPatrollingState();
             this.AIAttractiveObjectState = new AIAttractiveObjectState(new BoolVariable(false, this.OnAIIsJustAttractedByAttractiveObject, this.OnAIIsNoMoreAttractedByAttractiveObject));
             this.AIDisarmObjectState = new AIDisarmObjectState(new BoolVariable(false, this.OnAIIsJustDisarmingObject, this.OnAIIsNoMoreJustDisarmingObject));
-            this.InteractiveObjectTag = new InteractiveObjectTag { IsAi = true };
+            this.interactiveObjectTag = new InteractiveObjectTag { IsAi = true };
 
             this.AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
 

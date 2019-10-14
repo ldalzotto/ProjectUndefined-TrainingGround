@@ -18,7 +18,7 @@ namespace InteractiveObjectTest
             Action<CoreInteractiveObject> OnLevelCompletionTriggerEnterPlayer)
         {
             this.LevelCompletionZoneObject = RangeObjectV2Builder.Build(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent,
-              LevelCompletionZoneSystemDefinition.TriggerRangeObjectInitialization, AssociatedInteractiveObject, "LevelCompletionZoneListener");
+              LevelCompletionZoneSystemDefinition.TriggerRangeObjectInitialization, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_LevelCompletionZoneListener");
             this.LevelCompletionZoneObject.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener
             {
                 ARangeObjectV2PhysicsEventListener = new RangeObjectV2PhysicsEventListener_Delegated(ComparedInteractiveObjectTagStruct, onTriggerEnterAction: OnLevelCompletionTriggerEnterPlayer)

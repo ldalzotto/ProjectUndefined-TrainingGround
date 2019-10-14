@@ -10,17 +10,21 @@ namespace InteractiveObjectTest
         public InteractiveGameObject InteractiveGameObject { get; protected set; }
 
         [VE_Nested]
-        public InteractiveObjectTag InteractiveObjectTag { get; protected set; }
+        protected InteractiveObjectTag interactiveObjectTag;
+        public InteractiveObjectTag InteractiveObjectTag { get => interactiveObjectTag; }
+
         public BaseCutsceneController CutsceneController { get; private set; }
 
         [VE_Ignore]
-        public bool IsAskingToBeDestroyed { get; protected set; }
+        protected bool isAskingToBeDestroyed;
+        public bool IsAskingToBeDestroyed { get => isAskingToBeDestroyed; }
+
         [VE_Ignore]
         public bool IsUpdatedInMainManager;
 
         public CoreInteractiveObject(InteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
         {
-            this.IsAskingToBeDestroyed = false;
+            this.isAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
             this.CutsceneController = new BaseCutsceneController(interactiveGameObject.Rigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);

@@ -34,7 +34,7 @@ namespace InteractiveObjectTest
                 {
                     Radius = AttractiveObjectSystemDefinition.EffectRange
                 }
-            }, InteractiveObject);
+            }, InteractiveObject, InteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_AttractiveObjectRange");
             this.IsAskingTobedestroyed = false;
 
             this.SphereRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent

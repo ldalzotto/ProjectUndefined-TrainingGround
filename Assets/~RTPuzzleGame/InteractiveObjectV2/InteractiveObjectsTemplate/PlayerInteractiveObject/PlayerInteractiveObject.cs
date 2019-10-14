@@ -11,22 +11,29 @@ namespace InteractiveObjectTest
 
         #region External Dependencies
         private PlayerActionManager PlayerActionManager;
+        [VE_Nested]
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         #endregion
 
+        [VE_Ignore]
         private PlayerInputMoveManager PlayerInputMoveManager;
+        [VE_Ignore]
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
+        [VE_Ignore]
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
+        [VE_Ignore]
         private LevelResetManager LevelResetManager;
+        [VE_Ignore]
         private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager;
 
         #region Systems
+        [VE_Ignore]
         private AnimationObjectSystem AnimationObjectSystem;
         #endregion
 
         public PlayerInteractiveObject(InteractiveGameObject interactiveGameObject) : base(interactiveGameObject, false)
         {
-            this.InteractiveObjectTag = new InteractiveObjectTag { IsPlayer = true };
+            this.interactiveObjectTag = new InteractiveObjectTag { IsPlayer = true };
 
             this.PlayerInteractiveObjectInitializerData = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerInteractiveObjectInitializerData;
 

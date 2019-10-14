@@ -54,6 +54,11 @@ namespace RTPuzzle
             this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
             #endregion
 
+            #region Event Registering
+            RangeObjectV2Manager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnRangeObjectCreated);
+            RangeObjectV2Manager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnRangeObjectDestroyed);
+            #endregion
+
             this.MasterRangeMaterial = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleMaterialConfiguration.MasterRangeMaterial;
             
             this.RangeDrawCommand = new CommandBuffer();
@@ -125,7 +130,7 @@ namespace RTPuzzle
 
 
         #region External events
-        public void OnRangeAddedV2(RangeObjectV2 RangeObjectV2)
+        public void OnRangeObjectCreated(RangeObjectV2 RangeObjectV2)
         {
             var rangeTypeID = RangeObjectV2.RangeObjectInitialization.RangeTypeID;
             if (rangeTypeID != RangeTypeID.NOT_DISPLAYED)
@@ -170,7 +175,7 @@ namespace RTPuzzle
 
         }
 
-        public void OnRangeDestroy(RangeObjectV2 RangeObjectV2)
+        public void OnRangeObjectDestroyed(RangeObjectV2 RangeObjectV2)
         {
             if (RangeObjectV2.RangeObjectInitialization.RangeTypeID != RangeTypeID.NOT_DISPLAYED)
             {

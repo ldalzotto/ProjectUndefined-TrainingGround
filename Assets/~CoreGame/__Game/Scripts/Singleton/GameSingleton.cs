@@ -43,8 +43,9 @@ namespace CoreGame
 
         public void OnDestroy()
         {
-            foreach (var gameSingleton in this.AllGameSingletons)
+            for (var i = this.AllGameSingletons.Count - 1; i >= 0; i--)
             {
+                var gameSingleton = this.AllGameSingletons[i];
                 if (gameSingleton != null)
                 {
                     gameSingleton.OnDestroy();

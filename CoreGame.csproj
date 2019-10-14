@@ -261,6 +261,7 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
+    <Compile Include="Assets\Test\MemberTest.cs" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.hlsl" />
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />

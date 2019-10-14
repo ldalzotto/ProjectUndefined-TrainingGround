@@ -15,12 +15,14 @@ namespace RTPuzzle
 
     public class SquareObstacleSystem
     {
-        public int SquareObstacleSystemUniqueID { get; private set; }
+        public int squareObstacleSystemUniqueID;
+        public int SquareObstacleSystemUniqueID { get => squareObstacleSystemUniqueID; }
 
         public SquareObstacleSystemInitializationData SquareObstacleSystemInitializationData { get; private set; }
         public List<FrustumV2> FaceFrustums { get; private set; }
 
         #region Internal Dependencies
+        [VE_Ignore]
         private ObstacleInteractiveObject AssociatedInteractiveObject;
         #endregion
 
@@ -52,7 +54,7 @@ namespace RTPuzzle
             this.CreateAndAddFrustum(Quaternion.Euler(90, 0, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(-90, 0, 0), 1);
 
-            this.SquareObstacleSystemUniqueID = SquareObstacleSystemManager.Get().OnSquareObstacleSystemCreated(this);
+            this.squareObstacleSystemUniqueID = SquareObstacleSystemManager.Get().OnSquareObstacleSystemCreated(this);
         }
 
         public void Destroy()

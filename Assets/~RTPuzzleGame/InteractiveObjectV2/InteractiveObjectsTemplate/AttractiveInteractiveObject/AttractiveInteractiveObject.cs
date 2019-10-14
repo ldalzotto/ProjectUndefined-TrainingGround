@@ -18,7 +18,7 @@ namespace InteractiveObjectTest
         
         public AttractiveInteractiveObject(InteractiveGameObject interactiveGameObject, AttractiveObjectInitializerData InteractiveObjectInitializerData) : base(interactiveGameObject)
         {
-            this.InteractiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
+            this.interactiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
             this.AttractiveObjectInitializerData = InteractiveObjectInitializerData;
 
             var physicsInteractionSelectionGuard = new InteractiveObjectTagStruct(isAi: 1);
@@ -49,7 +49,7 @@ namespace InteractiveObjectTest
                 this.DisarmObjectSystem.Tick(d, timeAttenuationFactor);
             }
 
-            this.IsAskingToBeDestroyed = (this.AttractiveObjectSystem != null && this.AttractiveObjectSystem.IsAskingTobedestroyed) || (this.DisarmObjectSystem != null && this.DisarmObjectSystem.IsTimeElasped());
+            this.isAskingToBeDestroyed = (this.AttractiveObjectSystem != null && this.AttractiveObjectSystem.IsAskingTobedestroyed) || (this.DisarmObjectSystem != null && this.DisarmObjectSystem.IsTimeElasped());
         }
 
         public override void Destroy()

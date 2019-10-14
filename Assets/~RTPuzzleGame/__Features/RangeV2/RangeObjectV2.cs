@@ -7,6 +7,10 @@ namespace RTPuzzle
 {
     public abstract class RangeObjectV2
     {
+        #region External Dependencies
+        private RangeObjectV2Manager RangeObjectV2Manager = RangeObjectV2Manager.Get();
+        #endregion
+
         public RangeType RangeType { get; protected set; }
         public RangeGameObjectV2 RangeGameObjectV2 { get; private set; }
 
@@ -28,7 +32,7 @@ namespace RTPuzzle
                 this.RangeObstacleListenerSystem = new RangeObstacleListenerSystem(this, this.RangeGameObjectV2.RangeObjectV2PhysicsEventListener);
             }
 
-            PuzzleGameSingletonInstances.RangeEventsManager.RANGE_EVT_Range_Created(this);
+            this.RangeObjectV2Manager.OnRangeObjectCreated(this);
         }
 
         public virtual void Tick(float d)
@@ -50,7 +54,7 @@ namespace RTPuzzle
             this.RangeExternalPhysicsOnlyListenersSystem.OnDestroy();
             //To trigger itnersection events
             this.RangeIntersectionV2System.Tick(0f);
-            PuzzleGameSingletonInstances.RangeEventsManager.RANGE_EVT_Range_Destroy(this);
+            this.RangeObjectV2Manager.OnRangeObjectDestroyed(this);
         }
 
         public void ReceiveEvent(SetWorldPositionEvent SetWorldPositionEvent)

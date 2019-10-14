@@ -8,9 +8,9 @@ namespace RTPuzzle
     public class BlockingCutscenePlayerManager : MonoBehaviour
     {
         private bool playing;
-
         public bool Playing { get => playing; }
 
+        [VE_Ignore]
         private SequencedActionManager cutscenePlayer;
 
         public void Play(List<SequencedAction> SequencingActions, Action onCutsceneEnd = null)

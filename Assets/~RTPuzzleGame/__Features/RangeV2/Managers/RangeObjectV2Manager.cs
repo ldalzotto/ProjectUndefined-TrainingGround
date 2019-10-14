@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,11 @@ namespace RTPuzzle
     public class RangeObjectV2Manager : GameSingleton<RangeObjectV2Manager>
     {
         public List<RangeObjectV2> RangeObjects { get; private set; } = new List<RangeObjectV2>();
+
+        private event Action<RangeObjectV2> OnRangeObjectCreatedEvent;
+        private event Action<RangeObjectV2> OnRangeObjectDestroyedEvent;
+        public void RegisterOnRangeObjectCreatedEventListener(Action<RangeObjectV2> action) { this.OnRangeObjectCreatedEvent += action; }
+        public void RegisterOnRangeObjectDestroyedEventListener(Action<RangeObjectV2> action) { this.OnRangeObjectDestroyedEvent += action; }
 
         public void Init()
         {
@@ -25,13 +31,16 @@ namespace RTPuzzle
             }
         }
 
-        public void ReceiveEvent(RangeObjectV2ManagerAddRangeEvent RangeObjectV2ManagerAddRangeEvent)
+        public void OnRangeObjectCreated(RangeObjectV2 rangeObjectV2)
         {
-            this.RangeObjects.Add(RangeObjectV2ManagerAddRangeEvent.AddedRangeObject);
+            this.RangeObjects.Add(rangeObjectV2);
+            if (this.OnRangeObjectCreatedEvent != null) { this.OnRangeObjectCreatedEvent.Invoke(rangeObjectV2); }
         }
-        public void ReceiveEvent(RangeObjectV2ManagerRemoveRangeEvent RangeObjectV2ManagerRemoveRangeEvent)
+
+        public void OnRangeObjectDestroyed(RangeObjectV2 rangeObjectV2)
         {
-            this.RangeObjects.Remove(RangeObjectV2ManagerRemoveRangeEvent.RemovedRangeObject);
+            this.RangeObjects.Remove(rangeObjectV2);
+            if (this.OnRangeObjectDestroyedEvent != null) { this.OnRangeObjectDestroyedEvent.Invoke(rangeObjectV2); }
         }
 
         public override void OnDestroy()
@@ -40,15 +49,8 @@ namespace RTPuzzle
             this.RangeObjects.Clear();
             this.RangeObjects = null;
         }
-    }
 
-    public struct RangeObjectV2ManagerAddRangeEvent
-    {
-        public RangeObjectV2 AddedRangeObject;
-    }
-    public struct RangeObjectV2ManagerRemoveRangeEvent
-    {
-        public RangeObjectV2 RemovedRangeObject;
+       
     }
 
 }

@@ -43,7 +43,7 @@ namespace InteractiveObjectTest
                 {
                     Radius = SelectableObjectSystemDefinition.SelectionRange
                 }
-            }, AssociatedInteractiveObject, "SelectionRangeTrigger");
+            }, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_SelectionRangeTrigger");
             this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new SelectableObjectPhysicsEventListener(this.OnPlayerTriggerInSelectionEnter, this.OnPlayerTriggerInSelectionExit) });
             this.ProvideSelectableObjectPlayerActionDelegate = ProvideSelectableObjectPlayerAction;
         }

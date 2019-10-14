@@ -21,7 +21,7 @@ namespace InteractiveObjectTest
                 {
                     FrustumV2 = SightObjectSystemDefinition.Frustum
                 }
-            }, AssocaitedInteractiveObject, "SightObject");
+            }, AssocaitedInteractiveObject, AssocaitedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_SightObject");
             this.SightRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent
             {
                 ARangeIntersectionV2Listener = new RangeIntersectionV2Listener_Delegated(this.SightRange, PhysicsTagEventGuard,

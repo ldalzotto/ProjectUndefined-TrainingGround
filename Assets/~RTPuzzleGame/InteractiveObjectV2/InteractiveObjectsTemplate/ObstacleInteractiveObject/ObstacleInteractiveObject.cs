@@ -7,13 +7,15 @@ namespace InteractiveObjectTest
     {
         public BoxCollider ObstacleCollider { get; private set; }
 
-        public SquareObstacleSystem SquareObstacleSystem { get; private set; }
+        [VE_Nested]
+        public SquareObstacleSystem squareObstacleSystem;
+        public SquareObstacleSystem SquareObstacleSystem { get => squareObstacleSystem; }
 
         public ObstacleInteractiveObject(InteractiveGameObject interactiveGameObject, ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData) : base(interactiveGameObject)
         {
             this.ObstacleCollider = interactiveGameObject.GetLogicColliderAsBox();
-            this.InteractiveObjectTag = new InteractiveObjectTag { IsObstacle = true };
-            this.SquareObstacleSystem = new SquareObstacleSystem(this, ObstacleInteractiveObjectInitializerData.SquareObstacleSystemInitializationData);
+            this.interactiveObjectTag = new InteractiveObjectTag { IsObstacle = true };
+            this.squareObstacleSystem = new SquareObstacleSystem(this, ObstacleInteractiveObjectInitializerData.SquareObstacleSystemInitializationData);
         }
 
         public override void Destroy()

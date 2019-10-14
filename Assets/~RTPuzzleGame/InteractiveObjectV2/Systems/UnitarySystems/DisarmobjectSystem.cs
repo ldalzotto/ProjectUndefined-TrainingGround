@@ -24,9 +24,11 @@ namespace InteractiveObjectTest
         private CircleFillBarType progressbar;
         #endregion
 
+        [VE_Nested]
         private DisarmSystemDefinition DisarmSystemDefinition;
 
         #region State
+        [VE_Array]
         private HashSet<CoreInteractiveObject> InteractiveObjectDisarmingThisObject = new HashSet<CoreInteractiveObject>();
         private float elapsedTime;
         #endregion
@@ -62,8 +64,9 @@ namespace InteractiveObjectTest
                 {
                     Radius = DisarmObjectInitializationData.DisarmRange
                 }
-            }, AssociatedInteractiveObject);
-            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener {
+            }, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_DisarmTriggerRange");
+            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener
+            {
                 ARangeObjectV2PhysicsEventListener = new RangeObjectV2PhysicsEventListener_Delegated(PhysicsEventListenerGuard, onTriggerEnterAction: OnAssociatedDisarmObjectTriggerEnter, onTriggerExitAction: OnAssociatedDisarmObjectTriggerExit)
             });
 
