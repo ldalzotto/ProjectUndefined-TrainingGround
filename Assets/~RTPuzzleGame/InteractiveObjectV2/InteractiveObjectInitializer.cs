@@ -9,7 +9,7 @@ namespace InteractiveObjectTest
 
         public virtual void Init()
         {
-            InteractiveObjectV2Manager.Get().OnInteractiveObjectCreated(this.GetInteractiveObject());
+            this.GetInteractiveObject();
         }
     }
 

@@ -34,9 +34,11 @@ namespace RTPuzzle
     {
         public FrustumV2 FrustumV2;
     }
+    [SceneHandleDraw]
     [System.Serializable]
     public class RoundedFrustumRangeTypeDefinition : ARangeTypeDefinitionV2
     {
+        [WireRoundedFrustum(R = 1, G = 1, B = 0)]
         public FrustumV2 FrustumV2;
     }
     #endregion

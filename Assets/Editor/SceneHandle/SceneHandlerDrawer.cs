@@ -1,62 +1,59 @@
 ﻿using CoreGame;
-using Editor_MainGameCreationWizard;
 using RTPuzzle;
-using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
 public static class SceneHandlerDrawer
 {
-    /*
-    public static void Draw(object drawableObject, Transform objectTransform, CommonGameConfigurations CommonGameConfigurations, IObjectGizmoDisplayEnableArea IObjectGizmoDisplayEnableArea)
+    public static void Draw(object drawableObject, Transform objectTransform)
     {
-        var fields = drawableObject.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (fields != null && fields.Length > 0)
+        if (drawableObject.GetType().GetCustomAttribute<SceneHandleDrawAttribute>(true) != null)
         {
-            for (var i = 0; i < fields.Length; i++)
+            var fields = ReflectionHelper.GetAllFields(drawableObject.GetType());
+            foreach (var field in fields)
             {
-                var field = fields[i];
+                /*
+                  var DrawConfigurationAttribute = field.GetCustomAttribute<DrawConfigurationAttribute>() as DrawConfigurationAttribute;
+                  if (DrawConfigurationAttribute != null)
+                  {
+                      var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawConfigurationAttribute.ConfigurationType);
+                      if (configurationAsset != null)
+                      {
+                          configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
+                          if (configurationDataObject != null)
+                          {
+                              Draw(configurationDataObject, objectTransform, CommonGameConfigurations);
+                          }
+                      }
+                  }
 
-                var DrawConfigurationAttribute = field.GetCustomAttribute<DrawConfigurationAttribute>() as DrawConfigurationAttribute;
-                if (DrawConfigurationAttribute != null)
-                {
-                    var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawConfigurationAttribute.ConfigurationType);
-                    if (configurationAsset != null)
-                    {
-                        configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
-                        if (configurationDataObject != null)
-                        {
-                            Draw(configurationDataObject, objectTransform, CommonGameConfigurations, IObjectGizmoDisplayEnableArea);
-                        }
-                    }
-                }
-
-                var DrawDefinitionAttribute = field.GetCustomAttribute<DrawDefinitionAttribute>() as DrawDefinitionAttribute;
-                if (DrawDefinitionAttribute != null)
-                {
-                    var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawDefinitionAttribute.ConfigurationType);
-                    if (configurationAsset != null)
-                    {
-                        configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
-                        if (configurationDataObject != null)
-                        {
-                            var AbstractObjectDefinitionConfigurationInherentData = ((AbstractObjectDefinitionConfigurationInherentData)configurationDataObject);
-                            foreach (var RangeDefinitionModulesActivation in AbstractObjectDefinitionConfigurationInherentData.RangeDefinitionModulesActivation)
-                            {
-                                if (RangeDefinitionModulesActivation.Value)
-                                {
-                                    Draw(AbstractObjectDefinitionConfigurationInherentData.RangeDefinitionModules[RangeDefinitionModulesActivation.Key], objectTransform, CommonGameConfigurations, IObjectGizmoDisplayEnableArea);
-                                }
-                            }
-                        }
-                    }
-                }
+                  var DrawDefinitionAttribute = field.GetCustomAttribute<DrawDefinitionAttribute>() as DrawDefinitionAttribute;
+                  if (DrawDefinitionAttribute != null)
+                  {
+                      var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawDefinitionAttribute.ConfigurationType);
+                      if (configurationAsset != null)
+                      {
+                          configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
+                          if (configurationDataObject != null)
+                          {
+                              var AbstractObjectDefinitionConfigurationInherentData = ((AbstractObjectDefinitionConfigurationInherentData)configurationDataObject);
+                              foreach (var RangeDefinitionModulesActivation in AbstractObjectDefinitionConfigurationInherentData.RangeDefinitionModulesActivation)
+                              {
+                                  if (RangeDefinitionModulesActivation.Value)
+                                  {
+                                      Draw(AbstractObjectDefinitionConfigurationInherentData.RangeDefinitionModules[RangeDefinitionModulesActivation.Key], objectTransform, CommonGameConfigurations);
+                                  }
+                              }
+                          }
+                      }
+                  }
+                  */
 
                 var DrawNestedAttribute = field.GetCustomAttribute<DrawNestedAttribute>() as DrawNestedAttribute;
                 if (DrawNestedAttribute != null)
                 {
-                    Draw(field.GetValue(drawableObject), objectTransform, CommonGameConfigurations, IObjectGizmoDisplayEnableArea);
+                    Draw(field.GetValue(drawableObject), objectTransform);
                 }
 
                 var AbstractSceneHandleAttribute = field.GetCustomAttribute<AbstractSceneHandleAttribute>(true) as AbstractSceneHandleAttribute;
@@ -65,7 +62,7 @@ public static class SceneHandlerDrawer
                     if (AbstractSceneHandleAttribute.GetType() == typeof(WireArcAttribute))
                     {
                         var WireArcAttribute = (WireArcAttribute)AbstractSceneHandleAttribute;
-                        float semiAngle = GetFieldValue<float>(drawableObject, IObjectGizmoDisplayEnableArea, field);
+                        float semiAngle = GetFieldValue<float>(drawableObject, field);
 
                         SetupColors(WireArcAttribute.GetColor());
 
@@ -77,7 +74,7 @@ public static class SceneHandlerDrawer
                     {
                         var WireCircleAttribute = (WireCircleAttribute)AbstractSceneHandleAttribute;
 
-                        float radius = GetFieldValue<float>(drawableObject, IObjectGizmoDisplayEnableArea, field);
+                        float radius = GetFieldValue<float>(drawableObject, field);
 
                         SetupColors(WireCircleAttribute.GetColor());
 
@@ -114,9 +111,10 @@ public static class SceneHandlerDrawer
         }
     }
 
-    private static T GetFieldValue<T>(object drawableObject, IObjectGizmoDisplayEnableArea IObjectGizmoDisplayEnableArea, FieldInfo field)
+    private static T GetFieldValue<T>(object drawableObject, FieldInfo field)
     {
         T value = default(T);
+        /*
         if (typeof(IByEnumProperty).IsAssignableFrom(field.GetValue(drawableObject).GetType()))
         {
             IByEnumProperty IByEnumProperty = (IByEnumProperty)field.GetValue(drawableObject);
@@ -129,8 +127,9 @@ public static class SceneHandlerDrawer
         }
         else
         {
-            value = (T)field.GetValue(drawableObject);
-        }
+        */
+        value = (T)field.GetValue(drawableObject);
+        // }
 
         return value;
     }
@@ -145,9 +144,22 @@ public static class SceneHandlerDrawer
     {
         Handles.Label(objectTransform.position + Vector3.up * height, label, MyEditorStyles.SceneDrawDynamicLabelStyle);
     }
-
+    
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
+        frustum.CalculateFrustumWorldPositionyFace(out FrustumPointsPositions LocalFrustumPointPositions, new TransformStruct { WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one });
+        var frustumWorldPositions = new RangeFrustumWorldPositioning { LocalFrustumPositions = LocalFrustumPointPositions }.GetWorldFrustumPositions(transform.localToWorldMatrix);
+        DrawFace(frustumWorldPositions.FC1, frustumWorldPositions.FC2, frustumWorldPositions.FC3, frustumWorldPositions.FC4);
+        DrawFace(frustumWorldPositions.FC1, frustumWorldPositions.FC5, frustumWorldPositions.FC6, frustumWorldPositions.FC2);
+        DrawFace(frustumWorldPositions.FC2, frustumWorldPositions.FC6, frustumWorldPositions.FC7, frustumWorldPositions.FC3);
+        DrawFace(frustumWorldPositions.FC3, frustumWorldPositions.FC7, frustumWorldPositions.FC8, frustumWorldPositions.FC4);
+        DrawFace(frustumWorldPositions.FC4, frustumWorldPositions.FC8, frustumWorldPositions.FC5, frustumWorldPositions.FC1);
+        DrawFace(frustumWorldPositions.FC5, frustumWorldPositions.FC6, frustumWorldPositions.FC7, frustumWorldPositions.FC8);
+
+        if (isRounded)
+        {
+            Handles.DrawWireDisc(transform.position, transform.up, frustum.FaceDistance);
+        }
     }
 
     private static void DrawFace(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4)
@@ -157,5 +169,4 @@ public static class SceneHandlerDrawer
         Handles.DrawLine(C3, C4);
         Handles.DrawLine(C4, C1);
     }
-    */
 }

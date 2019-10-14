@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace InteractiveObjectTest
 {
+    [SceneHandleDraw]
     public class AttractiveInteractiveObject : CoreInteractiveObject
     {
         private AttractiveObjectInitializerData AttractiveObjectInitializerData;
@@ -11,6 +12,7 @@ namespace InteractiveObjectTest
         private AttractiveObjectSystem AttractiveObjectSystem;
 
         [VE_Nested]
+        [DrawNested]
         private DisarmObjectSystem DisarmObjectSystem;
 
         [VE_Nested]

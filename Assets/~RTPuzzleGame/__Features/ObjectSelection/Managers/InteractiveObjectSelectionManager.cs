@@ -14,16 +14,11 @@ namespace RTPuzzle
             }
             return Instance;
         }
-
-        #region External Dependencies
-        private IPlayerActionManagerEvent IPlayerActionManagerEvent;
-        #endregion
-
-        public override SelectableObjectSelectionManagerEventListener<ISelectableModule> SelectableObjectSelectionManagerEventListener => this.IPlayerActionManagerEvent;
+        
+        public override SelectableObjectSelectionManagerEventListener<ISelectableModule> SelectableObjectSelectionManagerEventListener => PlayerActionManager.Get();
 
         public override void Init(IGameInputManager GameInputManager)
         {
-            this.IPlayerActionManagerEvent = PuzzleGameSingletonInstances.PlayerActionManager;
             base.Init(GameInputManager);
         }
 

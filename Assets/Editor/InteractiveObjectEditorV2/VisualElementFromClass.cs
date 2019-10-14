@@ -15,7 +15,7 @@ public static class VisualElementFromClass
     {
         var root = new VisualElement();
 
-        foreach (var field in GetAllFields(obj.GetType()))
+        foreach (var field in ReflectionHelper.GetAllFields(obj.GetType()))
         {
             bool continueLoop = false;
             foreach (var customAttribute in field.GetCustomAttributes<A_VEAttribute>())
@@ -88,17 +88,6 @@ public static class VisualElementFromClass
         return IListenableVisualElement;
     }
 
-    public static IEnumerable<FieldInfo> GetAllFields(Type t)
-    {
-        if (t == null)
-            return Enumerable.Empty<FieldInfo>();
-
-        BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic |
-                             BindingFlags.Static | BindingFlags.Instance |
-                             BindingFlags.DeclaredOnly;
-        return t.GetFields(flags).Concat(GetAllFields(t.BaseType));
-    }
-
     public static void RemoveAllIListenableVisualElementNested(VisualElement element, ref List<IListenableVisualElement> removedElements)
     {
         List<VisualElement> elementsToRemove = null;
@@ -135,14 +124,6 @@ public static class VisualElementFromClass
         return rawFieldName.Replace("<", "").Replace(">", "").Replace("k__BackingField", "");
     }
 }
-
-public abstract class A_VEAttribute : Attribute { }
-[AttributeUsage(AttributeTargets.Field)]
-public class VE_Nested : A_VEAttribute { }
-[AttributeUsage(AttributeTargets.Field)]
-public class VE_Ignore : A_VEAttribute { }
-[AttributeUsage(AttributeTargets.Field)]
-public class VE_Array : A_VEAttribute { }
 
 public interface IListenableVisualElement
 {

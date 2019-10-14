@@ -9,11 +9,6 @@ namespace RTPuzzle
     {
         public List<RangeObjectV2> RangeObjects { get; private set; } = new List<RangeObjectV2>();
 
-        private event Action<RangeObjectV2> OnRangeObjectCreatedEvent;
-        private event Action<RangeObjectV2> OnRangeObjectDestroyedEvent;
-        public void RegisterOnRangeObjectCreatedEventListener(Action<RangeObjectV2> action) { this.OnRangeObjectCreatedEvent += action; }
-        public void RegisterOnRangeObjectDestroyedEventListener(Action<RangeObjectV2> action) { this.OnRangeObjectDestroyedEvent += action; }
-
         public void Init()
         {
             var rangeInitializers = GameObject.FindObjectsOfType<RangeObjectInitializer>();
@@ -21,6 +16,11 @@ namespace RTPuzzle
             {
                 rangeInitializers[rangeInitializerIndex].Init();
             }
+
+            #region Event Register
+            RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnRangeObjectCreated);
+            RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnRangeObjectDestroyed);
+            #endregion
         }
 
         public void Tick(float d)
@@ -31,16 +31,14 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeObjectCreated(RangeObjectV2 rangeObjectV2)
+        private void OnRangeObjectCreated(RangeObjectV2 rangeObjectV2)
         {
             this.RangeObjects.Add(rangeObjectV2);
-            if (this.OnRangeObjectCreatedEvent != null) { this.OnRangeObjectCreatedEvent.Invoke(rangeObjectV2); }
         }
 
-        public void OnRangeObjectDestroyed(RangeObjectV2 rangeObjectV2)
+        private void OnRangeObjectDestroyed(RangeObjectV2 rangeObjectV2)
         {
             this.RangeObjects.Remove(rangeObjectV2);
-            if (this.OnRangeObjectDestroyedEvent != null) { this.OnRangeObjectDestroyedEvent.Invoke(rangeObjectV2); }
         }
 
         public override void OnDestroy()

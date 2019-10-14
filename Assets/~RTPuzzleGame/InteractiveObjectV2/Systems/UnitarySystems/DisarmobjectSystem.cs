@@ -14,6 +14,7 @@ namespace InteractiveObjectTest
         public float DisarmTime;
     }
 
+    [SceneHandleDraw]
     public class DisarmObjectSystem : AInteractiveObjectSystem
     {
         #region Internal Dependencies
@@ -30,6 +31,8 @@ namespace InteractiveObjectTest
         #region State
         [VE_Array]
         private HashSet<CoreInteractiveObject> InteractiveObjectDisarmingThisObject = new HashSet<CoreInteractiveObject>();
+
+        [WireCircle(R = 1f, G = 0f, B = 0f)]
         private float elapsedTime;
         #endregion
 

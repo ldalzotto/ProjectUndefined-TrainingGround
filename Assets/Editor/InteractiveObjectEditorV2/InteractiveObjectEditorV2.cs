@@ -50,6 +50,7 @@ public class InteractiveObjectEditorV2 : EditorWindow
 
         EditorApplication.playModeStateChanged += this.OnPlayModeStateChanged;
         EditorApplication.update += this.Tick;
+        SceneView.duringSceneGui += this.SceneTick;
     }
 
     private void OnDestroy()
@@ -57,6 +58,7 @@ public class InteractiveObjectEditorV2 : EditorWindow
         Instance = null;
         EditorApplication.playModeStateChanged -= this.OnPlayModeStateChanged;
         EditorApplication.update -= this.Tick;
+        SceneView.duringSceneGui -= this.SceneTick;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -79,10 +81,10 @@ public class InteractiveObjectEditorV2 : EditorWindow
 
     private void OnPlayModeEnter()
     {
-        InteractiveObjectV2Manager.Get().RegisterOnInteractiveObjectCreatedEventListener(this.OnInteractiveObjectCreated);
-        InteractiveObjectV2Manager.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
-        RangeObjectV2Manager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnInteractiveObjectCreated);
-        RangeObjectV2Manager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
+        InteractiveObjectEventsManager.Get().RegisterOnInteractiveObjectCreatedEventListener(this.OnInteractiveObjectCreated);
+        InteractiveObjectEventsManager.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
+        RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnInteractiveObjectCreated);
+        RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
     }
 
     private void Tick()
@@ -97,12 +99,20 @@ public class InteractiveObjectEditorV2 : EditorWindow
             }
 
             var allRangeObjects = RangeObjectV2Manager.Get().RangeObjects;
-            foreach(var rangeObject in allRangeObjects)
+            foreach (var rangeObject in allRangeObjects)
             {
                 this.OnInteractiveObjectCreated(rangeObject);
             }
 
             this.SelectedInteractiveObjectDetail.OnGui();
+        }
+    }
+
+    private void SceneTick(SceneView sceneView)
+    {
+        foreach (var interactiveObjectField in this.ListenableObjectFields.Values)
+        {
+            interactiveObjectField.SceneTick();
         }
     }
 
@@ -194,8 +204,9 @@ class ListenedObjectField : VisualElement
     private BoolVariable IsSelected;
 
     private Label ObjectLabel;
+    private ObjectFieldIconBar ObjectFieldIconBar;
 
-    private GameObject ObjectReference;
+    public GameObject ObjectReference { get; private set; }
     public object ListenedObjectRef { get; private set; }
 
     private Color InitialBackGroundColor;
@@ -220,13 +231,18 @@ class ListenedObjectField : VisualElement
         this.IsSelected = new BoolVariable(false, this.OnInteractiveObjectSelected, this.OnInteractiveObjetDeSelected);
 
         this.InitialBackGroundColor = this.style.backgroundColor.value;
+        
+        this.ObjectFieldIconBar = new ObjectFieldIconBar(this);
 
         this.ObjectLabel = new Label(this.ObjectReference.name);
         this.ObjectLabel.style.marginLeft = 10f;
 
         this.Add(this.ObjectLabel);
 
+
         parent.Add(this);
+
+        this.style.flexDirection = FlexDirection.Row;
 
         this.RegisterCallback<MouseEnterEvent>(this.OnMouseEnter);
         this.RegisterCallback<MouseOutEvent>(this.OnMouseExit);
@@ -235,10 +251,20 @@ class ListenedObjectField : VisualElement
 
     public void SetIsSelected(bool value) { this.IsSelected.SetValue(value); }
 
+    public void SceneTick()
+    {
+        if (this.ObjectFieldIconBar.IsSceneHandleEnabled() && this.ObjectReference != null)
+        {
+            SceneHandlerDrawer.Draw(this.ListenedObjectRef, this.ObjectReference.transform);
+        }
+    }
+
+
     private void OnMouseDown(MouseDownEvent MouseDownEvent)
     {
         Selection.activeGameObject = this.ObjectReference;
         if (this.OnInteractiveObjectFieldClicked != null) { this.OnInteractiveObjectFieldClicked.Invoke(MouseDownEvent, this); }
+        MouseDownEvent.StopPropagation();
     }
 
     private void OnMouseEnter(MouseEnterEvent MouseEnterEvent)
@@ -266,6 +292,61 @@ class ListenedObjectField : VisualElement
     {
         this.style.backgroundColor = this.InitialBackGroundColor;
     }
+}
+
+class ObjectFieldIconBar : VisualElement
+{
+    private VisualElement Root;
+
+    private ObjectFieldSelectionIcon SceneHandleSelection;
+
+    public bool IsSceneHandleEnabled()
+    {
+        return this.SceneHandleSelection.Selected.GetValue();
+    }
+
+    public ObjectFieldIconBar(VisualElement parent)
+    {
+        this.Root = new VisualElement();
+        this.Root.style.alignSelf = Align.FlexEnd;
+        this.Root.style.flexDirection = FlexDirection.Row;
+        this.SceneHandleSelection = new ObjectFieldSelectionIcon(this.Root, "G");
+        this.Add(Root);
+        this.style.marginLeft = 5f;
+        parent.Add(this);
+    }
+}
+
+class ObjectFieldSelectionIcon : VisualElement
+{
+    private Color initialBackgroundColor;
+    public BoolVariable Selected { get; private set; }
+
+    public ObjectFieldSelectionIcon(VisualElement parent, string label)
+    {
+        this.Selected = new BoolVariable(false, this.OnSelected, this.OnUnSelected);
+        this.initialBackgroundColor = this.style.backgroundColor.value;
+        var text = new Label(label);
+        this.Add(text);
+        this.RegisterCallback<MouseDownEvent>(this.OnClicked);
+        parent.Add(this);
+    }
+
+    private void OnClicked(MouseDownEvent evt)
+    {
+        this.Selected.SetValue(!this.Selected.GetValue());
+        evt.StopPropagation();
+    }
+
+    private void OnSelected()
+    {
+        this.style.backgroundColor = Color.yellow;
+    }
+    private void OnUnSelected()
+    {
+        this.style.backgroundColor = this.initialBackgroundColor;
+    }
+
 }
 
 class SelectedInteractiveObjectDetail : VisualElement

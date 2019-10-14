@@ -13,7 +13,6 @@ namespace RTPuzzle
         private AInventoryMenu InventoryMenu;
         #endregion
 
-        private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
@@ -49,7 +48,7 @@ namespace RTPuzzle
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
 
-            PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
+
             TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
             TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
@@ -67,17 +66,17 @@ namespace RTPuzzle
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var LevelManager = CoreGameSingletonInstances.LevelManager;
 
-            CameraMovementManager.Init();
-            GroundEffectsManagerV2.Get().Init(LevelManager.GetCurrentLevel());
 
             RangeObjectV2Manager.Get().Init();
+            GroundEffectsManagerV2.Get().Init(LevelManager.GetCurrentLevel());
             InteractiveObjectV2Manager.Get().Init();
+
+            CameraMovementManager.Init();
 
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
             TimeFlowManager.Init(gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
             GameOverManager.Init();
             PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
-            PlayerActionManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
@@ -109,7 +108,7 @@ namespace RTPuzzle
                     PuzzleTutorialEventSender.Tick(d);
                     BlockingCutscenePlayer.Tick(d);
 
-                    PlayerActionManager.Tick(d);
+                    PlayerActionManager.Get().Tick(d);
                     PlayerInteractiveObjectManager.Get().TickAlways(d);
 
                     CameraMovementManager.Tick(d);
@@ -129,7 +128,7 @@ namespace RTPuzzle
                     if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
                     {
                         InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.GetTimeAttenuation());
-                        PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                        PlayerActionManager.Get().TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                     }
                     else
                     {
@@ -160,7 +159,7 @@ namespace RTPuzzle
             {
                 PlayerInteractiveObjectManager.Get().LateTick(d);
                 InteractiveObjectV2Manager.Get().LateTick(d);
-                PlayerActionManager.LateTick(d);
+                PlayerActionManager.Get().LateTick(d);
             }
 
             ObstacleOcclusionCalculationManagerV2.Get().LateTick();
@@ -195,21 +194,19 @@ namespace RTPuzzle
 
         private void OnDrawGizmos()
         {
-            if (PlayerActionManager != null)
+            if (Application.isPlaying)
             {
-                PlayerActionManager.GizmoTick();
+                PlayerActionManager.Get().GizmoTick();
+                ObstaclesListenerManager.Get().GizmoTick();
+                RangeIntersectionCalculatorV2Manager.Get().GizmoTick();
             }
-
-            ObstaclesListenerManager.Get().GizmoTick();
-            RangeIntersectionCalculatorV2Manager.Get().GizmoTick();
         }
 
         private void OnGUI()
         {
-
-            if (PlayerActionManager != null)
+            if (Application.isPlaying)
             {
-                PlayerActionManager.GUITick();
+                PlayerActionManager.Get().GUITick();
             }
         }
 

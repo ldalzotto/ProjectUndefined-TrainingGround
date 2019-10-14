@@ -2,7 +2,6 @@ namespace RTPuzzle
 {
     public class GrabObjectAction : RTPPlayerAction
     {
-        private PlayerActionManager PlayerActionManager;
         private RTPPlayerAction addedPlayerAction;
 
         public GrabObjectAction(RTPPlayerAction addedPlayerAction, CorePlayerActionDefinition CorePlayerActionDefinition) : base(CorePlayerActionDefinition)
@@ -18,8 +17,7 @@ namespace RTPuzzle
         public override void FirstExecution()
         {
             base.FirstExecution();
-            this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
-            this.PlayerActionManager.IncreaseOrAddActionsRemainingExecutionAmount(this.addedPlayerAction, 1);
+            PlayerActionManager.Get().IncreaseOrAddActionsRemainingExecutionAmount(this.addedPlayerAction, 1);
             this.PlayerActionConsumed();
         }
 

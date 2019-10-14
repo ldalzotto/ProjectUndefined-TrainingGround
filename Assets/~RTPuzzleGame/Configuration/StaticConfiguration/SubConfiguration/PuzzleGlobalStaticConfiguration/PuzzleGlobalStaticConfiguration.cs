@@ -9,6 +9,7 @@ namespace RTPuzzle
     public class PuzzleGlobalStaticConfiguration : ScriptableObject
     {
         public PlayerInteractiveObjectInitializerData PlayerInteractiveObjectInitializerData;
+        public PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent;
     }
 
 

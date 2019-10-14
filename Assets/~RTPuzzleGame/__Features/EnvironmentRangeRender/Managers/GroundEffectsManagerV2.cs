@@ -55,8 +55,8 @@ namespace RTPuzzle
             #endregion
 
             #region Event Registering
-            RangeObjectV2Manager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnRangeObjectCreated);
-            RangeObjectV2Manager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnRangeObjectDestroyed);
+            RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnRangeObjectCreated);
+            RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnRangeObjectDestroyed);
             #endregion
 
             this.MasterRangeMaterial = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleMaterialConfiguration.MasterRangeMaterial;
@@ -130,7 +130,7 @@ namespace RTPuzzle
 
 
         #region External events
-        public void OnRangeObjectCreated(RangeObjectV2 RangeObjectV2)
+        private void OnRangeObjectCreated(RangeObjectV2 RangeObjectV2)
         {
             var rangeTypeID = RangeObjectV2.RangeObjectInitialization.RangeTypeID;
             if (rangeTypeID != RangeTypeID.NOT_DISPLAYED)
@@ -165,17 +165,7 @@ namespace RTPuzzle
 
         }
 
-        public void OnLevelExit()
-        {
-            //release buffers
-            this.ForEachRangeRenderData((rangeRenderData) =>
-            {
-                rangeRenderData.Dispose();
-            });
-
-        }
-
-        public void OnRangeObjectDestroyed(RangeObjectV2 RangeObjectV2)
+        private void OnRangeObjectDestroyed(RangeObjectV2 RangeObjectV2)
         {
             if (RangeObjectV2.RangeObjectInitialization.RangeTypeID != RangeTypeID.NOT_DISPLAYED)
             {
@@ -188,6 +178,15 @@ namespace RTPuzzle
             }
         }
 
+        public void OnLevelExit()
+        {
+            //release buffers
+            this.ForEachRangeRenderData((rangeRenderData) =>
+            {
+                rangeRenderData.Dispose();
+            });
+        }
+        
         public override void OnDestroy()
         {
             base.OnDestroy();

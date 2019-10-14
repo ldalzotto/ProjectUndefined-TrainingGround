@@ -1,6 +1,6 @@
 using CoreGame;
-using GameConfigurationID;
 using InteractiveObjectTest;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,13 +23,11 @@ namespace RTPuzzle
         void RemoveActionToAvailable(RTPPlayerAction selectableObjectPlayerAction);
     }
 
-    public class PlayerActionManager : MonoBehaviour, IPlayerActionManagerEvent, IPlayerActionManagerDataRetrieval
+    public class PlayerActionManager : GameSingleton<PlayerActionManager>, IPlayerActionManagerEvent, IPlayerActionManagerDataRetrieval
     {
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
-
-        public PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent;
 
         private PlayerActionExecutionManager PlayerActionExecutionManager;
         private PlayerActionsAvailableManager PlayerActionsAvailableManager;
@@ -38,13 +36,13 @@ namespace RTPuzzle
 
         private SelectionWheel SelectionWheel;
 
-        public void Init()
+        public PlayerActionManager()
         {
             #region External Dependencies
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
-            var PlayerInteractiveGameObject = PlayerInteractiveObjectManager.Get().GetPlayerGameObject();
             var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
             #endregion
 
             SelectionWheel = PuzzleGameSingletonInstances.PuzzleSelectionWheel;
@@ -52,7 +50,10 @@ namespace RTPuzzle
             PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
             PlayerActionsAvailableManager = new PlayerActionsAvailableManager();
             PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel, puzzleGameConfigurationManager);
-            PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent, SelectionWheel, PlayerInteractiveGameObject.InteractiveGameObjectParent.transform, Camera.main);
+            PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(
+                puzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerSelectioNWheelPositionerComponent,
+                SelectionWheel, () => { return PlayerInteractiveObjectManager.Get().GetPlayerGameObject().InteractiveGameObjectParent.transform; }
+            , Camera.main);
 
         }
 
@@ -119,7 +120,7 @@ namespace RTPuzzle
         }
         public void AddActionsToAvailable(List<RTPPlayerAction> addedActions)
         {
-            foreach(var addedAction in addedActions)
+            foreach (var addedAction in addedActions)
             {
                 this.AddActionToAvailable(addedAction);
             }
@@ -136,7 +137,7 @@ namespace RTPuzzle
 
         public void RemoveActionsToAvailable(List<RTPPlayerAction> removedActions)
         {
-            foreach(var removedAction in removedActions)
+            foreach (var removedAction in removedActions)
             {
                 this.RemoveActionToAvailable(removedAction);
             }
@@ -358,20 +359,20 @@ namespace RTPuzzle
     {
         private PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent;
         private SelectionWheel SelectionWheel;
-        private Transform PlayerTransform;
+        private Func<Transform> playerTransformProvider;
         private Camera camera;
 
-        public PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent, SelectionWheel selectionWheel, Transform playerTransform, Camera camera)
+        public PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent, SelectionWheel selectionWheel, Func<Transform> playerTransformProvider, Camera camera)
         {
             this.PlayerSelectioNWheelPositionerComponent = PlayerSelectioNWheelPositionerComponent;
             SelectionWheel = selectionWheel;
-            PlayerTransform = playerTransform;
+            this.playerTransformProvider = playerTransformProvider;
             this.camera = camera;
         }
 
         public void Tick(float d)
         {
-            SelectionWheel.transform.position = camera.WorldToScreenPoint(PlayerTransform.position) + PlayerSelectioNWheelPositionerComponent.DeltaDistanceFromTargetPoint;
+            SelectionWheel.transform.position = camera.WorldToScreenPoint(this.playerTransformProvider.Invoke().position) + PlayerSelectioNWheelPositionerComponent.DeltaDistanceFromTargetPoint;
         }
     }
     #endregion

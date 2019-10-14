@@ -7,6 +7,10 @@ namespace InteractiveObjectTest
 {
     public abstract class CoreInteractiveObject
     {
+        #region External Dependencies
+        private InteractiveObjectEventsManager InteractiveObjectEventsManager = InteractiveObjectEventsManager.Get();
+        #endregion
+
         public InteractiveGameObject InteractiveGameObject { get; protected set; }
 
         [VE_Nested]
@@ -28,6 +32,7 @@ namespace InteractiveObjectTest
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
             this.CutsceneController = new BaseCutsceneController(interactiveGameObject.Rigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
+            this.InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
         }
 
         public virtual void FixedTick(float d) { }
@@ -39,6 +44,7 @@ namespace InteractiveObjectTest
 
         public virtual void Destroy()
         {
+            this.InteractiveObjectEventsManager.OnInteractiveObjectDestroyed(this);
             UnityEngine.Object.Destroy(this.InteractiveGameObject.InteractiveGameObjectParent);
         }
 

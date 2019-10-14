@@ -38,7 +38,7 @@ namespace InteractiveObjectTest
             this.PlayerInteractiveObjectInitializerData = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerInteractiveObjectInitializerData;
 
             #region External Dependencies
-            this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
+            this.PlayerActionManager = PlayerActionManager.Get();
             var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;

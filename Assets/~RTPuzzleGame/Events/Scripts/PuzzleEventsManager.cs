@@ -14,9 +14,6 @@ namespace RTPuzzle
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
         private PlayerActionEventManager PlayerActionEventManager;
 
-        private IPlayerActionManagerEvent IPlayerActionManagerEvent;
-        private IPlayerActionManagerDataRetrieval IPlayerActionManagerDataRetrieval;
-
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
         private IInteractiveObjectSelectionEvent IInteractiveObjectSelectionEvent = InteractiveObjectSelectionManager.Get();
@@ -29,8 +26,6 @@ namespace RTPuzzle
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.IDottedLineRendererManagerEvent = PuzzleGameSingletonInstances.DottedLineRendererManager;
             this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
-            this.IPlayerActionManagerEvent = PuzzleGameSingletonInstances.PlayerActionManager;
-            this.IPlayerActionManagerDataRetrieval = PuzzleGameSingletonInstances.PlayerActionManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
             this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
         }
@@ -45,7 +40,7 @@ namespace RTPuzzle
             this.IInteractiveObjectSelectionEvent.OnSelectableExit(actionInteractableObjectModule);
         }
         #endregion
-        
+
         #region IPlayerActionManagerEventListener
         public void PZ_EVT_OnPlayerActionWheelRefresh()
         {
@@ -57,25 +52,25 @@ namespace RTPuzzle
         #region Player Action Wheel Event
         public void PZ_EVT_OnPlayerActionWheelAwake()
         {
-            this.IPlayerActionManagerEvent.OnSelectionWheelAwake();
+            PlayerActionManager.Get().OnSelectionWheelAwake();
             this.TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
         }
         public void PZ_EVT_OnPlayerActionWheelSleep(bool destroyImmediate = false)
         {
-            this.IPlayerActionManagerEvent.OnSelectionWheelSleep(destroyImmediate);
+            PlayerActionManager.Get().OnSelectionWheelSleep(destroyImmediate);
         }
 
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()
         {
-            var selectedAction = this.IPlayerActionManagerDataRetrieval.GetCurrentSelectedAction();
+            var selectedAction = PlayerActionManager.Get().GetCurrentSelectedAction();
             if (selectedAction.CanBeExecuted())
             {
                 this.PZ_EVT_OnPlayerActionWheelSleep(false);
-                this.IPlayerActionManagerEvent.ExecuteAction(selectedAction);
+                PlayerActionManager.Get().ExecuteAction(selectedAction);
             }
         }
         #endregion
-        
+
         #region IGameOverManagerEventListener
         public void PZ_EVT_GameOver()
         {
