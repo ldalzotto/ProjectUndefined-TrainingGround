@@ -170,3 +170,11 @@ public static class SceneHandlerDrawer
         Handles.DrawLine(C4, C1);
     }
 }
+
+public class SceneHandlerDrawerClass
+{
+    public void Draw(object drawableObject, Transform objectTransform)
+    {
+        SceneHandlerDrawer.Draw(drawableObject, objectTransform);
+    }
+}

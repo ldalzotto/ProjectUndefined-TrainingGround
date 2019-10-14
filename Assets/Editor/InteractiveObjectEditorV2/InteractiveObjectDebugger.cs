@@ -7,14 +7,14 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InteractiveObjectEditorV2 : EditorWindow
+public class InteractiveObjectDebugger : EditorWindow
 {
-    public static InteractiveObjectEditorV2 Instance;
+    public static InteractiveObjectDebugger Instance;
 
-    [MenuItem("InteractiveObjectEditorV2/InteractiveObjectEditorV2")]
+    [MenuItem("InteractiveObject/InteractiveObjectDebugger")]
     public static void Init()
     {
-        var wnd = GetWindow<InteractiveObjectEditorV2>();
+        var wnd = GetWindow<InteractiveObjectDebugger>();
         Instance = wnd;
         wnd.Show();
     }
@@ -91,7 +91,6 @@ public class InteractiveObjectEditorV2 : EditorWindow
     {
         if (Application.isPlaying)
         {
-
             var allInteractiveObjects = InteractiveObjectV2Manager.Get().InteractiveObjects;
             foreach (var interactiveObject in allInteractiveObjects)
             {
@@ -231,7 +230,7 @@ class ListenedObjectField : VisualElement
         this.IsSelected = new BoolVariable(false, this.OnInteractiveObjectSelected, this.OnInteractiveObjetDeSelected);
 
         this.InitialBackGroundColor = this.style.backgroundColor.value;
-        
+
         this.ObjectFieldIconBar = new ObjectFieldIconBar(this);
 
         this.ObjectLabel = new Label(this.ObjectReference.name);
@@ -317,7 +316,7 @@ class ObjectFieldIconBar : VisualElement
     }
 }
 
-class ObjectFieldSelectionIcon : VisualElement
+public class ObjectFieldSelectionIcon : VisualElement
 {
     private Color initialBackgroundColor;
     public BoolVariable Selected { get; private set; }

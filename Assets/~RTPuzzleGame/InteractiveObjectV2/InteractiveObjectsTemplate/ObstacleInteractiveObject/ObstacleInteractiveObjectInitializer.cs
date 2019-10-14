@@ -15,6 +15,11 @@ namespace InteractiveObjectTest
     {
         public ObstacleInteractiveObjectInitializerData InteractiveObjectInitializerData;
 
+        protected override object GetInitializerDataObject()
+        {
+            return this.InteractiveObjectInitializerData;
+        }
+
         protected override CoreInteractiveObject GetInteractiveObject()
         {
             return new ObstacleInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData);

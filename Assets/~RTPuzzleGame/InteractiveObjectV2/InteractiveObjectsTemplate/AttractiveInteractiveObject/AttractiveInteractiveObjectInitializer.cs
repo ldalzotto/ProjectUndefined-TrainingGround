@@ -17,6 +17,11 @@ namespace InteractiveObjectTest
     {
         public AttractiveObjectInitializerData InteractiveObjectInitializerData;
 
+        protected override object GetInitializerDataObject()
+        {
+            return this.InteractiveObjectInitializerData;
+        }
+
         protected override CoreInteractiveObject GetInteractiveObject()
         {
             return new AttractiveInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData);

@@ -18,14 +18,18 @@ namespace RTPuzzle
 
     #region Range Type
     public abstract class ARangeTypeDefinitionV2 { }
+    [SceneHandleDraw]
     [System.Serializable]
     public class SphereRangeTypeDefinition : ARangeTypeDefinitionV2
     {
+        [WireCircle(R = 1f, G = 1f, B = 0f)]
         public float Radius;
     }
+    [SceneHandleDraw]
     [System.Serializable]
     public class BoxRangeTypeDefinition : ARangeTypeDefinitionV2
     {
+        [WireBox(R = 1f, G = 1f, B = 1f, SizeFieldName = nameof(BoxRangeTypeDefinition.Size))]
         public Vector3 Center;
         public Vector3 Size;
     }

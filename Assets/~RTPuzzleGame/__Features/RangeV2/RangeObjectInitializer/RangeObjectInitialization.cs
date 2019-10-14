@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [SceneHandleDraw]
     public abstract class RangeObjectInitialization : SerializedScriptableObject
     {
         [CustomEnum()]

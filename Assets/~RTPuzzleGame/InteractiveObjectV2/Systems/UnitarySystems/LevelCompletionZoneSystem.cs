@@ -4,8 +4,10 @@ using System;
 namespace InteractiveObjectTest
 {
     [System.Serializable]
+    [SceneHandleDraw]
     public class LevelCompletionZoneSystemDefinition
     {
+        [DrawNested]
         public RangeObjectInitialization TriggerRangeObjectInitialization;
     }
 

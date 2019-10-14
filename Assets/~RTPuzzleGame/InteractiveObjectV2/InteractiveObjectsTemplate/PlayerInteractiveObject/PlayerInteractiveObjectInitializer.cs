@@ -10,6 +10,11 @@ namespace InteractiveObjectTest
             base.Init();
         }
 
+        protected override object GetInitializerDataObject()
+        {
+            return null;
+        }
+
         protected override CoreInteractiveObject GetInteractiveObject()
         {
             var PlayerInteractiveObject =  new PlayerInteractiveObject(new InteractiveGameObject(this.gameObject));
