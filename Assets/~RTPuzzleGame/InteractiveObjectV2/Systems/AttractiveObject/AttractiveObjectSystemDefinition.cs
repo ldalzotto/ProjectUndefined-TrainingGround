@@ -1,5 +1,19 @@
-﻿namespace InteractiveObjectTest
+﻿using UnityEngine;
+using System.Collections;
+using OdinSerializer;
+
+namespace InteractiveObjectTest
 {
+    [System.Serializable]
+    [SceneHandleDraw]
+    public class AttractiveObjectSystemDefinition : SerializedScriptableObject
+    {
+        [WireCircle(R = 1, G = 1, B = 0)]
+        public float EffectRange;
+
+        public float EffectiveTime;
+    }
+
     public class AIAttractiveObjectState
     {
         public CoreInteractiveObject AttractedInteractiveObject { get; private set; }
@@ -15,21 +29,5 @@
             this.AttractedInteractiveObject = AttractedInteractiveObject;
             this.IsAttractedByAttractiveObject.SetValue(value);
         }
-    }
-
-    public class AIDisarmObjectState
-    {
-        public BoolVariable IsDisarming { get; private set; }
-
-        public AIDisarmObjectState(BoolVariable IsDisarming)
-        {
-            this.IsDisarming = IsDisarming;
-        }
-    }
-
-
-    public class AIPatrollingState
-    {
-        public bool isPatrolling;
     }
 }

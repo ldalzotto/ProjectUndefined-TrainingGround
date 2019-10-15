@@ -12,4 +12,14 @@ namespace InteractiveObjectTest
         public float DisarmRange;
         public float DisarmTime;
     }
+    
+    public class AIDisarmObjectState
+    {
+        public BoolVariable IsDisarming { get; private set; }
+
+        public AIDisarmObjectState(BoolVariable IsDisarming)
+        {
+            this.IsDisarming = IsDisarming;
+        }
+    }
 }

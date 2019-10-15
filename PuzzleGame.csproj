@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -167,7 +168,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AbstractAIInteractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectState.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObject.cs" />
@@ -178,22 +178,22 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\PlayerInteractiveObject\PlayerInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Managers\InteractiveObjectV2Manager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Managers\PlayerInteractiveObjectManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Abstract\AInteractiveObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIMoveToDestinationSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrol\AIPatrolSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrol\AIPatrolSystemDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObject\AttractiveObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObject\AttractiveObjectSystemDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\DisarmObject\DisarmobjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\DisarmObject\DisarmSystemDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LevelCompletionZone\LevelCompletionZoneSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LevelCompletionZone\LevelCompletionZoneSystemDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LocalCutscenePlayerSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObject\SelectableObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObject\SelectableObjectSystemDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\_Abstract\AInteractiveObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIMoveToDestinationSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AnimationObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\DisarmObject\DisarmobjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\DisarmObject\DisarmSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LocalCutscenePlayerSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\SelectableObject\SelectableObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\SelectableObject\SelectableObjectSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\PuzzleSelectionObjectRederingPassFeature.cs" />
     <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\RangeRenderingPassFeature.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Actions\PuzzleTutorialTextAction.cs" />

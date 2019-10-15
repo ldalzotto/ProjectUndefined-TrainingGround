@@ -3,7 +3,6 @@ using RTPuzzle;
 
 namespace InteractiveObjectTest
 {
-
     public class AIPatrolSystem : AInteractiveObjectSystem
     {
         private SequencedActionPlayer SequencedActionPlayer;
