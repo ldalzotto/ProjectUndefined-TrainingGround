@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using static InteractiveObjectTest.AIMovementDefinitions;
@@ -91,7 +90,7 @@ namespace InteractiveObjectTest
                 {
                     this.currentDestination = null;
                     this.FrameWereOccuredTheLastDestinationReached = Time.frameCount;
-                 //   Debug.Log(MyLog.Format("Destination reached !"));
+                    Debug.Log(MyLog.Format("Destination reached !"));
                     this.OnAIInteractiveObjectDestinationReached.Invoke();
                 }
             }
@@ -113,6 +112,7 @@ namespace InteractiveObjectTest
             //So we do comparison between world destination
             if (this.lastSuccessfulWorldDestination != AIDestination.WorldPosition)
             {
+                Debug.Log(MyLog.Format("Set destination : " + AIDestination.WorldPosition));
                 this.currentDestination = AIDestination;
                 objectAgent.ResetPath();
                 NavMeshPath path = CreateValidNavMeshPathWithFallback(objectAgent, AIDestination.WorldPosition, 50);

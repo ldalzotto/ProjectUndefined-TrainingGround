@@ -1,5 +1,4 @@
-﻿using GameConfigurationID;
-using static InteractiveObjectTest.AIMovementDefinitions;
+﻿using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
@@ -40,11 +39,6 @@ namespace InteractiveObjectTest
         {
             this.LineVisualFeedbackSystem.OnDestroy();
             base.Destroy();
-        }
-
-        public override void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
-        {
-            this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
     }
 

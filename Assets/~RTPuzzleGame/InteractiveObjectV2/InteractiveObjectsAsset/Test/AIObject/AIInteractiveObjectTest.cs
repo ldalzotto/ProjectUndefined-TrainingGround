@@ -69,15 +69,25 @@ namespace InteractiveObjectTest
         {
             base.Destroy();
         }
-
+        
         public override void OnAIDestinationReached()
         {
             this.AIPatrolSystem.OnAIDestinationReached();
         }
-
+        
         public override void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)
         {
             this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent);
+        }
+
+        public override void SetAIDestination(AIDestination AIDestination)
+        {
+            this.AIMoveToDestinationSystem.SetDestination(AIDestination);
+        }
+
+        public override void SetAISpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        {
+            this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
 
         #region Attractive Object
@@ -125,12 +135,7 @@ namespace InteractiveObjectTest
             this.LineVisualFeedbackSystem.DestroyLine(this.AIAttractiveObjectState.AttractedInteractiveObject);
         }
         #endregion
-
-        public override void SetAIDestination(AIDestination AIDestination)
-        {
-            this.AIMoveToDestinationSystem.SetDestination(AIDestination);
-        }
-
+        
         public override void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
         {
             this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
