@@ -3,14 +3,6 @@ using System;
 
 namespace InteractiveObjectTest
 {
-    [System.Serializable]
-    [SceneHandleDraw]
-    public class LevelCompletionZoneSystemDefinition
-    {
-        [DrawNested]
-        public RangeObjectInitialization TriggerRangeObjectInitialization;
-    }
-
     public class LevelCompletionZoneSystem : AInteractiveObjectSystem
     {
         private RangeObjectV2 LevelCompletionZoneObject;

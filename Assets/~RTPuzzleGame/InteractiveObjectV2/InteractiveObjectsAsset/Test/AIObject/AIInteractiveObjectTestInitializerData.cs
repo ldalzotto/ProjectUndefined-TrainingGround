@@ -11,10 +11,17 @@ namespace InteractiveObjectTest
     {
         [Inline(CreateAtSameLevelIfAbsent = true)]
         public AIPatrolSystemDefinition AIPatrolSystemDefinition;
-        [Inline(CreateAtSameLevelIfAbsent = true)]
+
         [DrawNested]
+        [Inline(CreateAtSameLevelIfAbsent = true)]
         public SightObjectSystemDefinition SightObjectSystemDefinition;
+
         public AIMovementSpeedDefinition AISpeedWhenAttracted;
         public LocalPuzzleCutsceneTemplate DisarmObjectAnimation;
+
+        public override CoreInteractiveObject BuildInteractiveObject(GameObject parent)
+        {
+            return new AIInteractiveObjectTest(new InteractiveGameObject(parent), this);
+        }
     }
 }

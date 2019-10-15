@@ -1,17 +1,9 @@
 ﻿using GameConfigurationID;
 using RTPuzzle;
 using System;
-using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
-    [System.Serializable]
-    public class AttractiveObjectSystemDefinition
-    {
-        public float EffectRange;
-        public float EffectiveTime;
-    }
-    
     public class AttractiveObjectSystem : AInteractiveObjectSystem
     {
 
@@ -56,7 +48,7 @@ namespace InteractiveObjectTest
             this.SphereRange.OnDestroy();
         }
     }
-    
+
     class AttractiveObjectLifetimeTimer
     {
         private float effectiveTime;

@@ -1,4 +1,5 @@
-﻿using InteractiveObjectTest;
+﻿using Editor_MainGameCreationWizard;
+using InteractiveObjectTest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,20 @@ public class InteractiveObjectExplorer : EditorWindow
         wnd.Show();
     }
 
+    private CommonGameConfigurations CommonGameConfigurations;
+
     private VisualElement RootElement;
     private ContextBar ContextBar;
     private TextField SearchTextField;
 
-    private List<A_InteractiveObjectInitializer> InteractiveObjectInitializers = new List<A_InteractiveObjectInitializer>();
-    private Dictionary<A_InteractiveObjectInitializer, InterativeObjectInitializerLine> InteractiveObjectInitializerLines = new Dictionary<A_InteractiveObjectInitializer, InterativeObjectInitializerLine>();
+    private List<InteractiveObjectInitializer> InteractiveObjectInitializers = new List<InteractiveObjectInitializer>();
+    private Dictionary<InteractiveObjectInitializer, InterativeObjectInitializerLine> InteractiveObjectInitializerLines = new Dictionary<InteractiveObjectInitializer, InterativeObjectInitializerLine>();
 
     private void OnEnable()
     {
+        this.CommonGameConfigurations = new CommonGameConfigurations();
+        EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations);
+
         this.RootElement = new VisualElement();
 
         this.ContextBar = new ContextBar(this.RootElement);
@@ -64,7 +70,7 @@ public class InteractiveObjectExplorer : EditorWindow
         {
             if (InteractiveObjectInitializerLine.Value.IsGizmoSelected())
             {
-                SceneHandlerDrawer.Draw(InteractiveObjectInitializerLine.Key, InteractiveObjectInitializerLine.Key.transform);
+                SceneHandlerDrawer.Draw(InteractiveObjectInitializerLine.Key, InteractiveObjectInitializerLine.Key.transform, this.CommonGameConfigurations);
             }
         }
     }
@@ -74,13 +80,13 @@ public class InteractiveObjectExplorer : EditorWindow
         foreach (var InteractiveObjectInitializerLine in this.InteractiveObjectInitializerLines)
         {
             InteractiveObjectInitializerLine.Value.style.display =
-               (string.IsNullOrEmpty(this.SearchTextField.value) || InteractiveObjectInitializerLine.Key.name.Contains(this.SearchTextField.value)) ? DisplayStyle.Flex : DisplayStyle.None;
+               (string.IsNullOrEmpty(this.SearchTextField.value) || InteractiveObjectInitializerLine.Key.name.ToLower().Contains(this.SearchTextField.value.ToLower())) ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 
     private void Refresh()
     {
-        this.InteractiveObjectInitializers = GameObject.FindObjectsOfType<A_InteractiveObjectInitializer>().ToList();
+        this.InteractiveObjectInitializers = GameObject.FindObjectsOfType<InteractiveObjectInitializer>().ToList();
 
         foreach (var interactiveObjectInitializer in this.InteractiveObjectInitializers)
         {

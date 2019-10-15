@@ -16,7 +16,7 @@ namespace RTPuzzle
 
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
-        private IInteractiveObjectSelectionEvent IInteractiveObjectSelectionEvent = InteractiveObjectSelectionManager.Get();
+        private InteractiveObjectSelectionManager InteractiveObjectSelectionManager = InteractiveObjectSelectionManager.Get();
         #endregion
 
         public void Init()
@@ -33,11 +33,11 @@ namespace RTPuzzle
         #region IActionInteractableObjectModuleEventListener
         public void PZ_EVT_OnActionInteractableEnter(ISelectableModule actionInteractableObjectModule)
         {
-            this.IInteractiveObjectSelectionEvent.OnSelectableEnter(actionInteractableObjectModule);
+            this.InteractiveObjectSelectionManager.OnSelectableEnter(actionInteractableObjectModule);
         }
         public void PZ_EVT_OnActionInteractableExit(ISelectableModule actionInteractableObjectModule)
         {
-            this.IInteractiveObjectSelectionEvent.OnSelectableExit(actionInteractableObjectModule);
+            this.InteractiveObjectSelectionManager.OnSelectableExit(actionInteractableObjectModule);
         }
         #endregion
 

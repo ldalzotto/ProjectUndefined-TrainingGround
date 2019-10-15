@@ -11,7 +11,7 @@ namespace InteractiveObjectTest
 
         private LevelCompletionZoneSystem LevelCompletionZoneSystem;
 
-        public LevelCompletionInteractiveObject(LevelCompletionInitializerData LevelCompletionInitializerData,
+        public LevelCompletionInteractiveObject(LevelCompletionInteractiveObjectInitializerData LevelCompletionInitializerData,
             InteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true) : base(interactiveGameObject, IsUpdatedInMainManager)
         {
             this.LevelCompletionZoneSystem = new LevelCompletionZoneSystem(this, LevelCompletionInitializerData.LevelCompletionZoneSystemDefinition, new InteractiveObjectTagStruct { IsPlayer = 1 },

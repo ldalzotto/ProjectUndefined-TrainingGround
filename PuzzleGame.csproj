@@ -11,7 +11,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
+    <ProjectGuid>{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>PuzzleGame</AssemblyName>
@@ -66,7 +66,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIWarpActionV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\Interfaces\IActionAbortedOnDestinationReached.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolGraphV2.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\Templates\AIPatrolGraphTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\DiscussionTree\PuzzleDiscussionTreeNodes.cs" />
@@ -92,7 +91,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\LevelCompletion\Managers\LevelCompletionManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\ExposedInterfaces\IInteractiveObjectSelectionEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\ExposedInterfaces\ISelectableModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\Managers\InteractiveObjectSelectionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ObstacleOcclusionCalculationManagerV2.cs" />
@@ -155,21 +153,25 @@
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\InteractiveObjectEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Configuration\AbstractInteractiveObjectV2Definition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Configuration\InteractiveObjectV2Configuration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject\InteractiveGameObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject\InteractiveGameObjectLogicColliderTag.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectInitializer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTest.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializerData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AITestDisarmLocalCutscene.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTest.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTestInitializerData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIPatrolGraphTest.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AITestDisarmLocalCutscene.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AbstractAIInteractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectState.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AttractiveInteractiveObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AttractiveInteractiveObjectInitializer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveInteractiveObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObjectInitializer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\ObstacleInteractiveObject\ObstacleInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\ObstacleInteractiveObject\ObstacleInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\PlayerInteractiveObject\PlayerInteractiveObject.cs" />
@@ -181,14 +183,17 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrol\AIPatrolSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrol\AIPatrolSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\DisarmobjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LevelCompletionZoneSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObject\AttractiveObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObject\AttractiveObjectSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\DisarmObject\DisarmobjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\DisarmObject\DisarmSystemDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LevelCompletionZone\LevelCompletionZoneSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LevelCompletionZone\LevelCompletionZoneSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\LocalCutscenePlayerSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObject\SelectableObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SelectableObject\SelectableObjectSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystemDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\PuzzleSelectionObjectRederingPassFeature.cs" />
     <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\RangeRenderingPassFeature.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Actions\PuzzleTutorialTextAction.cs" />
@@ -198,19 +203,19 @@
     <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
     <None Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Shader\DottedLineShader.shader" />
     <Reference Include="Unity.Burst">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -402,7 +407,7 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.9f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -761,19 +766,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CoreGame.csproj">
-      <Project>{FE9BDCD4-369B-DF85-6665-8E0251B2C44B}</Project>
+      <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
       <Name>CoreGame</Name>
     </ProjectReference>
     <ProjectReference Include="Editor_Common.csproj">
-      <Project>{4515CF8C-D010-E6DC-319E-E452A370D349}</Project>
+      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
       <Name>Editor_Common</Name>
     </ProjectReference>
     <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{A681D4DB-01A1-7910-AB52-5F994409AF08}</Project>
+      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
       <Name>OdinSerializer</Name>
     </ProjectReference>
     <ProjectReference Include="GameConfigurationID.csproj">
-      <Project>{E459BBE2-9160-77A5-DC93-1A3E692106CB}</Project>
+      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>
     </ProjectReference>
   </ItemGroup>

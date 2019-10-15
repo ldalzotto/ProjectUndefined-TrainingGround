@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>, IInteractiveObjectSelectionEvent, IGameSingleton
+    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>, IGameSingleton
     {
         private static InteractiveObjectSelectionManager Instance;
         public static InteractiveObjectSelectionManager Get()

@@ -1,18 +1,33 @@
 ﻿using CoreGame;
+using Editor_MainGameCreationWizard;
 using RTPuzzle;
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
 public static class SceneHandlerDrawer
 {
-    public static void Draw(object drawableObject, Transform objectTransform)
+    public static void Draw(object drawableObject, Transform objectTransform, CommonGameConfigurations CommonGameConfigurations)
     {
         if (drawableObject.GetType().GetCustomAttribute<SceneHandleDrawAttribute>(true) != null)
         {
             var fields = ReflectionHelper.GetAllFields(drawableObject.GetType());
             foreach (var field in fields)
             {
+                var DrawConfigurationAttribute = field.GetCustomAttribute<DrawConfigurationAttribute>() as DrawConfigurationAttribute;
+                if (DrawConfigurationAttribute != null)
+                {
+                    var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawConfigurationAttribute.ConfigurationType);
+                    if (configurationAsset != null)
+                    {
+                        configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
+                        if (configurationDataObject != null)
+                        {
+                            Draw(configurationDataObject, objectTransform, CommonGameConfigurations);
+                        }
+                    }
+                }
                 /*
                   var DrawConfigurationAttribute = field.GetCustomAttribute<DrawConfigurationAttribute>() as DrawConfigurationAttribute;
                   if (DrawConfigurationAttribute != null)
@@ -53,7 +68,7 @@ public static class SceneHandlerDrawer
                 var DrawNestedAttribute = field.GetCustomAttribute<DrawNestedAttribute>() as DrawNestedAttribute;
                 if (DrawNestedAttribute != null)
                 {
-                    Draw(field.GetValue(drawableObject), objectTransform);
+                    Draw(field.GetValue(drawableObject), objectTransform, CommonGameConfigurations);
                 }
 
                 var AbstractSceneHandleAttribute = field.GetCustomAttribute<AbstractSceneHandleAttribute>(true) as AbstractSceneHandleAttribute;
@@ -168,13 +183,5 @@ public static class SceneHandlerDrawer
         Handles.DrawLine(C2, C3);
         Handles.DrawLine(C3, C4);
         Handles.DrawLine(C4, C1);
-    }
-}
-
-public class SceneHandlerDrawerClass
-{
-    public void Draw(object drawableObject, Transform objectTransform)
-    {
-        SceneHandlerDrawer.Draw(drawableObject, objectTransform);
     }
 }

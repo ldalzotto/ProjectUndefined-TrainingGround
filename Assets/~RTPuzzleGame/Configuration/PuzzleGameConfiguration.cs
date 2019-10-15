@@ -21,6 +21,8 @@ namespace RTPuzzle
         
         public RTPuzzle.RangeTypeConfiguration RangeTypeConfiguration;
         
-        public RTPuzzle.DottedLineConfiguration DottedLineConfiguration;      
+        public RTPuzzle.DottedLineConfiguration DottedLineConfiguration;
+
+        public InteractiveObjectTest.InteractiveObjectV2Configuration InteractiveObjectV2Configuration;
     }
 }

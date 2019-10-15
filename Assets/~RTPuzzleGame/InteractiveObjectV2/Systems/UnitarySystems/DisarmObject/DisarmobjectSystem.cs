@@ -7,13 +7,6 @@ using UnityEngine;
 
 namespace InteractiveObjectTest
 {
-    [System.Serializable]
-    public class DisarmSystemDefinition
-    {
-        public float DisarmRange;
-        public float DisarmTime;
-    }
-
     [SceneHandleDraw]
     public class DisarmObjectSystem : AInteractiveObjectSystem
     {

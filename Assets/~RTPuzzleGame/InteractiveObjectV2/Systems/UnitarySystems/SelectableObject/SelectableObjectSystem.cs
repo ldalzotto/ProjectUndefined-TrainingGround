@@ -4,11 +4,6 @@ using UnityEngine;
 
 namespace InteractiveObjectTest
 {
-    [System.Serializable]
-    public class SelectableObjectSystemDefinition
-    {
-        public float SelectionRange;
-    }
 
     #region Callback Events
     public delegate void OnPlayerTriggerInSelectionEnterDelegate(CoreInteractiveObject IntersectedInteractiveObject);

@@ -1,4 +1,5 @@
-﻿using InteractiveObjectTest;
+﻿using Editor_MainGameCreationWizard;
+using InteractiveObjectTest;
 using RTPuzzle;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ public class InteractiveObjectDebugger : EditorWindow
         Instance = wnd;
         wnd.Show();
     }
+    private CommonGameConfigurations CommonGameConfigurations;
 
     private VisualElement RootElement;
 
@@ -29,6 +31,9 @@ public class InteractiveObjectDebugger : EditorWindow
 
     private void OnEnable()
     {
+        this.CommonGameConfigurations = new CommonGameConfigurations();
+        EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations);
+
         this.RootElement = new VisualElement();
         this.RootElement.style.flexDirection = FlexDirection.Row;
 
@@ -111,7 +116,7 @@ public class InteractiveObjectDebugger : EditorWindow
     {
         foreach (var interactiveObjectField in this.ListenableObjectFields.Values)
         {
-            interactiveObjectField.SceneTick();
+            interactiveObjectField.SceneTick(this.CommonGameConfigurations);
         }
     }
 
@@ -174,10 +179,10 @@ public class InteractiveObjectDebugger : EditorWindow
             var allRangeObjects = RangeObjectV2Manager.Get().RangeObjects;
 
             var allInteractiveObjectsClassname = allInteractiveObjects.ToList()
-                   .Select(i => i).Where(i => string.IsNullOrEmpty(this.SeachTextElement.text) || i.InteractiveGameObject.InteractiveGameObjectParent.name.Contains(this.SeachTextElement.text)).ToList()
+                   .Select(i => i).Where(i => string.IsNullOrEmpty(this.SeachTextElement.text) || i.InteractiveGameObject.InteractiveGameObjectParent.name.ToLower().Contains(this.SeachTextElement.text.ToLower())).ToList()
                    .ConvertAll(i => i.GetType().Name)
                    .Union(
-                        allRangeObjects.Select(r => r).Where(r => string.IsNullOrEmpty(this.SeachTextElement.text) || r.RangeGameObjectV2.RangeGameObject.name.Contains(this.SeachTextElement.text)).ToList()
+                        allRangeObjects.Select(r => r).Where(r => string.IsNullOrEmpty(this.SeachTextElement.text) || r.RangeGameObjectV2.RangeGameObject.name.ToLower().Contains(this.SeachTextElement.text.ToLower())).ToList()
                             .ConvertAll(r => r.GetType().Name)
                     )
                    .ToList();
@@ -250,11 +255,11 @@ class ListenedObjectField : VisualElement
 
     public void SetIsSelected(bool value) { this.IsSelected.SetValue(value); }
 
-    public void SceneTick()
+    public void SceneTick(CommonGameConfigurations CommonGameConfigurations)
     {
         if (this.ObjectFieldIconBar.IsSceneHandleEnabled() && this.ObjectReference != null)
         {
-            SceneHandlerDrawer.Draw(this.ListenedObjectRef, this.ObjectReference.transform);
+            SceneHandlerDrawer.Draw(this.ListenedObjectRef, this.ObjectReference.transform, CommonGameConfigurations);
         }
     }
 

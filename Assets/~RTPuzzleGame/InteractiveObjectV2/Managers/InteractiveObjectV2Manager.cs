@@ -17,7 +17,7 @@ namespace InteractiveObjectTest
             InteractiveObjectEventsManager.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
             #endregion
 
-            var InteractiveObjectInitializers = GameObject.FindObjectsOfType<A_InteractiveObjectInitializer>();
+            var InteractiveObjectInitializers = GameObject.FindObjectsOfType<InteractiveObjectInitializer>();
             if (InteractiveObjectInitializers != null)
             {
                 for (var InteractiveObjectInitializerIndex = 0; InteractiveObjectInitializerIndex < InteractiveObjectInitializers.Length; InteractiveObjectInitializerIndex++)
@@ -115,13 +115,21 @@ namespace InteractiveObjectTest
         private void OnInteractiveObjectCreated(CoreInteractiveObject InteractiveObject)
         {
             this.InteractiveObjects.Add(InteractiveObject);
-            this.InteractiveObjectsIndexedByLogicCollider.Add(InteractiveObject.InteractiveGameObject.GetLogicColliderAsBox(), InteractiveObject);
+            var interactiveObjectLogicCollider = InteractiveObject.InteractiveGameObject.GetLogicColliderAsBox();
+            if (interactiveObjectLogicCollider != null)
+            {
+                this.InteractiveObjectsIndexedByLogicCollider.Add(interactiveObjectLogicCollider, InteractiveObject);
+            }
         }
 
         private void OnInteractiveObjectDestroyed(CoreInteractiveObject InteractiveObject)
         {
             this.InteractiveObjects.Remove(InteractiveObject);
-            this.InteractiveObjectsIndexedByLogicCollider.Remove(InteractiveObject.InteractiveGameObject.GetLogicColliderAsBox());
+            var interactiveObjectLogicCollider = InteractiveObject.InteractiveGameObject.GetLogicColliderAsBox();
+            if (interactiveObjectLogicCollider != null)
+            {
+                this.InteractiveObjectsIndexedByLogicCollider.Remove(interactiveObjectLogicCollider);
+            }
             RangeObjectV2ManagerOperations.ClearAllReferencesOfInteractiveObject(InteractiveObject);
         }
 
