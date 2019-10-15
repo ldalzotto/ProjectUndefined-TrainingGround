@@ -16,6 +16,7 @@ public class InteractiveObjectExplorer : EditorWindow
     }
 
     private VisualElement RootElement;
+    private ContextBar ContextBar;
     private TextField SearchTextField;
 
     private List<A_InteractiveObjectInitializer> InteractiveObjectInitializers = new List<A_InteractiveObjectInitializer>();
@@ -23,31 +24,38 @@ public class InteractiveObjectExplorer : EditorWindow
 
     private void OnEnable()
     {
-        Debug.Log("InteractiveObjectExplorer OnEnable");
         this.RootElement = new VisualElement();
+
+        this.ContextBar = new ContextBar(this.RootElement);
+        this.ContextBar.SetupRefreshButton(this.Refresh);
+        this.ContextBar.SetupSelectedAllButton(this.SelectAllGizmo);
+        this.ContextBar.SetupUnselectedAllButton(this.UnSelectAllGizmo);
 
         this.SearchTextField = new TextField();
         this.SearchTextField.RegisterCallback<ChangeEvent<string>>(this.OnSearchStringChange);
         this.RootElement.Add(this.SearchTextField);
 
         rootVisualElement.Add(this.RootElement);
+
+        // rootVisualElement.RegisterCallback<MouseUpEvent>(this.RootMouseDown);
+
         SceneView.duringSceneGui += this.SceneTick;
+    }
+    
+    private void RootMouseDown(MouseUpEvent evt)
+    {
+
+        evt.StopPropagation();
     }
 
     private void OnDisable()
     {
-        Debug.Log("InteractiveObjectExplorer OnDisable");
-        SceneView.duringSceneGui += this.SceneTick;
+        SceneView.duringSceneGui -= this.SceneTick;
     }
 
-    private void OnGUI()
+    private void OnDestroy()
     {
-        if (Event.current.rawType == EventType.ContextClick)
-        {
-            var genericMenu = new GenericMenu();
-            genericMenu.AddItem(new GUIContent("Refresh"), true, this.Refresh);
-            genericMenu.ShowAsContext();
-        }
+        SceneView.duringSceneGui -= this.SceneTick;
     }
 
     private void SceneTick(SceneView sceneView)
@@ -63,7 +71,11 @@ public class InteractiveObjectExplorer : EditorWindow
 
     private void OnSearchStringChange(ChangeEvent<string> evt)
     {
-
+        foreach (var InteractiveObjectInitializerLine in this.InteractiveObjectInitializerLines)
+        {
+            InteractiveObjectInitializerLine.Value.style.display =
+               (string.IsNullOrEmpty(this.SearchTextField.value) || InteractiveObjectInitializerLine.Key.name.Contains(this.SearchTextField.value)) ? DisplayStyle.Flex : DisplayStyle.None;
+        }
     }
 
     private void Refresh()
@@ -88,14 +100,85 @@ public class InteractiveObjectExplorer : EditorWindow
         }
     }
 
+    private void UnSelectAllGizmo()
+    {
+        foreach (var interactiveObjectInitializerKey in this.InteractiveObjectInitializerLines)
+        {
+            interactiveObjectInitializerKey.Value.GizmoIcon.Selected.SetValue(false);
+        }
+    }
+
+    private void SelectAllGizmo()
+    {
+        foreach (var interactiveObjectInitializerKey in this.InteractiveObjectInitializerLines)
+        {
+            interactiveObjectInitializerKey.Value.GizmoIcon.Selected.SetValue(true);
+        }
+    }
+
     private void OnInteractiveObjectLineClicked(InterativeObjectInitializerLine InterativeObjectInitializerLine)
     {
-        foreach(var interactiveObjectLine in this.InteractiveObjectInitializerLines.Values)
+        foreach (var interactiveObjectLine in this.InteractiveObjectInitializerLines.Values)
         {
             interactiveObjectLine.IsSelected.SetValue(interactiveObjectLine == InterativeObjectInitializerLine);
         }
     }
 
+}
+
+class ContextBar : VisualElement
+{
+
+    private ContextButton RefreshButton;
+    private ContextButton SelectAllButton;
+    private ContextButton UnselectAllButton;
+
+    public ContextBar(VisualElement parent)
+    {
+        this.style.flexDirection = FlexDirection.Row;
+        parent.Add(this);
+    }
+
+    public void SetupRefreshButton(Action OnSelected)
+    {
+        this.RefreshButton = new ContextButton(this, "Refresh", OnSelected);
+    }
+    public void SetupSelectedAllButton(Action OnSelected)
+    {
+        this.SelectAllButton = new ContextButton(this, "S_All", OnSelected);
+    }
+
+    public void SetupUnselectedAllButton(Action OnSelected)
+    {
+        this.UnselectAllButton = new ContextButton(this, "U_All", OnSelected);
+    }
+}
+
+class ContextButton : Button
+{
+    private BoolVariable IsSelected;
+    private Action OnSelectionActionListener;
+
+    public ContextButton(VisualElement parent, string label, Action OnSelectionActionListener)
+    {
+        this.OnSelectionActionListener = OnSelectionActionListener;
+        this.IsSelected = new BoolVariable(false, this.OnSelected, this.OnUnSelected);
+        this.text = label;
+        parent.Add(this);
+        this.RegisterCallback<MouseUpEvent>(this.OnClicked);
+    }
+
+    private void OnClicked(MouseUpEvent evt)
+    {
+        this.OnSelectionActionListener.Invoke();
+        evt.StopPropagation();
+    }
+    private void OnSelected()
+    {
+    }
+    private void OnUnSelected()
+    {
+    }
 }
 
 class InterativeObjectInitializerLine : VisualElement
@@ -107,7 +190,7 @@ class InterativeObjectInitializerLine : VisualElement
     private Action<InterativeObjectInitializerLine> OnClickedExtern;
     private GameObject GameObjectReference;
 
-    private ObjectFieldSelectionIcon GizmoIcon;
+    public ObjectFieldSelectionIcon GizmoIcon { get; private set; }
     private Label Label;
 
     public bool IsGizmoSelected() { return this.GizmoIcon.Selected.GetValue(); }
@@ -123,7 +206,7 @@ class InterativeObjectInitializerLine : VisualElement
         this.Label = new Label(GameObject.name);
         this.Add(this.Label);
         parent.Add(this);
-        
+
         this.RegisterCallback<MouseEnterEvent>(this.OnMouseEnter);
         this.RegisterCallback<MouseOutEvent>(this.OnMouseExit);
         this.RegisterCallback<MouseDownEvent>(this.OnMouseDown);
@@ -131,8 +214,17 @@ class InterativeObjectInitializerLine : VisualElement
 
     private void OnMouseDown(MouseDownEvent MouseDownEvent)
     {
-        Selection.activeGameObject = this.GameObjectReference;
-        this.OnClickedExtern.Invoke(this);
+        if (MouseDownEvent.button == (int)MouseButton.LeftMouse)
+        {
+            Selection.activeGameObject = this.GameObjectReference;
+            this.OnClickedExtern.Invoke(this);
+        }
+        else if (MouseDownEvent.button == (int)MouseButton.RightMouse)
+        {
+            var genericMenu = new GenericMenu();
+            genericMenu.AddItem(new GUIContent("Only This"), false, () => { });
+        }
+
         MouseDownEvent.StopPropagation();
     }
 

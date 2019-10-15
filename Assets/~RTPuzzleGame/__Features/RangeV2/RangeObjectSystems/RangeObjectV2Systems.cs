@@ -29,7 +29,7 @@ namespace RTPuzzle
     [System.Serializable]
     public class BoxRangeTypeDefinition : ARangeTypeDefinitionV2
     {
-        [WireBox(R = 1f, G = 1f, B = 1f, SizeFieldName = nameof(BoxRangeTypeDefinition.Size))]
+        [WireBox(R = 1f, G = 1f, B = 1f, CenterFieldName = nameof(BoxRangeTypeDefinition.Center), SizeFieldName = nameof(BoxRangeTypeDefinition.Size))]
         public Vector3 Center;
         public Vector3 Size;
     }

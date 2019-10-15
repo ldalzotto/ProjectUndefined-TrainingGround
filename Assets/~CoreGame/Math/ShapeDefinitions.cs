@@ -15,7 +15,7 @@ namespace CoreGame
     public struct FrustumV2
     {
         public Vector3 Center;
-        public Quaternion DeltaRotation;
+        public Vector3 DeltaRotation;
         public FrustumFaceV2 F1;
         public FrustumFaceV2 F2;
         public float FaceDistance;
@@ -27,7 +27,7 @@ namespace CoreGame
 
         private Vector3 LocalToWorld(TransformStruct FrustumTransform, Vector3 localPoint)
         {
-            return (FrustumTransform.WorldPosition + FrustumTransform.WorldRotation * ((this.DeltaRotation * localPoint) + this.Center).Mul(FrustumTransform.LossyScale));
+            return (FrustumTransform.WorldPosition + FrustumTransform.WorldRotation * ((Quaternion.Euler(this.DeltaRotation) * localPoint) + this.Center).Mul(FrustumTransform.LossyScale));
         }
 
         public void CalculateFrustumPointsWorldPosByProjection(out FrustumPointsPositions FrustumPointsPositions, out bool IsFacing, TransformStruct FrustumTransform, Vector3 WorldStartAngleProjection)
@@ -83,7 +83,7 @@ namespace CoreGame
     {
         FACE, PROJECTION
     }
-    
+
     public struct BoxDefinition
     {
         public Vector3 LocalCenter;

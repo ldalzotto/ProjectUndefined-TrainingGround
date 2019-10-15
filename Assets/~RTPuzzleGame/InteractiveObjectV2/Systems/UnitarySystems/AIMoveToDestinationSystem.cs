@@ -91,7 +91,7 @@ namespace InteractiveObjectTest
                 {
                     this.currentDestination = null;
                     this.FrameWereOccuredTheLastDestinationReached = Time.frameCount;
-                    Debug.Log(MyLog.Format("Destination reached !"));
+                 //   Debug.Log(MyLog.Format("Destination reached !"));
                     this.OnAIInteractiveObjectDestinationReached.Invoke();
                 }
             }
