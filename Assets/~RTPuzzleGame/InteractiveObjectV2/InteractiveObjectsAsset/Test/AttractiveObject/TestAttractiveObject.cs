@@ -37,15 +37,15 @@ namespace InteractiveObjectTest
             this.SelectableObjectSystem.OnDestroy();
             base.Destroy();
         }
-        
+
         #region Disarm Object Events
-        protected override void OnAssociatedDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
+        private void OnAssociatedDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
         {
             OtherInteractiveObject.OnOtherDisarmObjectTriggerEnter(this);
             this.DisarmObjectSystem.AddInteractiveObjectDisarmingThisObject(OtherInteractiveObject);
         }
 
-        protected override void OnAssciatedDisarmObjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
+        private void OnAssciatedDisarmObjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
         {
             OtherInteractiveObject.OnOtherDisarmobjectTriggerExit(this);
             this.DisarmObjectSystem.RemoveInteractiveObjectDisarmingThisObject(OtherInteractiveObject);
@@ -54,7 +54,7 @@ namespace InteractiveObjectTest
         #endregion
 
         #region Selectable Object
-        protected override RTPPlayerAction ProvideSelectableObjectPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
+        private RTPPlayerAction ProvideSelectableObjectPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
         {
             return this.AttractiveObjectInitializerData.SelectableGrabActionDefinition.BuildPlayerAction(PlayerInteractiveObject);
         }

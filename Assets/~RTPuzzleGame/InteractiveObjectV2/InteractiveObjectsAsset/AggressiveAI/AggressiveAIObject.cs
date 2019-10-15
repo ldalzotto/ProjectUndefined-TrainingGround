@@ -30,39 +30,22 @@
             this.AIMoveToDestinationSystem.Tick(d, timeAttenuationFactor);
         }
 
-        public override void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)
-        {
-            this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent);
-        }
-
-        public override void SetAIDestination(AIDestination AIDestination)
-        {
-            this.AIMoveToDestinationSystem.SetDestination(AIDestination);
-        }
-
-        public override void SetAISpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition AIMovementSpeedDefinition)
-        {
-            this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
-        }
-
-
         #region Sight Event
-        protected override void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        protected void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             this.AIPatrollingState.isPatrolling = false;
+            this.SetAISpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition.RUN);
             this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
         }
-        protected override void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        protected void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            this.AIPatrollingState.isPatrolling = false;
-            this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+            this.OnSightObjectSystemJustIntersected(IntersectedInteractiveObject);
         }
-        protected override void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        protected void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             if (this.SightObjectSystem.CurrentlyIntersectedInteractiveObjects.Count > 0)
             {
-                this.AIPatrollingState.isPatrolling = false;
-                this.SetAIDestination(new AIDestination { WorldPosition = this.SightObjectSystem.CurrentlyIntersectedInteractiveObjects[0].InteractiveGameObject.GetTransform().WorldPosition });
+                this.OnSightObjectSystemJustIntersected(this.SightObjectSystem.CurrentlyIntersectedInteractiveObjects[0]);
             }
             else
             {

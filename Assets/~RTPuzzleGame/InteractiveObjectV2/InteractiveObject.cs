@@ -52,44 +52,21 @@ namespace InteractiveObjectTest
         public virtual void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent) { }
         #endregion
 
+        #region AI Events
+        public virtual void SetAIDestination(AIDestination AIDestination) { }
+        public virtual void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition) { }
+        public virtual void OnAIDestinationReached() { }
+        #endregion
+
         #region Attractive Object Events
-        protected virtual void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
-        protected virtual void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
-        protected virtual void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject) { }
         public virtual void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject) { }
         public virtual void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject) { }
         public virtual void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject) { }
         #endregion
 
         #region Disarm Object Events
-        protected virtual void OnAssociatedDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject) { }
-        protected virtual void OnAssciatedDisarmObjectTriggerExit(CoreInteractiveObject OtherInteractiveObject) { }
         public virtual void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject) { }
         public virtual void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject) { }
-        #endregion
-
-        #region Sight Object Events
-        protected virtual void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
-        protected virtual void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject) { }
-        protected virtual void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
-        #endregion
-
-        #region Level Completion Zone Events
-        protected virtual void OnLevelCompletionTriggerEnterPlayer(CoreInteractiveObject IntersectedInteractiveObject) { }
-        #endregion
-
-        #region Selection Object Events
-        protected virtual RTPPlayerAction ProvideSelectableObjectPlayerAction(PlayerInteractiveObject PlayerInteractiveObject) { return default; }
-        #endregion
-
-        #region AI Events
-        public virtual void OnAIIsJustAttractedByAttractiveObject() { }
-        public virtual void OnAIIsNoMoreAttractedByAttractiveObject() { }
-        public virtual void OnAIIsJustDisarmingObject() { }
-        public virtual void OnAIIsNoMoreJustDisarmingObject() { }
-        public virtual void SetAIDestination(AIDestination AIDestination) { }
-        public virtual void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition) { }
-        public virtual void OnAIDestinationReached() { }
         #endregion
     }
 

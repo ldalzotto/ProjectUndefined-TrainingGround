@@ -25,7 +25,7 @@ namespace InteractiveObjectTest
             base.Destroy();
         }
 
-        protected override void OnLevelCompletionTriggerEnterPlayer(CoreInteractiveObject IntersectedInteractiveObject)
+        private void OnLevelCompletionTriggerEnterPlayer(CoreInteractiveObject IntersectedInteractiveObject)
         {
             LevelCompletionManager.OnLevelCompleted();
         }

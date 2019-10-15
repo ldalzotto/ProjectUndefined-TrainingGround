@@ -69,25 +69,10 @@ namespace InteractiveObjectTest
         {
             base.Destroy();
         }
-        
+
         public override void OnAIDestinationReached()
         {
             this.AIPatrolSystem.OnAIDestinationReached();
-        }
-        
-        public override void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)
-        {
-            this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent);
-        }
-
-        public override void SetAIDestination(AIDestination AIDestination)
-        {
-            this.AIMoveToDestinationSystem.SetDestination(AIDestination);
-        }
-
-        public override void SetAISpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition AIMovementSpeedDefinition)
-        {
-            this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
 
         #region Attractive Object
@@ -101,10 +86,12 @@ namespace InteractiveObjectTest
 
         private void SwitchToAttractedState(CoreInteractiveObject OtherInteractiveObject)
         {
-            this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
-            this.AIPatrollingState.isPatrolling = false;
-            this.SetAISpeedAttenuationFactor(this.AIInteractiveObjectInitializerData.AISpeedWhenAttracted);
-            this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+            if (OtherInteractiveObject.InteractiveObjectTag.IsAttractiveObject || OtherInteractiveObject.InteractiveObjectTag.IsPlayer)
+            {
+                this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
+                this.AIPatrollingState.isPatrolling = false;
+                this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+            }
         }
 
         public override void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject)
@@ -125,17 +112,18 @@ namespace InteractiveObjectTest
             this.LineVisualFeedbackSystem.DestroyLine(OtherInteractiveObject);
         }
 
-        public override void OnAIIsJustAttractedByAttractiveObject()
+        public void OnAIIsJustAttractedByAttractiveObject()
         {
+            this.SetAISpeedAttenuationFactor(this.AIInteractiveObjectInitializerData.AISpeedWhenAttracted);
             this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, this.AIAttractiveObjectState.AttractedInteractiveObject);
         }
 
-        public override void OnAIIsNoMoreAttractedByAttractiveObject()
+        public void OnAIIsNoMoreAttractedByAttractiveObject()
         {
             this.LineVisualFeedbackSystem.DestroyLine(this.AIAttractiveObjectState.AttractedInteractiveObject);
         }
         #endregion
-        
+
         public override void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
         {
             this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
@@ -148,17 +136,17 @@ namespace InteractiveObjectTest
             this.AIDisarmObjectState.IsDisarming.SetValue(false);
         }
 
-        public override void OnAIIsJustDisarmingObject()
+        public void OnAIIsJustDisarmingObject()
         {
             this.LocalCutscenePlayerSystem.PlayCutscene(this.AIInteractiveObjectInitializerData.DisarmObjectAnimation.GetSequencedActions(this));
         }
 
-        public override void OnAIIsNoMoreJustDisarmingObject()
+        public void OnAIIsNoMoreJustDisarmingObject()
         {
             this.LocalCutscenePlayerSystem.KillCurrentCutscene();
         }
 
-        protected override void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        private void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             if (!this.AIDisarmObjectState.IsDisarming.GetValue())
             {
@@ -171,9 +159,10 @@ namespace InteractiveObjectTest
             }
         }
 
-        protected override void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        private void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
             this.OnSightObjectSystemJustIntersected(IntersectedInteractiveObject);
         }
+        private void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
     }
 }

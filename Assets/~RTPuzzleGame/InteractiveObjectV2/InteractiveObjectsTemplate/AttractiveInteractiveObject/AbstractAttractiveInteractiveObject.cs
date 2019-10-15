@@ -37,19 +37,19 @@ namespace InteractiveObjectTest
         }
 
         #region Attractive Object Events
-        protected override void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        private void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemJustIntersected");
             var AIInteractiveObject = (AIInteractiveObjectTest)IntersectedInteractiveObject;
             AIInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
         }
-        protected override void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        private void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
             //  Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
             var AIInteractiveObject = (AIInteractiveObjectTest)IntersectedInteractiveObject;
             AIInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
         }
-        protected override void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        private void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemNoMoreIntersected");
             IntersectedInteractiveObject.OnOtherAttractiveObjectNoMoreIntersected(this);

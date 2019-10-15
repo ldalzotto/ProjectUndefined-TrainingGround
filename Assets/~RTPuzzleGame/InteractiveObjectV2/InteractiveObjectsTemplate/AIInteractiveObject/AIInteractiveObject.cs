@@ -25,6 +25,21 @@ namespace InteractiveObjectTest
             this.LineVisualFeedbackSystem.TickAlways(d);
         }
 
+        public override void SetAIDestination(AIDestination AIDestination)
+        {
+            this.AIMoveToDestinationSystem.SetDestination(AIDestination);
+        }
+
+        public override void SetAISpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        {
+            this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
+        }
+
+        public override void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)
+        {
+            this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent);
+        }
+
         public override void TickWhenTimeIsStopped()
         {
             this.AIMoveToDestinationSystem.TickWhenTimeIsStopped();

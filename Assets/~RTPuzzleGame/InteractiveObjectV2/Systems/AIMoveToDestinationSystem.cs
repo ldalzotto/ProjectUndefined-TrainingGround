@@ -39,7 +39,7 @@ namespace InteractiveObjectTest
 
         public override void AfterTicks()
         {
-            this.AISpeedEventDispatcher.AfterTicks();
+            this.AISpeedEventDispatcher.AfterTicks(this.AIDestinationMoveManager.CurrentDestination.HasValue);
         }
 
         public void SetDestination(AIDestination AIDestination)
@@ -72,7 +72,7 @@ namespace InteractiveObjectTest
 
         #region State
         private float CurrentTimeAttenuated;
-        private AIDestination? currentDestination;
+        public AIDestination? CurrentDestination { get; private set; }
         //Used to change the agent speed
         private AIMovementSpeedDefinition currentSpeedAttenuationFactor;
         #endregion
@@ -84,11 +84,11 @@ namespace InteractiveObjectTest
         public void TickDestinationReached()
         {
             //is destination reached
-            if (this.currentDestination.HasValue)
+            if (this.CurrentDestination.HasValue)
             {
                 if ((!objectAgent.pathPending && objectAgent.remainingDistance <= objectAgent.stoppingDistance && (!objectAgent.hasPath || objectAgent.velocity.sqrMagnitude == 0f)))
                 {
-                    this.currentDestination = null;
+                    this.CurrentDestination = null;
                     this.FrameWereOccuredTheLastDestinationReached = Time.frameCount;
                     Debug.Log(MyLog.Format("Destination reached !"));
                     this.OnAIInteractiveObjectDestinationReached.Invoke();
@@ -113,7 +113,7 @@ namespace InteractiveObjectTest
             if (this.lastSuccessfulWorldDestination != AIDestination.WorldPosition)
             {
                 Debug.Log(MyLog.Format("Set destination : " + AIDestination.WorldPosition));
-                this.currentDestination = AIDestination;
+                this.CurrentDestination = AIDestination;
                 objectAgent.ResetPath();
                 NavMeshPath path = CreateValidNavMeshPathWithFallback(objectAgent, AIDestination.WorldPosition, 50);
 
@@ -153,7 +153,7 @@ namespace InteractiveObjectTest
 
         public void ClearPath()
         {
-            this.currentDestination = null;
+            this.CurrentDestination = null;
             this.lastSuccessfulWorldDestination = new Vector3(9999999, -9999999, 999999);
             objectAgent.ResetPath();
         }
@@ -192,9 +192,9 @@ namespace InteractiveObjectTest
                 updatePosition =
                     Quaternion.Angle(this.objectAgent.transform.rotation, targetRotation) <= this.AIInteractiveObjectInitializerData.MinAngleThatAllowThePositionUpdate;
             }
-            else if (this.currentDestination.HasValue && this.currentDestination.Value.Rotation.HasValue)
+            else if (this.CurrentDestination.HasValue && this.CurrentDestination.Value.Rotation.HasValue)
             {
-                var targetRotation = this.currentDestination.Value.Rotation.Value;
+                var targetRotation = this.CurrentDestination.Value.Rotation.Value;
                 this.objectAgent.transform.rotation = Quaternion.Slerp(this.objectAgent.transform.rotation, targetRotation, this.AIInteractiveObjectInitializerData.RotationSpeed * d * timeAttenuationFactor);
             }
 
@@ -248,9 +248,9 @@ namespace InteractiveObjectTest
             AIInteractiveObjectInitializerData = aIInteractiveObjectInitializerData;
         }
 
-        public void AfterTicks()
+        public void AfterTicks(bool hasCurrentlyADestination)
         {
-            var currentSpeed = this.AssociatedInteractiveObject.InteractiveGameObject.Agent.speed / this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor;
+            var currentSpeed = (hasCurrentlyADestination ? this.AssociatedInteractiveObject.InteractiveGameObject.Agent.speed : 0) / this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor;
             this.AssociatedInteractiveObject.OnAnimationObjectSetUnscaledSpeedMagnitude(new AnimationObjectSetUnscaledSpeedMagnitudeEvent { UnscaledSpeedMagnitude = currentSpeed });
         }
     }
