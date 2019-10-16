@@ -17,6 +17,8 @@ namespace InteractiveObjectTest
         public SightObjectSystemDefinition SightObjectSystemDefinition;
 
         public AIMovementSpeedDefinition AISpeedWhenAttracted;
+
+        [Inline(CreateAtSameLevelIfAbsent = true)]
         public LocalPuzzleCutsceneTemplate DisarmObjectAnimation;
 
         public override CoreInteractiveObject BuildInteractiveObject(GameObject parent)

@@ -12,6 +12,8 @@ namespace InteractiveObjectTest
 
         public A_AIInteractiveObject(InteractiveGameObject interactiveGameObject, INIT AIInteractiveObjectInitializerData) : base(interactiveGameObject)
         {
+            interactiveGameObject.CreateAgent(AIInteractiveObjectInitializerData.AIAgentDefinition);
+            interactiveGameObject.CreateLogicCollider(AIInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
             this.AnimationObjectSystem = new AnimationObjectSystem(this);
             this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, this.OnAIDestinationReached);

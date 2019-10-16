@@ -14,7 +14,9 @@ namespace InteractiveObjectTest
         public Animator Animator { get; private set; }
         public List<Renderer> Renderers { get; private set; }
         private Collider LogicCollider { get; set; }
-        public Rigidbody Rigidbody { get; private set; }
+        public Rigidbody LogicRigidBody { get; private set; }
+        
+        public Rigidbody PhysicsRigidbody { get; private set; }
         public NavMeshAgent Agent { get; private set; }
         #endregion
 
@@ -37,20 +39,57 @@ namespace InteractiveObjectTest
 
             this.InteractiveGameObjectParent = InteractiveGameObjectParent;
             this.Renderers = RendererRetrievableHelper.GetAllRederers(this.InteractiveGameObjectParent, particleRenderers: false);
-            var InteractiveGameObjectLogicColliderTag = InteractiveGameObjectParent.GetComponentInChildren<InteractiveGameObjectLogicColliderTag>();
-            if (InteractiveGameObjectLogicColliderTag != null)
-            {
-                this.LogicCollider = InteractiveGameObjectLogicColliderTag.GetComponent<Collider>();
-                MonoBehaviour.Destroy(InteractiveGameObjectLogicColliderTag);
-            }
+
             this.Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
+            InitAgent();
+
+            this.PhysicsRigidbody = this.InteractiveGameObjectParent.GetComponent<Rigidbody>();
+        }
+
+        private void InitAgent()
+        {
             if (this.Agent != null)
             {
                 this.Agent.updatePosition = false;
                 this.Agent.updateRotation = false;
             }
+        }
 
-            this.Rigidbody = InteractiveGameObjectParent.GetComponent<Rigidbody>();
+        public void CreateAgent(AIAgentDefinition AIAgentDefinition)
+        {
+            if (this.Agent == null)
+            {
+                this.Agent = this.InteractiveGameObjectParent.AddComponent<NavMeshAgent>();
+                this.Agent.stoppingDistance = AIAgentDefinition.AgentStoppingDistance;
+                this.Agent.height = AIAgentDefinition.AgentHeight;
+                this.Agent.acceleration = 99999999f;
+                this.Agent.angularSpeed = 99999999f;
+            }
+            this.InitAgent();
+        }
+
+        public void CreateLogicCollider(InteractiveObjectLogicCollider InteractiveObjectLogicCollider)
+        {
+            if (InteractiveObjectLogicCollider.Enabled)
+            {
+                var LogicColliderObject = new GameObject("LogicCollider");
+                LogicColliderObject.transform.parent = this.InteractiveGameObjectParent.transform;
+                LogicColliderObject.transform.localPosition = Vector3.zero;
+                LogicColliderObject.transform.localRotation = Quaternion.identity;
+                LogicColliderObject.transform.localScale = Vector3.one;
+
+                this.LogicCollider = LogicColliderObject.AddComponent<BoxCollider>();
+                this.LogicCollider.isTrigger = true;
+                ((BoxCollider)this.LogicCollider).center = InteractiveObjectLogicCollider.LocalCenter;
+                ((BoxCollider)this.LogicCollider).size = InteractiveObjectLogicCollider.LocalSize;
+
+                if (InteractiveObjectLogicCollider.HasRigidBody)
+                {
+                    var rb = LogicColliderObject.AddComponent<Rigidbody>();
+                    rb.isKinematic = true;
+                    rb.useGravity = false;
+                }
+            }
         }
 
         public TransformStruct GetTransform()

@@ -29,20 +29,6 @@ public static class SceneHandlerDrawer
                     }
                 }
                 /*
-                  var DrawConfigurationAttribute = field.GetCustomAttribute<DrawConfigurationAttribute>() as DrawConfigurationAttribute;
-                  if (DrawConfigurationAttribute != null)
-                  {
-                      var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawConfigurationAttribute.ConfigurationType);
-                      if (configurationAsset != null)
-                      {
-                          configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
-                          if (configurationDataObject != null)
-                          {
-                              Draw(configurationDataObject, objectTransform, CommonGameConfigurations);
-                          }
-                      }
-                  }
-
                   var DrawDefinitionAttribute = field.GetCustomAttribute<DrawDefinitionAttribute>() as DrawDefinitionAttribute;
                   if (DrawDefinitionAttribute != null)
                   {
@@ -121,6 +107,13 @@ public static class SceneHandlerDrawer
                         SetupColors(WireRoundedFrustumAttribute.GetColor());
                         DrawFrustum(frustum, objectTransform, isRounded: true);
                     }
+                    else if (AbstractSceneHandleAttribute.GetType() == typeof(WireLineAttribute))
+                    {
+                        var WireLineAttribute = (WireLineAttribute)AbstractSceneHandleAttribute;
+                        var lineLength = (float)field.GetValue(drawableObject);
+                        SetupColors(WireLineAttribute.GetColor());
+                        Handles.DrawLine(objectTransform.transform.position, objectTransform.transform.position + (new Vector3(WireLineAttribute.dX, WireLineAttribute.dY, WireLineAttribute.dZ) * lineLength));
+                    }
                 }
             }
         }
@@ -159,7 +152,7 @@ public static class SceneHandlerDrawer
     {
         Handles.Label(objectTransform.position + Vector3.up * height, label, MyEditorStyles.SceneDrawDynamicLabelStyle);
     }
-    
+
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
         frustum.CalculateFrustumWorldPositionyFace(out FrustumPointsPositions LocalFrustumPointPositions, new TransformStruct { WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one });

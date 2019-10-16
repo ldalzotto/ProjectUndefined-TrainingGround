@@ -91,6 +91,7 @@
     <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireBoxAttribute.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireCircleAttribute.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireFrustumAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireLineAttribute.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireRoundedFrustumAttribute.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\VisualElementConversion\VisualElementConversion.cs" />
     <None Include="Assets\Editor_Common\Editor_Common.asmdef" />

@@ -31,7 +31,7 @@ namespace InteractiveObjectTest
             this.isAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
-            this.CutsceneController = new BaseCutsceneController(interactiveGameObject.Rigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
+            this.CutsceneController = new BaseCutsceneController(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
             this.InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
         }
 

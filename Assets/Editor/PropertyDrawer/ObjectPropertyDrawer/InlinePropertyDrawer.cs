@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(Inline))]
 public class InlinePropertyDrawer : PropertyDrawer
@@ -43,37 +44,24 @@ public class InlinePropertyDrawer : PropertyDrawer
                 {
                     if (EditorUtility.IsPersistent(property.serializedObject.targetObject))
                     {
-                        if (byEnumProperty.CreateSubIfAbsent)
-                        {
-                            GUILayout.Button(new GUIContent(""), EditorStyles.miniButton);
-                            bool toCreate = true;
-                            var ActualAssets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(property.serializedObject.targetObject)).ToList();
-
-                            foreach (var ActualAsset in ActualAssets)
-                            {
-                                if (ActualAsset != null)
-                                {
-                                    if (ActualAsset.name == byEnumProperty.FileName)
-                                    {
-                                        toCreate = false;
-                                        property.objectReferenceValue = ActualAsset;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (toCreate)
-                            {
-                                this.CreateByEnumSO(property, byEnumProperty);
-                            }
-                        }
-                        else if (byEnumProperty.CreateAtSameLevelIfAbsent)
+                        if (byEnumProperty.CreateAtSameLevelIfAbsent)
                         {
                             if (GUILayout.Button(new GUIContent("CREATE")))
                             {
-                                var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject)property.serializedObject.targetObject, property.type.Replace("PPtr<$", "").Replace(">", ""), property.name);
-
-                                property.objectReferenceValue = (UnityEngine.Object)createdAsset;
+                                var fieldType = SerializableObjectHelper.GetPropertyFieldInfo(property).FieldType;
+                                if (fieldType.IsAbstract || fieldType.IsInterface)
+                                {
+                                    //Open popup to select implementation
+                                    ClassSelectionEditorWindow.Show(Event.current.mousePosition, fieldType, (Type selectedType) => {
+                                        var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject)property.serializedObject.targetObject, selectedType.Name, property.name);
+                                        property.objectReferenceValue = (UnityEngine.Object)createdAsset;
+                                    });
+                                }
+                                else
+                                {
+                                    var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject)property.serializedObject.targetObject, property.type.Replace("PPtr<$", "").Replace(">", ""), property.name);
+                                    property.objectReferenceValue = (UnityEngine.Object)createdAsset;
+                                }
                             }
                         }
 
@@ -124,4 +112,83 @@ public class InlinePropertyDrawer : PropertyDrawer
         }
 
     }
+}
+
+
+class ClassSelectionEditorWindow : EditorWindow
+{
+    private static Vector2 DefaultSize = new Vector2(150, 300);
+    private static Dictionary<string, Type> AvailableTypes;
+    private static Action<Type> OnSelectionCallback;
+
+    public static void Show(
+        Vector2 displayPosition,
+        Type abstractType, Action<Type> OnSelectionCallback)
+    {
+        AvailableTypes = TypeHelper.GetAllTypeAssignableFrom(abstractType).ToDictionary(t => t.Name);
+        ClassSelectionEditorWindow.OnSelectionCallback = OnSelectionCallback;
+        var window = CreateInstance<ClassSelectionEditorWindow>();
+        window.position = new Rect(displayPosition, DefaultSize);
+        window.Show();
+    }
+
+    private VisualElement TypeSelectionLineParentElement;
+    private Dictionary<string, SelectionLine> TypeSelectionLineVisualElements = new Dictionary<string, SelectionLine>();
+
+    private void OnEnable()
+    {
+        var RootElement = new VisualElement();
+
+        var SearchTextElement = new TextField();
+        SearchTextElement.RegisterCallback<ChangeEvent<string>>(this.OnSearchTextChanged);
+        RootElement.Add(SearchTextElement);
+
+        this.TypeSelectionLineParentElement = new VisualElement();
+
+        foreach (var availableType in AvailableTypes)
+        {
+            var element = new SelectionLine(this.TypeSelectionLineParentElement, availableType.Key, availableType.Value, this.OnTypeSelected);
+            TypeSelectionLineVisualElements.Add(availableType.Key, element);
+        }
+
+        RootElement.Add(this.TypeSelectionLineParentElement);
+
+        this.rootVisualElement.Add(RootElement);
+    }
+
+
+    private void OnSearchTextChanged(ChangeEvent<string> evt)
+    {
+        foreach (var TypeSelectionLineVisualElement in TypeSelectionLineVisualElements)
+        {
+            TypeSelectionLineVisualElement.Value.style.display =
+                (string.IsNullOrEmpty(evt.newValue) || TypeSelectionLineVisualElement.Key.ToLower().Contains(evt.newValue.ToLower())) ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+    }
+
+    private void OnTypeSelected(Type selectedType)
+    {
+        ClassSelectionEditorWindow.OnSelectionCallback.Invoke(selectedType);
+        this.Close();
+    }
+
+    class SelectionLine : Label
+    {
+        private Action<Type> OnSelectionLineClicked;
+        private Type associatedType;
+        public SelectionLine(VisualElement parent, string label,
+            Type associatedType, Action<Type> OnSelectionLineClicked) :base(label)
+        {
+            parent.Add(this);
+            this.associatedType = associatedType;
+            this.OnSelectionLineClicked = OnSelectionLineClicked;
+            this.RegisterCallback<MouseUpEvent>(this.OnClicked);
+        }
+
+        private void OnClicked(MouseUpEvent MouseUpEvent)
+        {
+            this.OnSelectionLineClicked.Invoke(this.associatedType);
+        }
+    }
+
 }

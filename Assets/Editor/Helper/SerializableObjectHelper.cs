@@ -44,6 +44,13 @@ public class SerializableObjectHelper
         return (T)reflectionTarget;
     }
 
+    public static FieldInfo GetPropertyFieldInfo(SerializedProperty prop)
+    {
+        // Separate the steps it takes to get to this property
+        string[] separatedPaths = prop.propertyPath.Split('.');
+        return (prop.serializedObject.targetObject).GetType().GetField(separatedPaths[0]);
+    }
+
     public static SerializedProperty GetParentProperty(SerializedProperty prop)
     {
         // Separate the steps it takes to get to this property
@@ -62,7 +69,8 @@ public class SerializableObjectHelper
             }
             return prop.serializedObject.FindProperty(parentPropertypath);
 
-        } else if(separatedPaths.Length == 1)
+        }
+        else if (separatedPaths.Length == 1)
         {
             return prop.serializedObject.FindProperty(separatedPaths[0]);
         }

@@ -8,7 +8,7 @@ namespace InteractiveObjectTest
     public class LevelCompletionZoneSystemDefinition : SerializedScriptableObject
     {
         [DrawNested]
-        [Inline()]
+        [Inline(createAtSameLevelIfAbsent: true)]
         public RangeObjectInitialization TriggerRangeObjectInitialization;
     }
 }

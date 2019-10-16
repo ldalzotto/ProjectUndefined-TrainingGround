@@ -10,6 +10,8 @@ namespace InteractiveObjectTest
     public class AggressiveObjectInitializerData : AbstractAIInteractiveObjectInitializerData
     {
         public AIPatrolSystemDefinition AIPatrolSystemDefinition;
+
+        [Inline(createAtSameLevelIfAbsent: true)]
         public SightObjectSystemDefinition SightObjectSystemDefinition;
 
         public override CoreInteractiveObject BuildInteractiveObject(GameObject parent)

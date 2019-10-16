@@ -31,8 +31,9 @@ namespace InteractiveObjectTest
         private AnimationObjectSystem AnimationObjectSystem;
         #endregion
 
-        public PlayerInteractiveObject(InteractiveGameObject interactiveGameObject) : base(interactiveGameObject, false)
+        public PlayerInteractiveObject(InteractiveGameObject interactiveGameObject, InteractiveObjectLogicCollider InteractiveObjectLogicCollider) : base(interactiveGameObject, false)
         {
+            interactiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
             this.interactiveObjectTag = new InteractiveObjectTag { IsPlayer = true };
 
             this.PlayerInteractiveObjectInitializerData = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerInteractiveObjectInitializerData;
@@ -52,8 +53,8 @@ namespace InteractiveObjectTest
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
-            this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.Rigidbody);
-            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.Rigidbody, interactiveGameObject.GetLogicCollider(), PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
+            this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
+            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.GetLogicCollider(), PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
             this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, PuzzleEventsManager, this.PlayerActionManager);
             this.LevelResetManager = new LevelResetManager(GameInputManager, PuzzleEventsManager);
             this.LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
