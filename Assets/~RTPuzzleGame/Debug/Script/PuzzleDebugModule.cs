@@ -30,7 +30,7 @@ namespace RTPuzzle
             }
             if (InfiniteTime)
             {
-                PuzzleGameSingletonInstances.TimeFlowManager.CHEAT_SetInfiniteTime();
+                TimeFlowManager.Get().CHEAT_SetInfiniteTime();
             }
         }
 

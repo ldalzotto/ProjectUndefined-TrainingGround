@@ -69,9 +69,9 @@ namespace RTPuzzle
         {
             this.puzzleTimeElapsed = 0f;
             this.lastFrameTimeFlowCurrentTime = -1f;
-            this.TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
+            this.TimeFlowManager = TimeFlowManager.Get();
             discussionWindow.OnDiscussionWindowAwakeV2(TutorialActionInput.DiscussionTextConfiguration.ConfigurationInherentData[DiscussionTextID],
-                                PuzzleGameSingletonInstances.TimeFlowBarManager.transform.position + new Vector3(0, Screen.height * 0.05f), WindowPositionType.SCREEN);
+                                TimeFlowBarManager.Get().GetScreenPosition() + new Vector3(0, Screen.height * 0.05f), WindowPositionType.SCREEN);
         }
 
         public bool Tick(float d)

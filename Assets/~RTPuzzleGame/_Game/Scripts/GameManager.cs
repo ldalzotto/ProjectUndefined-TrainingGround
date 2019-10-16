@@ -12,11 +12,9 @@ namespace RTPuzzle
         #region Persistance Dependencies
         private AInventoryMenu InventoryMenu;
         #endregion
-
-        private TimeFlowManager TimeFlowManager;
+        
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
-        private GameOverManager GameOverManager;
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
         private CameraMovementManager CameraMovementManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
@@ -47,11 +45,9 @@ namespace RTPuzzle
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
 
-
-            TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
+            
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
             TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
-            GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
@@ -60,7 +56,6 @@ namespace RTPuzzle
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
             var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            var TimeFlowBarManager = PuzzleGameSingletonInstances.TimeFlowBarManager;
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var LevelManager = CoreGameSingletonInstances.LevelManager;
 
@@ -71,9 +66,9 @@ namespace RTPuzzle
 
             CameraMovementManager.Init();
 
-            TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
-            TimeFlowManager.Init(gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
-            GameOverManager.Init();
+            TimeFlowBarManager.Get().Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
+            TimeFlowManager.Get().Init(TimeFlowBarManager.Get());
+            GameOverManager.Get().Init();
             PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
@@ -98,7 +93,7 @@ namespace RTPuzzle
 
                 this.BeforeTick(d);
 
-                if (!GameOverManager.OnGameOver)
+                if (!GameOverManager.Get().OnGameOver)
                 {
                     TutorialManager.Tick(d);
 
@@ -115,17 +110,17 @@ namespace RTPuzzle
 
                     RangeObjectV2Manager.Get().Tick(d);
 
-                    TimeFlowManager.Tick(d);
-                    GameOverManager.Tick(d);
+                    TimeFlowManager.Get().Tick(d);
+                    GameOverManager.Get().Tick(d);
                     CooldownFeedManager.Tick(d);
-                    TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
+                    TimeFlowPlayPauseManager.Tick(TimeFlowManager.Get().IsAbleToFlowTime());
 
                     InteractiveObjectV2Manager.Get().TickAlways(d);
 
-                    if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
+                    if (TimeFlowManager.Get().IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
                     {
-                        InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.GetTimeAttenuation());
-                        PlayerActionManager.Get().TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                        InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.Get().GetTimeAttenuation());
+                        PlayerActionManager.Get().TickWhenTimeFlows(d, TimeFlowManager.Get().GetTimeAttenuation());
                     }
                     else
                     {
@@ -152,7 +147,7 @@ namespace RTPuzzle
         private void LateUpdate()
         {
             var d = Time.deltaTime;
-            if (!GameOverManager.OnGameOver)
+            if (!GameOverManager.Get().OnGameOver)
             {
                 PlayerInteractiveObjectManager.Get().LateTick(d);
                 InteractiveObjectV2Manager.Get().LateTick(d);
@@ -166,7 +161,7 @@ namespace RTPuzzle
         private void FixedUpdate()
         {
             var d = Time.fixedDeltaTime;
-            if (!GameOverManager.OnGameOver)
+            if (!GameOverManager.Get().OnGameOver)
             {
                 PlayerInteractiveObjectManager.Get().FixedTick(d);
                 InteractiveObjectV2Manager.Get().FixedTick(d);
@@ -177,7 +172,7 @@ namespace RTPuzzle
         {
             yield return new WaitForFixedUpdate();
 
-            if (!GameOverManager.OnGameOver)
+            if (!GameOverManager.Get().OnGameOver)
             {
             }
 

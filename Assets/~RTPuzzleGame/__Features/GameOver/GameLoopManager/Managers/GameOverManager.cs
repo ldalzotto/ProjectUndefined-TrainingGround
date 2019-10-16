@@ -4,16 +4,15 @@ using CoreGame;
 
 namespace RTPuzzle
 {
-    public class GameOverManager : MonoBehaviour
+    public class GameOverManager : GameSingleton<GameOverManager>
     {
         #region External Dependencies
-        private ITimeFlowManagerDataRetrieval ITimeFlowManagerDataRetrieval;
+        private ITimeFlowManagerDataRetrieval ITimeFlowManagerDataRetrieval = TimeFlowManager.Get();
         private IGameOverManagerEventListener IGameOverManagerEventListener;
         #endregion
 
         public void Init()
         {
-            this.ITimeFlowManagerDataRetrieval = PuzzleGameSingletonInstances.TimeFlowManager;
             this.IGameOverManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
         }
 

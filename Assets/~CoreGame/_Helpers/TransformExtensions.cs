@@ -5,7 +5,7 @@ namespace CoreGame
 {
     public static class TransformExtensions 
     {
-        public static void Reset(this Transform transform)
+        public static void ResetLocal(this Transform transform)
         {
             transform.localScale = Vector3.one;
             transform.localPosition = Vector3.zero;
@@ -17,4 +17,5 @@ namespace CoreGame
             transform.localScale = Vector3.one;
         }
     }
+    
 }

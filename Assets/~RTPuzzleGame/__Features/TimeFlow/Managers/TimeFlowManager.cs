@@ -9,7 +9,7 @@ namespace RTPuzzle
         bool NoMoreTimeAvailable();
     }
 
-    public class TimeFlowManager : MonoBehaviour, ITimeFlowManagerDataRetrieval
+    public class TimeFlowManager : GameSingleton<TimeFlowManager>, ITimeFlowManagerDataRetrieval
     {
 
         private TimeFlowInputManager TimeFlowInputManager;
@@ -18,19 +18,24 @@ namespace RTPuzzle
         #region External Dependencies
         private TimeFlowBarManager TimeFlowBarManager;
         private LevelManager LevelManager;
+        private IGameInputManager IGameInputManager;
         #endregion
 
-        public void Init(IGameInputManager gameInputManager, PuzzleGameConfigurationManager puzzleConfigurationManager, TimeFlowBarManager TimeFlowBarManager,
-              LevelManager LevelManager)
+        public TimeFlowManager()
+        {
+            this.LevelManager = CoreGameSingletonInstances.LevelManager;
+            this.IGameInputManager = CoreGameSingletonInstances.GameInputManager;
+        }
+        
+        public void Init(TimeFlowBarManager TimeFlowBarManager)
         {
             #region External Dependencies
             var playerInteractiveObjectManager = PlayerInteractiveObjectManager.Get();
             #endregion
 
             this.TimeFlowBarManager = TimeFlowBarManager;
-            this.LevelManager = LevelManager;
-            TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, playerInteractiveObjectManager);
-            TimeFlowValueTracker = new TimeFlowValueTracker(puzzleConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()].AvailableTimeAmount);
+            TimeFlowInputManager = new TimeFlowInputManager(this.IGameInputManager, playerInteractiveObjectManager);
+            TimeFlowValueTracker = new TimeFlowValueTracker(PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()].AvailableTimeAmount);
         }
 
         public void Tick(float d)

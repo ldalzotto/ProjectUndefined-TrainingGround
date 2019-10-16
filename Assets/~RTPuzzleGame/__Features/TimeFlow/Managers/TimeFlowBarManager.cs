@@ -1,17 +1,19 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class TimeFlowBarManager : MonoBehaviour
+    public class TimeFlowBarManager : GameSingleton<TimeFlowBarManager>
     {
         private const string FULL_BAR_OBJECT_NAME = "FullBar";
 
         private TimeFlowDepletingUIManager tmeFlowDepletingUIManager;
+        private TimeFlowBarGameObject TimeFlowBarUIObject;
 
         public void Init(float availableTimeAmount)
         {
-            var fullBarObject = gameObject.FindChildObjectRecursively(FULL_BAR_OBJECT_NAME);
-            tmeFlowDepletingUIManager = new TimeFlowDepletingUIManager(fullBarObject.transform as RectTransform, availableTimeAmount);
+            this.TimeFlowBarUIObject = new TimeFlowBarGameObject();
+            tmeFlowDepletingUIManager = new TimeFlowDepletingUIManager(this.TimeFlowBarUIObject, availableTimeAmount);
         }
 
 
@@ -20,23 +22,28 @@ namespace RTPuzzle
             tmeFlowDepletingUIManager.Tick(currentTimeAmount);
         }
 
+        public Vector3 GetScreenPosition()
+        {
+            return this.TimeFlowBarUIObject.GetTransform().position;
+        }
+
 
         class TimeFlowDepletingUIManager
         {
 
-            private RectTransform fullBarTransform;
+            private TimeFlowBarGameObject TimeFlowBarGameObject;
             private float availableTimeAmount;
             private TimeFlowManager TimeFlowManagerRef;
 
-            public TimeFlowDepletingUIManager(RectTransform fullBarTransform, float availableTimeAmount)
+            public TimeFlowDepletingUIManager(TimeFlowBarGameObject TimeFlowBarGameObject, float availableTimeAmount)
             {
-                this.fullBarTransform = fullBarTransform;
+                this.TimeFlowBarGameObject = TimeFlowBarGameObject;
                 this.availableTimeAmount = availableTimeAmount;
             }
 
             public void Tick(float currentTimeAmount)
             {
-                fullBarTransform.localScale = new Vector3(currentTimeAmount / availableTimeAmount, 1, 1);
+                this.TimeFlowBarGameObject.SetFullBarScale(new Vector3(currentTimeAmount / availableTimeAmount, 1, 1));
             }
         }
     }
