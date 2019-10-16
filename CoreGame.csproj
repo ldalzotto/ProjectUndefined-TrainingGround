@@ -85,10 +85,6 @@
     <Compile Include="Assets\~CoreGame\_Constants\SceneConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\StringConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\TagConstants.cs" />
-    <Compile Include="Assets\~CoreGame\_FX\EffectsInterfaces\TriggerableEffect.cs" />
-    <Compile Include="Assets\~CoreGame\_FX\GenericEffects\TriggerableParticleSystemFX.cs" />
-    <Compile Include="Assets\~CoreGame\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
-    <Compile Include="Assets\~CoreGame\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\BoundsHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\ComponentSearchExtensions.cs" />

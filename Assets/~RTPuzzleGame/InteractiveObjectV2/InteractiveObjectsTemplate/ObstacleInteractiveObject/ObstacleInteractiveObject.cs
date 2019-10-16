@@ -17,6 +17,8 @@ namespace InteractiveObjectTest
             this.ObstacleCollider = interactiveGameObject.GetLogicColliderAsBox();
             this.interactiveObjectTag = new InteractiveObjectTag { IsObstacle = true };
             this.squareObstacleSystem = new SquareObstacleSystem(this, ObstacleInteractiveObjectInitializerData.SquareObstacleSystemInitializationData);
+
+            this.AfterConstructor();
         }
 
         public override void Destroy()

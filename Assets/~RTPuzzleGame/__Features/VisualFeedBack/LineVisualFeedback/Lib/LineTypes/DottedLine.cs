@@ -4,62 +4,35 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class DottedLine : MonoBehaviour
+    public class DottedLine
     {
-        private DottedLineID dottedLineID;
         private DottedLineInherentData dottedLineInherentData;
-
-        #region Internal Dependencies
-        private MeshFilter meshFilter;
-        private MeshRenderer MeshRenderer;
-
-        public MeshFilter MeshFilter { get => meshFilter; set => meshFilter = value; }
-        #endregion
+        private DottedLineGameObject dottedLineGameObject;
 
         #region External Dependencies
-        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent;
+        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent = DottedLineRendererManager.Get();
         #endregion
 
-        public static DottedLine CreateInstance(DottedLineID DottedLineID, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
+        public DottedLine(DottedLineID dottedLineID)
         {
-            var instanciatedDottedLine = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseDottedLineBasePrefab,
-                   PuzzleGameSingletonInstances.DottedLineContainer.transform);
-            instanciatedDottedLine.transform.position = Vector3.zero;
-            instanciatedDottedLine.transform.localScale = Vector3.one;
-            instanciatedDottedLine.transform.rotation = Quaternion.identity;
-            instanciatedDottedLine.Init(DottedLineID, puzzleGameConfigurationManager.DottedLineConfiguration()[DottedLineID]);
-            return instanciatedDottedLine;
+            this.dottedLineInherentData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.DottedLineConfiguration()[dottedLineID];
+            this.dottedLineGameObject = new DottedLineGameObject(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleMaterialConfiguration.BaseDottedLineShader
+                , this.dottedLineInherentData);
         }
 
-        public void DestroyInstance()
+        public void OnDestroy()
         {
-            if (this != null)
+            if (this.dottedLineGameObject != null)
             {
-                this.IDottedLineRendererManagerEvent.OnDottedLineDestroyed(this);
-                MonoBehaviour.Destroy(this.gameObject);
+                MonoBehaviour.Destroy(this.dottedLineGameObject.AssociatedGameObject);
             }
         }
 
-        public void Init(DottedLineID dottedLineID, DottedLineInherentData dottedLineInherentData)
+        public Mesh GetMesh()
         {
-            this.dottedLineID = dottedLineID;
-            this.dottedLineInherentData = dottedLineInherentData;
-
-            #region External Dependencies
-            this.IDottedLineRendererManagerEvent = PuzzleGameSingletonInstances.DottedLineRendererManager;
-            #endregion
-
-            #region Internal Dependencies
-            this.MeshFilter = GetComponent<MeshFilter>();
-            this.MeshRenderer = GetComponent<MeshRenderer>();
-            #endregion
-
-            this.MeshFilter.mesh = new Mesh();
-
-            this.MeshRenderer.material.SetColor("_BaseColor", this.dottedLineInherentData.BaseColor);
-            this.MeshRenderer.material.SetColor("_MovingColor", this.dottedLineInherentData.MovingColor);
-            this.MeshRenderer.material.SetFloat("_MovingWidth", this.dottedLineInherentData.MovingWidth);
+            return this.dottedLineGameObject.GetMesh();
         }
+        public int GetUniqueID() { return this.dottedLineGameObject.GetInstanceID(); }
 
         #region State
         private BeziersControlPoints BeziersControlPoints;
@@ -81,7 +54,7 @@ namespace RTPuzzle
                     this.RePositionLine(worldSpaceStartPoint, worldSpaceEndPoint, Vector3.up);
                 }
             }
-            
+
             this.currentPosition += d;
             if (this.currentPosition > 1)
             {
@@ -92,7 +65,7 @@ namespace RTPuzzle
             //thus, beziers calculation is not triggered.
             if (this.BeziersControlPoints != null)
             {
-                this.MeshRenderer.material.SetVector("_ColorPointPosition", this.transform.TransformPoint(this.BeziersControlPoints.ResolvePoint(this.currentPosition)));
+                this.dottedLineGameObject.SetColorPointPosition(this.BeziersControlPoints.ResolvePoint(this.currentPosition));
             }
 
             this.LastFrameWorldSpaceStartPoint = worldSpaceStartPoint;
@@ -101,23 +74,23 @@ namespace RTPuzzle
 
         public ComputeBeziersInnerPointEvent BuildComputeBeziersInnerPointEvent()
         {
-            return new ComputeBeziersInnerPointEvent(this.GetInstanceID(), this.BeziersControlPoints, this.dottedLineInherentData.ModelScale, this.dottedLineInherentData.DotPerUnitDistance);
+            return new ComputeBeziersInnerPointEvent(this.dottedLineGameObject.GetInstanceID(), this.BeziersControlPoints, this.dottedLineInherentData.ModelScale, this.dottedLineInherentData.DotPerUnitDistance);
         }
 
         private void RePositionLine(Vector3 worldSpaceStartPoint, Vector3 worldSpaceEndPoint, Vector3 normal)
         {
             BeziersControlPointsShape BeziersControlPointsShape = BeziersControlPointsShape.CURVED;
-            if(this.dottedLineInherentData.DottedLineType == DottedLineType.STRAIGHT)
+            if (this.dottedLineInherentData.DottedLineType == DottedLineType.STRAIGHT)
             {
                 BeziersControlPointsShape = BeziersControlPointsShape.STRAIGHT;
             }
-            this.BeziersControlPoints = BeziersControlPoints.Build(this.transform.InverseTransformDirection(worldSpaceStartPoint), this.transform.InverseTransformDirection(worldSpaceEndPoint), Vector3.up, BeziersControlPointsShape);
+            this.BeziersControlPoints = BeziersControlPoints.Build(worldSpaceStartPoint, worldSpaceEndPoint, Vector3.up, BeziersControlPointsShape);
             this.IDottedLineRendererManagerEvent.OnComputeBeziersInnerPointEvent(this);
         }
 
         private void ClearLine()
         {
-            this.meshFilter.mesh = new Mesh();
+            this.dottedLineGameObject.ClearMesh();
         }
 
         private void OnDrawGizmos()

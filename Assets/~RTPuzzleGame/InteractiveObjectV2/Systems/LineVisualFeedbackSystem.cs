@@ -44,7 +44,7 @@ namespace InteractiveObjectTest
         public void CreateLineFollowing(DottedLineID DottedLineID, CoreInteractiveObject TargetInteractiveGameObject)
         {
             this.sourceTriggeringInteractiveObjects.Add(TargetInteractiveGameObject);
-            this.lines.Add(DottedLine.CreateInstance(DottedLineID, PuzzleGameSingletonInstances.PuzzleGameConfigurationManager));
+            this.lines.Add(new DottedLine(DottedLineID));
             var targetGameObject = TargetInteractiveGameObject.InteractiveGameObject;
             this.linePositionings.Add(new LineFollowTransformPositioning(targetGameObject.InteractiveGameObjectParent.transform, targetGameObject.AverageModelBounds));
         }
@@ -65,7 +65,7 @@ namespace InteractiveObjectTest
             {
                 this.sourceTriggeringInteractiveObjects.RemoveAt(index);
                 this.linePositionings.RemoveAt(index);
-                this.lines[index].DestroyInstance();
+                this.lines[index].OnDestroy();
                 this.lines.RemoveAt(index);
             }
         }

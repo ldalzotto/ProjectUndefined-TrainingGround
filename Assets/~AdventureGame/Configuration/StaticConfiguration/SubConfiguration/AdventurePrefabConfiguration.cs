@@ -22,9 +22,6 @@ namespace AdventureGame
         public GameObject InventoryMenuCellPrefab;
         public GameObject GiveActionMiniaturePrefab;
 
-        [Header("Player FX")]
-        public TriggerableEffect PlayerSmokeEffectPrefab;
-
         [Header("Item Grab Popup")]
         public ItemReceivedPopup ItemReceivedPopup;
     }

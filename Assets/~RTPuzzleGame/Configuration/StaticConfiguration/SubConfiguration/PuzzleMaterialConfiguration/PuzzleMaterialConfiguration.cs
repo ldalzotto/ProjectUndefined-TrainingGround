@@ -8,6 +8,10 @@ namespace RTPuzzle
     {
         [Header("Range Material")]
         public Material MasterRangeMaterial;
+        public Mesh RangeDiamondMesh;
+
+        [Header("Visual Feedback Material")]
+        public Shader BaseDottedLineShader;
     }
 }
 

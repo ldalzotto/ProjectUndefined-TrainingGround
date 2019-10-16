@@ -13,6 +13,7 @@ namespace InteractiveObjectTest
 
         public AbstractAttractiveInteractiveObject(InteractiveGameObject interactiveGameObject, INIT InteractiveObjectInitializerData) : base(interactiveGameObject)
         {
+            interactiveGameObject.CreateLogicCollider(InteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.interactiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
             this.AttractiveObjectInitializerData = InteractiveObjectInitializerData;
 

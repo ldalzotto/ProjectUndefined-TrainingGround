@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -132,13 +133,13 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\ExposedInterfaces\IDottedLineRendererManagerEvent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\InteractiveObjectModules\LineVisualFeedbackSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\DottedLineContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LineVisualFeedbackSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\ILinePositioning.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\LineFollowTransformPositioning.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LineTypes\DottedLine.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LineTypes\DottedLineGameObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Managers\DottedLineRendererManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\_FX\LevelCompleted\Scripts\LevelCompleteVisualFeedbackFX.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PuzzleGameSingletonInstances.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
@@ -782,6 +783,9 @@
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\InteractiveObjectModules\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

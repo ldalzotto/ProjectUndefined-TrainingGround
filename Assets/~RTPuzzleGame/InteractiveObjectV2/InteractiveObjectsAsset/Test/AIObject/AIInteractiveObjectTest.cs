@@ -31,6 +31,8 @@ namespace InteractiveObjectTest
             this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct { IsAttractiveObject = 1 },
                       this.OnSightObjectSystemJustIntersected, this.OnSightObjectSystemIntersectedNothing, this.OnSightObjectSystemNoMoreIntersected);
             this.LocalCutscenePlayerSystem = new LocalCutscenePlayerSystem();
+
+            this.AfterConstructor();
         }
 
         public override void Tick(float d, float timeAttenuationFactor)

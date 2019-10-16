@@ -17,7 +17,6 @@ namespace RTPuzzle
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private GameOverManager GameOverManager;
-        private DottedLineRendererManager DottedLineRendererManager;
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
         private CameraMovementManager CameraMovementManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
@@ -53,7 +52,6 @@ namespace RTPuzzle
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
             TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
             GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
-            DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
@@ -80,7 +78,6 @@ namespace RTPuzzle
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
-            DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Get().Init();
             PuzzleTutorialEventSender.Init();
             TutorialManager.Init();
@@ -139,7 +136,7 @@ namespace RTPuzzle
 
                     PuzzleDiscussionManager.Tick(d);
                     GroundEffectsManagerV2.Get().Tick(d);
-                    DottedLineRendererManager.Tick();
+                    DottedLineRendererManager.Get().Tick();
                     InteractiveObjectSelectionManager.Get().Tick(d);
                     CircleFillBarRendererManager.Get().Tick(d);
                 }

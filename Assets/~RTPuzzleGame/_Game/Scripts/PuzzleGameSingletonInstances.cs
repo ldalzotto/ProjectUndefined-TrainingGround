@@ -9,7 +9,6 @@ namespace RTPuzzle
         private static PuzzleGameConfigurationManager puzzleGameConfigurationManager;
         private static BlockingCutscenePlayerManager blockingCutscenePlayer;
         private static PuzzleStaticConfigurationContainer puzzleStaticConfigurationContainer;
-        private static DottedLineRendererManager dottedLineRendererManager;
         private static CooldownFeedManager cooldownFeedManager;
         private static TimeFlowPlayPauseManager timeFlowPlayPauseManager;
         private static GameOverManager gameOverManager;
@@ -18,7 +17,6 @@ namespace RTPuzzle
         private static PlayerActionEventManager playerActionEventManager;
         private static PuzzleDebugModule puzzleDebugModule;
         private static SelectionWheel puzzleSelectionWheel;
-        private static DottedLineContainer dottedLineContainer;
         private static PuzzleDiscussionWindowsContainer puzzleDiscussionWindowsContainer;
         private static PuzzleDiscussionManager puzzleDiscussionManager;
 
@@ -27,7 +25,6 @@ namespace RTPuzzle
         public static PuzzleGameConfigurationManager PuzzleGameConfigurationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleGameConfigurationManager, obj => puzzleGameConfigurationManager = obj); }
         public static BlockingCutscenePlayerManager BlockingCutscenePlayer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(blockingCutscenePlayer, obj => blockingCutscenePlayer = obj); }
         public static PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleStaticConfigurationContainer, obj => puzzleStaticConfigurationContainer = obj); }
-        public static DottedLineRendererManager DottedLineRendererManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineRendererManager, obj => dottedLineRendererManager = obj); }
         public static CooldownFeedManager CooldownFeedManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cooldownFeedManager, obj => cooldownFeedManager = obj); }
         public static TimeFlowPlayPauseManager TimeFlowPlayPauseManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowPlayPauseManager, obj => timeFlowPlayPauseManager = obj); }
         public static GameOverManager GameOverManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(gameOverManager, obj => gameOverManager = obj); }
@@ -36,7 +33,6 @@ namespace RTPuzzle
         public static PlayerActionEventManager PlayerActionEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionEventManager, obj => playerActionEventManager = obj); }
         public static PuzzleDebugModule PuzzleDebugModule { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDebugModule, obj => puzzleDebugModule = obj); }
         public static SelectionWheel PuzzleSelectionWheel { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleSelectionWheel, obj => puzzleSelectionWheel = obj); }
-        public static DottedLineContainer DottedLineContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineContainer, obj => dottedLineContainer = obj); }
         public static PuzzleDiscussionWindowsContainer PuzzleDiscussionWindowsContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDiscussionWindowsContainer, obj => puzzleDiscussionWindowsContainer = obj); }
         public static PuzzleDiscussionManager PuzzleDiscussionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDiscussionManager, obj => puzzleDiscussionManager = obj); }
     }

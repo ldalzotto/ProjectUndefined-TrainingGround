@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
-using System;
+﻿using CoreGame;
 using RTPuzzle;
+using System;
 
 namespace Tests
 {
@@ -30,9 +28,6 @@ namespace Tests
 
     public class MockDottedLineRendererManager : DottedLineRendererManager
     {
-        public override void Init()
-        {
-        }
 
         public override void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
         {

@@ -58,6 +58,8 @@ namespace InteractiveObjectTest
             this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, PuzzleEventsManager, this.PlayerActionManager);
             this.LevelResetManager = new LevelResetManager(GameInputManager, PuzzleEventsManager);
             this.LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
+
+            this.AfterConstructor();
         }
 
         public override void TickAlways(float d)

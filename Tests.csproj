@@ -84,7 +84,6 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIAgentAlgorithmTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\AbstractPuzzleSceneTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestHelperMethods.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestPuzzleGameManager.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\LaunchProjectileTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\SceneMock.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\TestPosition.cs" />

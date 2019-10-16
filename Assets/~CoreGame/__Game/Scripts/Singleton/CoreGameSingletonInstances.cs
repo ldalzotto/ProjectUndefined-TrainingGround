@@ -25,7 +25,6 @@ namespace CoreGame
         private static CoreStaticConfigurationContainer coreStaticConfigurationContainer;
         private static AutoSaveIcon autoSaveIcon;
         private static DiscussionPositionsType discussionPositionsType;
-        private static FXContainerManager fXContainerManager;
         private static TutorialManager tutorialManager;
         private static CameraMovementManager cameraMovementManager;
         private static StartLevelManager startLevelManager;
@@ -70,7 +69,6 @@ namespace CoreGame
             }
         }
         public static DiscussionPositionsType DiscussionPositionsType { get => FindAndSetInstanceIfNull(discussionPositionsType, obj => discussionPositionsType = obj); }
-        public static FXContainerManager FXContainerManager { get => FindAndSetInstanceIfNull(fXContainerManager, obj => fXContainerManager = obj); }
         public static TutorialManager TutorialManager { get => FindAndSetInstanceIfNull(tutorialManager, obj => tutorialManager = obj); }
         public static CameraMovementManager CameraMovementManager { get => FindAndSetInstanceIfNull(cameraMovementManager, obj => cameraMovementManager = obj); }
         public static StartLevelManager StartLevelManager { get => NewInstanceIfNull(startLevelManager, obj => startLevelManager = obj); }

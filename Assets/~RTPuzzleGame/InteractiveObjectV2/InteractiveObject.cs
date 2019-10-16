@@ -32,6 +32,10 @@ namespace InteractiveObjectTest
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
             this.CutsceneController = new BaseCutsceneController(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
+        }
+
+        protected void AfterConstructor()
+        {
             this.InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
         }
 

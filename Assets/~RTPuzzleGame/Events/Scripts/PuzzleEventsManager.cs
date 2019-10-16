@@ -24,10 +24,10 @@ namespace RTPuzzle
             this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
-            this.IDottedLineRendererManagerEvent = PuzzleGameSingletonInstances.DottedLineRendererManager;
             this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
             this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
+            this.IDottedLineRendererManagerEvent = DottedLineRendererManager.Get();
         }
 
         #region IActionInteractableObjectModuleEventListener

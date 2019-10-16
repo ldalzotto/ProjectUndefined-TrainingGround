@@ -9,9 +9,6 @@ namespace RTPuzzle
         [Header("Cooldown Feed Prefabs")]
         public CooldownFeedLineType CooldownFeedLineType;
 
-        [Header("Visual Feedback")]
-        public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;
-
         public DottedLine BaseDottedLineBasePrefab;
     }
 }
