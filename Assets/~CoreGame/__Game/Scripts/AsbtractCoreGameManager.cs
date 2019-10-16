@@ -24,6 +24,7 @@ namespace CoreGame
             CoreGameSingletonInstances.AGhostPOIManager.Init();
             CoreGameSingletonInstances.ATimelinesManager.Init();
             CoreGameSingletonInstances.LevelManager.Init(levelType);
+            CanvasScalerManager.Get().Init();
 
             if (this.levelType != LevelType.STARTMENU)
             {

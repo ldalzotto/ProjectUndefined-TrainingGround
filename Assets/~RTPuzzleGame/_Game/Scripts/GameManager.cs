@@ -14,7 +14,6 @@ namespace RTPuzzle
         #endregion
         
         private CooldownFeedManager CooldownFeedManager;
-        private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
         private CameraMovementManager CameraMovementManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
@@ -47,7 +46,6 @@ namespace RTPuzzle
 
             
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
-            TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
@@ -72,7 +70,7 @@ namespace RTPuzzle
             PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
-            TimeFlowPlayPauseManager.Init();
+            TimeFlowPlayPauseManager.Get().Init();
             CircleFillBarRendererManager.Get().Init();
             PuzzleTutorialEventSender.Init();
             TutorialManager.Init();
@@ -113,7 +111,7 @@ namespace RTPuzzle
                     TimeFlowManager.Get().Tick(d);
                     GameOverManager.Get().Tick(d);
                     CooldownFeedManager.Tick(d);
-                    TimeFlowPlayPauseManager.Tick(TimeFlowManager.Get().IsAbleToFlowTime());
+                    TimeFlowPlayPauseManager.Get().Tick(TimeFlowManager.Get().IsAbleToFlowTime());
 
                     InteractiveObjectV2Manager.Get().TickAlways(d);
 

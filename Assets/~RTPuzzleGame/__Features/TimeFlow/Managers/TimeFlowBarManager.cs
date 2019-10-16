@@ -12,7 +12,7 @@ namespace RTPuzzle
 
         public void Init(float availableTimeAmount)
         {
-            this.TimeFlowBarUIObject = new TimeFlowBarGameObject();
+            this.TimeFlowBarUIObject = new TimeFlowBarGameObject(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration);
             tmeFlowDepletingUIManager = new TimeFlowDepletingUIManager(this.TimeFlowBarUIObject, availableTimeAmount);
         }
 

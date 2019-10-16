@@ -1,6 +1,5 @@
-﻿
-using InteractiveObjectTest;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace RTPuzzle
 {
@@ -10,6 +9,7 @@ namespace RTPuzzle
     {
         public PlayerInteractiveObjectInitializerData PlayerInteractiveObjectInitializerData;
         public PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent;
+        public TimeFlowBarUILayoutData TimeFlowBarUILayoutData;
     }
 
 
@@ -18,6 +18,20 @@ namespace RTPuzzle
     {
         public float SpeedMultiplicationFactor = 20f;
         public float MinimumDistanceToStick = 0.01f;
+    }
+
+    [System.Serializable]
+    public class TimeFlowBarUILayoutData
+    {
+        [Header("Time flow bar UI")]
+        public Vector2 TimeFlowBarSizeDeltaFactor;
+        public Vector2 TimeFlowBarOffsetMinFactor;
+        public Vector2 TimeFlowBarOffsetMaxFactor;
+
+        [Header("Time flow play/pause")]
+        public Vector2 TimeFlowPlayIconSizeDeltaFactor;
+        public Vector2 TimeFlowPlayIconOffsetMinFactor;
+        public TimeFlowPlayPauseIconSwitchComponent TimeFlowPlayPauseIconSwitchComponent;
     }
 }
 

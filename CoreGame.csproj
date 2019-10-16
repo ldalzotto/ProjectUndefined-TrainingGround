@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -253,6 +252,7 @@
     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialGraphEvents.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
+    <Compile Include="Assets\~CoreGame\UI\CanvasScalerManager.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayout.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />

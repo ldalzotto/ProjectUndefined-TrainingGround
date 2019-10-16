@@ -9,7 +9,6 @@ namespace RTPuzzle
         private static BlockingCutscenePlayerManager blockingCutscenePlayer;
         private static PuzzleStaticConfigurationContainer puzzleStaticConfigurationContainer;
         private static CooldownFeedManager cooldownFeedManager;
-        private static TimeFlowPlayPauseManager timeFlowPlayPauseManager;
         private static PuzzleTutorialEventSender puzzleTutorialEventSender;
         private static PlayerActionEventManager playerActionEventManager;
         private static PuzzleDebugModule puzzleDebugModule;
@@ -22,7 +21,6 @@ namespace RTPuzzle
         public static BlockingCutscenePlayerManager BlockingCutscenePlayer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(blockingCutscenePlayer, obj => blockingCutscenePlayer = obj); }
         public static PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleStaticConfigurationContainer, obj => puzzleStaticConfigurationContainer = obj); }
         public static CooldownFeedManager CooldownFeedManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cooldownFeedManager, obj => cooldownFeedManager = obj); }
-        public static TimeFlowPlayPauseManager TimeFlowPlayPauseManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowPlayPauseManager, obj => timeFlowPlayPauseManager = obj); }
         public static PuzzleTutorialEventSender PuzzleTutorialEventSender { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleTutorialEventSender, obj => puzzleTutorialEventSender = obj); }
         public static PlayerActionEventManager PlayerActionEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionEventManager, obj => playerActionEventManager = obj); }
         public static PuzzleDebugModule PuzzleDebugModule { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDebugModule, obj => puzzleDebugModule = obj); }
