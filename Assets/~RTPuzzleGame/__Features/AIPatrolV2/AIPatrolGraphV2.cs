@@ -35,5 +35,10 @@ namespace RTPuzzle
     {
         public TransformStruct WorldPoint;
         public AIMovementSpeedDefinition AIMovementSpeed;
+
+        public Vector3 GetWorldPosition()
+        {
+            return this.WorldPoint.WorldPosition;
+        }
     }
 }

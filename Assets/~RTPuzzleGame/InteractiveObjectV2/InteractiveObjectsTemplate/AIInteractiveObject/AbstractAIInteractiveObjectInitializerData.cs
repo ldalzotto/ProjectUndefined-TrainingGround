@@ -21,7 +21,7 @@ namespace InteractiveObjectTest
     {
         [WireCircle(R = 0f, G = 1f, B = 0f)]
         public float AgentStoppingDistance = 0.5f;
-        [WireLine(R = 0f, G = 1f, B = 0f, dY = 1f)]
+        [WireDirectionalLineAttribute(R = 0f, G = 1f, B = 0f, dY = 1f)]
         public float AgentHeight = 2f;
     }
 }

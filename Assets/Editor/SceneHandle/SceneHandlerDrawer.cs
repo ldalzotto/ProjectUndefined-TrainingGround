@@ -28,28 +28,6 @@ public static class SceneHandlerDrawer
                         }
                     }
                 }
-                /*
-                  var DrawDefinitionAttribute = field.GetCustomAttribute<DrawDefinitionAttribute>() as DrawDefinitionAttribute;
-                  if (DrawDefinitionAttribute != null)
-                  {
-                      var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawDefinitionAttribute.ConfigurationType);
-                      if (configurationAsset != null)
-                      {
-                          configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
-                          if (configurationDataObject != null)
-                          {
-                              var AbstractObjectDefinitionConfigurationInherentData = ((AbstractObjectDefinitionConfigurationInherentData)configurationDataObject);
-                              foreach (var RangeDefinitionModulesActivation in AbstractObjectDefinitionConfigurationInherentData.RangeDefinitionModulesActivation)
-                              {
-                                  if (RangeDefinitionModulesActivation.Value)
-                                  {
-                                      Draw(AbstractObjectDefinitionConfigurationInherentData.RangeDefinitionModules[RangeDefinitionModulesActivation.Key], objectTransform, CommonGameConfigurations);
-                                  }
-                              }
-                          }
-                      }
-                  }
-                  */
 
                 var DrawNestedAttribute = field.GetCustomAttribute<DrawNestedAttribute>() as DrawNestedAttribute;
                 if (DrawNestedAttribute != null)
@@ -107,9 +85,9 @@ public static class SceneHandlerDrawer
                         SetupColors(WireRoundedFrustumAttribute.GetColor());
                         DrawFrustum(frustum, objectTransform, isRounded: true);
                     }
-                    else if (AbstractSceneHandleAttribute.GetType() == typeof(WireLineAttribute))
+                    else if (AbstractSceneHandleAttribute.GetType() == typeof(WireDirectionalLineAttribute))
                     {
-                        var WireLineAttribute = (WireLineAttribute)AbstractSceneHandleAttribute;
+                        var WireLineAttribute = (WireDirectionalLineAttribute)AbstractSceneHandleAttribute;
                         var lineLength = (float)field.GetValue(drawableObject);
                         SetupColors(WireLineAttribute.GetColor());
                         Handles.DrawLine(objectTransform.transform.position, objectTransform.transform.position + (new Vector3(WireLineAttribute.dX, WireLineAttribute.dY, WireLineAttribute.dZ) * lineLength));

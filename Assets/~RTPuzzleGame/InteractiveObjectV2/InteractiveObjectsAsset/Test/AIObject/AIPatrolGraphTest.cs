@@ -9,8 +9,16 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIPatrolGraphTest", menuName = "Test/AIPatrolGraphTest", order = 1)]
     public class AIPatrolGraphTest : AIPatrolGraphV2
     {
+        [GraphPatrolPointAttribute(R = 0f, G = 1f, B = 0f)]
+        [GraphPatrolLine(fieldTargetWorldPosition: nameof(AIPatrolGraphTest.P3))]
         public AIMoveToActionInputData P1;
+
+        [GraphPatrolPointAttribute]
+        [GraphPatrolLine(fieldTargetWorldPosition: nameof(AIPatrolGraphTest.P1))]
         public AIMoveToActionInputData P2;
+
+        [GraphPatrolPointAttribute]
+        [GraphPatrolLine(fieldTargetWorldPosition: nameof(AIPatrolGraphTest.P2))]
         public AIMoveToActionInputData P3;
 
         public override List<SequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject)

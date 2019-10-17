@@ -20,4 +20,14 @@ public class HandlesHelper
         Handles.matrix = oldMatrix;
         Handles.color = oldColor;
     }
+
+    public static void DrawArrow(Vector3 source, Vector3 target, Color color, float arrowSemiAngle = 25f, float arrowLength = 3f)
+    {
+        var oldColor = Handles.color;
+        Handles.color = color;
+        Handles.DrawLine(source, target);
+        Handles.DrawLine(target, target + ((Quaternion.AngleAxis(arrowSemiAngle, Vector3.up) * (source - target).normalized) * arrowLength));
+        Handles.DrawLine(target, target + ((Quaternion.AngleAxis(-arrowSemiAngle, Vector3.up) * (source - target).normalized) * arrowLength));
+        Handles.color = oldColor;
+    }
 }
