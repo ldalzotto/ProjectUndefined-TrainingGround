@@ -39,7 +39,7 @@ namespace RTPuzzle
 
         public virtual void FirstExecution()
         {
-            var playerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
+            var playerActionEventManager = PlayerActionEventManager.Get();
             this.CooldownEventTrackerManager = new CooldownEventTrackerManager(playerActionEventManager);
         }
 

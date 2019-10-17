@@ -4,30 +4,28 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IGameOverManagerEventListener
+    public class PuzzleEventsManager : GameSingleton<PuzzleEventsManager>, IGameOverManagerEventListener
     {
         #region External Dependencies
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
-        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent;
+        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent = DottedLineRendererManager.Get();
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
-        private PlayerActionEventManager PlayerActionEventManager;
+        private PlayerActionEventManager PlayerActionEventManager = PlayerActionEventManager.Get();
 
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
         private InteractiveObjectSelectionManager InteractiveObjectSelectionManager = InteractiveObjectSelectionManager.Get();
         #endregion
 
-        public void Init()
+        public PuzzleEventsManager()
         {
             this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
-            this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
             this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
-            this.IDottedLineRendererManagerEvent = DottedLineRendererManager.Get();
         }
 
         #region IActionInteractableObjectModuleEventListener

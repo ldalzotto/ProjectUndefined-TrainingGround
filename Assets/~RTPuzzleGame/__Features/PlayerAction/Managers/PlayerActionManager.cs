@@ -26,7 +26,7 @@ namespace RTPuzzle
     public class PlayerActionManager : GameSingleton<PlayerActionManager>, IPlayerActionManagerEvent, IPlayerActionManagerDataRetrieval
     {
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
         #endregion
 
         private PlayerActionExecutionManager PlayerActionExecutionManager;
@@ -39,15 +39,14 @@ namespace RTPuzzle
         public PlayerActionManager()
         {
             #region External Dependencies
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
-            var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
+            var playerActionEventManager = PlayerActionEventManager.Get();
             var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
             #endregion
 
             SelectionWheel = PuzzleGameSingletonInstances.PuzzleSelectionWheel;
 
-            PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
+            PlayerActionExecutionManager = new PlayerActionExecutionManager(playerActionEventManager);
             PlayerActionsAvailableManager = new PlayerActionsAvailableManager();
             PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel, puzzleGameConfigurationManager);
             PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(

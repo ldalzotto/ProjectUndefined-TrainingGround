@@ -17,7 +17,7 @@ namespace RTPuzzle
         {
             #region External dependencies
             var PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            this.ILevelCompletionManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.ILevelCompletionManagerEventListener = PuzzleEventsManager.Get();
             this.PuzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             #endregion
         }

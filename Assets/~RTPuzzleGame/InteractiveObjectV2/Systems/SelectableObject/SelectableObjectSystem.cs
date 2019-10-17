@@ -18,7 +18,7 @@ namespace InteractiveObjectTest
         private RTPPlayerAction AssociatedPlayerAction;
 
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
         #endregion
 
         private ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerActionDelegate;
@@ -27,8 +27,6 @@ namespace InteractiveObjectTest
             SelectableObjectSystemDefinition SelectableObjectSystemDefinition,
             ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerAction)
         {
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
-
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
             this.SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization()
             {

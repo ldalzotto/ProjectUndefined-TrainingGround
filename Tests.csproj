@@ -81,10 +81,7 @@
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TimelineActions\TestTimelineAction.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\WorkflowActions\TestWorkflowAction.cs" />
     <Compile Include="Assets\Tests\~CoreGame\Intersection\IntersectionTests.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIAgentAlgorithmTest.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\AbstractPuzzleSceneTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestHelperMethods.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\LaunchProjectileTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\SceneMock.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\TestPosition.cs" />
     <Compile Include="Assets\Tests\Common\GameInputManagerMock.cs" />

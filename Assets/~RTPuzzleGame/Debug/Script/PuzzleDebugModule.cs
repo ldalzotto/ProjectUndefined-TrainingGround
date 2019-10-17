@@ -19,12 +19,11 @@ namespace RTPuzzle
         public bool PlayerDiscussionTree;
 
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
         #endregion
 
         public void Init()
         {
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             if (InstantProjectileHit)
             {
             }

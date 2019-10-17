@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleTutorialEventSender : MonoBehaviour
+    public class PuzzleTutorialEventSenderManager : GameSingleton<PuzzleTutorialEventSenderManager>
     {
         private TutorialManager tutorialManager;
 
-        public void Init()
+        public PuzzleTutorialEventSenderManager()
         {
             this.tutorialManager = CoreGameSingletonInstances.TutorialManager;
         }
-
+        
         public void Tick(float d)
         {
             if (!this.tutorialManager.GetTutorialCurrentState(TutorialStepID.PUZZLE_TIME_ELAPSING) && !this.tutorialManager.IsTutorialStepPlaying())

@@ -40,9 +40,7 @@ namespace InteractiveObjectTest
 
             #region External Dependencies
             this.PlayerActionManager = PlayerActionManager.Get();
-            var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
-            var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
-            var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
+            var puzzleEventsManager = PuzzleEventsManager.Get();
             this.BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
             var LevelConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.LevelConfiguration;
@@ -55,8 +53,8 @@ namespace InteractiveObjectTest
 
             this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
             this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.GetLogicCollider(), PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
-            this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, PuzzleEventsManager, this.PlayerActionManager);
-            this.LevelResetManager = new LevelResetManager(GameInputManager, PuzzleEventsManager);
+            this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, puzzleEventsManager, this.PlayerActionManager);
+            this.LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
             this.LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
 
             this.AfterConstructor();

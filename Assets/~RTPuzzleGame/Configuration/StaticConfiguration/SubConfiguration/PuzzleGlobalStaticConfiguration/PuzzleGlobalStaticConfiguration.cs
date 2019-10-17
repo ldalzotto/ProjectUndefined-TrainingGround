@@ -26,7 +26,6 @@ namespace RTPuzzle
         [Header("Time flow bar UI")]
         public Vector2 TimeFlowBarSizeDeltaFactor;
         public Vector2 TimeFlowBarOffsetMinFactor;
-        public Vector2 TimeFlowBarOffsetMaxFactor;
 
         [Header("Time flow play/pause")]
         public Vector2 TimeFlowPlayIconSizeDeltaFactor;

@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PlayerActionEventManager : MonoBehaviour
+    public class PlayerActionEventManager : GameSingleton<PlayerActionEventManager>
     {
         #region External Dependencies
         private ICooldownFeedManagerEvent ICooldownFeedManagerEvent;
         #endregion
 
-        public void Init()
+        public PlayerActionEventManager()
         {
             ICooldownFeedManagerEvent = PuzzleGameSingletonInstances.CooldownFeedManager;
         }
-        
+
         public void OnRTPPlayerActionStop(RTPPlayerAction stoppedAction)
         {
             PlayerActionManager.Get().StopAction();

@@ -8,14 +8,9 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private ITimeFlowManagerDataRetrieval ITimeFlowManagerDataRetrieval = TimeFlowManager.Get();
-        private IGameOverManagerEventListener IGameOverManagerEventListener;
+        private IGameOverManagerEventListener IGameOverManagerEventListener = PuzzleEventsManager.Get();
         #endregion
-
-        public void Init()
-        {
-            this.IGameOverManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
-        }
-
+        
         private bool onGameOver = false;
 
         public bool OnGameOver { get => onGameOver; }

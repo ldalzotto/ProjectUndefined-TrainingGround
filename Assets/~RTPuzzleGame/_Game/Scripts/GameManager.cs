@@ -14,9 +14,7 @@ namespace RTPuzzle
         #endregion
         
         private CooldownFeedManager CooldownFeedManager;
-        private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
         private CameraMovementManager CameraMovementManager;
-        private PuzzleTutorialEventSender PuzzleTutorialEventSender;
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private TutorialManager TutorialManager;
         private PuzzleDiscussionManager PuzzleDiscussionManager;
@@ -47,14 +45,12 @@ namespace RTPuzzle
             
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
-            PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
             PuzzleDiscussionManager = PuzzleGameSingletonInstances.PuzzleDiscussionManager;
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
             var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var LevelManager = CoreGameSingletonInstances.LevelManager;
 
 
@@ -66,13 +62,9 @@ namespace RTPuzzle
 
             TimeFlowBarManager.Get().Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
             TimeFlowManager.Get().Init(TimeFlowBarManager.Get());
-            GameOverManager.Get().Init();
-            PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
             CooldownFeedManager.Init();
-            PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Get().Init();
             CircleFillBarRendererManager.Get().Init();
-            PuzzleTutorialEventSender.Init();
             TutorialManager.Init();
             InteractiveObjectSelectionManager.Get().Init(CoreGameSingletonInstances.GameInputManager);
             PuzzleDiscussionManager.Init();
@@ -95,7 +87,7 @@ namespace RTPuzzle
                 {
                     TutorialManager.Tick(d);
 
-                    PuzzleTutorialEventSender.Tick(d);
+                    PuzzleTutorialEventSenderManager.Get().Tick(d);
                     BlockingCutscenePlayer.Tick(d);
 
                     PlayerActionManager.Get().Tick(d);
