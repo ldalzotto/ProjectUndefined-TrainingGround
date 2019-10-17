@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace InteractiveObjects
 {
-
     public struct AIDestination
     {
         public Vector3 WorldPosition;
@@ -21,9 +21,9 @@ namespace InteractiveObjects
     {
         public static Dictionary<AIMovementSpeedDefinition, float> AIMovementSpeedAttenuationFactorLookup = new Dictionary<AIMovementSpeedDefinition, float>()
         {
-            { AIMovementSpeedDefinition.ZERO, 0f },
-            { AIMovementSpeedDefinition.WALK, 0.5f },
-            { AIMovementSpeedDefinition.RUN, 1f }
+            {AIMovementSpeedDefinition.ZERO, 0f},
+            {AIMovementSpeedDefinition.WALK, 0.5f},
+            {AIMovementSpeedDefinition.RUN, 1f}
         };
     }
 
@@ -32,15 +32,13 @@ namespace InteractiveObjects
         public float UnscaledSpeedMagnitude;
     }
 
-
-
-    [System.Serializable]
+    [Serializable]
     [SceneHandleDraw]
     public class AIAgentDefinition
     {
-        [WireCircle(R = 0f, G = 1f, B = 0f)]
-        public float AgentStoppingDistance = 0.5f;
         [WireDirectionalLineAttribute(R = 0f, G = 1f, B = 0f, dY = 1f)]
         public float AgentHeight = 2f;
+
+        [WireCircle(R = 0f, G = 1f, B = 0f)] public float AgentStoppingDistance = 0.5f;
     }
 }

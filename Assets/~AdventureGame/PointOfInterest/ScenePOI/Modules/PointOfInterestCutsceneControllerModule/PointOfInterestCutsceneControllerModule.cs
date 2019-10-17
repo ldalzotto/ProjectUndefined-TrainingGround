@@ -7,57 +7,62 @@ namespace AdventureGame
     public class PointOfInterestCutsceneControllerModule : APointOfInterestModule
     {
         #region External Dependencies
+
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
+
         #endregion
 
         private PointOfInterestCutsceneController pointOfInterestCutsceneController;
 
         #region Data Retrieval
+
         public BaseCutsceneController GetCutsceneController()
         {
-            return this.pointOfInterestCutsceneController;
+            return pointOfInterestCutsceneController;
         }
+
         #endregion
 
         #region Logical Condition
+
         public bool IsDirectedByCutscene()
         {
-            return this.pointOfInterestCutsceneController.IsAnimationPlaying || this.CutscenePlayerManagerV2.IsCutscenePlaying;
+            return pointOfInterestCutsceneController.IsAnimationPlaying || CutscenePlayerManagerV2.IsCutscenePlaying;
         }
+
         #endregion
 
         public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
-            this.CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
-            this.pointOfInterestCutsceneController = new PointOfInterestCutsceneController(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
+            CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
+            pointOfInterestCutsceneController = new PointOfInterestCutsceneController(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
         }
 
         public void Tick(float d)
         {
-            this.pointOfInterestCutsceneController.Tick(d);
+            pointOfInterestCutsceneController.Tick(d);
         }
     }
 
-    class PointOfInterestCutsceneController : BaseCutsceneController
+    internal class PointOfInterestCutsceneController : BaseCutsceneController
     {
         public PointOfInterestCutsceneController(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
             #region Data Components Dependencies
+
             var PlayerInputMoveManagerComponentV3 = pointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.TransformMoveManagerComponent;
+
             #endregion
 
             var Rigidbody = pointOfInterestTypeRef.GetComponentInParent<Rigidbody>();
             var Agent = pointOfInterestTypeRef.GetComponentInParent<NavMeshAgent>();
             var Animator = PointOfInterestModelObjectModule.Animator;
 
-            PlayerAnimationDataManager PlayerAnimationDataManager = null;
+            AnimationDataManager animationDataManager = null;
 
-            if (!pointOfInterestTypeRef.IsPlayer())
-            {
-                PlayerAnimationDataManager = new PlayerAnimationDataManager(Animator);
-            }
+            if (!pointOfInterestTypeRef.IsPlayer()) animationDataManager = new AnimationDataManager(Animator);
 
-            base.BaseInit(Rigidbody, Agent, Animator, PlayerInputMoveManagerComponentV3, PlayerAnimationDataManager);
+            BaseInit(Rigidbody, Agent, Animator, PlayerInputMoveManagerComponentV3, animationDataManager);
         }
     }
 }

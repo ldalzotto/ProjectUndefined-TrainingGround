@@ -1,6 +1,8 @@
-﻿namespace GameConfigurationID
+﻿using System;
+
+namespace InteractiveObjects
 {
-    [System.Serializable()]
+    [Serializable()]
     public enum InteractiveObjectV2DefinitionID
     {
         NONE = 0,

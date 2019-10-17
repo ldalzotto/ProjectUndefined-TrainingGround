@@ -73,7 +73,6 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionTreeId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DottedLineID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\InputID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\InteractiveObjectV2DefinitionID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ItemID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />

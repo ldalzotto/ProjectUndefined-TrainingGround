@@ -5,11 +5,12 @@ namespace AdventureGame
 {
     public class PlayerAnimationManager : MonoBehaviour
     {
-        [Header("Animation")]
-        private PlayerAnimationDataManager playerAnimationDataManager;
+        [Header("Animation")] private AnimationDataManager _animationDataManager;
 
         #region FX Instanciation handler
-        public PlayerAnimationDataManager PlayerAnimationDataManager { get => playerAnimationDataManager; }
+
+        public AnimationDataManager AnimationDataManager => _animationDataManager;
+
         #endregion
 
         private void Start()
@@ -18,15 +19,14 @@ namespace AdventureGame
             var AnimationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
             var PlayerAnimator = GetComponentInChildren<Animator>();
 
-            this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
+            _animationDataManager = new AnimationDataManager(PlayerAnimator);
 
             GenericAnimatorHelper.SetMovementLayer(PlayerAnimator, AnimationConfiguration, LevelType.ADVENTURE);
         }
 
         public Animator GetPlayerAnimator()
         {
-            return playerAnimationDataManager.Animator;
+            return _animationDataManager.Animator;
         }
-
     }
 }

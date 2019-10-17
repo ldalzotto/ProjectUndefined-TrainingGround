@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using RTPuzzle;
 
 namespace InteractiveObjects
 {
@@ -12,22 +11,34 @@ namespace InteractiveObjects
             this.PlayerInteractiveObject = PlayerInteractiveObject;
         }
 
-        public void FixedTick(float d) { this.PlayerInteractiveObject.FixedTick(d); }
-        public void TickAlways(float d) { this.PlayerInteractiveObject.TickAlways(d); }
-        public void LateTick(float d) { this.PlayerInteractiveObject.LateTick(d); }
-        
+        public void FixedTick(float d)
+        {
+            PlayerInteractiveObject.FixedTick(d);
+        }
+
+        public void TickAlways(float d)
+        {
+            PlayerInteractiveObject.TickAlways(d);
+        }
+
+        public void LateTick(float d)
+        {
+            PlayerInteractiveObject.LateTick(d);
+        }
+
         public IInteractiveGameObject GetPlayerGameObject()
         {
-            return this.PlayerInteractiveObject.InteractiveGameObject;
+            return PlayerInteractiveObject.InteractiveGameObject;
         }
 
         public float GetNormalizedSpeed()
         {
-            return this.PlayerInteractiveObject.GetNormalizedSpeed();
+            return PlayerInteractiveObject.GetNormalizedSpeed();
         }
+
         public bool HasPlayerMovedThisFrame()
         {
-            return this.PlayerInteractiveObject.HasPlayerMovedThisFrame();
+            return PlayerInteractiveObject.HasPlayerMovedThisFrame();
         }
     }
 }

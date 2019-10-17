@@ -1,6 +1,6 @@
-﻿using CoreGame;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CoreGame;
+using InteractiveObjects;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -12,43 +12,42 @@ namespace RTPuzzle
         public void Init()
         {
             var rangeInitializers = GameObject.FindObjectsOfType<RangeObjectInitializer>();
-            for (var rangeInitializerIndex = 0; rangeInitializerIndex < rangeInitializers.Length; rangeInitializerIndex++)
-            {
-                rangeInitializers[rangeInitializerIndex].Init();
-            }
+            for (var rangeInitializerIndex = 0; rangeInitializerIndex < rangeInitializers.Length; rangeInitializerIndex++) rangeInitializers[rangeInitializerIndex].Init();
 
             #region Event Register
-            RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnRangeObjectCreated);
-            RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnRangeObjectDestroyed);
+
+            RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(OnRangeObjectCreated);
+            RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(OnRangeObjectDestroyed);
+            InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectDestroyedEventListener(OnInteractiveObjectDestroyed);
+
             #endregion
         }
 
         public void Tick(float d)
         {
-            for (var rangeObjectIndex = 0; rangeObjectIndex < this.RangeObjects.Count; rangeObjectIndex++)
-            {
-                this.RangeObjects[rangeObjectIndex].Tick(d);
-            }
+            for (var rangeObjectIndex = 0; rangeObjectIndex < RangeObjects.Count; rangeObjectIndex++) RangeObjects[rangeObjectIndex].Tick(d);
         }
 
         private void OnRangeObjectCreated(RangeObjectV2 rangeObjectV2)
         {
-            this.RangeObjects.Add(rangeObjectV2);
+            RangeObjects.Add(rangeObjectV2);
         }
 
         private void OnRangeObjectDestroyed(RangeObjectV2 rangeObjectV2)
         {
-            this.RangeObjects.Remove(rangeObjectV2);
+            RangeObjects.Remove(rangeObjectV2);
+        }
+
+        private void OnInteractiveObjectDestroyed(CoreInteractiveObject InteractiveObject)
+        {
+            RangeObjectV2ManagerOperations.ClearAllReferencesOfInteractiveObject(InteractiveObject);
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
-            this.RangeObjects.Clear();
-            this.RangeObjects = null;
+            RangeObjects.Clear();
+            RangeObjects = null;
         }
-
-       
     }
-
 }

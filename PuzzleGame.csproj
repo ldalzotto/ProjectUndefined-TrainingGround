@@ -167,13 +167,10 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\ObstacleInteractiveObject\ObstacleInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\PlayerInteractiveObject\PlayerInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\PlayerInteractiveObject\PlayerInteractiveObjectInitializer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Managers\InteractiveObjectV2Manager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Managers\PlayerInteractiveObjectManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\_Abstract\AInteractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIMoveToDestinationSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystemDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AnimationObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\DisarmObject\DisarmobjectSystem.cs" />
@@ -181,7 +178,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LineVisualFeedbackSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LocalCutscenePlayerSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\SelectableObject\SelectableObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\SelectableObject\SelectableObjectSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystem.cs" />
