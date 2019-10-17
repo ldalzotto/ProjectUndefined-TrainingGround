@@ -2,7 +2,7 @@
 using RTPuzzle;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
 
     #region Callback Events

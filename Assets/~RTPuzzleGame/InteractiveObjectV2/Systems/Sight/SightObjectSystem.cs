@@ -3,7 +3,7 @@ using RTPuzzle;
 using System;
 using System.Collections.Generic;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class SightObjectSystem : AInteractiveObjectSystem

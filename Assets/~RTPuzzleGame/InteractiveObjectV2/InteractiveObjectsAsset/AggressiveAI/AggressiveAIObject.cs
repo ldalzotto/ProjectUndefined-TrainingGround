@@ -1,4 +1,4 @@
-﻿namespace InteractiveObjectTest
+﻿namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class AggressiveAIObject : A_AIInteractiveObject<AggressiveObjectInitializerData>
@@ -11,7 +11,7 @@
 
         private AIPatrolSystem AIPatrolSystem;
 
-        public AggressiveAIObject(InteractiveGameObject interactiveGameObject, AggressiveObjectInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
+        public AggressiveAIObject(IInteractiveGameObject interactiveGameObject, AggressiveObjectInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
         {
             this.interactiveObjectTag = new InteractiveObjectTag { IsAi = true };
             this.AIPatrollingState = new AIPatrollingState();
@@ -36,7 +36,7 @@
         protected void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             this.AIPatrollingState.isPatrolling = false;
-            this.SetAISpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition.RUN);
+            this.SetAISpeedAttenuationFactor(AIMovementSpeedDefinition.RUN);
             this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
         }
         protected void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)

@@ -1,7 +1,7 @@
 ﻿using OdinSerializer;
 using RTPuzzle;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [System.Serializable]
     [SceneHandleDraw]

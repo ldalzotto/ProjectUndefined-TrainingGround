@@ -1,6 +1,6 @@
 ﻿using CoreGame;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class PlayerInteractiveObjectInitializer : InteractiveObjectInitializer
@@ -10,7 +10,7 @@ namespace InteractiveObjectTest
 
         public override void Init()
         {
-            var PlayerInteractiveObject = new PlayerInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectLogicCollider);
+            var PlayerInteractiveObject = new PlayerInteractiveObject(InteractiveGameObjectFactory.Build(this.gameObject), InteractiveObjectLogicCollider);
             PlayerInteractiveObjectManager.Get().Init(PlayerInteractiveObject);
         }
     }

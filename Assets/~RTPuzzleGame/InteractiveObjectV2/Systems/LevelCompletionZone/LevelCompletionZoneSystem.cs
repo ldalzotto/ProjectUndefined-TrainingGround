@@ -1,7 +1,7 @@
 ﻿using RTPuzzle;
 using System;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class LevelCompletionZoneSystem : AInteractiveObjectSystem
     {

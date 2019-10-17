@@ -65,8 +65,8 @@
     <Compile Include="Assets\InteractiveObjects\CommonConstants\InteractiveObjectsConstants.cs" />
     <Compile Include="Assets\InteractiveObjects\Configuration\AbstractInteractiveObjectV2Definition.cs" />
     <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2Configuration.cs" />
+    <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2ConfigurationGameObject.cs" />
     <Compile Include="Assets\InteractiveObjects\InteractiveGameObject\InteractiveGameObject.cs" />
-    <Compile Include="Assets\InteractiveObjects\InteractiveGameObject\InteractiveGameObjectLogicColliderTag.cs" />
     <Compile Include="Assets\InteractiveObjects\InteractiveObject.cs" />
     <Compile Include="Assets\InteractiveObjects\InteractiveObjectEventsManager.cs" />
     <Compile Include="Assets\InteractiveObjects\InteractiveObjectInitializer.cs" />

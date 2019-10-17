@@ -1,7 +1,7 @@
 ﻿using RTPuzzle;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public abstract class AbstractAttractiveInteractiveObject<INIT> : CoreInteractiveObject where INIT : AbstractAttractiveObjectInitializerData
@@ -11,7 +11,7 @@ namespace InteractiveObjectTest
         [VE_Nested]
         private AttractiveObjectSystem AttractiveObjectSystem;
 
-        public AbstractAttractiveInteractiveObject(InteractiveGameObject interactiveGameObject, INIT InteractiveObjectInitializerData) : base(interactiveGameObject)
+        public AbstractAttractiveInteractiveObject(IInteractiveGameObject interactiveGameObject, INIT InteractiveObjectInitializerData) : base(interactiveGameObject)
         {
             interactiveGameObject.CreateLogicCollider(InteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.interactiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
@@ -41,14 +41,12 @@ namespace InteractiveObjectTest
         private void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemJustIntersected");
-            var AIInteractiveObject = (AIInteractiveObjectTest)IntersectedInteractiveObject;
-            AIInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
+            IntersectedInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
         }
         private void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
             //  Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
-            var AIInteractiveObject = (AIInteractiveObjectTest)IntersectedInteractiveObject;
-            AIInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
+            IntersectedInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
         }
         private void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {

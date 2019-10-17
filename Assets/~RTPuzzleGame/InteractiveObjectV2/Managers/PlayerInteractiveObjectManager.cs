@@ -1,7 +1,7 @@
 ﻿using CoreGame;
 using RTPuzzle;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class PlayerInteractiveObjectManager : GameSingleton<PlayerInteractiveObjectManager>
     {
@@ -16,7 +16,7 @@ namespace InteractiveObjectTest
         public void TickAlways(float d) { this.PlayerInteractiveObject.TickAlways(d); }
         public void LateTick(float d) { this.PlayerInteractiveObject.LateTick(d); }
         
-        public InteractiveGameObject GetPlayerGameObject()
+        public IInteractiveGameObject GetPlayerGameObject()
         {
             return this.PlayerInteractiveObject.InteractiveGameObject;
         }

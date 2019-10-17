@@ -3,7 +3,7 @@ using RTPuzzle;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class PlayerInteractiveObject : CoreInteractiveObject
     {
@@ -31,7 +31,7 @@ namespace InteractiveObjectTest
         private AnimationObjectSystem AnimationObjectSystem;
         #endregion
 
-        public PlayerInteractiveObject(InteractiveGameObject interactiveGameObject, InteractiveObjectLogicCollider InteractiveObjectLogicCollider) : base(interactiveGameObject, false)
+        public PlayerInteractiveObject(IInteractiveGameObject interactiveGameObject, InteractiveObjectLogicCollider InteractiveObjectLogicCollider) : base(interactiveGameObject, false)
         {
             interactiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
             this.interactiveObjectTag = new InteractiveObjectTag { IsPlayer = true };
@@ -52,7 +52,7 @@ namespace InteractiveObjectTest
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
             this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
-            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.GetLogicCollider(), PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
+            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
             this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, puzzleEventsManager, this.PlayerActionManager);
             this.LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
             this.LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);

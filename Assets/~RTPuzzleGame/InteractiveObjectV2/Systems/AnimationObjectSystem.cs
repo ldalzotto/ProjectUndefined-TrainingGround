@@ -1,6 +1,6 @@
 ﻿using CoreGame;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class AnimationObjectSystem : AInteractiveObjectSystem
     {

@@ -1,7 +1,7 @@
 ﻿using RTPuzzle;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [System.Serializable]
     [SceneHandleDraw]
@@ -21,7 +21,7 @@ namespace InteractiveObjectTest
 
         public override CoreInteractiveObject BuildInteractiveObject(GameObject parent)
         {
-            return new TestAttractiveObject(new InteractiveGameObject(parent), this);
+            return new TestAttractiveObject(InteractiveGameObjectFactory.Build(parent), this);
         }
     }
 

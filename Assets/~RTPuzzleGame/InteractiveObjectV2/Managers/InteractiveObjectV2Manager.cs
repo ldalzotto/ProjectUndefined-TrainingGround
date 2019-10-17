@@ -2,8 +2,9 @@
 using RTPuzzle;
 using System.Collections.Generic;
 using UnityEngine;
+using InteractiveObjects;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class InteractiveObjectV2Manager : GameSingleton<InteractiveObjectV2Manager>
     {
@@ -13,8 +14,8 @@ namespace InteractiveObjectTest
         public void Init()
         {
             #region Event Registering
-            InteractiveObjectEventsManager.Get().RegisterOnInteractiveObjectCreatedEventListener(this.OnInteractiveObjectCreated);
-            InteractiveObjectEventsManager.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
+            InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectCreatedEventListener(this.OnInteractiveObjectCreated);
+            InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
             #endregion
 
             var InteractiveObjectInitializers = GameObject.FindObjectsOfType<InteractiveObjectInitializer>();

@@ -1,6 +1,5 @@
-﻿using static InteractiveObjectTest.AIMovementDefinitions;
-
-namespace InteractiveObjectTest
+﻿
+namespace InteractiveObjects
 {
     public abstract class A_AIInteractiveObject<INIT> : CoreInteractiveObject where INIT : AbstractAIInteractiveObjectInitializerData
     {
@@ -10,7 +9,7 @@ namespace InteractiveObjectTest
         protected AIMoveToDestinationSystem AIMoveToDestinationSystem;
         protected LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
-        public A_AIInteractiveObject(InteractiveGameObject interactiveGameObject, INIT AIInteractiveObjectInitializerData) : base(interactiveGameObject)
+        public A_AIInteractiveObject(IInteractiveGameObject interactiveGameObject, INIT AIInteractiveObjectInitializerData) : base(interactiveGameObject)
         {
             interactiveGameObject.CreateAgent(AIInteractiveObjectInitializerData.AIAgentDefinition);
             interactiveGameObject.CreateLogicCollider(AIInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
@@ -32,7 +31,7 @@ namespace InteractiveObjectTest
             this.AIMoveToDestinationSystem.SetDestination(AIDestination);
         }
 
-        public override void SetAISpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        public override void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
         {
             this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }

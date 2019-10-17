@@ -1,6 +1,6 @@
 ﻿using GameConfigurationID;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
 
     public class AIInteractiveObjectTest : A_AIInteractiveObject<AIInteractiveObjectTestInitializerData>
@@ -19,7 +19,7 @@ namespace InteractiveObjectTest
         private SightObjectSystem SightObjectSystem;
         private LocalCutscenePlayerSystem LocalCutscenePlayerSystem;
 
-        public AIInteractiveObjectTest(InteractiveGameObject interactiveGameObject, AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
+        public AIInteractiveObjectTest(IInteractiveGameObject interactiveGameObject, AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
         {
             this.AIPatrollingState = new AIPatrollingState();
             this.AIAttractiveObjectState = new AIAttractiveObjectState(new BoolVariable(false, this.OnAIIsJustAttractedByAttractiveObject, this.OnAIIsNoMoreAttractedByAttractiveObject));

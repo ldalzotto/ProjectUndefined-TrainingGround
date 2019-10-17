@@ -1,6 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using InteractiveObjectTest;
+using InteractiveObjects;
 using OdinSerializer;
 using UnityEngine;
 

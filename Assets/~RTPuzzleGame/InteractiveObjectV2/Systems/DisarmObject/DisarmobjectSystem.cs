@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class DisarmObjectSystem : AInteractiveObjectSystem

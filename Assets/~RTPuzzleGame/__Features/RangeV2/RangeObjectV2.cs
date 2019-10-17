@@ -1,5 +1,5 @@
 ﻿using CoreGame;
-using InteractiveObjectTest;
+using InteractiveObjects;
 using System;
 using UnityEngine;
 using UnityEngine.Profiling;

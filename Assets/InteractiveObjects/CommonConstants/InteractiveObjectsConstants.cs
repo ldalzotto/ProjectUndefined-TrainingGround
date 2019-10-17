@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
 
     public struct AIDestination
@@ -11,24 +10,23 @@ namespace InteractiveObjectTest
         public Quaternion? Rotation;
     }
 
+    public enum AIMovementSpeedDefinition
+    {
+        RUN = 0,
+        WALK = 1,
+        ZERO = 2
+    }
 
     public static class AIMovementDefinitions
     {
-        public enum AIMovementSpeedDefinition
-        {
-            RUN = 0,
-            WALK = 1,
-            ZERO = 2
-        }
-
         public static Dictionary<AIMovementSpeedDefinition, float> AIMovementSpeedAttenuationFactorLookup = new Dictionary<AIMovementSpeedDefinition, float>()
-    {
-        { AIMovementSpeedDefinition.ZERO, 0f },
-        { AIMovementSpeedDefinition.WALK, 0.5f },
-        { AIMovementSpeedDefinition.RUN, 1f }
-    };
+        {
+            { AIMovementSpeedDefinition.ZERO, 0f },
+            { AIMovementSpeedDefinition.WALK, 0.5f },
+            { AIMovementSpeedDefinition.RUN, 1f }
+        };
     }
-    
+
     public struct AnimationObjectSetUnscaledSpeedMagnitudeEvent
     {
         public float UnscaledSpeedMagnitude;

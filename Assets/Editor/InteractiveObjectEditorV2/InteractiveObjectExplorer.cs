@@ -1,5 +1,5 @@
 ﻿using Editor_MainGameCreationWizard;
-using InteractiveObjectTest;
+using InteractiveObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

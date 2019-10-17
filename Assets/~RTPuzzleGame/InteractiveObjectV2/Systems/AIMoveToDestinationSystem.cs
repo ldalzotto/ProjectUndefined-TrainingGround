@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
-using static InteractiveObjectTest.AIMovementDefinitions;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     #region Callback Events
     public delegate void OnAIInteractiveObjectDestinationReachedDelegate();
@@ -112,7 +110,7 @@ namespace InteractiveObjectTest
             //So we do comparison between world destination
             if (this.lastSuccessfulWorldDestination != AIDestination.WorldPosition)
             {
-                Debug.Log(MyLog.Format("Set destination : " + AIDestination.WorldPosition));
+                //   Debug.Log(MyLog.Format("Set destination : " + AIDestination.WorldPosition));
                 this.CurrentDestination = AIDestination;
                 objectAgent.ResetPath();
                 NavMeshPath path = CreateValidNavMeshPathWithFallback(objectAgent, AIDestination.WorldPosition, 50);
@@ -167,7 +165,7 @@ namespace InteractiveObjectTest
 
         private void UpdateAgentTransform(float d, float timeAttenuationFactor)
         {
-            objectAgent.speed = this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor * AIMovementSpeedAttenuationFactorLookup[this.currentSpeedAttenuationFactor];
+            objectAgent.speed = this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor * AIMovementDefinitions.AIMovementSpeedAttenuationFactorLookup[this.currentSpeedAttenuationFactor];
 
             bool updatePosition = true;
             // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.

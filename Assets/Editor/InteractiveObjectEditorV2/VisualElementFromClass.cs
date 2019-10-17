@@ -1,4 +1,4 @@
-﻿using InteractiveObjectTest;
+﻿using InteractiveObjects;
 using RTPuzzle;
 using System;
 using System.Collections;

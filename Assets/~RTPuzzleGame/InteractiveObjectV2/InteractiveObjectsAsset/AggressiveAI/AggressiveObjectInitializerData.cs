@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using InteractiveObjectTest;
+using InteractiveObjects;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [System.Serializable]
     [SceneHandleDraw]
@@ -16,7 +16,7 @@ namespace InteractiveObjectTest
 
         public override CoreInteractiveObject BuildInteractiveObject(GameObject parent)
         {
-            return new AggressiveAIObject(new InteractiveGameObject(parent), this);
+            return new AggressiveAIObject(InteractiveGameObjectFactory.Build(parent), this);
         }
     }
 }

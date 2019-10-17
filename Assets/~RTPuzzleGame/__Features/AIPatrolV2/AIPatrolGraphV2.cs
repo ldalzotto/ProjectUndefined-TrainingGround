@@ -1,9 +1,8 @@
 ﻿using CoreGame;
-using InteractiveObjectTest;
+using InteractiveObjects;
 using OdinSerializer;
 using System.Collections.Generic;
 using UnityEngine;
-using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace RTPuzzle
 {

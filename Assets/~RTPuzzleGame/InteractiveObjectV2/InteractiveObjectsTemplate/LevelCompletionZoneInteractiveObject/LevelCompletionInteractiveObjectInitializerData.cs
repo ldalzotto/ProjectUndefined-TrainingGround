@@ -1,7 +1,7 @@
 ﻿using OdinSerializer;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
 
     [System.Serializable]
@@ -15,7 +15,7 @@ namespace InteractiveObjectTest
 
         public override CoreInteractiveObject BuildInteractiveObject(GameObject parent)
         {
-            return new LevelCompletionInteractiveObject(this, new InteractiveGameObject(parent));
+            return new LevelCompletionInteractiveObject(this, InteractiveGameObjectFactory.Build(parent));
         }
     }
 

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class LocalCutscenePlayerSystem : AInteractiveObjectSystem
     {

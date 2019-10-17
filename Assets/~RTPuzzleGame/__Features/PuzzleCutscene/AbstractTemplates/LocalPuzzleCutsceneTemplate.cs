@@ -3,7 +3,7 @@ using System.Collections;
 using OdinSerializer;
 using System.Collections.Generic;
 using CoreGame;
-using InteractiveObjectTest;
+using InteractiveObjects;
 
 namespace RTPuzzle
 {

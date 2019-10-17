@@ -4,19 +4,19 @@ namespace CoreGame
 {
     public class CameraMovementManager : GameSingleton<CameraMovementManager>
     {
-        public CameraFollowManagerComponent CameraFollowManagerComponent;
-
         private CameraFollowManager CameraFollowManager;
         private CameraOrientationManager CameraOrientationManager;
         private CameraZoomManager CameraZoomManager;
-        
+
         public void Init()
         {
             var playerPosition = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform;
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG).transform;
 
-            this.CameraFollowManager = new CameraFollowManager(playerPosition, cameraPivotPoint, CameraFollowManagerComponent);
-            this.CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint, CoreGameSingletonInstances.GameInputManager, CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
+            var coreStaticConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration;
+
+            this.CameraFollowManager = new CameraFollowManager(playerPosition, cameraPivotPoint, coreStaticConfiguration.GlobalGameConfiguration.CameraFollowManagerComponent);
+            this.CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint, CoreGameSingletonInstances.GameInputManager, coreStaticConfiguration.CoreInputConfiguration);
             this.CameraZoomManager = new CameraZoomManager(Camera.main, CoreGameSingletonInstances.GameInputManager);
         }
 
@@ -193,7 +193,8 @@ namespace CoreGame
             if (this.TargetSize != this.camera.orthographicSize)
             {
                 this.camera.orthographicSize = Mathf.Lerp(this.camera.orthographicSize, this.TargetSize, d * 4f);
-            } else
+            }
+            else
             {
                 this.camera.orthographicSize = this.TargetSize;
             }

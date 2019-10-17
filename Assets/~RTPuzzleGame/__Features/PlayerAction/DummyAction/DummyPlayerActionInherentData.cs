@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using InteractiveObjectTest;
+using InteractiveObjects;
 
 namespace RTPuzzle
 {

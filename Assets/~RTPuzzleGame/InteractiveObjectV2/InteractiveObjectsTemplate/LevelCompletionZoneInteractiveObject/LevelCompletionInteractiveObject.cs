@@ -1,7 +1,7 @@
 ﻿using RTPuzzle;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class LevelCompletionInteractiveObject : CoreInteractiveObject
     {
@@ -12,7 +12,7 @@ namespace InteractiveObjectTest
         private LevelCompletionZoneSystem LevelCompletionZoneSystem;
 
         public LevelCompletionInteractiveObject(LevelCompletionInteractiveObjectInitializerData LevelCompletionInitializerData,
-            InteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true) : base(interactiveGameObject, IsUpdatedInMainManager)
+            IInteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true) : base(interactiveGameObject, IsUpdatedInMainManager)
         {
             this.LevelCompletionZoneSystem = new LevelCompletionZoneSystem(this, LevelCompletionInitializerData.LevelCompletionZoneSystemDefinition, new InteractiveObjectTagStruct { IsPlayer = 1 },
                 this.OnLevelCompletionTriggerEnterPlayer);

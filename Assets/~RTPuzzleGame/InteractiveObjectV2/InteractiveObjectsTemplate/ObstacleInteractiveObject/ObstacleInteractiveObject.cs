@@ -1,7 +1,7 @@
 ﻿using RTPuzzle;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class ObstacleInteractiveObject : CoreInteractiveObject
     {
@@ -11,7 +11,7 @@ namespace InteractiveObjectTest
         public SquareObstacleSystem squareObstacleSystem;
         public SquareObstacleSystem SquareObstacleSystem { get => squareObstacleSystem; }
 
-        public ObstacleInteractiveObject(InteractiveGameObject interactiveGameObject, ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData) : base(interactiveGameObject)
+        public ObstacleInteractiveObject(IInteractiveGameObject interactiveGameObject, ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData) : base(interactiveGameObject)
         {
             interactiveGameObject.CreateLogicCollider(ObstacleInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.ObstacleCollider = interactiveGameObject.GetLogicColliderAsBox();

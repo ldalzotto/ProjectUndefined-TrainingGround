@@ -1,5 +1,5 @@
 ﻿using Editor_MainGameCreationWizard;
-using InteractiveObjectTest;
+using InteractiveObjects;
 using RTPuzzle;
 using System;
 using System.Collections.Generic;
@@ -86,8 +86,8 @@ public class InteractiveObjectDebugger : EditorWindow
 
     private void OnPlayModeEnter()
     {
-        InteractiveObjectEventsManager.Get().RegisterOnInteractiveObjectCreatedEventListener(this.OnInteractiveObjectCreated);
-        InteractiveObjectEventsManager.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
+        InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectCreatedEventListener(this.OnInteractiveObjectCreated);
+        InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
         RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnInteractiveObjectCreated);
         RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
     }

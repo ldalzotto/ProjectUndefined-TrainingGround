@@ -1,5 +1,5 @@
 using CoreGame;
-using InteractiveObjectTest;
+using InteractiveObjects;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

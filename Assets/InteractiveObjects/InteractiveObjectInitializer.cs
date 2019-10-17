@@ -1,7 +1,7 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [SceneHandleDraw]
     [System.Serializable]
@@ -13,11 +13,7 @@ namespace InteractiveObjectTest
 
         public virtual void Init()
         {
-            //TODO
-            /*
-            PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.InteractiveObjectV2Configuration.ConfigurationInherentData[this.InteractiveObjectV2DefinitionID]
-                .BuildInteractiveObject(this.gameObject);
-                */
+            InteractiveObjectV2ConfigurationGameObject.Get().InteractiveObjectV2Configuration.ConfigurationInherentData[this.InteractiveObjectV2DefinitionID].BuildInteractiveObject(this.gameObject);
         }
 
     }

@@ -1,10 +1,23 @@
 ﻿using CoreGame;
-using InteractiveObjectTest;
+using InteractiveObjects;
 using System;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
-    public class InteractiveObjectEventsManager : GameSingleton<InteractiveObjectEventsManager>
+    public interface IInteractiveObjectEventsManager
+    {
+        void RegisterOnInteractiveObjectCreatedEventListener(Action<CoreInteractiveObject> action);
+        void UpRegisterOnInteractiveObjectCreatedEventListener(Action<CoreInteractiveObject> action);
+        void RegisterOnInteractiveObjectDestroyedEventListener(Action<CoreInteractiveObject> action);
+        void UnRegisterOnInteractiveObjectDestroyedEventListener(Action<CoreInteractiveObject> action);
+    }
+
+    public static class InteractiveObjectEventsManagerSingleton
+    {
+        public static IInteractiveObjectEventsManager Get() { return InteractiveObjectEventsManager.Get(); }
+    }
+
+    internal class InteractiveObjectEventsManager : GameSingleton<InteractiveObjectEventsManager>, IInteractiveObjectEventsManager
     {
         private event Action<CoreInteractiveObject> OnInteractiveObjectCreatedEvent;
         private event Action<CoreInteractiveObject> OnInteractiveObjectDestroyedEvent;

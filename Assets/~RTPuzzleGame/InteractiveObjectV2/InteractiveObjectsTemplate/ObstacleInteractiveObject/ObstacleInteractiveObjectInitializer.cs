@@ -2,7 +2,7 @@
 using System.Collections;
 using RTPuzzle;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [System.Serializable]
     [SceneHandleDraw]
@@ -23,7 +23,7 @@ namespace InteractiveObjectTest
 
         public override void Init()
         {
-            new ObstacleInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData);
+            new ObstacleInteractiveObject(InteractiveGameObjectFactory.Build(this.gameObject), InteractiveObjectInitializerData);
         }
     }
 }

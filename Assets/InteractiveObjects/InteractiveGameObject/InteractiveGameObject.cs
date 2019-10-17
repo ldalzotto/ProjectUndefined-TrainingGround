@@ -3,9 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
-    public class InteractiveGameObject
+    public interface IInteractiveGameObject
+    {
+        GameObject InteractiveGameObjectParent { get; }
+        ExtendedBounds AverageModelBounds { get; }
+        Animator Animator { get; }
+        List<Renderer> Renderers { get; }
+        Collider LogicCollider { get; }
+        Rigidbody LogicRigidBody { get; }
+        Rigidbody PhysicsRigidbody { get; }
+        NavMeshAgent Agent { get; }
+
+        BoxCollider GetLogicColliderAsBox();
+        TransformStruct GetTransform();
+        Matrix4x4 GetLocalToWorld();
+        BoxDefinition GetLogicColliderBoxDefinition();
+
+        void CreateAgent(AIAgentDefinition AIAgentDefinition);
+        void CreateLogicCollider(InteractiveObjectLogicCollider InteractiveObjectLogicCollider);
+    }
+
+    public static class InteractiveGameObjectFactory
+    {
+        public static IInteractiveGameObject Build(GameObject InteractiveGameObjectParent)
+        {
+            return new InteractiveGameObject(InteractiveGameObjectParent);
+        }
+    }
+
+    internal class InteractiveGameObject : IInteractiveGameObject
     {
         public GameObject InteractiveGameObjectParent { get; private set; }
 
@@ -13,14 +41,13 @@ namespace InteractiveObjectTest
         public ExtendedBounds AverageModelBounds { get; private set; }
         public Animator Animator { get; private set; }
         public List<Renderer> Renderers { get; private set; }
-        private Collider LogicCollider { get; set; }
+        public Collider LogicCollider { get; private set; }
         public Rigidbody LogicRigidBody { get; private set; }
-        
+
         public Rigidbody PhysicsRigidbody { get; private set; }
         public NavMeshAgent Agent { get; private set; }
         #endregion
-
-        public Collider GetLogicCollider() { return this.LogicCollider; }
+        
         public BoxCollider GetLogicColliderAsBox() { return (BoxCollider)this.LogicCollider; }
 
         public InteractiveGameObject(GameObject InteractiveGameObjectParent)
@@ -102,21 +129,6 @@ namespace InteractiveObjectTest
         public BoxDefinition GetLogicColliderBoxDefinition()
         {
             return new BoxDefinition(this.GetLogicColliderAsBox());
-        }
-
-        public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)
-        {
-            this.InteractiveGameObjectParent.transform.localScale = Vector3.one;
-            this.InteractiveGameObjectParent.FindOneLevelDownChilds().ForEach(child => child.transform.ResetScale());
-
-            this.InteractiveGameObjectParent.transform.localPosition = Vector3.zero;
-            this.InteractiveGameObjectParent.transform.localRotation = Quaternion.identity;
-            var animatorsToDestroy = InteractiveGameObjectParent.transform.GetComponentsInCurrentAndChild<Animator>();
-            if (animatorsToDestroy != null) { foreach (var animatorToDestroy in animatorsToDestroy) { MonoBehaviour.Destroy(animatorToDestroy); } }
-            var particleSystemsToDestroy = InteractiveGameObjectParent.transform.GetComponentsInCurrentAndChild<ParticleSystem>();
-            if (particleSystemsToDestroy != null) { foreach (var particleSystemToDestroy in particleSystemsToDestroy) { MonoBehaviour.Destroy(particleSystemToDestroy); } }
-            var allMeshRenderes = InteractiveGameObjectParent.transform.GetComponentsInCurrentAndChild<MeshRenderer>();
-            if (allMeshRenderes != null) { foreach (var meshRenderer in allMeshRenderes) { meshRenderer.materials = new Material[1] { CoreMaterialConfiguration.UnlitVertexColor }; } }
         }
     }
 }

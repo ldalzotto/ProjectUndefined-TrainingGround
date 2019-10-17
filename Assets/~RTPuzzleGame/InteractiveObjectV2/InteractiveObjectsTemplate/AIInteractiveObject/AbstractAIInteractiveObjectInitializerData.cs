@@ -1,6 +1,6 @@
 ﻿using OdinSerializer;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [System.Serializable]
     [SceneHandleDraw]

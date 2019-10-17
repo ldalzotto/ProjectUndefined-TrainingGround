@@ -1,16 +1,15 @@
 ﻿using CoreGame;
 using System;
-using static InteractiveObjectTest.AIMovementDefinitions;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
-    public abstract class CoreInteractiveObject
+    public abstract class CoreInteractiveObject 
     {
         #region External Dependencies
         private InteractiveObjectEventsManager InteractiveObjectEventsManager = InteractiveObjectEventsManager.Get();
         #endregion
 
-        public InteractiveGameObject InteractiveGameObject { get; protected set; }
+        public IInteractiveGameObject InteractiveGameObject { get; protected set; }
 
         [VE_Nested]
         protected InteractiveObjectTag interactiveObjectTag;
@@ -25,7 +24,7 @@ namespace InteractiveObjectTest
         [VE_Ignore]
         public bool IsUpdatedInMainManager;
 
-        public CoreInteractiveObject(InteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
+        public CoreInteractiveObject(IInteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
         {
             this.isAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;

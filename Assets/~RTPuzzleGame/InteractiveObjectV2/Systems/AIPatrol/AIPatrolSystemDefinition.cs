@@ -3,7 +3,7 @@ using System.Collections;
 using OdinSerializer;
 using RTPuzzle;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     [System.Serializable]
     public class AIPatrolSystemDefinition : SerializedScriptableObject

@@ -1,7 +1,7 @@
 ﻿using CoreGame;
 using RTPuzzle;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class AIPatrolSystem : AInteractiveObjectSystem
     {

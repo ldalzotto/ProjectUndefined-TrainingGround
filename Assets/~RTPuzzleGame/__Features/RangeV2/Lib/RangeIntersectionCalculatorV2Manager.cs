@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using CoreGame;
-using InteractiveObjectTest;
+using InteractiveObjects;
 
 #if UNITY_EDITOR
 using UnityEditor;

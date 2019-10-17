@@ -4,7 +4,7 @@ using RTPuzzle;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InteractiveObjectTest
+namespace InteractiveObjects
 {
     public class LineVisualFeedbackSystem
     {
@@ -14,9 +14,9 @@ namespace InteractiveObjectTest
         private List<ILinePositioning> linePositionings = new List<ILinePositioning>();
         private List<DottedLine> lines = new List<DottedLine>();
 
-        private InteractiveGameObject InteractiveGameObjectRef;
+        private IInteractiveGameObject InteractiveGameObjectRef;
 
-        public LineVisualFeedbackSystem(InteractiveGameObject InteractiveGameObject)
+        public LineVisualFeedbackSystem(IInteractiveGameObject InteractiveGameObject)
         {
             this.InteractiveGameObjectRef = InteractiveGameObject;
             //position calculation
