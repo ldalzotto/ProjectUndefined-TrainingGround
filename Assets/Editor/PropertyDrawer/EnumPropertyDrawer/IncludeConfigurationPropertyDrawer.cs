@@ -25,7 +25,7 @@ public class IncludeConfigurationPropertyDrawer : PropertyDrawer
             {
                 var configuration = (IConfigurationSerialization)AssetFinder.SafeAssetFind("t:" + IncludeConfigurationEnum.ConfigurationType.Name)[0];
                 var so = configuration.GetEntry(targetEnum);
-                this.CachedConfigurationEditor = Editor.CreateEditor(so);
+                this.CachedConfigurationEditor = DynamicEditorCreation.Get().CreateEditor(so);
                 this.FoldableArea = new FoldableArea(false, so.name, false);
             }
 

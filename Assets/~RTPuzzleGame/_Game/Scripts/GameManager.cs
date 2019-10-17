@@ -13,8 +13,6 @@ namespace RTPuzzle
         private AInventoryMenu InventoryMenu;
         #endregion
         
-        private CooldownFeedManager CooldownFeedManager;
-        private CameraMovementManager CameraMovementManager;
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private TutorialManager TutorialManager;
         private PuzzleDiscussionManager PuzzleDiscussionManager;
@@ -41,10 +39,7 @@ namespace RTPuzzle
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
-
             
-            CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
-            CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
             PuzzleDiscussionManager = PuzzleGameSingletonInstances.PuzzleDiscussionManager;
@@ -58,11 +53,10 @@ namespace RTPuzzle
             GroundEffectsManagerV2.Get().Init(LevelManager.GetCurrentLevel());
             InteractiveObjectV2Manager.Get().Init();
 
-            CameraMovementManager.Init();
+            CameraMovementManager.Get().Init();
 
             TimeFlowBarManager.Get().Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
             TimeFlowManager.Get().Init(TimeFlowBarManager.Get());
-            CooldownFeedManager.Init();
             TimeFlowPlayPauseManager.Get().Init();
             CircleFillBarRendererManager.Get().Init();
             TutorialManager.Init();
@@ -93,7 +87,7 @@ namespace RTPuzzle
                     PlayerActionManager.Get().Tick(d);
                     PlayerInteractiveObjectManager.Get().TickAlways(d);
 
-                    CameraMovementManager.Tick(d);
+                    CameraMovementManager.Get().Tick(d);
 
                     ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
                     RangeIntersectionCalculationManagerV2.Get().Tick(d);
@@ -102,7 +96,6 @@ namespace RTPuzzle
 
                     TimeFlowManager.Get().Tick(d);
                     GameOverManager.Get().Tick(d);
-                    CooldownFeedManager.Tick(d);
                     TimeFlowPlayPauseManager.Get().Tick(TimeFlowManager.Get().IsAbleToFlowTime());
 
                     InteractiveObjectV2Manager.Get().TickAlways(d);

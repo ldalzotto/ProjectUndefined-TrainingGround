@@ -53,7 +53,7 @@ namespace Editor_GameDesigner
             var so = scriptableObjectResolver.Invoke(npcAIManager);
             if (so != null)
             {
-                this.cachedEditor = Editor.CreateEditor(so);
+                this.cachedEditor = DynamicEditorCreation.Get().CreateEditor(so);
             }
         }
 

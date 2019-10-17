@@ -13,7 +13,7 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            this.CameraMovementManager = CameraMovementManager.Get();
             this.PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
         }
 

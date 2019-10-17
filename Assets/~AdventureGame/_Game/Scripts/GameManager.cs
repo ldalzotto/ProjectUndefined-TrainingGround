@@ -15,7 +15,6 @@ namespace AdventureGame
         private DiscussionManager DiscussionManager;
         private PointOfInterestManager PointOfInterestManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
-        private CameraMovementManager CameraMovementManager;
         private AdventureTutorialEventSender AdventureTutorialEventSender;
         private TutorialManager TutorialManager;
 
@@ -58,12 +57,11 @@ namespace AdventureGame
             DiscussionManager = FindObjectOfType<DiscussionManager>();
             PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
             CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
-            CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             AdventureTutorialEventSender = AdventureGameSingletonInstances.AdventureTutorialEventSender;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
 
             //initialization
-            CameraMovementManager.Init();
+            CameraMovementManager.Get().Init();
             AdventureGameSingletonInstances.AdventureEventsManager.Init();
             AdventureGameSingletonInstances.CutscenePositionsManager.Init();
             CutscenePlayerManagerV2.Init();
@@ -104,7 +102,7 @@ namespace AdventureGame
                 PlayerPointOfInterestSelectionManager.Get().Tick(d);
                 PlayerManager.Tick(d);
                 NPCManager.Tick(d);
-                CameraMovementManager.Tick(d);
+                CameraMovementManager.Get().Tick(d);
                 DiscussionManager.Tick(d);
                 InventoryManager.Tick(d);
 

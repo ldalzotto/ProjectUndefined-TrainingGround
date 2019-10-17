@@ -17,6 +17,13 @@ public class AIPatrolGraphV2CustomEditor : Editor
 
     private void OnDisable()
     {
+        Debug.Log("AIPatrolGraphV2CustomEditor : OnDisable");
+        SceneView.duringSceneGui -= this.SceneTick;
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("AIPatrolGraphV2CustomEditor : OnDestroy");
         SceneView.duringSceneGui -= this.SceneTick;
     }
 

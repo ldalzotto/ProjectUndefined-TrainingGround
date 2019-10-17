@@ -38,7 +38,7 @@ namespace Editor_GameDesigner
                     {
                         if (!cachedEditors.ContainsKey(obj))
                         {
-                            cachedEditors[obj] = Editor.CreateEditor(obj);
+                            cachedEditors[obj] = DynamicEditorCreation.Get().CreateEditor(obj);
                         }
                         cachedEditors[obj].OnInspectorGUI();
                         EditorGUILayout.Separator();

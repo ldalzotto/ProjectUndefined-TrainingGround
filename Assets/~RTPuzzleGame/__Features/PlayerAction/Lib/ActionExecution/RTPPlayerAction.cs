@@ -39,8 +39,7 @@ namespace RTPuzzle
 
         public virtual void FirstExecution()
         {
-            var playerActionEventManager = PlayerActionEventManager.Get();
-            this.CooldownEventTrackerManager = new CooldownEventTrackerManager(playerActionEventManager);
+            this.CooldownEventTrackerManager = new CooldownEventTrackerManager();
         }
 
         public void CoolDownTick(float d)
@@ -101,11 +100,9 @@ namespace RTPuzzle
     #region Cooldown Tracking
     class CooldownEventTrackerManager
     {
-        private PlayerActionEventManager PlayerActionEventManager;
 
-        public CooldownEventTrackerManager(PlayerActionEventManager playerActionEventManager)
+        public CooldownEventTrackerManager()
         {
-            PlayerActionEventManager = playerActionEventManager;
             this.endOfCooldownEventEmitted = false;
         }
 
@@ -116,7 +113,6 @@ namespace RTPuzzle
             if (!this.endOfCooldownEventEmitted)
             {
                 this.endOfCooldownEventEmitted = true;
-                PlayerActionEventManager.OnCooldownEnded(involvedAction);
             }
         }
         public void ResetCoolDown()

@@ -19,8 +19,20 @@ public class InlinePropertyDrawer : PropertyDrawer
 
             EditorGUI.BeginProperty(position, label, property);
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
-            this.folded = EditorGUILayout.Foldout(this.folded, property.name, true);
 
+            EditorGUI.BeginChangeCheck();
+            this.folded = EditorGUILayout.Foldout(this.folded, property.name, true);
+            if (EditorGUI.EndChangeCheck())
+            {
+                if (!this.folded)
+                {
+                    if (this.inlineEditor != null)
+                    {
+                        Editor.DestroyImmediate(inlineEditor);
+                        this.inlineEditor = null;
+                    }
+                }
+            }
             if (this.folded)
             {
                 EditorGUI.indentLevel += 1;
@@ -31,7 +43,7 @@ public class InlinePropertyDrawer : PropertyDrawer
                 {
                     if (this.inlineEditor == null)
                     {
-                        inlineEditor = Editor.CreateEditor(property.objectReferenceValue);
+                        inlineEditor = DynamicEditorCreation.Get().CreateEditor(property.objectReferenceValue);
                     }
                     if (this.inlineEditor != null)
                     {
@@ -52,7 +64,8 @@ public class InlinePropertyDrawer : PropertyDrawer
                                 if (fieldType.IsAbstract || fieldType.IsInterface)
                                 {
                                     //Open popup to select implementation
-                                    ClassSelectionEditorWindow.Show(Event.current.mousePosition, fieldType, (Type selectedType) => {
+                                    ClassSelectionEditorWindow.Show(Event.current.mousePosition, fieldType, (Type selectedType) =>
+                                    {
                                         var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject)property.serializedObject.targetObject, selectedType.Name, property.name);
                                         property.objectReferenceValue = (UnityEngine.Object)createdAsset;
                                     });
@@ -177,7 +190,7 @@ class ClassSelectionEditorWindow : EditorWindow
         private Action<Type> OnSelectionLineClicked;
         private Type associatedType;
         public SelectionLine(VisualElement parent, string label,
-            Type associatedType, Action<Type> OnSelectionLineClicked) :base(label)
+            Type associatedType, Action<Type> OnSelectionLineClicked) : base(label)
         {
             parent.Add(this);
             this.associatedType = associatedType;

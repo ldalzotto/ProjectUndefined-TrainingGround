@@ -98,7 +98,7 @@ public class GameConfigurationRefresher : EditorWindow
                 EditorGUI.BeginDisabledGroup(true);
                 EditorGUILayout.ObjectField(this.gameConfiguration, typeof(GameConfiguration), false);
                 EditorGUILayout.Separator();
-                Editor.CreateEditor(this.gameConfiguration).OnInspectorGUI();
+                DynamicEditorCreation.Get().CreateEditor(this.gameConfiguration).OnInspectorGUI();
                 EditorGUI.EndDisabledGroup();
             }
         }

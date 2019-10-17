@@ -2,14 +2,14 @@
 
 namespace CoreGame
 {
-    public class CameraMovementManager : MonoBehaviour
+    public class CameraMovementManager : GameSingleton<CameraMovementManager>
     {
         public CameraFollowManagerComponent CameraFollowManagerComponent;
 
         private CameraFollowManager CameraFollowManager;
         private CameraOrientationManager CameraOrientationManager;
         private CameraZoomManager CameraZoomManager;
-
+        
         public void Init()
         {
             var playerPosition = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform;

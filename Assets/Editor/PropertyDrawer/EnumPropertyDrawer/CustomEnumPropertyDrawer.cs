@@ -93,7 +93,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                         configuration.GetEntryTry(targetEnum, out ScriptableObject so);
                         if (so != null)
                         {
-                            this.CachedConfigurationEditor = Editor.CreateEditor(so);
+                            this.CachedConfigurationEditor = DynamicEditorCreation.Get().CreateEditor(so);
                             this.ConfigurationFoldableArea = new FoldableArea(false, so.name, false);
                         }
                         else

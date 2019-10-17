@@ -122,6 +122,7 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\GenericConfigurationCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\GenericConfiugrationCreation.cs" />
+    <Compile Include="Assets\Editor\DynamicEditorCreation\DynamicEditorCreation.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
     <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\CutsceneNodeEditor.cs" />

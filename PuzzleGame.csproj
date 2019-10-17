@@ -66,8 +66,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIWarpActionV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\Interfaces\IActionAbortedOnDestinationReached.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolGraphV2.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\DiscussionTree\PuzzleDiscussionTreeNodes.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\ExposedInterfaces\IPuzzleDiscussionManagerEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Lib\PuzzleDiscussionWindowManager.cs" />
@@ -102,7 +100,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\DummyAction\DummyPlayerActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Lib\ActionExecution\RTPPlayerAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />

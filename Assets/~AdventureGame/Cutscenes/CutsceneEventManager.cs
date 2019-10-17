@@ -18,7 +18,7 @@ namespace AdventureGame
         {
             this.InventoryEventManager = AdventureGameSingletonInstances.InventoryEventManager;
             this.ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
-            this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            this.CameraMovementManager = CameraMovementManager.Get();
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
             this.CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
         }

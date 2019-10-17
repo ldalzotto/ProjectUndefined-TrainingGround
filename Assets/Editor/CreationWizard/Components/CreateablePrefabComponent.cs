@@ -61,7 +61,7 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
             this.InstanciateInEditor(editorProfile);
             if (this.lastFrameObject == null || this.lastFrameObject != this.createdPrefab)
             {
-                this.prefabObjectEditor = Editor.CreateEditor(this.createdPrefab);
+                this.prefabObjectEditor = DynamicEditorCreation.Get().CreateEditor(this.createdPrefab);
             }
             if (this.prefabObjectEditor != null)
             {

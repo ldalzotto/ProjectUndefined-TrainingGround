@@ -46,7 +46,7 @@ namespace AdventureGame
             this.AdventurePrefabConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventurePrefabConfiguration;
             this.CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
             this.CutsceneGlobalController = AdventureGameSingletonInstances.CutsceneGlobalController;
-            this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            this.CameraMovementManager = CameraMovementManager.Get();
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
         }
 

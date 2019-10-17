@@ -112,7 +112,7 @@ public class ObjectDefinitionCustomEditor : Editor
                         }
                         else
                         {
-                            if (!this.ObjectDefinitionCutstomEditorProfile.cachedEditors.ContainsKey(rangeDefinitionModule)) { this.ObjectDefinitionCutstomEditorProfile.cachedEditors[rangeDefinitionModule] = Editor.CreateEditor(RangeDefinitionTarget.RangeDefinitionModules[rangeDefinitionModule]); }
+                            if (!this.ObjectDefinitionCutstomEditorProfile.cachedEditors.ContainsKey(rangeDefinitionModule)) { this.ObjectDefinitionCutstomEditorProfile.cachedEditors[rangeDefinitionModule] = DynamicEditorCreation.Get().CreateEditor(RangeDefinitionTarget.RangeDefinitionModules[rangeDefinitionModule]); }
                             this.ObjectDefinitionCutstomEditorProfile.cachedEditors[rangeDefinitionModule].OnInspectorGUI();
                         }
                     }

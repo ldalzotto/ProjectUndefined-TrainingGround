@@ -12,7 +12,6 @@ namespace RTPuzzle
         private TimelinesEventManager TimelinesEventManager;
         private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent = DottedLineRendererManager.Get();
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
-        private PlayerActionEventManager PlayerActionEventManager = PlayerActionEventManager.Get();
 
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;

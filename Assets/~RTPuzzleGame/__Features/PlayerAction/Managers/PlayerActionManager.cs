@@ -15,7 +15,6 @@ namespace RTPuzzle
     public interface IPlayerActionManagerEvent : SelectableObjectSelectionManagerEventListener<ISelectableModule>
     {
         void ExecuteAction(RTPPlayerAction rTPPlayerAction);
-        void StopAction();
         void OnSelectionWheelAwake();
         void OnSelectionWheelSleep(bool destroyImmediate);
         void IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction RTPPlayerAction, int deltaRemaining);
@@ -29,6 +28,10 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
         #endregion
 
+        #region Internal Events
+        private event Action OnPlayerActionFinishedEvent;
+        #endregion
+
         private PlayerActionExecutionManager PlayerActionExecutionManager;
         private PlayerActionsAvailableManager PlayerActionsAvailableManager;
         private PLayerSelectionWheelManager PLayerSelectionWheelManager;
@@ -39,14 +42,13 @@ namespace RTPuzzle
         public PlayerActionManager()
         {
             #region External Dependencies
-            var playerActionEventManager = PlayerActionEventManager.Get();
             var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
             #endregion
 
             SelectionWheel = PuzzleGameSingletonInstances.PuzzleSelectionWheel;
 
-            PlayerActionExecutionManager = new PlayerActionExecutionManager(playerActionEventManager);
+            PlayerActionExecutionManager = new PlayerActionExecutionManager(() => this.OnPlayerActionFinishedEvent.Invoke());
             PlayerActionsAvailableManager = new PlayerActionsAvailableManager();
             PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel, puzzleGameConfigurationManager);
             PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(
@@ -54,6 +56,9 @@ namespace RTPuzzle
                 SelectionWheel, () => { return PlayerInteractiveObjectManager.Get().GetPlayerGameObject().InteractiveGameObjectParent.transform; }
             , Camera.main);
 
+            #region Event Register
+            this.OnPlayerActionFinishedEvent += this.OnPlayerActionFinished;
+            #endregion
         }
 
         public void Tick(float d)
@@ -85,13 +90,12 @@ namespace RTPuzzle
         {
             PlayerActionExecutionManager.GUITick();
         }
-
-        #region IPlayerActionManagerEvent
+        
         public void ExecuteAction(RTPPlayerAction rTPPlayerAction)
         {
             PlayerActionExecutionManager.ExecuteAction(rTPPlayerAction);
         }
-        public void StopAction()
+        private void OnPlayerActionFinished()
         {
             PlayerActionExecutionManager.StopAction();
         }
@@ -150,7 +154,6 @@ namespace RTPuzzle
         {
             this.RemoveActionToAvailable(SelectableObject.GetAssociatedPlayerAction());
         }
-        #endregion
 
         #region Logical Conditions
         public bool IsActionExecuting()
@@ -187,12 +190,11 @@ namespace RTPuzzle
     #region Action execution
     class PlayerActionExecutionManager
     {
-
-        private PlayerActionEventManager PlayerActionEventManager;
-
-        public PlayerActionExecutionManager(PlayerActionEventManager PlayerActionEventManager)
+        private Action TriggerOnPlayerActionFinichedEventAction;
+        
+        public PlayerActionExecutionManager(Action TriggerOnPlayerActionFinichedEventAction)
         {
-            this.PlayerActionEventManager = PlayerActionEventManager;
+            this.TriggerOnPlayerActionFinichedEventAction = TriggerOnPlayerActionFinichedEventAction;
         }
 
         private RTPPlayerAction currentAction;
@@ -207,7 +209,7 @@ namespace RTPuzzle
             {
                 if (currentAction.FinishedCondition())
                 {
-                    PlayerActionEventManager.OnRTPPlayerActionStop(currentAction);
+                    this.TriggerOnPlayerActionFinichedEventAction.Invoke();
                 }
                 else
                 {

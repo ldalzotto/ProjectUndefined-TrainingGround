@@ -71,7 +71,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     {
         if (this.lastFrameObject == null || this.lastFrameObject != obj)
         {
-            this.scriptableObjectEditor = Editor.CreateEditor(obj);
+            this.scriptableObjectEditor = DynamicEditorCreation.Get().CreateEditor(obj);
         }
         this.lastFrameObject = obj;
         if (this.scriptableObjectEditor != null)

@@ -61,7 +61,7 @@ public class PrefabEditorInjection
                     }
                     else
                     {
-                        Editor.CreateEditor(this.instanciatedPrefab.GetComponent<T>()).OnInspectorGUI();
+                        DynamicEditorCreation.Get().CreateEditor(this.instanciatedPrefab.GetComponent<T>()).OnInspectorGUI();
                     }
                     if (EditorGUI.EndChangeCheck()) // We simulate the "auto-save" feature of the new prefab pipeline
                     {
@@ -72,7 +72,7 @@ public class PrefabEditorInjection
             }
             else //fallback to old workflow method
             {
-                Editor.CreateEditor(this.selectedPrefab.GetComponent<Collider>()).OnInspectorGUI();
+                DynamicEditorCreation.Get().CreateEditor(this.selectedPrefab.GetComponent<Collider>()).OnInspectorGUI();
             }
         }
     }

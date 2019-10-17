@@ -134,7 +134,7 @@ namespace ConfigurationEditor
                             {
                                 if (!this.cachedEditors.ContainsKey(dictionaryEditorEntry.Key))
                                 {
-                                    this.cachedEditors.Add(dictionaryEditorEntry.Key, Editor.CreateEditor(dictionaryEditorEntry.Value));
+                                    this.cachedEditors.Add(dictionaryEditorEntry.Key, DynamicEditorCreation.Get().CreateEditor(dictionaryEditorEntry.Value));
                                 }
                                 
                                 this.cachedEditors[dictionaryEditorEntry.Key].OnInspectorGUI();
