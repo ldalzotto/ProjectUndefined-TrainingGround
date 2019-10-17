@@ -6,9 +6,9 @@
         "PuzzleGame",
         "Editor_Common",
         "OdinSerializer",
-        "GameConfigurationID"
+        "GameConfigurationID",
+        "InteractiveObjects"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],

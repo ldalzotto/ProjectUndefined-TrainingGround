@@ -1,5 +1,4 @@
 ﻿using GameConfigurationID;
-using RTPuzzle;
 using UnityEngine;
 
 namespace InteractiveObjectTest
@@ -11,11 +10,14 @@ namespace InteractiveObjectTest
         [CustomEnum(ConfigurationType = typeof(InteractiveObjectV2Configuration))]
         [DrawConfiguration(ConfigurationType = typeof(InteractiveObjectV2Configuration))]
         public InteractiveObjectV2DefinitionID InteractiveObjectV2DefinitionID;
-        
+
         public virtual void Init()
         {
+            //TODO
+            /*
             PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.InteractiveObjectV2Configuration.ConfigurationInherentData[this.InteractiveObjectV2DefinitionID]
                 .BuildInteractiveObject(this.gameObject);
+                */
         }
 
     }

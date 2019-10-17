@@ -50,6 +50,8 @@ namespace GameConfigurationID {
     
     ADVENTURE_PlayerSelectionTest = 16,
 
-    StartMenu = 17
+    StartMenu = 17,
+
+    ADVENTURE_TEST = 18
   }
 }

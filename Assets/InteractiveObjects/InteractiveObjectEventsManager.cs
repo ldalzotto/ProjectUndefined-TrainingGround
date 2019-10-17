@@ -2,7 +2,7 @@
 using InteractiveObjectTest;
 using System;
 
-namespace RTPuzzle
+namespace InteractiveObjectTest
 {
     public class InteractiveObjectEventsManager : GameSingleton<InteractiveObjectEventsManager>
     {

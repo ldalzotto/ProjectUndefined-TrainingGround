@@ -84,11 +84,4 @@ namespace RTPuzzle
         IntersectedNothing = 2,
         Nothing = 3
     }
-
-    public interface IRangeIntersectionChangeEventListener
-    {
-        void HasJustIntersected(CollisionType CollisionType);
-        void HasJustNotInteresected(CollisionType CollisionType);
-    }
-
 }

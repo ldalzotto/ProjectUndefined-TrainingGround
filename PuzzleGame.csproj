@@ -147,15 +147,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzlePrefabConfiguration\PuzzlePrefabConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\InteractiveObjectEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Configuration\AbstractInteractiveObjectV2Definition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Configuration\InteractiveObjectV2Configuration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject\InteractiveGameObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject\InteractiveGameObjectLogicColliderTag.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveAIObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveObjectInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTest.cs" />
@@ -779,6 +772,10 @@
     <ProjectReference Include="GameConfigurationID.csproj">
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>
+    </ProjectReference>
+    <ProjectReference Include="InteractiveObjects.csproj">
+      <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
+      <Name>InteractiveObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

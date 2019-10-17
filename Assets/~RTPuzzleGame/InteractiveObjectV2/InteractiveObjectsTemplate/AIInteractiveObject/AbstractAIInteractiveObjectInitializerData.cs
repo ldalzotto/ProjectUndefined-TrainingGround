@@ -14,14 +14,4 @@ namespace InteractiveObjectTest
         [DrawNested]
         public InteractiveObjectLogicCollider InteractiveObjectLogicCollider;
     }
-
-    [System.Serializable]
-    [SceneHandleDraw]
-    public class AIAgentDefinition
-    {
-        [WireCircle(R = 0f, G = 1f, B = 0f)]
-        public float AgentStoppingDistance = 0.5f;
-        [WireDirectionalLineAttribute(R = 0f, G = 1f, B = 0f, dY = 1f)]
-        public float AgentHeight = 2f;
-    }
 }

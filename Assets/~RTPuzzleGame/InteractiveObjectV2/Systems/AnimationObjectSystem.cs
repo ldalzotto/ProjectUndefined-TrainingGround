@@ -27,9 +27,4 @@ namespace InteractiveObjectTest
 
         public void SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent) { this.UnscaledSpeedMagnitude = AnimationObjectSetUnscaledSpeedMagnitudeEvent.UnscaledSpeedMagnitude; }
     }
-
-    public struct AnimationObjectSetUnscaledSpeedMagnitudeEvent
-    {
-        public float UnscaledSpeedMagnitude;
-    }
 }
