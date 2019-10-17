@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -66,15 +67,15 @@
     <Compile Include="Assets\InteractiveObjects\Configuration\AbstractInteractiveObjectV2Definition.cs" />
     <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2Configuration.cs" />
     <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2ConfigurationGameObject.cs" />
-      <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2DefinitionID.cs"/>
+    <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2DefinitionID.cs"/>
+    <Compile Include="Assets\InteractiveObjects\Events\InteractiveObjectEventsManager.cs"/>
     <Compile Include="Assets\InteractiveObjects\InteractiveGameObject\InteractiveGameObject.cs" />
     <Compile Include="Assets\InteractiveObjects\InteractiveObject.cs" />
-    <Compile Include="Assets\InteractiveObjects\InteractiveObjectEventsManager.cs" />
     <Compile Include="Assets\InteractiveObjects\InteractiveObjectInitializer.cs" />
-      <Compile Include="Assets\InteractiveObjects\Managers\InteractiveObjectV2Manager.cs"/>
-      <Compile Include="Assets\InteractiveObjects\Systems\_Abstract\AInteractiveObjectSystem.cs"/>
-      <Compile Include="Assets\InteractiveObjects\Systems\AnimationObjectSystem.cs"/>
-      <Compile Include="Assets\InteractiveObjects\Systems\LocalCutscenePlayerSystem.cs"/>
+    <Compile Include="Assets\InteractiveObjects\Managers\InteractiveObjectV2Manager.cs"/>
+    <Compile Include="Assets\InteractiveObjects\Systems\_Abstract\AInteractiveObjectSystem.cs"/>
+    <Compile Include="Assets\InteractiveObjects\Systems\AnimationObjectSystem.cs"/>
+    <Compile Include="Assets\InteractiveObjects\Systems\LocalCutscenePlayerSystem.cs"/>
     <None Include="Assets\InteractiveObjects\InteractiveObjects.asmdef" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
