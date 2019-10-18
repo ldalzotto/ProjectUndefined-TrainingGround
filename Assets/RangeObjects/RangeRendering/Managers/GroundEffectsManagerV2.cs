@@ -13,7 +13,11 @@ namespace RangeObjects
     {
         private List<GroundEffectType> AffectedGroundEffectsType;
 
-        private Material MasterRangeMaterial;
+        #region External Dependencies
+
+        private ObstaclesListenerManager ObstaclesListenerManager = ObstaclesListenerManager.Get();
+
+        #endregion
 
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>()
         {
@@ -45,12 +49,6 @@ namespace RangeObjects
 
             #endregion
 
-            #region External Dependencies
-
-            CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
-
-            #endregion
-
             #region Event Registering
 
             RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(OnRangeObjectCreated);
@@ -60,6 +58,7 @@ namespace RangeObjects
 
             RangeTypeConfiguration = RangeTypeConfigurationGameObject.Get().RangeRenderingConfiguration.RangeTypeConfiguration;
             MasterRangeMaterial = new Material(RangeTypeConfigurationGameObject.Get().RangeRenderingConfiguration.MasterRangeShader);
+            RangeRenderingConfiguration = RangeTypeConfigurationGameObject.Get().RangeRenderingConfiguration;
 
             RangeDrawCommand = new CommandBuffer();
             RangeDrawCommand.name = GetType().Name + "." + nameof(RangeDrawCommand);
@@ -81,20 +80,27 @@ namespace RangeObjects
 
         public void Tick(float d)
         {
-            Profiler.BeginSample("GroundEffectsManagerV2Tick");
-            ForEachRangeRenderData((rangeRenderData) => { rangeRenderData.Tick(d, AffectedGroundEffectsType); });
+            if (RangeRenderingConfiguration.IsRangeRenderingEnabled)
+            {
+                Profiler.BeginSample("GroundEffectsManagerV2Tick");
+                ForEachRangeRenderData((rangeRenderData) => { rangeRenderData.Tick(d, AffectedGroundEffectsType); });
 
-            #region Buffer data set
+                #region Buffer data set
 
-            OnCommandBufferUpdate();
+                OnCommandBufferUpdate();
 
-            #endregion
+                #endregion
 
-            Profiler.EndSample();
+                Profiler.EndSample();
+            }
+            else
+            {
+                RangeDrawCommand.Clear();
+            }
         }
 
 
-        public void ForEachRangeRenderData(Action<AbstractRangeRenderData> action)
+        private void ForEachRangeRenderData(Action<AbstractRangeRenderData> action)
         {
             if (rangeRenderDatas != null)
                 foreach (var rangeRenderDatasByCollider in rangeRenderDatas.Values)
@@ -103,7 +109,7 @@ namespace RangeObjects
                         action.Invoke(rangeRenderData);
         }
 
-        public void OnCommandBufferUpdate()
+        private void OnCommandBufferUpdate()
         {
             RangeDrawCommand.Clear();
             RangeDrawCommand.BeginSample("rangeDrawCommand");
@@ -111,15 +117,13 @@ namespace RangeObjects
             RangeDrawCommand.EndSample("rangeDrawCommand");
         }
 
-        #region External Dependencies
+        #region Configurations
 
         private RangeTypeConfiguration RangeTypeConfiguration;
-        private CoreMaterialConfiguration CoreMaterialConfiguration;
-
-        private ObstaclesListenerManager ObstaclesListenerManager = ObstaclesListenerManager.Get();
+        private Material MasterRangeMaterial;
+        private RangeRenderingConfiguration RangeRenderingConfiguration;
 
         #endregion
-
 
         #region External events
 
