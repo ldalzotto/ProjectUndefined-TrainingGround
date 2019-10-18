@@ -62,7 +62,7 @@
      <Compile Include="Assets\Obstacle\Managers\ObstacleInteractiveObjectManager.cs" />
      <Compile Include="Assets\Obstacle\Managers\ObstacleOcclusionCalculationManagerV2.cs" />
      <Compile Include="Assets\Obstacle\Managers\ObstaclesListenerManager.cs" />
-      <Compile Include="Assets\Obstacle\RangeObject\Systems\ObstacleListenerSystem.cs"/>
+   <Compile Include="Assets\Obstacle\RangeObject\Systems\ObstacleListenerSystem.cs"/>
      <None Include="Assets\Obstacle\Obstacle.asmdef" />
  <Reference Include="Unity.Burst">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
