@@ -9,18 +9,6 @@ namespace Obstacle
     {
         private List<ObstacleInteractiveObject> nearSquareObstacles;
 
-        #region External Dependencies
-
-        private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
-
-        #endregion
-
-        #region External Dependencies
-
-        private ObstaclesListenerManager ObstaclesListenerManager;
-
-        #endregion
-
         public ObstacleListenerSystem(Func<TransformStruct> RangeTransformProvider)
         {
             this.AssociatedRangeTransformProvider = RangeTransformProvider;
@@ -74,5 +62,12 @@ namespace Obstacle
         {
             nearSquareObstacles.Remove(ObstacleInteractiveObject);
         }
+
+        #region External Dependencies
+
+        private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
+        private ObstaclesListenerManager ObstaclesListenerManager;
+
+        #endregion
     }
 }
