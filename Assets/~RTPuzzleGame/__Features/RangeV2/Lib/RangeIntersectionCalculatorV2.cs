@@ -1,28 +1,15 @@
-﻿using CoreGame;
+﻿using System.Collections.Generic;
+using CoreGame;
 using InteractiveObjects;
-using System.Collections.Generic;
 
 namespace RTPuzzle
 {
-
-
     public class RangeIntersectionCalculatorV2
     {
-        public int RangeIntersectionCalculatorV2UniqueID { get; private set; }
-
-        #region External Dependencies
-        private RangeIntersectionCalculatorV2Manager RangeIntersectionCalculatorV2Manager = RangeIntersectionCalculatorV2Manager.Get();
-        private RangeIntersectionCalculationManagerV2 RangeIntersectionCalculationManagerV2 = RangeIntersectionCalculationManagerV2.Get();
-        #endregion
-
         private RangeObjectV2 AssociatedRangeObject;
-        public CoreInteractiveObject TrackedInteractiveObject { get; private set; }
-        public bool IsInside { get; private set; }
-
-        private BlittableTransformChangeListenerManager sightModuleMovementChangeTracker;
         private BlittableTransformChangeListenerManager inRangeCollidersMovementChangeTracker;
 
-        public InterserctionOperationType LastInterserctionOperationType { get; private set; }
+        private BlittableTransformChangeListenerManager sightModuleMovementChangeTracker;
 
         public RangeIntersectionCalculatorV2(RangeObjectV2 RangeObject, CoreInteractiveObject TrackedInteractiveObject)
         {
@@ -31,18 +18,24 @@ namespace RTPuzzle
             this.sightModuleMovementChangeTracker = new BlittableTransformChangeListenerManager(true, true);
             this.inRangeCollidersMovementChangeTracker = new BlittableTransformChangeListenerManager(true, true);
             this.RangeIntersectionCalculatorV2UniqueID = RangeIntersectionCalculatorV2Manager.OnRangeIntersectionCalculatorV2ManagerCreation(this);
-            RangeIntersectionCalculationManagerV2.ManualCalculation(new List<RangeIntersectionCalculatorV2>() { this }, forceCalculation: true);
+            RangeIntersectionCalculationManagerV2.ManualCalculation(new List<RangeIntersectionCalculatorV2>() {this}, forceCalculation: true);
         }
+
+        public int RangeIntersectionCalculatorV2UniqueID { get; private set; }
+        public CoreInteractiveObject TrackedInteractiveObject { get; private set; }
+        public bool IsInside { get; private set; }
+
+        public InterserctionOperationType LastInterserctionOperationType { get; private set; }
 
         //Updated from RangeIntersection Manager
         public bool TickChangedPositions()
         {
             var TrackedInteractiveGameObjectTransform = this.TrackedInteractiveObject.InteractiveGameObject.GetTransform();
             this.sightModuleMovementChangeTracker.Tick(this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.position,
-                      this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.rotation);
+                this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.rotation);
             this.inRangeCollidersMovementChangeTracker.Tick(TrackedInteractiveGameObjectTransform.WorldPosition, TrackedInteractiveGameObjectTransform.WorldRotation);
             return this.inRangeCollidersMovementChangeTracker.TransformChangedThatFrame() ||
-                this.sightModuleMovementChangeTracker.TransformChangedThatFrame();
+                   this.sightModuleMovementChangeTracker.TransformChangedThatFrame();
         }
 
         public InterserctionOperationType Tick()
@@ -61,20 +54,39 @@ namespace RTPuzzle
             {
                 returnOperation = InterserctionOperationType.IntersectedNothing;
             }
+
             this.IsInside = newInside;
 
             this.LastInterserctionOperationType = returnOperation;
             return this.LastInterserctionOperationType;
         }
 
-        public ObstacleListenerObject GetAssociatedObstacleListener() { return this.AssociatedRangeObject.GetObstacleListener(); }
-        public RangeObjectV2 GetAssociatedRangeObject() { return this.AssociatedRangeObject; }
-        public RangeType GetAssociatedRangeObjectType() { return this.AssociatedRangeObject.RangeType; }
+        public ObstacleListenerSystem GetAssociatedObstacleListener()
+        {
+            return this.AssociatedRangeObject.GetObstacleListener();
+        }
+
+        public RangeObjectV2 GetAssociatedRangeObject()
+        {
+            return this.AssociatedRangeObject;
+        }
+
+        public RangeType GetAssociatedRangeObjectType()
+        {
+            return this.AssociatedRangeObject.RangeType;
+        }
 
         public void OnDestroy()
         {
             this.RangeIntersectionCalculatorV2Manager.OnRangeIntersectionCalculatorV2ManagerDestroyed(this);
         }
+
+        #region External Dependencies
+
+        private RangeIntersectionCalculatorV2Manager RangeIntersectionCalculatorV2Manager = RangeIntersectionCalculatorV2Manager.Get();
+        private RangeIntersectionCalculationManagerV2 RangeIntersectionCalculationManagerV2 = RangeIntersectionCalculationManagerV2.Get();
+
+        #endregion
     }
 
     public enum InterserctionOperationType

@@ -7,7 +7,8 @@
         "GameConfigurationID",
         "Unity.Burst",
         "Unity.RenderPipelines.Lightweight.Runtime",
-        "InteractiveObjects"
+        "InteractiveObjects",
+        "Obstacle"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

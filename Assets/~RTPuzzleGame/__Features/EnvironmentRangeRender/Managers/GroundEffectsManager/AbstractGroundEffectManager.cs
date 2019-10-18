@@ -1,6 +1,5 @@
-﻿using CoreGame;
+﻿using System.Collections.Generic;
 using GameConfigurationID;
-using System.Collections.Generic;
 
 namespace RTPuzzle
 {
@@ -10,16 +9,16 @@ namespace RTPuzzle
         void Tick(float d, List<GroundEffectType> affectedGroundEffectsType);
         bool MeshMustBeRebuild();
         List<GroundEffectType> GroundEffectTypeToRender();
-        ObstacleListenerObject GetObstacleListener();
+        ObstacleListenerSystem GetObstacleListener();
     }
 
     public abstract class AbstractGroundEffectManager : IAbstractGroundEffectManager
     {
-        protected ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider;
         private List<GroundEffectType> groundEffectTypesToRender;
-        protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
         private bool isGroundEffectTypeToRenderChanged;
-        
+        protected ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider;
+        protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
+
         public AbstractGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData)
         {
             this.rangeTypeInherentConfigurationData = rangeTypeInherentConfigurationData;
@@ -47,6 +46,7 @@ namespace RTPuzzle
                 {
                     this.isGroundEffectTypeToRenderChanged = true;
                 }
+
                 if (!this.isGroundEffectTypeToRenderChanged)
                 {
                     foreach (var involvedGroundEffectType in involvedGroundEffectsType)
@@ -58,7 +58,6 @@ namespace RTPuzzle
                         }
                     }
                 }
-
             }
             else
             {
@@ -66,18 +65,12 @@ namespace RTPuzzle
             }
 
             this.groundEffectTypesToRender = involvedGroundEffectsType;
-
         }
 
         public void OnRangeCreated(ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider)
         {
             this.rangeObjectRenderingDataProvider = rangeObjectRenderingDataProvider;
             this.Tick(0, null);
-        }
-
-        public RangeTypeID GetRangeTypeID()
-        {
-            return this.rangeObjectRenderingDataProvider.RangeTypeID;
         }
 
         public bool MeshMustBeRebuild()
@@ -90,10 +83,14 @@ namespace RTPuzzle
             return this.groundEffectTypesToRender;
         }
 
-        public ObstacleListenerObject GetObstacleListener()
+        public ObstacleListenerSystem GetObstacleListener()
         {
             return this.rangeObjectRenderingDataProvider.ObstacleListener;
         }
-    }
 
+        public RangeTypeID GetRangeTypeID()
+        {
+            return this.rangeObjectRenderingDataProvider.RangeTypeID;
+        }
+    }
 }

@@ -1,6 +1,5 @@
-﻿using CoreGame;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using CoreGame;
 
 namespace RTPuzzle
 {
@@ -8,21 +7,22 @@ namespace RTPuzzle
     {
         private int ObstacleListenerAddedCounter = 0;
 
-        private List<ObstacleListenerObject> obstacleListeners = new List<ObstacleListenerObject>();
+        private List<ObstacleListenerSystem> obstacleListeners = new List<ObstacleListenerSystem>();
 
-        public int OnObstacleListenerCreation(ObstacleListenerObject obstacleListener)
+        public int OnObstacleListenerCreation(ObstacleListenerSystem obstacleListener)
         {
             this.obstacleListeners.Add(obstacleListener);
             this.ObstacleListenerAddedCounter += 1;
             return this.ObstacleListenerAddedCounter;
         }
 
-        public void OnObstacleListenerDestroyed(ObstacleListenerObject obstacleListener)
+        public void OnObstacleListenerDestroyed(ObstacleListenerSystem obstacleListener)
         {
             this.obstacleListeners.Remove(obstacleListener);
         }
 
         #region Debug Display
+
         public void GizmoTick()
         {
             ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
@@ -41,16 +41,16 @@ namespace RTPuzzle
                 }
             }
         }
+
         #endregion
 
         #region Data Retrieval
-        public List<ObstacleListenerObject> GetAllObstacleListeners()
+
+        public List<ObstacleListenerSystem> GetAllObstacleListeners()
         {
             return this.obstacleListeners;
         }
 
         #endregion
-        
     }
-
 }

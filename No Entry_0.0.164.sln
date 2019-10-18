@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleGame", "PuzzleGame.csproj", "{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "~StartMenu", "~StartMenu.csproj", "{DE2B0528-6689-E76B-8664-E408396671C1}"
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveObjects", "InteractiveObjects.csproj", "{741991FE-D211-F6D8-2B2A-0EB0F573E16F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureGame", "AdventureGame.csproj", "{F319901D-3EB0-3BCC-43D7-16A349AA2A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obstacle", "Obstacle.csproj", "{A56A5795-1CB9-EF28-85DE-67DC873B52CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor.csproj", "{2DD87826-BED4-3147-BE7B-C30240F79B63}"
 EndProject
@@ -63,6 +65,10 @@ Global
 		{F319901D-3EB0-3BCC-43D7-16A349AA2A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F319901D-3EB0-3BCC-43D7-16A349AA2A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F319901D-3EB0-3BCC-43D7-16A349AA2A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A56A5795-1CB9-EF28-85DE-67DC873B52CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A56A5795-1CB9-EF28-85DE-67DC873B52CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A56A5795-1CB9-EF28-85DE-67DC873B52CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A56A5795-1CB9-EF28-85DE-67DC873B52CC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Release|Any CPU.ActiveCfg = Release|Any CPU

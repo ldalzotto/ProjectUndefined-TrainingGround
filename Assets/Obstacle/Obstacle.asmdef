@@ -1,0 +1,18 @@
+{
+    "name": "Obstacle",
+    "references": [
+        "GUID:e08ecabbc2fc4274ca9042afef829477",
+        "GUID:18572ca2bc29c7f49acd7b6782aec78e",
+        "GUID:c053b87db31a54549a9bb1738d8353f4",
+        "GUID:069be6bdb41f91a41b8f1fe8eb5e357e",
+        "GUID:83a23e85924b27e419c0fada7259185a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

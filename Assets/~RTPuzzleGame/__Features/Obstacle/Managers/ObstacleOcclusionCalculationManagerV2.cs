@@ -1,5 +1,6 @@
-﻿using CoreGame;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CoreGame;
+using Obstacle;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -9,30 +10,14 @@ namespace RTPuzzle
 {
     public class ObstacleOcclusionCalculationManagerV2 : GameSingleton<ObstacleOcclusionCalculationManagerV2>
     {
-        #region External Dependencies
-        private ObstaclesListenerManager ObstaclesListenerManager = ObstaclesListenerManager.Get();
-        private SquareObstacleSystemManager SquareObstacleSystemManager = SquareObstacleSystemManager.Get();
-        #endregion
-
-        #region Native Arrays
-        private NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas;
-        private NativeArray<FrustumV2Indexed> AssociatedFrustums;
-        private NativeArray<FrustumPointsWithInitializedFlag> Results;
-        #endregion
-
-        #region Job State   
-        private bool JobEnded;
-        private JobHandle JobHandle;
-        #endregion
-
-        private Dictionary<ObstacleListenerObject, TransformStruct> ObstacleListenerLastFramePositions = new Dictionary<ObstacleListenerObject, TransformStruct>();
-        private Dictionary<SquareObstacleSystem, TransformStruct> SquareObstacleLastFramePositions = new Dictionary<SquareObstacleSystem, TransformStruct>();
-
-        private List<ObstacleListenerObject> obstacleListenersThatHasChangedThisFrame = new List<ObstacleListenerObject>();
-        private Dictionary<ObstacleListenerObject, List<SquareObstacleSystem>> singleObstacleSystemsThatHasChangedThisFrame = new Dictionary<ObstacleListenerObject, List<SquareObstacleSystem>>();
-
         //ObstacleListener -> SquareObstacleSystem -> FrustumPositions
         private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedOcclusionFrustums = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
+        private Dictionary<ObstacleInteractiveObject, TransformStruct> ObstacleLastFramePositions = new Dictionary<ObstacleInteractiveObject, TransformStruct>();
+
+        private Dictionary<ObstacleListenerSystem, TransformStruct> ObstacleListenerLastFramePositions = new Dictionary<ObstacleListenerSystem, TransformStruct>();
+
+        private List<ObstacleListenerSystem> obstacleListenersThatHasChangedThisFrame = new List<ObstacleListenerSystem>();
+        private Dictionary<ObstacleListenerSystem, List<ObstacleInteractiveObject>> singleObstacleThatHasChangedThisFrame = new Dictionary<ObstacleListenerSystem, List<ObstacleInteractiveObject>>();
 
 
         private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> GetCalculatedOcclusionFrustums()
@@ -42,8 +27,8 @@ namespace RTPuzzle
                 this.JobHandle.Complete();
                 while (!this.JobHandle.IsCompleted)
                 {
-
                 }
+
                 this.JobEnded = true;
                 this.OnJobEnded();
             }
@@ -51,11 +36,12 @@ namespace RTPuzzle
             return this.CalculatedOcclusionFrustums;
         }
 
-        public List<FrustumPointsPositions> GetCalculatedOcclusionFrustums(ObstacleListenerObject ObstacleListener, SquareObstacleSystem SquareObstacleSystem)
+        public List<FrustumPointsPositions> GetCalculatedOcclusionFrustums(ObstacleListenerSystem ObstacleListener, ObstacleInteractiveObject obstacleInteractiveObject)
         {
-            return this.GetCalculatedOcclusionFrustums()[ObstacleListener.ObstacleListenerUniqueID][SquareObstacleSystem.SquareObstacleSystemUniqueID];
+            return this.GetCalculatedOcclusionFrustums()[ObstacleListener.ObstacleListenerUniqueID][obstacleInteractiveObject.ObstacleInteractiveObjectUniqueID];
         }
-        public void TryGetCalculatedOcclusionFrustumsForObstacleListener(ObstacleListenerObject ObstacleListener, out Dictionary<int, List<FrustumPointsPositions>> calculatedFrustumPositions)
+
+        public void TryGetCalculatedOcclusionFrustumsForObstacleListener(ObstacleListenerSystem ObstacleListener, out Dictionary<int, List<FrustumPointsPositions>> calculatedFrustumPositions)
         {
             this.GetCalculatedOcclusionFrustums().TryGetValue(ObstacleListener.ObstacleListenerUniqueID, out calculatedFrustumPositions);
         }
@@ -67,7 +53,7 @@ namespace RTPuzzle
             Profiler.EndSample();
         }
 
-        public void ManualCalculation(List<ObstacleListenerObject> ConcernedObstacleListeners, bool forceCalculation)
+        public void ManualCalculation(List<ObstacleListenerSystem> ConcernedObstacleListeners, bool forceCalculation)
         {
             int occlusionCalculationCounter = 0;
             int totalFrustumCounter = 0;
@@ -85,36 +71,36 @@ namespace RTPuzzle
                     {
                         this.obstacleListenersThatHasChangedThisFrame.Add(obstacleListener);
 
-                        foreach (var squareObstacle in obstacleListener.NearSquareObstacles)
+                        foreach (var obstacleInteractiveObject in obstacleListener.NearSquareObstacles)
                         {
                             occlusionCalculationCounter += 1;
-                            totalFrustumCounter += squareObstacle.FaceFrustums.Count;
-                            this.ClearAndCreateCalculatedFrustums(obstacleListener, squareObstacle);
+                            totalFrustumCounter += obstacleInteractiveObject.SquareObstacleOcclusionFrustumsDefinition.FaceFrustums.Count;
+                            this.ClearAndCreateCalculatedFrustums(obstacleListener, obstacleInteractiveObject);
                         }
                     }
 
                     //The obstacle listener hasn't changed -> we compate near square obstacles positions for update
                     else
                     {
-                        this.singleObstacleSystemsThatHasChangedThisFrame.TryGetValue(obstacleListener, out List<SquareObstacleSystem> squareObstacleSystemsThatChanged);
-                        if (squareObstacleSystemsThatChanged == null)
+                        this.singleObstacleThatHasChangedThisFrame.TryGetValue(obstacleListener, out List<ObstacleInteractiveObject> obstacleInteractiveObjectsThatChanged);
+                        if (obstacleInteractiveObjectsThatChanged == null)
                         {
-                            this.singleObstacleSystemsThatHasChangedThisFrame.Add(obstacleListener, new List<SquareObstacleSystem>());
-                            squareObstacleSystemsThatChanged = this.singleObstacleSystemsThatHasChangedThisFrame[obstacleListener];
+                            this.singleObstacleThatHasChangedThisFrame.Add(obstacleListener, new List<ObstacleInteractiveObject>());
+                            obstacleInteractiveObjectsThatChanged = this.singleObstacleThatHasChangedThisFrame[obstacleListener];
                         }
 
 
                         foreach (var squareObstacle in obstacleListener.NearSquareObstacles)
                         {
-                            this.SquareObstacleLastFramePositions.TryGetValue(squareObstacle, out TransformStruct lastFrameSquareObstacleTrasform);
+                            this.ObstacleLastFramePositions.TryGetValue(squareObstacle, out TransformStruct lastFrameSquareObstacleTrasform);
                             //Static obstacles are not detecting changes
-                            if (!squareObstacle.SquareObstacleSystemInitializationData.IsStatic 
-                                && !squareObstacle.GetTransform().IsEqualTo(lastFrameSquareObstacleTrasform))
+                            if (!squareObstacle.SquareObstacleSystemInitializationData.IsStatic
+                                && !squareObstacle.GetObstacleCenterTransform().IsEqualTo(lastFrameSquareObstacleTrasform))
                             {
                                 //We add this single couple (listener <-> obstacle) to calculation
-                                squareObstacleSystemsThatChanged.Add(squareObstacle);
+                                obstacleInteractiveObjectsThatChanged.Add(squareObstacle);
                                 occlusionCalculationCounter += 1;
-                                totalFrustumCounter += squareObstacle.FaceFrustums.Count;
+                                totalFrustumCounter += squareObstacle.SquareObstacleOcclusionFrustumsDefinition.FaceFrustums.Count;
                                 this.ClearAndCreateCalculatedFrustums(obstacleListener, squareObstacle);
                             }
                         }
@@ -125,9 +111,9 @@ namespace RTPuzzle
                 }
 
                 //Update Square Obstacle Positions
-                foreach (var squareObstacleSystem in this.SquareObstacleSystemManager.AllSquareObstacleSystems)
+                foreach (var obstacleInteractiveObject in this._obstacleInteractiveObjectManager.AllObstacleInteractiveObjects)
                 {
-                    this.SquareObstacleLastFramePositions[squareObstacleSystem] = squareObstacleSystem.GetTransform();
+                    this.ObstacleLastFramePositions[obstacleInteractiveObject] = obstacleInteractiveObject.GetObstacleCenterTransform();
                 }
             }
             else
@@ -137,14 +123,13 @@ namespace RTPuzzle
                     foreach (var squareObstacle in obstacleListener.NearSquareObstacles)
                     {
                         occlusionCalculationCounter += 1;
-                        totalFrustumCounter += squareObstacle.FaceFrustums.Count;
+                        totalFrustumCounter += squareObstacle.SquareObstacleOcclusionFrustumsDefinition.FaceFrustums.Count;
                     }
                 }
             }
 
             if (occlusionCalculationCounter > 0)
             {
-
                 this.FrustumOcclusionCalculationDatas = new NativeArray<FrustumOcclusionCalculationData>(occlusionCalculationCounter, Allocator.TempJob);
                 this.AssociatedFrustums = new NativeArray<FrustumV2Indexed>(totalFrustumCounter, Allocator.TempJob);
                 this.Results = new NativeArray<FrustumPointsWithInitializedFlag>(totalFrustumCounter, Allocator.TempJob);
@@ -160,7 +145,7 @@ namespace RTPuzzle
                     }
                 }
 
-                foreach (var singleObstacleSystemThatChanged in this.singleObstacleSystemsThatHasChangedThisFrame)
+                foreach (var singleObstacleSystemThatChanged in this.singleObstacleThatHasChangedThisFrame)
                 {
                     if (singleObstacleSystemThatChanged.Value.Count > 0)
                     {
@@ -186,10 +171,12 @@ namespace RTPuzzle
                 else
                 {
                     jobHandle.Complete();
-                    while (!jobHandle.IsCompleted) { }
+                    while (!jobHandle.IsCompleted)
+                    {
+                    }
+
                     this.OnJobEnded();
                 }
-
             }
             else
             {
@@ -210,25 +197,36 @@ namespace RTPuzzle
 
             ClearFrameDependantData();
 
-            if (FrustumOcclusionCalculationDatas.IsCreated) { FrustumOcclusionCalculationDatas.Dispose(); }
-            if (AssociatedFrustums.IsCreated) { AssociatedFrustums.Dispose(); }
-            if (Results.IsCreated) { Results.Dispose(); }
+            if (FrustumOcclusionCalculationDatas.IsCreated)
+            {
+                FrustumOcclusionCalculationDatas.Dispose();
+            }
+
+            if (AssociatedFrustums.IsCreated)
+            {
+                AssociatedFrustums.Dispose();
+            }
+
+            if (Results.IsCreated)
+            {
+                Results.Dispose();
+            }
         }
 
         private void ClearFrameDependantData()
         {
             //Clear data that changed
             this.obstacleListenersThatHasChangedThisFrame.Clear();
-            foreach (var singleObstacleSystemThatChanged in this.singleObstacleSystemsThatHasChangedThisFrame)
+            foreach (var singleObstacleSystemThatChanged in this.singleObstacleThatHasChangedThisFrame)
             {
                 singleObstacleSystemThatChanged.Value.Clear();
             }
         }
 
         private static void AddToArrays(ref NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas, NativeArray<FrustumV2Indexed> AssociatedFrustums,
-            ref int currentOcclusionCalculationCounter, ref int currentFrustumCounter, ObstacleListenerObject obstacleListenerThatChanged, SquareObstacleSystem nearSquareObstacle)
+            ref int currentOcclusionCalculationCounter, ref int currentFrustumCounter, ObstacleListenerSystem obstacleListenerThatChanged, ObstacleInteractiveObject nearSquareObstacle)
         {
-            foreach (var nearSquaureObstacleFrustum in nearSquareObstacle.FaceFrustums)
+            foreach (var nearSquaureObstacleFrustum in nearSquareObstacle.SquareObstacleOcclusionFrustumsDefinition.FaceFrustums)
             {
                 AssociatedFrustums[currentFrustumCounter] = new FrustumV2Indexed
                 {
@@ -243,10 +241,10 @@ namespace RTPuzzle
                 FrustumCalculationDataID = new FrustumCalculationDataID
                 {
                     ObstacleListenerUniqueID = obstacleListenerThatChanged.ObstacleListenerUniqueID,
-                    SquareObstacleSystemUniqueID = nearSquareObstacle.SquareObstacleSystemUniqueID,
+                    SquareObstacleSystemUniqueID = nearSquareObstacle.ObstacleInteractiveObjectUniqueID,
                 },
                 ObstacleListenerTransform = obstacleListenerThatChanged.AssociatedRangeObject.GetTransform(),
-                SquareObstacleTransform = nearSquareObstacle.GetTransform()
+                SquareObstacleTransform = nearSquareObstacle.GetObstacleCenterTransform()
             };
 
             currentOcclusionCalculationCounter += 1;
@@ -258,7 +256,7 @@ namespace RTPuzzle
             GetCalculatedOcclusionFrustums();
         }
 
-        private void ClearAndCreateCalculatedFrustums(ObstacleListenerObject obstacleListener, SquareObstacleSystem SquareObstacleSystem)
+        private void ClearAndCreateCalculatedFrustums(ObstacleListenerSystem obstacleListener, ObstacleInteractiveObject obstalceInteractiveObject)
         {
             this.CalculatedOcclusionFrustums.TryGetValue(obstacleListener.ObstacleListenerUniqueID, out Dictionary<int, List<FrustumPointsPositions>> obstalceFrustumPointsPositions);
             if (obstalceFrustumPointsPositions == null)
@@ -266,10 +264,11 @@ namespace RTPuzzle
                 this.CalculatedOcclusionFrustums.Add(obstacleListener.ObstacleListenerUniqueID, new Dictionary<int, List<FrustumPointsPositions>>());
                 obstalceFrustumPointsPositions = this.CalculatedOcclusionFrustums[obstacleListener.ObstacleListenerUniqueID];
             }
-            obstalceFrustumPointsPositions.TryGetValue(SquareObstacleSystem.SquareObstacleSystemUniqueID, out List<FrustumPointsPositions> squareObstacleFrustumPositions);
+
+            obstalceFrustumPointsPositions.TryGetValue(obstalceInteractiveObject.ObstacleInteractiveObjectUniqueID, out List<FrustumPointsPositions> squareObstacleFrustumPositions);
             if (squareObstacleFrustumPositions == null)
             {
-                obstalceFrustumPointsPositions.Add(SquareObstacleSystem.SquareObstacleSystemUniqueID, new List<FrustumPointsPositions>());
+                obstalceFrustumPointsPositions.Add(obstalceInteractiveObject.ObstacleInteractiveObjectUniqueID, new List<FrustumPointsPositions>());
             }
             else
             {
@@ -277,13 +276,33 @@ namespace RTPuzzle
             }
         }
 
+        #region External Dependencies
+
+        private ObstaclesListenerManager ObstaclesListenerManager = ObstaclesListenerManager.Get();
+        private ObstacleInteractiveObjectManager _obstacleInteractiveObjectManager = ObstacleInteractiveObjectManager.Get();
+
+        #endregion
+
+        #region Native Arrays
+
+        private NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas;
+        private NativeArray<FrustumV2Indexed> AssociatedFrustums;
+        private NativeArray<FrustumPointsWithInitializedFlag> Results;
+
+        #endregion
+
+        #region Job State   
+
+        private bool JobEnded;
+        private JobHandle JobHandle;
+
+        #endregion
     }
 
     [BurstCompile]
     public struct FrustumOcclusionCalculationJob : IJobParallelFor
     {
-        [ReadOnly]
-        public NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas;
+        [ReadOnly] public NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas;
 
         public NativeArray<FrustumV2Indexed> AssociatedFrustums;
         public NativeArray<FrustumPointsWithInitializedFlag> Results;
@@ -335,7 +354,4 @@ namespace RTPuzzle
     }
 
     #endregion
-
-
 }
-

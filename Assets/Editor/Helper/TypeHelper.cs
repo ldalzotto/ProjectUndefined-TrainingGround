@@ -1,9 +1,11 @@
-﻿#if UNITY_EDITOR
-using ConfigurationEditor;
-using System;
-using System.Linq;
+﻿using ConfigurationEditor;
+using InteractiveObjects;
+using RTPuzzle;
 using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using System;
+using System.Linq;
 
 public class TypeHelper
 {
@@ -12,28 +14,28 @@ public class TypeHelper
         if (abstractType.IsGenericType)
         {
             return AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
-                  .Where(p => IsAssignableToGenericType(p, abstractType))
-                  .Where(p => p.Name != abstractType.Name)
-                  .ToArray();
+                .Where(p => IsAssignableToGenericType(p, abstractType))
+                .Where(p => p.Name != abstractType.Name)
+                .ToArray();
         }
         else
         {
             return AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
-                  .Where(p => abstractType.IsAssignableFrom(p))
-                  .Where(p => p.Name != abstractType.Name)
-                  .ToArray();
+                .Where(p => abstractType.IsAssignableFrom(p))
+                .Where(p => p.Name != abstractType.Name)
+                .ToArray();
         }
-
     }
 
     public static Type[] GetAllGameConfigurationTypes()
     {
         return
             typeof(IConfigurationSerialization)
-                   .Assembly.GetTypes()
-                   .Union(typeof(RTPuzzle.GameManager).Assembly.GetTypes())
-                   .Union(typeof(AdventureGame.GameManager).Assembly.GetTypes())
-                   .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface).ToArray();
+                .Assembly.GetTypes()
+                .Union(typeof(GameManager).Assembly.GetTypes())
+                .Union(typeof(AdventureGame.GameManager).Assembly.GetTypes())
+                .Union(typeof(InteractiveObjectV2Manager).Assembly.GetTypes())
+                .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface).ToArray();
     }
 
     public static Type GetType(string typeName)
@@ -46,6 +48,7 @@ public class TypeHelper
             if (type != null)
                 return type;
         }
+
         return null;
     }
 
@@ -59,14 +62,12 @@ public class TypeHelper
 
         return IsAssignableToGenericType(baseType, genericType);
     }
-
-
 }
 
 public class TypeSelectionerManager
 {
-    private string label;
     private Type[] elligibleTypes;
+    private string label;
 
     public void OnEnable(Type abstractManagerType, string label)
     {
@@ -116,8 +117,6 @@ public class TypeSelectionerManager
         }
 
         return changedType;
-
     }
-
 }
 #endif //UNITY_EDITOR

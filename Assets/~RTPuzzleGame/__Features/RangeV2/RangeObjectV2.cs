@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using InteractiveObjects;
-using System;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -9,8 +8,12 @@ namespace RTPuzzle
     public abstract class RangeObjectV2
     {
         #region External Dependencies
+
         private RangeEventsManager RangeEventsManager = RangeEventsManager.Get();
+
         #endregion
+
+        private RangeExternalPhysicsOnlyListenersSystem RangeExternalPhysicsOnlyListenersSystem;
 
         public RangeType RangeType { get; protected set; }
         public RangeGameObjectV2 RangeGameObjectV2 { get; private set; }
@@ -19,7 +22,6 @@ namespace RTPuzzle
 
         public RangeObstacleListenerSystem RangeObstacleListenerSystem { get; private set; }
         public RangeIntersectionV2System RangeIntersectionV2System { get; private set; }
-        private RangeExternalPhysicsOnlyListenersSystem RangeExternalPhysicsOnlyListenersSystem;
 
         protected void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
         {
@@ -62,42 +64,47 @@ namespace RTPuzzle
         {
             this.RangeGameObjectV2.ReceiveEvent(SetWorldPositionEvent);
         }
+
         public void ReceiveEvent(RangeIntersectionAddIntersectionListenerEvent RangeIntersectionAddIntersectionListenerEvent)
         {
             this.RangeIntersectionV2System.ReceiveEvent(RangeIntersectionAddIntersectionListenerEvent, this.RangeGameObjectV2.RangeObjectV2PhysicsEventListener);
-
         }
-        public void ReceiveEvent(RangeExternalPhysicsOnlyAddListener RangeExternalPhysicsOnlyAddListener) { this.RangeExternalPhysicsOnlyListenersSystem.ReceiveEvent(RangeExternalPhysicsOnlyAddListener); }
 
-        public ObstacleListenerObject GetObstacleListener() { return this.RangeObstacleListenerSystem != null ? this.RangeObstacleListenerSystem.ObstacleListener : null; }
-        public TransformStruct GetTransform() { return this.RangeGameObjectV2.GetTransform(); }
+        public void ReceiveEvent(RangeExternalPhysicsOnlyAddListener RangeExternalPhysicsOnlyAddListener)
+        {
+            this.RangeExternalPhysicsOnlyListenersSystem.ReceiveEvent(RangeExternalPhysicsOnlyAddListener);
+        }
+
+        public ObstacleListenerSystem GetObstacleListener()
+        {
+            return this.RangeObstacleListenerSystem != null ? this.RangeObstacleListenerSystem.ObstacleListener : null;
+        }
+
+        public TransformStruct GetTransform()
+        {
+            return this.RangeGameObjectV2.GetTransform();
+        }
     }
 
     public class SphereRangeObjectV2 : RangeObjectV2
     {
         private SphereRangeObjectInitialization SphereRangeObjectInitialization;
-        public SphereCollider SphereBoundingCollider { get; private set; }
 
         public SphereRangeObjectV2(GameObject AssociatedGameObject, SphereRangeObjectInitialization SphereRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
             this.RangeType = RangeType.SPHERE;
             this.SphereRangeObjectInitialization = SphereRangeObjectInitialization;
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.SphereRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
-            this.SphereBoundingCollider = (SphereCollider)RangeGameObjectV2.BoundingCollider;
+            this.SphereBoundingCollider = (SphereCollider) RangeGameObjectV2.BoundingCollider;
             base.Init(RangeGameObjectV2, SphereRangeObjectInitialization);
         }
 
+        public SphereCollider SphereBoundingCollider { get; private set; }
     }
 
     public class BoxRangeObjectV2 : RangeObjectV2
     {
         private BoxRangeObjectInitialization BoxRangeObjectInitialization;
-
-        public BoxDefinition GetBoxBoundingColliderDefinition()
-        {
-            var BoxCollider = (BoxCollider)RangeGameObjectV2.BoundingCollider;
-            return new BoxDefinition(BoxCollider);
-        }
 
         public BoxRangeObjectV2(GameObject AssociatedGameObject, BoxRangeObjectInitialization BoxRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
@@ -106,6 +113,12 @@ namespace RTPuzzle
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
             base.Init(RangeGameObjectV2, BoxRangeObjectInitialization);
         }
+
+        public BoxDefinition GetBoxBoundingColliderDefinition()
+        {
+            var BoxCollider = (BoxCollider) RangeGameObjectV2.BoundingCollider;
+            return new BoxDefinition(BoxCollider);
+        }
     }
 
     public class FrustumRangeObjectV2 : RangeObjectV2
@@ -113,9 +126,6 @@ namespace RTPuzzle
         private FrustumRangeObjectInitialization FrustumRangeObjectInitialization;
 
         private FrustumRangeObjectPositioningSystem FrustumRangeObjectPositioningSystem;
-
-        public FrustumV2 GetFrustum() { return this.FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2; }
-        public FrustumPointsPositions GetFrustumWorldPositions() { return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition(); }
 
         public FrustumRangeObjectV2(GameObject AssociatedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
@@ -126,18 +136,22 @@ namespace RTPuzzle
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
             base.Init(RangeGameObjectV2, FrustumRangeObjectInitialization);
         }
+
+        public FrustumV2 GetFrustum()
+        {
+            return this.FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2;
+        }
+
+        public FrustumPointsPositions GetFrustumWorldPositions()
+        {
+            return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition();
+        }
     }
 
     [SceneHandleDraw]
     public class RoundedFrustumRangeObjectV2 : RangeObjectV2
     {
-        [DrawNested]
-        private RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization;
-
-        public FrustumRangeObjectPositioningSystem FrustumRangeObjectPositioningSystem { get; private set; }
-
-        public FrustumV2 GetFrustum() { return this.RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2; }
-        public FrustumPointsPositions GetFrustumWorldPositions() { return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition(); }
+        [DrawNested] private RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization;
 
         public RoundedFrustumRangeObjectV2(GameObject AssociatedGameObject, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
@@ -149,6 +163,18 @@ namespace RTPuzzle
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
             base.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization);
         }
+
+        public FrustumRangeObjectPositioningSystem FrustumRangeObjectPositioningSystem { get; private set; }
+
+        public FrustumV2 GetFrustum()
+        {
+            return this.RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2;
+        }
+
+        public FrustumPointsPositions GetFrustumWorldPositions()
+        {
+            return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition();
+        }
     }
 
     public struct SetWorldPositionEvent
@@ -158,7 +184,10 @@ namespace RTPuzzle
 
     public enum RangeType
     {
-        SPHERE, BOX, FRUSTUM, ROUNDED_FRUSTUM
+        SPHERE,
+        BOX,
+        FRUSTUM,
+        ROUNDED_FRUSTUM
     }
 
     public static class RangeObjectV2Builder

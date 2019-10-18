@@ -1,41 +1,49 @@
-using CoreGame;
-using InteractiveObjects;
 using System;
 using System.Collections.Generic;
+using CoreGame;
+using Obstacle;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ObstacleListenerObject
+    public class ObstacleListenerSystem
     {
-        public int ObstacleListenerUniqueID { get; private set; }
-        public float Radius;
+        private List<ObstacleInteractiveObject> nearSquareObstacles;
 
-        private List<SquareObstacleSystem> nearSquareObstacles;
-        public List<SquareObstacleSystem> NearSquareObstacles { get => nearSquareObstacles; }
+        #region External Dependencies
 
-        #region Internal Dependencies
-        public RangeObjectV2 AssociatedRangeObject { get; private set; }
+        private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
+
         #endregion
 
         #region External Dependencies
-        private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
+
+        private ObstaclesListenerManager ObstaclesListenerManager;
+
         #endregion
 
-        public ObstacleListenerObject(RangeObjectV2 associatedRangeObject)
+        public ObstacleListenerSystem(RangeObjectV2 associatedRangeObject)
         {
             AssociatedRangeObject = associatedRangeObject;
 
             #region External Dependencies
+
             this.ObstaclesListenerManager = ObstaclesListenerManager.Get();
+
             #endregion
 
-            this.nearSquareObstacles = new List<SquareObstacleSystem>();
+            this.nearSquareObstacles = new List<ObstacleInteractiveObject>();
             this.ObstacleListenerUniqueID = this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
         }
 
-        #region External Dependencies
-        private ObstaclesListenerManager ObstaclesListenerManager;
+        public int ObstacleListenerUniqueID { get; private set; }
+
+        public List<ObstacleInteractiveObject> NearSquareObstacles => nearSquareObstacles;
+
+        #region Internal Dependencies
+
+        public RangeObjectV2 AssociatedRangeObject { get; private set; }
+
         #endregion
 
         public void OnObstacleListenerDestroyed()
@@ -46,28 +54,28 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval
+
         public void ForEachCalculatedFrustum(Action<FrustumPointsPositions> action)
         {
-            foreach (var nearSquareObstacle in this.nearSquareObstacles)
+            foreach (var obstacleInteractiveObject in this.nearSquareObstacles)
             {
-                foreach(var obstacleFrustumPositions in this.ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustums(this, nearSquareObstacle))
+                foreach (var obstacleFrustumPositions in this.ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustums(this, obstacleInteractiveObject))
                 {
                     action(obstacleFrustumPositions);
                 }
             }
         }
+
         #endregion
 
         public void AddNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
-            this.nearSquareObstacles.Add(ObstacleInteractiveObject.SquareObstacleSystem);
+            this.nearSquareObstacles.Add(ObstacleInteractiveObject);
         }
 
         public void RemoveNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
-            this.nearSquareObstacles.Remove(ObstacleInteractiveObject.SquareObstacleSystem);
+            this.nearSquareObstacles.Remove(ObstacleInteractiveObject);
         }
-
     }
-
 }
