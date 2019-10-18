@@ -6,9 +6,10 @@
         "Editor_Common",
         "OdinSerializer",
         "GameConfigurationID",
-        "Unity.Timeline"
+        "InteractiveObjects",
+        "RangeObjects",
+        "Obstacle"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

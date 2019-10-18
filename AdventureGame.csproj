@@ -139,6 +139,8 @@
      <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\AdventureDiscussionWindowManager.cs" />
      <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\DiscussionWindowsContainer.cs" />
      <Compile Include="Assets\~AdventureGame\Events\AdventureEventsManager.cs" />
+     <Compile Include="Assets\~AdventureGame\InteractiveObjects\InteractiveObjectsTemplate\PlayerInteractiveObject\AdventurePlayerInteractiveObject.cs" />
+     <Compile Include="Assets\~AdventureGame\InteractiveObjects\InteractiveObjectsTemplate\PlayerInteractiveObject\AdventurePlayerInteractiveObjectInitializer.cs" />
      <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
      <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryEventManager.cs" />
      <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryManager.cs" />
@@ -751,6 +753,18 @@
     <ProjectReference Include="GameConfigurationID.csproj">
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>
+    </ProjectReference>
+    <ProjectReference Include="InteractiveObjects.csproj">
+      <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
+      <Name>InteractiveObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="RangeObjects.csproj">
+      <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
+      <Name>RangeObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="Obstacle.csproj">
+      <Project>{A56A5795-1CB9-EF28-85DE-67DC873B52CC}</Project>
+      <Name>Obstacle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

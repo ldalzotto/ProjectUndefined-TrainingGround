@@ -4,7 +4,7 @@ namespace InteractiveObjects
 {
     public class AnimationObjectSystem : AInteractiveObjectSystem
     {
-        private AnimationDataManager animationDataManager;
+        [VE_Ignore] private AnimationDataManager animationDataManager;
 
         #region State
 
@@ -12,10 +12,15 @@ namespace InteractiveObjects
 
         #endregion
 
+
         public AnimationObjectSystem(CoreInteractiveObject AssociatedInteractiveObject)
         {
+            var LevelManager = CoreGameSingletonInstances.LevelManager;
+
             var objectAnimator = AssociatedInteractiveObject.InteractiveGameObject.Animator;
-            if (objectAnimator != null) GenericAnimatorHelper.SetMovementLayer(objectAnimator, CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.AnimationConfiguration, LevelType.PUZZLE);
+            if (objectAnimator != null)
+                GenericAnimatorHelper.SetMovementLayer(objectAnimator, CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.AnimationConfiguration,
+                    LevelManager.CurrentLevelType);
 
             animationDataManager = new AnimationDataManager(objectAnimator);
         }

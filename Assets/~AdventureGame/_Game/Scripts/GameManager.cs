@@ -1,50 +1,50 @@
-using CoreGame;
 using System.Linq;
+using CoreGame;
+using InteractiveObjects;
+using Obstacle;
+using RangeObjects;
 using UnityEngine;
 
 namespace AdventureGame
 {
     public class GameManager : AsbtractCoreGameManager
     {
-
+        private AdventureTutorialEventSender AdventureTutorialEventSender;
         private ContextActionManager ContextActionManager;
         private ContextActionWheelManager ContextActionWheelManager;
-        private PlayerManager PlayerManager;
-        private NPCManager NPCManager;
-        private InventoryManager InventoryManager;
-        private DiscussionManager DiscussionManager;
-        private PointOfInterestManager PointOfInterestManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
-        private AdventureTutorialEventSender AdventureTutorialEventSender;
-        private TutorialManager TutorialManager;
+        private DiscussionManager DiscussionManager;
 
 #if UNITY_EDITOR
         private EditorOnlyModules EditorOnlyModules = new EditorOnlyModules();
 #endif
+        private InventoryManager InventoryManager;
+        private NPCManager NPCManager;
+        private PlayerManager PlayerManager;
+        private PointOfInterestManager PointOfInterestManager;
+        private TutorialManager TutorialManager;
 
         private void Awake()
         {
-            GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
-            this.AfterGameManagerPersistanceInstanceInitialization();
-            base.OnAwake(LevelType.ADVENTURE);
+            FindObjectOfType<GameManagerPersistanceInstance>().Init();
+            AfterGameManagerPersistanceInstanceInitialization();
+            OnAwake(LevelType.ADVENTURE);
         }
 
-        protected virtual void AfterGameManagerPersistanceInstanceInitialization() { }
-
-        void Start()
+        protected virtual void AfterGameManagerPersistanceInstanceInitialization()
         {
-            base.OnStart();
+        }
+
+        private void Start()
+        {
+            OnStart();
 
             //load dynamic POI
             var allLoadedLevelChunkID = CoreGameSingletonInstances.LevelManager.AllLoadedLevelZonesChunkID;
-            var allActivePOIDefinitionIds = GameObject.FindObjectsOfType<PointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestDefinitionID);
+            var allActivePOIDefinitionIds = FindObjectsOfType<PointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestDefinitionID);
             foreach (var elligiblePOIDefinitionIdTo in CoreGameSingletonInstances.AGhostPOIManager.GetAllPOIIdElligibleToBeDynamicallyInstanciated(allLoadedLevelChunkID))
-            {
                 if (!allActivePOIDefinitionIds.Contains(elligiblePOIDefinitionIdTo))
-                {
                     PointOfInterestType.Instanciate(elligiblePOIDefinitionIdTo);
-                }
-            }
 
             var InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(true);
@@ -64,6 +64,11 @@ namespace AdventureGame
             CameraMovementManager.Get().Init();
             AdventureGameSingletonInstances.AdventureEventsManager.Init();
             AdventureGameSingletonInstances.CutscenePositionsManager.Init();
+
+
+            RangeObjectV2Manager.Get().Init();
+            InteractiveObjectV2Manager.Get().Init();
+
             CutscenePlayerManagerV2.Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
@@ -78,45 +83,53 @@ namespace AdventureGame
             TutorialManager.Init();
 
 #if UNITY_EDITOR
-            this.EditorOnlyModules.Init();
+            EditorOnlyModules.Init();
 #endif
         }
 
-        void Update()
+        private void Update()
         {
-            if (!this.IsInitializing)
+            if (!IsInitializing)
             {
                 var d = Time.deltaTime;
 
-                this.BeforeTick(d);
+                BeforeTick(d);
+
+                ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
+                RangeIntersectionCalculationManagerV2.Get().Tick(d);
 
                 TutorialManager.Tick(d);
                 CutscenePlayerManagerV2.Tick(d);
-                if (!CutscenePlayerManagerV2.IsCutscenePlaying)
-                {
-                    this.AdventureTutorialEventSender.Tick(d);
-                }
+                if (!CutscenePlayerManagerV2.IsCutscenePlaying) AdventureTutorialEventSender.Tick(d);
+
+                RangeObjectV2Manager.Get().Tick(d);
+
                 ContextActionWheelManager.Tick(d);
                 ContextActionManager.Tick(d);
                 PointOfInterestManager.Tick(d);
                 PlayerPointOfInterestSelectionManager.Get().Tick(d);
                 PlayerManager.Tick(d);
+
+                InteractiveObjectV2Manager.Get().TickAlways(d);
+                InteractiveObjectV2Manager.Get().Tick(d, 1f);
+                InteractiveObjectV2Manager.Get().AfterTicks();
+
                 NPCManager.Tick(d);
                 CameraMovementManager.Get().Tick(d);
                 DiscussionManager.Tick(d);
                 InventoryManager.Tick(d);
 
 #if UNITY_EDITOR
-                this.EditorOnlyModules.Tick(d);
+                EditorOnlyModules.Tick(d);
 #endif
             }
-
         }
 
         private void FixedUpdate()
         {
             var d = Time.fixedDeltaTime;
             PlayerManager.FixedTick(d);
+            InteractiveObjectV2Manager.Get().FixedTick(d);
             NPCManager.FixedTick(d);
         }
 
@@ -124,41 +137,35 @@ namespace AdventureGame
         {
             var d = Time.deltaTime;
             PointOfInterestManager.LateTick(d);
+            InteractiveObjectV2Manager.Get().LateTick(d);
             PlayerManager.LateTick(d);
         }
 
         private void OnGUI()
         {
-
         }
 
         private void OnDrawGizmos()
         {
-            if (PlayerManager != null)
-            {
-                PlayerManager.OnGizmoTick();
-            }
+            if (PlayerManager != null) PlayerManager.OnGizmoTick();
         }
-
-
     }
 
 #if UNITY_EDITOR
-    class EditorOnlyModules
+    internal class EditorOnlyModules
     {
         private AdventureDebugModule AdventureDebugModule;
 
         public void Init()
         {
-            this.AdventureDebugModule = AdventureGameSingletonInstances.AdventureDebugModule;
-            this.AdventureDebugModule.Init();
+            AdventureDebugModule = AdventureGameSingletonInstances.AdventureDebugModule;
+            AdventureDebugModule.Init();
         }
 
         public void Tick(float d)
         {
-            this.AdventureDebugModule.Tick(d);
+            AdventureDebugModule.Tick(d);
         }
     }
 #endif
-
 }
