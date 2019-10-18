@@ -2,9 +2,8 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <_TargetFrameworkDirectories>non_empty_path_generated_by_unity.rider.package</_TargetFrameworkDirectories>
-        <_FullFrameworkReferenceAssemblyPaths>non_empty_path_generated_by_unity.rider.package</_FullFrameworkReferenceAssemblyPaths>
-        <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
+        <CscToolPath>C:\Program Files\Unity\Hub\Editor\2019.2.9f1\Editor\Data\Tools\RoslynScripts</CscToolPath>
+        <CscToolExe>unity_csc.bat</CscToolExe>
     </PropertyGroup>
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -25,11 +24,11 @@
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
         <OutputPath>Temp\bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE;UNITY_2019_2_9;UNITY_2019_2;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_EVENT_QUEUE;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER
+        <DefineConstants>DEBUG;TRACE;UNITY_2019_2_9;UNITY_2019_2;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_EVENT_QUEUE;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER
         </DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
-        <NoWarn>0169</NoWarn>
+        <NoWarn>0169;CS0649;IDE0051</NoWarn>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -38,7 +37,7 @@
         <OutputPath>Temp\bin\Release\</OutputPath>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
-        <NoWarn>0169</NoWarn>
+        <NoWarn>0169;CS0649;IDE0051</NoWarn>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup>
@@ -47,6 +46,13 @@
         <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
         <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
         <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+        <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
+        <UnityProjectType>Editor:5</UnityProjectType>
+        <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+        <UnityVersion>2019.2.9f1</UnityVersion>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="UnityEngine">
@@ -57,42 +63,42 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\CoreEditorStyles.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\CoreEditorUtils.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\FilterWindow.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\CameraController.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\CameraState.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\ComparisonGizmoController.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\ComparisonGizmoState.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Compositor.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Context.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\DisplayWindow.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\DropArea.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Environment.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\EnvironmentLibrary.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\LookDev.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\LookDevRenderer.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Stage.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\ToolbarRadio.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\MaterialUpgrader.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\PropertyFetcher.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\ColorParameterDrawer.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\FloatParameterDrawer.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\IntParameterDrawer.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\Vector4ParameterDrawer.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\SerializedDataParameter.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeComponentEditor.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeComponentListEditor.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeComponentProvider.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeEditor.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeParameterDrawer.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeProfileEditor.cs"/>
-        <Compile Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeProfileFactory.cs"/>
-        <None Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Inspectors.uss"/>
-        <None Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Unity.RenderPipelines.Core.Editor.asmdef"/>
-        <None Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\CubeToLatlong.shader"/>
-        <None Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Compositor.shader"/>
-        <None Include="C:\Users\Loic\Documents\projects\SoulsLike\No Entry_0.0.164\Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\DisplayWindow.uss"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\CoreEditorStyles.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\CoreEditorUtils.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\FilterWindow.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\CameraController.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\CameraState.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\ComparisonGizmoController.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\ComparisonGizmoState.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Compositor.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Context.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\DisplayWindow.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\DropArea.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Environment.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\EnvironmentLibrary.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\LookDev.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\LookDevRenderer.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Stage.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\ToolbarRadio.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\MaterialUpgrader.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\PropertyFetcher.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\ColorParameterDrawer.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\FloatParameterDrawer.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\IntParameterDrawer.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\Drawers\Vector4ParameterDrawer.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\SerializedDataParameter.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeComponentEditor.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeComponentListEditor.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeComponentProvider.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeEditor.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeParameterDrawer.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeProfileEditor.cs"/>
+        <Compile Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Volume\VolumeProfileFactory.cs"/>
+        <None Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Inspectors.uss"/>
+        <None Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\Unity.RenderPipelines.Core.Editor.asmdef"/>
+        <None Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\CubeToLatlong.shader"/>
+        <None Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\Compositor.shader"/>
+        <None Include="Library\PackageCache\com.unity.render-pipelines.core@6.9.1\Editor\LookDev\DisplayWindow.uss"/>
         <Reference Include="UnityEngine.AIModule">
             <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
         </Reference>
@@ -279,11 +285,11 @@
         <Reference Include="UnityEditor.WindowsStandalone.Extensions">
             <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.9f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
         </Reference>
-        <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-            <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-        </Reference>
         <Reference Include="Unity.Burst.Unsafe">
             <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
+        </Reference>
+        <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+            <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
         </Reference>
         <Reference Include="nunit.framework">
             <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
@@ -670,6 +676,7 @@
         </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Target Name="GenerateTargetFrameworkMonikerAttribute"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">

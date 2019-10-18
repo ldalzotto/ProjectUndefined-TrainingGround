@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Obstacle
 {
-    public class SquareObstacleOcclusionFrustumsDefinition
+    internal class SquareObstacleOcclusionFrustumsDefinition
     {
         public SquareObstacleOcclusionFrustumsDefinition()
         {

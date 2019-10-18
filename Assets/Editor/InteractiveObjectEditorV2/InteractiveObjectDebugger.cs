@@ -1,9 +1,9 @@
-﻿using Editor_MainGameCreationWizard;
-using InteractiveObjects;
-using RTPuzzle;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Editor_MainGameCreationWizard;
+using InteractiveObjects;
+using RangeObjects;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,6 +11,18 @@ using UnityEngine.UIElements;
 public class InteractiveObjectDebugger : EditorWindow
 {
     public static InteractiveObjectDebugger Instance;
+    private Dictionary<string, VisualElement> ClassHeaderElements = new Dictionary<string, VisualElement>();
+    private CommonGameConfigurations CommonGameConfigurations;
+
+    private VisualElement LeftPanel;
+
+    private Dictionary<object, ListenedObjectField> ListenableObjectFields = new Dictionary<object, ListenedObjectField>();
+
+    private ScrollView ObjectFieldParent;
+
+    private VisualElement RootElement;
+    private TextField SeachTextElement;
+    private SelectedInteractiveObjectDetail SelectedInteractiveObjectDetail;
 
     [MenuItem("InteractiveObject/InteractiveObjectDebugger")]
     public static void Init()
@@ -19,77 +31,61 @@ public class InteractiveObjectDebugger : EditorWindow
         Instance = wnd;
         wnd.Show();
     }
-    private CommonGameConfigurations CommonGameConfigurations;
-
-    private VisualElement RootElement;
-
-    private VisualElement LeftPanel;
-
-    private ScrollView ObjectFieldParent;
-    private TextField SeachTextElement;
-    private SelectedInteractiveObjectDetail SelectedInteractiveObjectDetail;
 
     private void OnEnable()
     {
-        this.CommonGameConfigurations = new CommonGameConfigurations();
-        EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations);
+        CommonGameConfigurations = new CommonGameConfigurations();
+        EditorInformationsHelper.InitProperties(ref CommonGameConfigurations);
 
-        this.RootElement = new VisualElement();
-        this.RootElement.style.flexDirection = FlexDirection.Row;
+        RootElement = new VisualElement();
+        RootElement.style.flexDirection = FlexDirection.Row;
 
-        this.LeftPanel = new VisualElement();
-        this.LeftPanel.style.flexDirection = FlexDirection.Column;
-        this.LeftPanel.style.alignSelf = Align.FlexStart;
+        LeftPanel = new VisualElement();
+        LeftPanel.style.flexDirection = FlexDirection.Column;
+        LeftPanel.style.alignSelf = Align.FlexStart;
 
-        this.SeachTextElement = new TextField();
-        this.SeachTextElement.RegisterCallback<ChangeEvent<string>>(this.OnSearchTextChange);
-        this.LeftPanel.Add(this.SeachTextElement);
+        SeachTextElement = new TextField();
+        SeachTextElement.RegisterCallback<ChangeEvent<string>>(OnSearchTextChange);
+        LeftPanel.Add(SeachTextElement);
 
-        this.ObjectFieldParent = new ScrollView(ScrollViewMode.Vertical);
-        this.LeftPanel.Add(this.ObjectFieldParent);
+        ObjectFieldParent = new ScrollView(ScrollViewMode.Vertical);
+        LeftPanel.Add(ObjectFieldParent);
 
-        this.RootElement.Add(this.LeftPanel);
-        this.SelectedInteractiveObjectDetail = new SelectedInteractiveObjectDetail(this.RootElement);
+        RootElement.Add(LeftPanel);
+        SelectedInteractiveObjectDetail = new SelectedInteractiveObjectDetail(RootElement);
 
-        rootVisualElement.Add(this.RootElement);
+        rootVisualElement.Add(RootElement);
 
-        EditorApplication.playModeStateChanged += this.OnPlayModeStateChanged;
-        EditorApplication.update += this.Tick;
-        SceneView.duringSceneGui += this.SceneTick;
+        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+        EditorApplication.update += Tick;
+        SceneView.duringSceneGui += SceneTick;
     }
 
     private void OnDestroy()
     {
         Instance = null;
-        EditorApplication.playModeStateChanged -= this.OnPlayModeStateChanged;
-        EditorApplication.update -= this.Tick;
-        SceneView.duringSceneGui -= this.SceneTick;
+        EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+        EditorApplication.update -= Tick;
+        SceneView.duringSceneGui -= SceneTick;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void OnAfterSceneLoaded()
+    private static void OnAfterSceneLoaded()
     {
-
         Debug.Break();
     }
 
-    private Dictionary<object, ListenedObjectField> ListenableObjectFields = new Dictionary<object, ListenedObjectField>();
-    private Dictionary<string, VisualElement> ClassHeaderElements = new Dictionary<string, VisualElement>();
-
     private void OnPlayModeStateChanged(PlayModeStateChange state)
     {
-        if (state == PlayModeStateChange.EnteredPlayMode)
-        {
-            this.OnPlayModeEnter();
-        }
+        if (state == PlayModeStateChange.EnteredPlayMode) OnPlayModeEnter();
     }
 
     private void OnPlayModeEnter()
     {
-        InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectCreatedEventListener(this.OnInteractiveObjectCreated);
-        InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
-        RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(this.OnInteractiveObjectCreated);
-        RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(this.OnInteractiveObjectDestroyed);
+        InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectCreatedEventListener(OnInteractiveObjectCreated);
+        InteractiveObjectEventsManagerSingleton.Get().RegisterOnInteractiveObjectDestroyedEventListener(OnInteractiveObjectDestroyed);
+        RangeEventsManager.Get().RegisterOnRangeObjectCreatedEventListener(OnInteractiveObjectCreated);
+        RangeEventsManager.Get().RegisterOnRangeObjectDestroyedEventListener(OnInteractiveObjectDestroyed);
     }
 
     private void Tick()
@@ -97,39 +93,30 @@ public class InteractiveObjectDebugger : EditorWindow
         if (Application.isPlaying)
         {
             var allInteractiveObjects = InteractiveObjectV2Manager.Get().InteractiveObjects;
-            foreach (var interactiveObject in allInteractiveObjects)
-            {
-                this.OnInteractiveObjectCreated(interactiveObject);
-            }
+            foreach (var interactiveObject in allInteractiveObjects) OnInteractiveObjectCreated(interactiveObject);
 
             var allRangeObjects = RangeObjectV2Manager.Get().RangeObjects;
-            foreach (var rangeObject in allRangeObjects)
-            {
-                this.OnInteractiveObjectCreated(rangeObject);
-            }
+            foreach (var rangeObject in allRangeObjects) OnInteractiveObjectCreated(rangeObject);
 
-            this.SelectedInteractiveObjectDetail.OnGui();
+            SelectedInteractiveObjectDetail.OnGui();
         }
     }
 
     private void SceneTick(SceneView sceneView)
     {
-        foreach (var interactiveObjectField in this.ListenableObjectFields.Values)
-        {
-            interactiveObjectField.SceneTick(this.CommonGameConfigurations);
-        }
+        foreach (var interactiveObjectField in ListenableObjectFields.Values) interactiveObjectField.SceneTick(CommonGameConfigurations);
     }
 
     private void OnInteractiveObjectCreated(object interactiveObject)
     {
-        this.ListenableObjectFields.TryGetValue(interactiveObject, out ListenedObjectField InteractiveObjectField);
+        ListenableObjectFields.TryGetValue(interactiveObject, out var InteractiveObjectField);
         if (InteractiveObjectField == null)
         {
-            InteractiveObjectField = new ListenedObjectField(this.ObjectFieldParent, interactiveObject,
-                      OnInteractiveObjectFieldClicked: this.OnInteractiveObjectFieldClicked);
-            this.ListenableObjectFields.Add(interactiveObject, InteractiveObjectField);
+            InteractiveObjectField = new ListenedObjectField(ObjectFieldParent, interactiveObject,
+                OnInteractiveObjectFieldClicked);
+            ListenableObjectFields.Add(interactiveObject, InteractiveObjectField);
 
-            this.ClassHeaderElements.TryGetValue(interactiveObject.GetType().Name, out VisualElement header);
+            ClassHeaderElements.TryGetValue(interactiveObject.GetType().Name, out var header);
             if (header == null)
             {
                 header = new VisualElement();
@@ -143,30 +130,24 @@ public class InteractiveObjectDebugger : EditorWindow
                 headerText.style.unityFontStyleAndWeight = FontStyle.Bold;
 
                 header.Add(headerText);
-                this.ClassHeaderElements[interactiveObject.GetType().Name] = header;
-                this.ObjectFieldParent.Add(header);
+                ClassHeaderElements[interactiveObject.GetType().Name] = header;
+                ObjectFieldParent.Add(header);
             }
 
-            header.Add(this.ListenableObjectFields[interactiveObject]);
+            header.Add(ListenableObjectFields[interactiveObject]);
         }
     }
 
     private void OnInteractiveObjectDestroyed(object CoreInteractiveObject)
     {
-        this.ListenableObjectFields.TryGetValue(CoreInteractiveObject, out ListenedObjectField InteractiveObjectField);
+        ListenableObjectFields.TryGetValue(CoreInteractiveObject, out var InteractiveObjectField);
         if (InteractiveObjectField != null)
         {
-            if (this.SelectedInteractiveObjectDetail.CurrentInteracitveObjectFieldSelected == InteractiveObjectField)
-            {
-                this.SelectedInteractiveObjectDetail.ResetElement();
-            }
-            this.ClassHeaderElements.TryGetValue(CoreInteractiveObject.GetType().Name, out VisualElement header);
-            if (header != null)
-            {
-                header.Remove(InteractiveObjectField);
-            }
+            if (SelectedInteractiveObjectDetail.CurrentInteracitveObjectFieldSelected == InteractiveObjectField) SelectedInteractiveObjectDetail.ResetElement();
+            ClassHeaderElements.TryGetValue(CoreInteractiveObject.GetType().Name, out var header);
+            if (header != null) header.Remove(InteractiveObjectField);
 
-            this.ListenableObjectFields.Remove(CoreInteractiveObject);
+            ListenableObjectFields.Remove(CoreInteractiveObject);
         }
     }
 
@@ -179,231 +160,217 @@ public class InteractiveObjectDebugger : EditorWindow
             var allRangeObjects = RangeObjectV2Manager.Get().RangeObjects;
 
             var allInteractiveObjectsClassname = allInteractiveObjects.ToList()
-                   .Select(i => i).Where(i => string.IsNullOrEmpty(this.SeachTextElement.text) || i.InteractiveGameObject.InteractiveGameObjectParent.name.ToLower().Contains(this.SeachTextElement.text.ToLower())).ToList()
-                   .ConvertAll(i => i.GetType().Name)
-                   .Union(
-                        allRangeObjects.Select(r => r).Where(r => string.IsNullOrEmpty(this.SeachTextElement.text) || r.RangeGameObjectV2.RangeGameObject.name.ToLower().Contains(this.SeachTextElement.text.ToLower())).ToList()
-                            .ConvertAll(r => r.GetType().Name)
-                    )
-                   .ToList();
-            foreach (var classHeaderElement in this.ClassHeaderElements)
-            {
-                classHeaderElement.Value.style.display = allInteractiveObjectsClassname.Contains(classHeaderElement.Key) ? DisplayStyle.Flex : DisplayStyle.None;
-            }
+                .Select(i => i).Where(i => string.IsNullOrEmpty(SeachTextElement.text) || i.InteractiveGameObject.InteractiveGameObjectParent.name.ToLower().Contains(SeachTextElement.text.ToLower())).ToList()
+                .ConvertAll(i => i.GetType().Name)
+                .Union(
+                    allRangeObjects.Select(r => r).Where(r => string.IsNullOrEmpty(SeachTextElement.text) || r.RangeGameObjectV2.RangeGameObject.name.ToLower().Contains(SeachTextElement.text.ToLower())).ToList()
+                        .ConvertAll(r => r.GetType().Name)
+                )
+                .ToList();
+            foreach (var classHeaderElement in ClassHeaderElements) classHeaderElement.Value.style.display = allInteractiveObjectsClassname.Contains(classHeaderElement.Key) ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 
     private void OnInteractiveObjectFieldClicked(MouseDownEvent MouseDownEvent, ListenedObjectField InteractiveObjectField)
     {
-        foreach (var interactiveObjectField in this.ListenableObjectFields.Values)
+        foreach (var interactiveObjectField in ListenableObjectFields.Values)
         {
             interactiveObjectField.SetIsSelected(interactiveObjectField == InteractiveObjectField);
-            this.SelectedInteractiveObjectDetail.OnInteractiveObjectSelected(InteractiveObjectField);
+            SelectedInteractiveObjectDetail.OnInteractiveObjectSelected(InteractiveObjectField);
         }
     }
 }
 
-class ListenedObjectField : VisualElement
+internal class ListenedObjectField : VisualElement
 {
+    private Color InitialBackGroundColor;
     private BoolVariable IsSelected;
-
-    private Label ObjectLabel;
     private ObjectFieldIconBar ObjectFieldIconBar;
 
-    public GameObject ObjectReference { get; private set; }
-    public object ListenedObjectRef { get; private set; }
-
-    private Color InitialBackGroundColor;
+    private Label ObjectLabel;
 
     private Action<MouseDownEvent, ListenedObjectField> OnInteractiveObjectFieldClicked;
 
     public ListenedObjectField(VisualElement parent, object listenedField, Action<MouseDownEvent, ListenedObjectField> OnInteractiveObjectFieldClicked = null)
     {
-        this.ListenedObjectRef = listenedField;
+        ListenedObjectRef = listenedField;
 
         switch (listenedField)
         {
             case CoreInteractiveObject coreInteractiveObject:
-                this.ObjectReference = coreInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent;
+                ObjectReference = coreInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent;
                 break;
             case RangeObjectV2 rangeObjectV2:
-                this.ObjectReference = rangeObjectV2.RangeGameObjectV2.RangeGameObject;
+                ObjectReference = rangeObjectV2.RangeGameObjectV2.RangeGameObject;
                 break;
         }
 
         this.OnInteractiveObjectFieldClicked = OnInteractiveObjectFieldClicked;
-        this.IsSelected = new BoolVariable(false, this.OnInteractiveObjectSelected, this.OnInteractiveObjetDeSelected);
+        IsSelected = new BoolVariable(false, OnInteractiveObjectSelected, OnInteractiveObjetDeSelected);
 
-        this.InitialBackGroundColor = this.style.backgroundColor.value;
+        InitialBackGroundColor = style.backgroundColor.value;
 
-        this.ObjectFieldIconBar = new ObjectFieldIconBar(this);
+        ObjectFieldIconBar = new ObjectFieldIconBar(this);
 
-        this.ObjectLabel = new Label(this.ObjectReference.name);
-        this.ObjectLabel.style.marginLeft = 10f;
+        ObjectLabel = new Label(ObjectReference.name);
+        ObjectLabel.style.marginLeft = 10f;
 
-        this.Add(this.ObjectLabel);
+        Add(ObjectLabel);
 
 
         parent.Add(this);
 
-        this.style.flexDirection = FlexDirection.Row;
+        style.flexDirection = FlexDirection.Row;
 
-        this.RegisterCallback<MouseEnterEvent>(this.OnMouseEnter);
-        this.RegisterCallback<MouseOutEvent>(this.OnMouseExit);
-        this.RegisterCallback<MouseDownEvent>(this.OnMouseDown);
+        RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+        RegisterCallback<MouseOutEvent>(OnMouseExit);
+        RegisterCallback<MouseDownEvent>(OnMouseDown);
     }
 
-    public void SetIsSelected(bool value) { this.IsSelected.SetValue(value); }
+    public GameObject ObjectReference { get; private set; }
+    public object ListenedObjectRef { get; private set; }
+
+    public void SetIsSelected(bool value)
+    {
+        IsSelected.SetValue(value);
+    }
 
     public void SceneTick(CommonGameConfigurations CommonGameConfigurations)
     {
-        if (this.ObjectFieldIconBar.IsSceneHandleEnabled() && this.ObjectReference != null)
-        {
-            SceneHandlerDrawer.Draw(this.ListenedObjectRef, this.ObjectReference.transform, CommonGameConfigurations);
-        }
+        if (ObjectFieldIconBar.IsSceneHandleEnabled() && ObjectReference != null) SceneHandlerDrawer.Draw(ListenedObjectRef, ObjectReference.transform, CommonGameConfigurations);
     }
 
 
     private void OnMouseDown(MouseDownEvent MouseDownEvent)
     {
-        Selection.activeGameObject = this.ObjectReference;
-        if (this.OnInteractiveObjectFieldClicked != null) { this.OnInteractiveObjectFieldClicked.Invoke(MouseDownEvent, this); }
+        Selection.activeGameObject = ObjectReference;
+        if (OnInteractiveObjectFieldClicked != null) OnInteractiveObjectFieldClicked.Invoke(MouseDownEvent, this);
         MouseDownEvent.StopPropagation();
     }
 
     private void OnMouseEnter(MouseEnterEvent MouseEnterEvent)
     {
-        if (!this.IsSelected.GetValue())
-        {
-            this.style.backgroundColor = Color.gray;
-        }
+        if (!IsSelected.GetValue()) style.backgroundColor = Color.gray;
     }
 
     private void OnMouseExit(MouseOutEvent MouseOutEvent)
     {
-        if (!this.IsSelected.GetValue())
-        {
-            this.style.backgroundColor = this.InitialBackGroundColor;
-        }
+        if (!IsSelected.GetValue()) style.backgroundColor = InitialBackGroundColor;
     }
 
     private void OnInteractiveObjectSelected()
     {
-        this.style.backgroundColor = Color.cyan;
+        style.backgroundColor = Color.cyan;
     }
 
     private void OnInteractiveObjetDeSelected()
     {
-        this.style.backgroundColor = this.InitialBackGroundColor;
+        style.backgroundColor = InitialBackGroundColor;
     }
 }
 
-class ObjectFieldIconBar : VisualElement
+internal class ObjectFieldIconBar : VisualElement
 {
     private VisualElement Root;
 
     private ObjectFieldSelectionIcon SceneHandleSelection;
 
-    public bool IsSceneHandleEnabled()
-    {
-        return this.SceneHandleSelection.Selected.GetValue();
-    }
-
     public ObjectFieldIconBar(VisualElement parent)
     {
-        this.Root = new VisualElement();
-        this.Root.style.alignSelf = Align.FlexEnd;
-        this.Root.style.flexDirection = FlexDirection.Row;
-        this.SceneHandleSelection = new ObjectFieldSelectionIcon(this.Root, "G");
-        this.Add(Root);
-        this.style.marginLeft = 5f;
+        Root = new VisualElement();
+        Root.style.alignSelf = Align.FlexEnd;
+        Root.style.flexDirection = FlexDirection.Row;
+        SceneHandleSelection = new ObjectFieldSelectionIcon(Root, "G");
+        Add(Root);
+        style.marginLeft = 5f;
         parent.Add(this);
+    }
+
+    public bool IsSceneHandleEnabled()
+    {
+        return SceneHandleSelection.Selected.GetValue();
     }
 }
 
 public class ObjectFieldSelectionIcon : VisualElement
 {
     private Color initialBackgroundColor;
-    public BoolVariable Selected { get; private set; }
 
     public ObjectFieldSelectionIcon(VisualElement parent, string label)
     {
-        this.Selected = new BoolVariable(false, this.OnSelected, this.OnUnSelected);
-        this.initialBackgroundColor = this.style.backgroundColor.value;
+        Selected = new BoolVariable(false, OnSelected, OnUnSelected);
+        initialBackgroundColor = style.backgroundColor.value;
         var text = new Label(label);
-        this.Add(text);
-        this.RegisterCallback<MouseDownEvent>(this.OnClicked);
+        Add(text);
+        RegisterCallback<MouseDownEvent>(OnClicked);
         parent.Add(this);
     }
 
+    public BoolVariable Selected { get; private set; }
+
     private void OnClicked(MouseDownEvent evt)
     {
-        this.Selected.SetValue(!this.Selected.GetValue());
+        Selected.SetValue(!Selected.GetValue());
         evt.StopPropagation();
     }
 
     private void OnSelected()
     {
-        this.style.backgroundColor = Color.yellow;
+        style.backgroundColor = Color.yellow;
     }
+
     private void OnUnSelected()
     {
-        this.style.backgroundColor = this.initialBackgroundColor;
+        style.backgroundColor = initialBackgroundColor;
     }
-
 }
 
-class SelectedInteractiveObjectDetail : VisualElement
+internal class SelectedInteractiveObjectDetail : VisualElement
 {
-    public ListenedObjectField CurrentInteracitveObjectFieldSelected { get; private set; }
     private VisualElement CurrentElement;
     private List<IListenableVisualElement> CurrentIListenableVisualElementRefrerences = new List<IListenableVisualElement>();
 
     public SelectedInteractiveObjectDetail(VisualElement parent)
     {
         parent.Add(this);
-        this.style.flexGrow = 2f;
+        style.flexGrow = 2f;
     }
+
+    public ListenedObjectField CurrentInteracitveObjectFieldSelected { get; private set; }
 
     public void OnGui()
     {
-        foreach (var IListenableVisualElement in this.CurrentIListenableVisualElementRefrerences)
-        {
-            IListenableVisualElement.Refresh();
-        }
+        foreach (var IListenableVisualElement in CurrentIListenableVisualElementRefrerences) IListenableVisualElement.Refresh();
     }
 
     public void ResetElement()
     {
-        this.CurrentInteracitveObjectFieldSelected = null;
-        this.CurrentIListenableVisualElementRefrerences.Clear();
-        if (this.CurrentElement != null)
+        CurrentInteracitveObjectFieldSelected = null;
+        CurrentIListenableVisualElementRefrerences.Clear();
+        if (CurrentElement != null)
         {
-            this.Remove(this.CurrentElement);
-            this.CurrentElement = null;
+            Remove(CurrentElement);
+            CurrentElement = null;
         }
     }
 
     public void OnInteractiveObjectSelected(ListenedObjectField interactiveObjectField)
     {
-        this.ResetElement();
-        this.CurrentInteracitveObjectFieldSelected = interactiveObjectField;
+        ResetElement();
+        CurrentInteracitveObjectFieldSelected = interactiveObjectField;
 
-        var elem = VisualElementFromClass.BuildVisualElement(interactiveObjectField.ListenedObjectRef, ref this.CurrentIListenableVisualElementRefrerences);
-        this.Add(elem);
-        this.CurrentElement = elem;
+        var elem = VisualElementFromClass.BuildVisualElement(interactiveObjectField.ListenedObjectRef, ref CurrentIListenableVisualElementRefrerences);
+        Add(elem);
+        CurrentElement = elem;
     }
 }
 
-class NoSpaceToggle : Toggle
+internal class NoSpaceToggle : Toggle
 {
     public NoSpaceToggle(VisualElement parent, string label = "")
     {
         this.label = label;
-        if (!string.IsNullOrEmpty(label))
-        {
-            this.Q<Label>().style.minWidth = 0f;
-        }
+        if (!string.IsNullOrEmpty(label)) this.Q<Label>().style.minWidth = 0f;
         parent.Add(this);
     }
 }

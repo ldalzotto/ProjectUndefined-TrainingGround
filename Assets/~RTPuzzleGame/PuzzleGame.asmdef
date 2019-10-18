@@ -5,10 +5,10 @@
         "Editor_Common",
         "OdinSerializer",
         "GameConfigurationID",
-        "Unity.Burst",
         "Unity.RenderPipelines.Lightweight.Runtime",
         "InteractiveObjects",
-        "Obstacle"
+        "Obstacle",
+        "RangeObjects"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

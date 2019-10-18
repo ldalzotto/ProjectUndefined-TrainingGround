@@ -1,10 +1,10 @@
-using GameConfigurationID;
 using System.Collections.Generic;
+using GameConfigurationID;
+using RangeObjects;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-
     public class PuzzleGameConfigurationManager : MonoBehaviour
     {
         public PuzzleGameConfiguration PuzzleGameConfiguration;
@@ -24,7 +24,4 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.DottedLineConfiguration.ConfigurationInherentData;
         }
     }
-
-
-
 }

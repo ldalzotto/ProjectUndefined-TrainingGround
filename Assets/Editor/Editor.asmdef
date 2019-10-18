@@ -1,22 +1,23 @@
 {
-    "name": "Editor",
-    "references": [
-        "CoreGame",
-        "AdventureGame",
-        "PuzzleGame",
-        "Editor_Common",
-        "OdinSerializer",
-        "GameConfigurationID",
-        "InteractiveObjects"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": []
+  "name": "Editor",
+  "references": [
+    "CoreGame",
+    "AdventureGame",
+    "PuzzleGame",
+    "Editor_Common",
+    "OdinSerializer",
+    "GameConfigurationID",
+    "InteractiveObjects",
+    "RangeObjects"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": []
 }

@@ -1,45 +1,50 @@
+using System.Collections;
 using CoreGame;
 using InteractiveObjects;
-using System.Collections;
+using Obstacle;
+using RangeObjects;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-
     public class GameManager : AsbtractCoreGameManager
     {
-
-        #region Persistance Dependencies
-        private AInventoryMenu InventoryMenu;
-        #endregion
-        
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
-        private TutorialManager TutorialManager;
-        private PuzzleDiscussionManager PuzzleDiscussionManager;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
 #endif
 
+        #region Persistance Dependencies
+
+        private AInventoryMenu InventoryMenu;
+
+        #endregion
+
+        private PuzzleDiscussionManager PuzzleDiscussionManager;
+        private TutorialManager TutorialManager;
+
         private void Awake()
         {
-            GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
-            this.AfterGameManagerPersistanceInstanceInitialization();
+            FindObjectOfType<GameManagerPersistanceInstance>().Init();
+            AfterGameManagerPersistanceInstanceInitialization();
             //Level chunk initialization
-            base.OnAwake(LevelType.PUZZLE);
+            OnAwake(LevelType.PUZZLE);
         }
 
-        protected virtual void AfterGameManagerPersistanceInstanceInitialization() { }
+        protected virtual void AfterGameManagerPersistanceInstanceInitialization()
+        {
+        }
 
         private void Start()
         {
-            base.OnStart();
+            OnStart();
 
-            Coroutiner.Instance.StartCoroutine(this.EndOfFixedUpdate());
+            Coroutiner.Instance.StartCoroutine(EndOfFixedUpdate());
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
-            
+
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
             PuzzleDiscussionManager = PuzzleGameSingletonInstances.PuzzleDiscussionManager;
@@ -71,11 +76,11 @@ namespace RTPuzzle
 
         private void Update()
         {
-            if (!this.IsInitializing)
+            if (!IsInitializing)
             {
                 var d = Time.deltaTime;
 
-                this.BeforeTick(d);
+                BeforeTick(d);
 
                 if (!GameOverManager.Get().OnGameOver)
                 {
@@ -122,8 +127,6 @@ namespace RTPuzzle
 #if UNITY_EDITOR
                 EditorOnlyManagers.Tick(d);
 #endif
-
-
             }
         }
 
@@ -159,7 +162,7 @@ namespace RTPuzzle
             {
             }
 
-            yield return this.EndOfFixedUpdate();
+            yield return EndOfFixedUpdate();
         }
 
         private void OnDestroy()
@@ -173,18 +176,14 @@ namespace RTPuzzle
             {
                 PlayerActionManager.Get().GizmoTick();
                 ObstaclesListenerManager.Get().GizmoTick();
-                RangeIntersectionCalculatorV2Manager.Get().GizmoTick();
+                RangeIntersectionCalculatorManager.Get().GizmoTick();
             }
         }
 
         private void OnGUI()
         {
-            if (Application.isPlaying)
-            {
-                PlayerActionManager.Get().GUITick();
-            }
+            if (Application.isPlaying) PlayerActionManager.Get().GUITick();
         }
-
     }
 
 #if UNITY_EDITOR
@@ -204,5 +203,4 @@ namespace RTPuzzle
         }
     }
 #endif
-
 }

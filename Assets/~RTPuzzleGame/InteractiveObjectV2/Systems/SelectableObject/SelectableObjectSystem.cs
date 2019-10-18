@@ -1,80 +1,88 @@
 ﻿using CoreGame;
+using GameConfigurationID;
+using RangeObjects;
 using RTPuzzle;
 using UnityEngine;
 
 namespace InteractiveObjects
 {
-
     #region Callback Events
+
     public delegate void OnPlayerTriggerInSelectionEnterDelegate(CoreInteractiveObject IntersectedInteractiveObject);
+
     public delegate void OnPlayerTriggerInSelectionExitDelegate(CoreInteractiveObject IntersectedInteractiveObject);
+
     public delegate RTPPlayerAction ProvideSelectableObjectPlayerActionDelegate(PlayerInteractiveObject PlayerInteractiveObject);
+
     #endregion
 
     public class SelectableObjectSystem : AInteractiveObjectSystem, ISelectableModule
     {
         private CoreInteractiveObject AssociatedInteractiveObject;
-        private RangeObjectV2 SphereRange;
         private RTPPlayerAction AssociatedPlayerAction;
 
+        private ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerActionDelegate;
+
         #region External Dependencies
+
         private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
+
         #endregion
 
-        private ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerActionDelegate;
+        private RangeObjectV2 SphereRange;
 
         public SelectableObjectSystem(CoreInteractiveObject AssociatedInteractiveObject,
             SelectableObjectSystemDefinition SelectableObjectSystemDefinition,
             ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerAction)
         {
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
-            this.SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization()
-            {
-                RangeTypeID = GameConfigurationID.RangeTypeID.NOT_DISPLAYED,
-                IsTakingIntoAccountObstacles = false,
-                SphereRangeTypeDefinition = new SphereRangeTypeDefinition
+            SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization()
                 {
-                    Radius = SelectableObjectSystemDefinition.SelectionRange
-                }
-            }, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_SelectionRangeTrigger");
-            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new SelectableObjectPhysicsEventListener(this.OnPlayerTriggerInSelectionEnter, this.OnPlayerTriggerInSelectionExit) });
-            this.ProvideSelectableObjectPlayerActionDelegate = ProvideSelectableObjectPlayerAction;
-        }
-
-        private void OnPlayerTriggerInSelectionEnter(CoreInteractiveObject IntersectedInteractiveObject)
-        {
-            this.AssociatedPlayerAction = this.ProvideSelectableObjectPlayerActionDelegate((PlayerInteractiveObject)IntersectedInteractiveObject);
-            this.PuzzleEventsManager.PZ_EVT_OnActionInteractableEnter(this);
-        }
-
-        private void OnPlayerTriggerInSelectionExit(CoreInteractiveObject IntersectedInteractiveObject)
-        {
-            this.PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
-            this.AssociatedPlayerAction = null;
-        }
-
-        public override void OnDestroy()
-        { 
-            this.SphereRange.OnDestroy();
+                    RangeTypeID = RangeTypeID.NOT_DISPLAYED,
+                    IsTakingIntoAccountObstacles = false,
+                    SphereRangeTypeDefinition = new SphereRangeTypeDefinition
+                    {
+                        Radius = SelectableObjectSystemDefinition.SelectionRange
+                    }
+                }, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_SelectionRangeTrigger");
+            SphereRange.RegisterPhysicsEventListener(new SelectableObjectPhysicsEventListener(OnPlayerTriggerInSelectionEnter, OnPlayerTriggerInSelectionExit));
+            ProvideSelectableObjectPlayerActionDelegate = ProvideSelectableObjectPlayerAction;
         }
 
         public RTPPlayerAction GetAssociatedPlayerAction()
         {
-            return this.AssociatedPlayerAction;
+            return AssociatedPlayerAction;
         }
 
         public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
-            return this.AssociatedInteractiveObject.InteractiveGameObject.AverageModelBounds;
+            return AssociatedInteractiveObject.InteractiveGameObject.AverageModelBounds;
         }
 
         public Transform GetTransform()
         {
-            return this.AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform;
+            return AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform;
+        }
+
+        private void OnPlayerTriggerInSelectionEnter(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            AssociatedPlayerAction = ProvideSelectableObjectPlayerActionDelegate((PlayerInteractiveObject) IntersectedInteractiveObject);
+            PuzzleEventsManager.PZ_EVT_OnActionInteractableEnter(this);
+        }
+
+        private void OnPlayerTriggerInSelectionExit(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
+            AssociatedPlayerAction = null;
+        }
+
+        public override void OnDestroy()
+        {
+            SphereRange.OnDestroy();
         }
     }
 
-    class SelectableObjectPhysicsEventListener : ARangeObjectV2PhysicsEventListener
+    internal class SelectableObjectPhysicsEventListener : ARangeObjectV2PhysicsEventListener
     {
         private InteractiveObjectTagStruct InteractiveObjectTagStruct;
 
@@ -83,24 +91,24 @@ namespace InteractiveObjects
 
         public SelectableObjectPhysicsEventListener(OnPlayerTriggerInSelectionEnterDelegate OnPlayerTriggerInSelectionEnter, OnPlayerTriggerInSelectionExitDelegate OnPlayerTriggerInSelectionExit)
         {
-            this.InteractiveObjectTagStruct = new InteractiveObjectTagStruct { IsPlayer = 1 };
+            InteractiveObjectTagStruct = new InteractiveObjectTagStruct {IsPlayer = 1};
             this.OnPlayerTriggerInSelectionEnter = OnPlayerTriggerInSelectionEnter;
             this.OnPlayerTriggerInSelectionExit = OnPlayerTriggerInSelectionExit;
         }
 
         public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            return this.InteractiveObjectTagStruct.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
+            return InteractiveObjectTagStruct.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
         }
 
         public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
-            this.OnPlayerTriggerInSelectionEnter.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
+            OnPlayerTriggerInSelectionEnter.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
         }
 
         public override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
-            this.OnPlayerTriggerInSelectionExit.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
+            OnPlayerTriggerInSelectionExit.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
         }
     }
 }

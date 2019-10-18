@@ -2,10 +2,9 @@
     "name": "InteractiveObjects",
     "references": [
         "GUID:bf33ead00b68e7843b03838c3c92d67b",
-        "GUID:069be6bdb41f91a41b8f1fe8eb5e357e",
-        "GUID:83a23e85924b27e419c0fada7259185a",
-        "GUID:c053b87db31a54549a9bb1738d8353f4",
-        "GUID:18572ca2bc29c7f49acd7b6782aec78e"
+        "CoreGame",
+        "OdinSerializer",
+        "Editor_Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

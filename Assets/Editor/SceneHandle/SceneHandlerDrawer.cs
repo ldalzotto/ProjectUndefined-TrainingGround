@@ -1,8 +1,8 @@
-﻿using CoreGame;
-using Editor_MainGameCreationWizard;
-using RTPuzzle;
-using System;
+﻿using System;
 using System.Reflection;
+using CoreGame;
+using Editor_MainGameCreationWizard;
+using RangeObjects;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,27 +21,21 @@ public static class SceneHandlerDrawer
                     var configurationAsset = CommonGameConfigurations.GetConfiguration(DrawConfigurationAttribute.ConfigurationType);
                     if (configurationAsset != null)
                     {
-                        configurationAsset.GetEntryTry((Enum)field.GetValue(drawableObject), out ScriptableObject configurationDataObject);
-                        if (configurationDataObject != null)
-                        {
-                            Draw(configurationDataObject, objectTransform, CommonGameConfigurations);
-                        }
+                        configurationAsset.GetEntryTry((Enum) field.GetValue(drawableObject), out var configurationDataObject);
+                        if (configurationDataObject != null) Draw(configurationDataObject, objectTransform, CommonGameConfigurations);
                     }
                 }
 
                 var DrawNestedAttribute = field.GetCustomAttribute<DrawNestedAttribute>() as DrawNestedAttribute;
-                if (DrawNestedAttribute != null)
-                {
-                    Draw(field.GetValue(drawableObject), objectTransform, CommonGameConfigurations);
-                }
+                if (DrawNestedAttribute != null) Draw(field.GetValue(drawableObject), objectTransform, CommonGameConfigurations);
 
                 var AbstractSceneHandleAttribute = field.GetCustomAttribute<AbstractSceneHandleAttribute>(true) as AbstractSceneHandleAttribute;
                 if (AbstractSceneHandleAttribute != null)
                 {
                     if (AbstractSceneHandleAttribute.GetType() == typeof(WireArcAttribute))
                     {
-                        var WireArcAttribute = (WireArcAttribute)AbstractSceneHandleAttribute;
-                        float semiAngle = GetFieldValue<float>(drawableObject, field);
+                        var WireArcAttribute = (WireArcAttribute) AbstractSceneHandleAttribute;
+                        var semiAngle = GetFieldValue<float>(drawableObject, field);
 
                         SetupColors(WireArcAttribute.GetColor());
 
@@ -51,9 +45,9 @@ public static class SceneHandlerDrawer
                     }
                     else if (AbstractSceneHandleAttribute.GetType() == typeof(WireCircleAttribute))
                     {
-                        var WireCircleAttribute = (WireCircleAttribute)AbstractSceneHandleAttribute;
+                        var WireCircleAttribute = (WireCircleAttribute) AbstractSceneHandleAttribute;
 
-                        float radius = GetFieldValue<float>(drawableObject, field);
+                        var radius = GetFieldValue<float>(drawableObject, field);
 
                         SetupColors(WireCircleAttribute.GetColor());
 
@@ -63,34 +57,34 @@ public static class SceneHandlerDrawer
                     }
                     else if (AbstractSceneHandleAttribute.GetType() == typeof(WireBoxAttribute))
                     {
-                        var WireBoxAttribute = (WireBoxAttribute)AbstractSceneHandleAttribute;
+                        var WireBoxAttribute = (WireBoxAttribute) AbstractSceneHandleAttribute;
 
-                        var center = (Vector3)drawableObject.GetType().GetField(WireBoxAttribute.CenterFieldName).GetValue(drawableObject);
-                        var size = (Vector3)drawableObject.GetType().GetField(WireBoxAttribute.SizeFieldName).GetValue(drawableObject);
+                        var center = (Vector3) drawableObject.GetType().GetField(WireBoxAttribute.CenterFieldName).GetValue(drawableObject);
+                        var size = (Vector3) drawableObject.GetType().GetField(WireBoxAttribute.SizeFieldName).GetValue(drawableObject);
 
                         SetupColors(WireBoxAttribute.GetColor());
                         HandlesHelper.DrawBox(center, size, objectTransform, WireBoxAttribute.GetColor(), drawableObject.GetType().Name, MyEditorStyles.SceneDrawDynamicLabelStyle);
                     }
                     else if (AbstractSceneHandleAttribute.GetType() == typeof(WireFrustumAttribute))
                     {
-                        var WireFrustumAttribute = (WireFrustumAttribute)AbstractSceneHandleAttribute;
-                        var frustum = (FrustumV2)field.GetValue(drawableObject);
+                        var WireFrustumAttribute = (WireFrustumAttribute) AbstractSceneHandleAttribute;
+                        var frustum = (FrustumV2) field.GetValue(drawableObject);
                         SetupColors(WireFrustumAttribute.GetColor());
-                        DrawFrustum(frustum, objectTransform, isRounded: false);
+                        DrawFrustum(frustum, objectTransform, false);
                     }
                     else if (AbstractSceneHandleAttribute.GetType() == typeof(WireRoundedFrustumAttribute))
                     {
-                        var WireRoundedFrustumAttribute = (WireRoundedFrustumAttribute)AbstractSceneHandleAttribute;
-                        var frustum = (FrustumV2)field.GetValue(drawableObject);
+                        var WireRoundedFrustumAttribute = (WireRoundedFrustumAttribute) AbstractSceneHandleAttribute;
+                        var frustum = (FrustumV2) field.GetValue(drawableObject);
                         SetupColors(WireRoundedFrustumAttribute.GetColor());
-                        DrawFrustum(frustum, objectTransform, isRounded: true);
+                        DrawFrustum(frustum, objectTransform, true);
                     }
                     else if (AbstractSceneHandleAttribute.GetType() == typeof(WireDirectionalLineAttribute))
                     {
-                        var WireLineAttribute = (WireDirectionalLineAttribute)AbstractSceneHandleAttribute;
-                        var lineLength = (float)field.GetValue(drawableObject);
+                        var WireLineAttribute = (WireDirectionalLineAttribute) AbstractSceneHandleAttribute;
+                        var lineLength = (float) field.GetValue(drawableObject);
                         SetupColors(WireLineAttribute.GetColor());
-                        Handles.DrawLine(objectTransform.transform.position, objectTransform.transform.position + (new Vector3(WireLineAttribute.dX, WireLineAttribute.dY, WireLineAttribute.dZ) * lineLength));
+                        Handles.DrawLine(objectTransform.transform.position, objectTransform.transform.position + new Vector3(WireLineAttribute.dX, WireLineAttribute.dY, WireLineAttribute.dZ) * lineLength);
                     }
                 }
             }
@@ -99,7 +93,7 @@ public static class SceneHandlerDrawer
 
     private static T GetFieldValue<T>(object drawableObject, FieldInfo field)
     {
-        T value = default(T);
+        var value = default(T);
         /*
         if (typeof(IByEnumProperty).IsAssignableFrom(field.GetValue(drawableObject).GetType()))
         {
@@ -114,7 +108,7 @@ public static class SceneHandlerDrawer
         else
         {
         */
-        value = (T)field.GetValue(drawableObject);
+        value = (T) field.GetValue(drawableObject);
         // }
 
         return value;
@@ -133,8 +127,8 @@ public static class SceneHandlerDrawer
 
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
-        frustum.CalculateFrustumWorldPositionyFace(out FrustumPointsPositions LocalFrustumPointPositions, new TransformStruct { WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one });
-        var frustumWorldPositions = new RangeFrustumWorldPositioning { LocalFrustumPositions = LocalFrustumPointPositions }.GetWorldFrustumPositions(transform.localToWorldMatrix);
+        frustum.CalculateFrustumWorldPositionyFace(out var LocalFrustumPointPositions, new TransformStruct {WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one});
+        var frustumWorldPositions = new RangeFrustumWorldPositioning {LocalFrustumPositions = LocalFrustumPointPositions}.GetWorldFrustumPositions(transform.localToWorldMatrix);
         DrawFace(frustumWorldPositions.FC1, frustumWorldPositions.FC2, frustumWorldPositions.FC3, frustumWorldPositions.FC4);
         DrawFace(frustumWorldPositions.FC1, frustumWorldPositions.FC5, frustumWorldPositions.FC6, frustumWorldPositions.FC2);
         DrawFace(frustumWorldPositions.FC2, frustumWorldPositions.FC6, frustumWorldPositions.FC7, frustumWorldPositions.FC3);
@@ -142,10 +136,7 @@ public static class SceneHandlerDrawer
         DrawFace(frustumWorldPositions.FC4, frustumWorldPositions.FC8, frustumWorldPositions.FC5, frustumWorldPositions.FC1);
         DrawFace(frustumWorldPositions.FC5, frustumWorldPositions.FC6, frustumWorldPositions.FC7, frustumWorldPositions.FC8);
 
-        if (isRounded)
-        {
-            Handles.DrawWireDisc(transform.position, transform.up, frustum.FaceDistance);
-        }
+        if (isRounded) Handles.DrawWireDisc(transform.position, transform.up, frustum.FaceDistance);
     }
 
     private static void DrawFace(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4)

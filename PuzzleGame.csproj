@@ -77,17 +77,11 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\Managers\GameOverManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\IsOccludedByObstacleStep.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\RangeIntersectionCalculationManagerV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\RangeIntersectionJob.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfigurationData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\LevelCompletion\Managers\LevelCompletionManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\ExposedInterfaces\ISelectableModule.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\Managers\InteractiveObjectSelectionManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ObstacleOcclusionCalculationManagerV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstacleListenerSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstaclesListenerManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionInherentData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionType.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\DummyAction\DummyPlayerActionInherentData.cs" />
@@ -96,25 +90,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Configuration\RangeConfiguration\RangeTypeConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Configuration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionCalculatorV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionCalculatorV2Manager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Managers\RangeObjectV2Manager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Managers\RangeObjectV2ManagerOperations.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeGameObjectV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectBoundingColliderBuilder.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitializer\InitializerTypes\BoxRangeObjectInitialization.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitializer\InitializerTypes\FrustumRangeObjectInitialization.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitializer\InitializerTypes\RoundedFrustumRangeObjectInitialization.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitializer\InitializerTypes\SphereRangeObjectInitialization.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitializer\RangeObjectInitialization.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitializer\RangeObjectInitializer.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectRenderingDataProvider\RangeObjectRenderingDataProvider.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectSystems\RangeIntersectionV2System.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectSystems\RangeObjectV2Systems.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectV2PhysicsEventListener.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\TimeFlow\Managers\TimeFlowBarGameObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\TimeFlow\Managers\TimeFlowBarManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\TimeFlow\Managers\TimeFlowManager.cs" />
@@ -140,7 +115,6 @@
      <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveAIObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveObjectInitializerData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTest.cs" />
@@ -180,9 +154,6 @@
      <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\PuzzleTutorialEventSender.cs" />
      <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
      <None Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Shader\DottedLineShader.shader" />
- <Reference Include="Unity.Burst">
- <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
- </Reference>
  <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
  </Reference>
@@ -383,6 +354,9 @@
  </Reference>
  <Reference Include="Unity.Burst.Unsafe">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
+ </Reference>
+ <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+ <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.9f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -763,6 +737,10 @@
     <ProjectReference Include="Obstacle.csproj">
       <Project>{A56A5795-1CB9-EF28-85DE-67DC873B52CC}</Project>
       <Name>Obstacle</Name>
+    </ProjectReference>
+    <ProjectReference Include="RangeObjects.csproj">
+      <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
+      <Name>RangeObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

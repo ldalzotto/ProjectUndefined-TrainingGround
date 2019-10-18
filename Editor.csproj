@@ -498,6 +498,9 @@
  <Reference Include="Unity.Burst.Unsafe">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
  </Reference>
+ <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+ <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+ </Reference>
  <Reference Include="nunit.framework">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
  </Reference>
@@ -884,6 +887,10 @@
     <ProjectReference Include="InteractiveObjects.csproj">
       <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
       <Name>InteractiveObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="RangeObjects.csproj">
+      <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
+      <Name>RangeObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

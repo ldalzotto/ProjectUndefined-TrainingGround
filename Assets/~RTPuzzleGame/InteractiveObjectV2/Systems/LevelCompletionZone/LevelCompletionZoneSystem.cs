@@ -1,5 +1,5 @@
-﻿using RTPuzzle;
-using System;
+﻿using System;
+using RangeObjects;
 
 namespace InteractiveObjects
 {
@@ -11,17 +11,14 @@ namespace InteractiveObjects
             InteractiveObjectTagStruct ComparedInteractiveObjectTagStruct,
             Action<CoreInteractiveObject> OnLevelCompletionTriggerEnterPlayer)
         {
-            this.LevelCompletionZoneObject = RangeObjectV2Builder.Build(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent,
-              LevelCompletionZoneSystemDefinition.TriggerRangeObjectInitialization, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_LevelCompletionZoneListener");
-            this.LevelCompletionZoneObject.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener
-            {
-                ARangeObjectV2PhysicsEventListener = new RangeObjectV2PhysicsEventListener_Delegated(ComparedInteractiveObjectTagStruct, onTriggerEnterAction: OnLevelCompletionTriggerEnterPlayer)
-            });
+            LevelCompletionZoneObject = RangeObjectV2Builder.Build(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent,
+                LevelCompletionZoneSystemDefinition.TriggerRangeObjectInitialization, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_LevelCompletionZoneListener");
+            LevelCompletionZoneObject.RegisterPhysicsEventListener(new RangeObjectV2PhysicsEventListener_Delegated(ComparedInteractiveObjectTagStruct, OnLevelCompletionTriggerEnterPlayer));
         }
 
         public override void OnDestroy()
         {
-            this.LevelCompletionZoneObject.OnDestroy();
+            LevelCompletionZoneObject.OnDestroy();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using RangeObjects;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -14,7 +15,7 @@ namespace RTPuzzle
 
         public BoxRangeBufferData ToBoxBuffer()
         {
-            var boxFrustum = Intersection.ConvertBoxColliderToFrustumPoints(this.BoxRangeObjectRenderingDataProvider.GetBoundingBoxDefinition());
+            var boxFrustum = Intersection.ConvertBoxColliderToFrustumPoints(BoxRangeObjectRenderingDataProvider.GetBoundingBoxDefinition());
             var boxRangeBufferData = new BoxRangeBufferData();
 
             boxRangeBufferData.FC1 = boxFrustum.FC1;
@@ -30,21 +31,16 @@ namespace RTPuzzle
             boxRangeBufferData.normal5 = boxFrustum.normal5;
             boxRangeBufferData.normal6 = boxFrustum.normal6;
 
-            boxRangeBufferData.BoundingBoxMax = this.BoxRangeObjectRenderingDataProvider.BoundingBoxCollider.bounds.max;
-            boxRangeBufferData.BoundingBoxMin = this.BoxRangeObjectRenderingDataProvider.BoundingBoxCollider.bounds.min;
+            boxRangeBufferData.BoundingBoxMax = BoxRangeObjectRenderingDataProvider.BoundingBoxCollider.bounds.max;
+            boxRangeBufferData.BoundingBoxMin = BoxRangeObjectRenderingDataProvider.BoundingBoxCollider.bounds.min;
 
-            if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
-            {
-                boxRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
-            }
+            if (rangeTypeInherentConfigurationData.RangeColorProvider != null)
+                boxRangeBufferData.AuraColor = rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
             else
-            {
-                boxRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
-            }
+                boxRangeBufferData.AuraColor = rangeTypeInherentConfigurationData.RangeBaseColor;
 
             return boxRangeBufferData;
         }
-
     }
 
     public struct BoxRangeBufferData
@@ -69,8 +65,7 @@ namespace RTPuzzle
 
         public static int GetByteSize()
         {
-            return ((13 * 3) + 4) * sizeof(float);
+            return (13 * 3 + 4) * sizeof(float);
         }
     }
-
 }

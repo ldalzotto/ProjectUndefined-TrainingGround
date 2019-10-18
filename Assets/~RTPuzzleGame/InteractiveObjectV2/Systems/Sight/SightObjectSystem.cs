@@ -1,22 +1,18 @@
-﻿using GameConfigurationID;
-using RTPuzzle;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GameConfigurationID;
+using RangeObjects;
 
 namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class SightObjectSystem : AInteractiveObjectSystem
     {
-        [DrawNested]
-        private RangeObjectV2 SightRange;
-
-        [VE_Array]
-        private List<CoreInteractiveObject> currentlyIntersectedInteractiveObjects = new List<CoreInteractiveObject>();
-        public List<CoreInteractiveObject> CurrentlyIntersectedInteractiveObjects { get => currentlyIntersectedInteractiveObjects; }
+        [VE_Array] private List<CoreInteractiveObject> currentlyIntersectedInteractiveObjects = new List<CoreInteractiveObject>();
 
         private Action<CoreInteractiveObject> OnSightObjectSystemJustIntersected;
         private Action<CoreInteractiveObject> OnSightObjectSystemNoMoreIntersected;
+        [DrawNested] private RangeObjectV2 SightRange;
 
         public SightObjectSystem(CoreInteractiveObject AssocaitedInteractiveObject, SightObjectSystemDefinition SightObjectSystemDefinition, InteractiveObjectTagStruct PhysicsTagEventGuard,
             Action<CoreInteractiveObject> OnSightObjectSystemJustIntersected,
@@ -26,33 +22,31 @@ namespace InteractiveObjects
             this.OnSightObjectSystemJustIntersected = OnSightObjectSystemJustIntersected;
             this.OnSightObjectSystemNoMoreIntersected = OnSightObjectSystemNoMoreIntersected;
 
-            this.SightRange = new RoundedFrustumRangeObjectV2(AssocaitedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new RoundedFrustumRangeObjectInitialization
-            {
-                IsTakingIntoAccountObstacles = true,
-                RangeTypeID = RangeTypeID.SIGHT_VISION,
-                RoundedFrustumRangeTypeDefinition = new RoundedFrustumRangeTypeDefinition
+            SightRange = new RoundedFrustumRangeObjectV2(AssocaitedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new RoundedFrustumRangeObjectInitialization
                 {
-                    FrustumV2 = SightObjectSystemDefinition.Frustum
-                }
-            }, AssocaitedInteractiveObject, AssocaitedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_SightObject");
-            this.SightRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent
-            {
-                ARangeIntersectionV2Listener = new RangeIntersectionV2Listener_Delegated(this.SightRange, PhysicsTagEventGuard,
-                    OnJustIntersectedAction: this.OnSightJustIntersected, OnInterestedNothingAction: OnSightObjectSystemIntersectedNothing, OnJustNotIntersectedAction: this.OnSightNoMoreIntersected)
-            });
+                    IsTakingIntoAccountObstacles = true,
+                    RangeTypeID = RangeTypeID.SIGHT_VISION,
+                    RoundedFrustumRangeTypeDefinition = new RoundedFrustumRangeTypeDefinition
+                    {
+                        FrustumV2 = SightObjectSystemDefinition.Frustum
+                    }
+                }, AssocaitedInteractiveObject, AssocaitedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_SightObject");
+            SightRange.RegisterIntersectionEventListener(new RangeIntersectionV2Listener_Delegated(SightRange, PhysicsTagEventGuard,
+                OnJustIntersectedAction: OnSightJustIntersected, OnInterestedNothingAction: OnSightObjectSystemIntersectedNothing, OnJustNotIntersectedAction: OnSightNoMoreIntersected));
         }
+
+        public List<CoreInteractiveObject> CurrentlyIntersectedInteractiveObjects => currentlyIntersectedInteractiveObjects;
 
         private void OnSightJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            this.currentlyIntersectedInteractiveObjects.Add(IntersectedInteractiveObject);
-            if (this.OnSightObjectSystemJustIntersected != null) { this.OnSightObjectSystemJustIntersected.Invoke(IntersectedInteractiveObject); }
+            currentlyIntersectedInteractiveObjects.Add(IntersectedInteractiveObject);
+            if (OnSightObjectSystemJustIntersected != null) OnSightObjectSystemJustIntersected.Invoke(IntersectedInteractiveObject);
         }
+
         private void OnSightNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            this.currentlyIntersectedInteractiveObjects.Remove(IntersectedInteractiveObject);
-            if (this.OnSightObjectSystemNoMoreIntersected != null) { this.OnSightObjectSystemNoMoreIntersected.Invoke(IntersectedInteractiveObject); }
+            currentlyIntersectedInteractiveObjects.Remove(IntersectedInteractiveObject);
+            if (OnSightObjectSystemNoMoreIntersected != null) OnSightObjectSystemNoMoreIntersected.Invoke(IntersectedInteractiveObject);
         }
-
     }
 }
-

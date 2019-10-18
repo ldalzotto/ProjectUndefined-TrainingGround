@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RangeObjects;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -13,10 +14,9 @@ namespace RTPuzzle
 
         public RoundedFrustumRangeBufferData ToFrustumBuffer()
         {
-
             var RoundedFrustumRangeBufferData = new RoundedFrustumRangeBufferData();
 
-            var frustumPointsWorldPositions = this.RoundedFrustumRangeObjectRenderingDataProvider.GetFrustumWorldPosition();
+            var frustumPointsWorldPositions = RoundedFrustumRangeObjectRenderingDataProvider.GetFrustumWorldPosition();
             RoundedFrustumRangeBufferData.FC1 = frustumPointsWorldPositions.FC1;
             RoundedFrustumRangeBufferData.FC2 = frustumPointsWorldPositions.FC2;
             RoundedFrustumRangeBufferData.FC3 = frustumPointsWorldPositions.FC3;
@@ -28,31 +28,23 @@ namespace RTPuzzle
             RoundedFrustumRangeBufferData.normal4 = frustumPointsWorldPositions.normal4;
             RoundedFrustumRangeBufferData.normal5 = frustumPointsWorldPositions.normal5;
             RoundedFrustumRangeBufferData.normal6 = frustumPointsWorldPositions.normal6;
-       
 
-            RoundedFrustumRangeBufferData.BoundingBoxMax = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.max;
-            RoundedFrustumRangeBufferData.BoundingBoxMin = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.min;
 
-            RoundedFrustumRangeBufferData.RangeRadius = this.RoundedFrustumRangeObjectRenderingDataProvider.Frustum.GetFrustumFaceRadius();
-            RoundedFrustumRangeBufferData.CenterWorldPosition = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.transform.position;
-            
-            if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
-            {
-                RoundedFrustumRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
-            }
+            RoundedFrustumRangeBufferData.BoundingBoxMax = RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.max;
+            RoundedFrustumRangeBufferData.BoundingBoxMin = RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.min;
+
+            RoundedFrustumRangeBufferData.RangeRadius = RoundedFrustumRangeObjectRenderingDataProvider.Frustum.GetFrustumFaceRadius();
+            RoundedFrustumRangeBufferData.CenterWorldPosition = RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.transform.position;
+
+            if (rangeTypeInherentConfigurationData.RangeColorProvider != null)
+                RoundedFrustumRangeBufferData.AuraColor = rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
             else
-            {
-                RoundedFrustumRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
-            }
-            
-            if (this.RoundedFrustumRangeObjectRenderingDataProvider.IsTakingObstacleIntoConsideration())
-            {
+                RoundedFrustumRangeBufferData.AuraColor = rangeTypeInherentConfigurationData.RangeBaseColor;
+
+            if (RoundedFrustumRangeObjectRenderingDataProvider.IsTakingObstacleIntoConsideration())
                 RoundedFrustumRangeBufferData.OccludedByFrustums = 1;
-            }
             else
-            {
                 RoundedFrustumRangeBufferData.OccludedByFrustums = 0;
-            }
 
             return RoundedFrustumRangeBufferData;
         }
@@ -78,13 +70,13 @@ namespace RTPuzzle
 
         public float RangeRadius;
         public Vector3 CenterWorldPosition;
-        
+
         public int OccludedByFrustums;
         public Vector4 AuraColor;
 
         public static int GetByteSize()
         {
-            return (((3 * 5) + (3 * 6) + (3 * 2) + 4 + 1 + 3) * sizeof(float)) + ((1) * sizeof(int));
+            return (3 * 5 + 3 * 6 + 3 * 2 + 4 + 1 + 3) * sizeof(float) + 1 * sizeof(int);
         }
     };
 }

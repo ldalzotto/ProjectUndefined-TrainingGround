@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameConfigurationID;
+using Obstacle;
+using RangeObjects;
 
 namespace RTPuzzle
 {
@@ -22,75 +24,64 @@ namespace RTPuzzle
         public AbstractGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData)
         {
             this.rangeTypeInherentConfigurationData = rangeTypeInherentConfigurationData;
-            this.isGroundEffectTypeToRenderChanged = false;
-            this.groundEffectTypesToRender = new List<GroundEffectType>();
+            isGroundEffectTypeToRenderChanged = false;
+            groundEffectTypesToRender = new List<GroundEffectType>();
         }
 
         public void Tick(float d, List<GroundEffectType> affectedGroundEffectsType)
         {
-            List<GroundEffectType> involvedGroundEffectsType = new List<GroundEffectType>();
+            var involvedGroundEffectsType = new List<GroundEffectType>();
 
             if (affectedGroundEffectsType != null)
             {
                 foreach (var affectedGroundEffectType in affectedGroundEffectsType)
-                {
                     if (affectedGroundEffectType.MeshRenderer.isVisible
-                        && this.rangeObjectRenderingDataProvider.BoundingCollider.bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
-                    {
+                        && rangeObjectRenderingDataProvider.BoundingCollider.bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
                         involvedGroundEffectsType.Add(affectedGroundEffectType);
-                    }
-                }
 
-                this.isGroundEffectTypeToRenderChanged = false;
-                if (involvedGroundEffectsType.Count != this.groundEffectTypesToRender.Count)
-                {
-                    this.isGroundEffectTypeToRenderChanged = true;
-                }
+                isGroundEffectTypeToRenderChanged = false;
+                if (involvedGroundEffectsType.Count != groundEffectTypesToRender.Count) isGroundEffectTypeToRenderChanged = true;
 
-                if (!this.isGroundEffectTypeToRenderChanged)
-                {
+                if (!isGroundEffectTypeToRenderChanged)
                     foreach (var involvedGroundEffectType in involvedGroundEffectsType)
-                    {
-                        if (!this.groundEffectTypesToRender.Contains(involvedGroundEffectType))
+                        if (!groundEffectTypesToRender.Contains(involvedGroundEffectType))
                         {
-                            this.isGroundEffectTypeToRenderChanged = true;
+                            isGroundEffectTypeToRenderChanged = true;
                             break;
                         }
-                    }
-                }
             }
             else
             {
-                this.isGroundEffectTypeToRenderChanged = true;
+                isGroundEffectTypeToRenderChanged = true;
             }
 
-            this.groundEffectTypesToRender = involvedGroundEffectsType;
+            groundEffectTypesToRender = involvedGroundEffectsType;
         }
 
         public void OnRangeCreated(ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider)
         {
             this.rangeObjectRenderingDataProvider = rangeObjectRenderingDataProvider;
-            this.Tick(0, null);
+            Tick(0, null);
         }
 
         public bool MeshMustBeRebuild()
         {
-            return this.isGroundEffectTypeToRenderChanged;
+            return isGroundEffectTypeToRenderChanged;
         }
 
         public List<GroundEffectType> GroundEffectTypeToRender()
         {
-            return this.groundEffectTypesToRender;
+            return groundEffectTypesToRender;
         }
 
         public ObstacleListenerSystem GetObstacleListener()
         {
-            return this.rangeObjectRenderingDataProvider.ObstacleListener;
+            return rangeObjectRenderingDataProvider.ObstacleListener;
         }
 
         public RangeTypeID GetRangeTypeID()
         {
-            return this.rangeObjectRenderingDataProvider.RangeTypeID;
+            return rangeObjectRenderingDataProvider.RangeTypeID;
         }
     }
 }

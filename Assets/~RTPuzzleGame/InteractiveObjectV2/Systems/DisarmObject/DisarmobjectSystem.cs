@@ -1,8 +1,8 @@
-﻿using CoreGame;
-using GameConfigurationID;
-using RTPuzzle;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using CoreGame;
+using GameConfigurationID;
+using RangeObjects;
 using UnityEngine;
 
 namespace InteractiveObjects
@@ -10,40 +10,7 @@ namespace InteractiveObjects
     [SceneHandleDraw]
     public class DisarmObjectSystem : AInteractiveObjectSystem
     {
-        #region Internal Dependencies
-        [VE_Ignore]
-        private GameObject ProgressBarGameObject;
-
-        [VE_Nested]
-        private CircleFillBarType progressbar;
-        #endregion
-
-        [VE_Nested]
-        private DisarmSystemDefinition DisarmSystemDefinition;
-
-        #region State
-        [VE_Array]
-        private HashSet<CoreInteractiveObject> InteractiveObjectDisarmingThisObject = new HashSet<CoreInteractiveObject>();
-
-        [WireCircle(R = 1f, G = 0f, B = 0f)]
-        private float elapsedTime;
-        #endregion
-
-        #region External Events
-        public void AddInteractiveObjectDisarmingThisObject(CoreInteractiveObject CoreInteractiveObject)
-        {
-            this.InteractiveObjectDisarmingThisObject.Add(CoreInteractiveObject);
-        }
-        public void RemoveInteractiveObjectDisarmingThisObject(CoreInteractiveObject CoreInteractiveObject)
-        {
-            this.InteractiveObjectDisarmingThisObject.Remove(CoreInteractiveObject);
-        }
-        #endregion
-
-        public bool IsTimeElasped()
-        {
-            return (this.elapsedTime >= this.DisarmSystemDefinition.DisarmTime);
-        }
+        [VE_Nested] private DisarmSystemDefinition DisarmSystemDefinition;
 
         private RangeObjectV2 SphereRange;
 
@@ -51,69 +18,91 @@ namespace InteractiveObjects
             InteractiveObjectTagStruct PhysicsEventListenerGuard, Action<CoreInteractiveObject> OnAssociatedDisarmObjectTriggerEnter,
             Action<CoreInteractiveObject> OnAssociatedDisarmObjectTriggerExit)
         {
-            this.DisarmSystemDefinition = DisarmObjectInitializationData;
-            this.SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization
-            {
-                RangeTypeID = RangeTypeID.NOT_DISPLAYED,
-                IsTakingIntoAccountObstacles = false,
-                SphereRangeTypeDefinition = new SphereRangeTypeDefinition
+            DisarmSystemDefinition = DisarmObjectInitializationData;
+            SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization
                 {
-                    Radius = DisarmObjectInitializationData.DisarmRange
-                }
-            }, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_DisarmTriggerRange");
-            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener
-            {
-                ARangeObjectV2PhysicsEventListener = new RangeObjectV2PhysicsEventListener_Delegated(PhysicsEventListenerGuard, onTriggerEnterAction: OnAssociatedDisarmObjectTriggerEnter, onTriggerExitAction: OnAssociatedDisarmObjectTriggerExit)
-            });
+                    RangeTypeID = RangeTypeID.NOT_DISPLAYED,
+                    IsTakingIntoAccountObstacles = false,
+                    SphereRangeTypeDefinition = new SphereRangeTypeDefinition
+                    {
+                        Radius = DisarmObjectInitializationData.DisarmRange
+                    }
+                }, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_DisarmTriggerRange");
+            SphereRange.RegisterPhysicsEventListener(new RangeObjectV2PhysicsEventListener_Delegated(PhysicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnter, OnAssociatedDisarmObjectTriggerExit));
 
-            this.ProgressBarGameObject = new GameObject("ProgressBar");
-            this.ProgressBarGameObject.transform.parent = AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform;
-            this.progressbar = this.ProgressBarGameObject.AddComponent<CircleFillBarType>();
+            ProgressBarGameObject = new GameObject("ProgressBar");
+            ProgressBarGameObject.transform.parent = AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform;
+            progressbar = ProgressBarGameObject.AddComponent<CircleFillBarType>();
 
-            this.progressbar.Init(Camera.main);
-            this.progressbar.transform.position = AssociatedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition + IRenderBoundRetrievableStatic.GetDisarmProgressBarLocalOffset(AssociatedInteractiveObject.InteractiveGameObject.AverageModelBounds);
-            this.progressbar.gameObject.SetActive(false);
+            progressbar.Init(Camera.main);
+            progressbar.transform.position = AssociatedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition + IRenderBoundRetrievableStatic.GetDisarmProgressBarLocalOffset(AssociatedInteractiveObject.InteractiveGameObject.AverageModelBounds);
+            progressbar.gameObject.SetActive(false);
 
-            this.elapsedTime = 0f;
+            elapsedTime = 0f;
+        }
+
+        public bool IsTimeElasped()
+        {
+            return elapsedTime >= DisarmSystemDefinition.DisarmTime;
         }
 
         private float GetDisarmPercentage01()
         {
-            return this.elapsedTime / this.DisarmSystemDefinition.DisarmTime;
+            return elapsedTime / DisarmSystemDefinition.DisarmTime;
         }
 
         public override void TickAlways(float d)
         {
-            if (this.progressbar.gameObject.activeSelf)
-            {
-                this.progressbar.Tick(this.GetDisarmPercentage01());
-            }
+            if (progressbar.gameObject.activeSelf) progressbar.Tick(GetDisarmPercentage01());
         }
 
         public override void Tick(float d, float timeAttenuationFactor)
         {
-            if (this.InteractiveObjectDisarmingThisObject.Count > 0)
-            {
-                for (var i = 0; i < this.InteractiveObjectDisarmingThisObject.Count; i++)
-                {
-                    this.IncreaseTimeElapsedBy(d * timeAttenuationFactor);
-                }
-            }
+            if (InteractiveObjectDisarmingThisObject.Count > 0)
+                for (var i = 0; i < InteractiveObjectDisarmingThisObject.Count; i++)
+                    IncreaseTimeElapsedBy(d * timeAttenuationFactor);
         }
 
         public override void OnDestroy()
         {
-            this.SphereRange.OnDestroy();
+            SphereRange.OnDestroy();
         }
 
         private void IncreaseTimeElapsedBy(float increasedTime)
         {
-            this.elapsedTime += increasedTime;
+            elapsedTime += increasedTime;
 
-            if (this.GetDisarmPercentage01() > 0 && !this.progressbar.gameObject.activeSelf)
-            {
-                CircleFillBarType.EnableInstace(this.progressbar);
-            }
+            if (GetDisarmPercentage01() > 0 && !progressbar.gameObject.activeSelf) CircleFillBarType.EnableInstace(progressbar);
         }
+
+        #region Internal Dependencies
+
+        [VE_Ignore] private GameObject ProgressBarGameObject;
+
+        [VE_Nested] private CircleFillBarType progressbar;
+
+        #endregion
+
+        #region State
+
+        [VE_Array] private HashSet<CoreInteractiveObject> InteractiveObjectDisarmingThisObject = new HashSet<CoreInteractiveObject>();
+
+        [WireCircle(R = 1f, G = 0f, B = 0f)] private float elapsedTime;
+
+        #endregion
+
+        #region External Events
+
+        public void AddInteractiveObjectDisarmingThisObject(CoreInteractiveObject CoreInteractiveObject)
+        {
+            InteractiveObjectDisarmingThisObject.Add(CoreInteractiveObject);
+        }
+
+        public void RemoveInteractiveObjectDisarmingThisObject(CoreInteractiveObject CoreInteractiveObject)
+        {
+            InteractiveObjectDisarmingThisObject.Remove(CoreInteractiveObject);
+        }
+
+        #endregion
     }
 }

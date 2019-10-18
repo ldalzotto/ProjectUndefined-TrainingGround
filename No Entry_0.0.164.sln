@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleGame", "PuzzleGame.csproj", "{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RangeObjects", "RangeObjects.csproj", "{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "~StartMenu", "~StartMenu.csproj", "{DE2B0528-6689-E76B-8664-E408396671C1}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests.csproj", "{2E0DF170-5586-5B9F-1D17-9336702E6605}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameConfigurationID", "GameConfigurationID.csproj", "{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuzzleGame", "PuzzleGame.csproj", "{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveObjects", "InteractiveObjects.csproj", "{741991FE-D211-F6D8-2B2A-0EB0F573E16F}"
 EndProject
@@ -29,10 +31,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE2B0528-6689-E76B-8664-E408396671C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE2B0528-6689-E76B-8664-E408396671C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE2B0528-6689-E76B-8664-E408396671C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +59,10 @@ Global
 		{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}.Release|Any CPU.Build.0 = Release|Any CPU
 		{741991FE-D211-F6D8-2B2A-0EB0F573E16F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{741991FE-D211-F6D8-2B2A-0EB0F573E16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{741991FE-D211-F6D8-2B2A-0EB0F573E16F}.Release|Any CPU.ActiveCfg = Release|Any CPU

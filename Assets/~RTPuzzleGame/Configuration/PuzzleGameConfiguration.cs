@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using RangeObjects;
+
 namespace RTPuzzle
 {
     
@@ -19,7 +21,7 @@ namespace RTPuzzle
         
         public RTPuzzle.LevelConfiguration LevelConfiguration;
         
-        public RTPuzzle.RangeTypeConfiguration RangeTypeConfiguration;
+        public RangeTypeConfiguration RangeTypeConfiguration;
         
         public RTPuzzle.DottedLineConfiguration DottedLineConfiguration;
     }

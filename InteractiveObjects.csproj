@@ -268,6 +268,9 @@
  <Reference Include="Unity.Burst.Unsafe">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
  </Reference>
+ <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+ <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+ </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.9f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
  </Reference>
@@ -631,10 +634,6 @@
     <ProjectReference Include="OdinSerializer.csproj">
       <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
       <Name>OdinSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="GameConfigurationID.csproj">
-      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
-      <Name>GameConfigurationID</Name>
     </ProjectReference>
     <ProjectReference Include="Editor_Common.csproj">
       <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>

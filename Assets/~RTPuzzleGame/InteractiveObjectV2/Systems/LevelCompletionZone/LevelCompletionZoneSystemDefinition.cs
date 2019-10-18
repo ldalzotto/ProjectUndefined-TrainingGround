@@ -1,15 +1,13 @@
-﻿using OdinSerializer;
-using RTPuzzle;
+﻿using System;
+using OdinSerializer;
+using RangeObjects;
 
 namespace InteractiveObjects
 {
-    [System.Serializable]
+    [Serializable]
     [SceneHandleDraw]
     public class LevelCompletionZoneSystemDefinition : SerializedScriptableObject
     {
-        [DrawNested]
-        [Inline(createAtSameLevelIfAbsent: true)]
-        public RangeObjectInitialization TriggerRangeObjectInitialization;
+        [DrawNested] [Inline(true)] public RangeObjectInitialization TriggerRangeObjectInitialization;
     }
 }
-
