@@ -13,43 +13,10 @@ namespace GameConfigurationID {
   
   [System.Serializable()]
   public enum LevelZonesID {
-    
-    LEVEL1 = 0,
-    
-    SEWER = 1,
-    
-    SEWER_RTP = 2,
+    NONE = 0,
     
     RTP_TEST = 3,
     
-    RTP_EDITOR_TEST = 4,
-    
-    SEWER_ADVENTURE = 5,
-    
-    RTP_PUZZLE_CREATION_TEST = 6,
-    
-    SEWER_RTP_2 = 7,
-    
-    ADVENTURE_EDITOR_TEST = 8,
-    
-    _1_Town = 9,
-    
-    RTP_TEST_OBSTACLES = 10,
-    
-    _1_Town_StartTutorial = 11,
-    
-    RTP_TEST_RangeEffectManager = 12,
-    
-    ADVENTURE_AnimationCutsceneTimelineTest = 13,
-    
-    _Town1_Park = 14,
-    
-    _Town1_Park_ToSewerPuzzle = 15,
-    
-    NONE = -1,
-    
-    ADVENTURE_PlayerSelectionTest = 16,
-
     StartMenu = 17,
 
     ADVENTURE_TEST = 18
