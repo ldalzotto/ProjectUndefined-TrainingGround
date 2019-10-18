@@ -60,7 +60,6 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-
 				float3 worldPos = i.worldPos;
 				fixed4 computeCol = fixed4(0,0,0,0);
 

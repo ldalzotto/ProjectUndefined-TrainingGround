@@ -58,7 +58,6 @@
   <ItemGroup>
      <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
      <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
-     <Compile Include="Assets\_Shader\FX\Range\RangeShaderEditor.cs" />
      <Compile Include="Assets\~AnimationSystem\AnimationActor\AnimationActor.cs" />
      <Compile Include="Assets\~AnimationSystem\AnimationActor\Modules\AbstractAnimationActorModule.cs" />
      <Compile Include="Assets\~AnimationSystem\AnimationActor\Modules\AnimationActorModelModule.cs" />
@@ -252,7 +251,6 @@
      <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
      <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
      <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
-     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.hlsl" />
      <None Include="Assets\_Shader\Common\VertexLit.shader" />
      <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
      <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
@@ -260,12 +258,10 @@
      <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
      <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2Include.cginc" />
      <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
-     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
      <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2VertexDisplacement.cginc" />
      <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
      <None Include="Assets\_Shader\Common\VertexUnlitTransparent.shader" />
      <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
-     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.hlsl" />
      <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
      <None Include="Assets\~CoreGame\SelectableObjectsManager\Textures\SelectedRingIconShader.shader" />
      <None Include="Assets\_Shader\FX\Smoke\SmokeShaderParticles.shader" />
@@ -275,7 +271,6 @@
      <None Include="Assets\~CoreGame\Discussion\Font\LICENSE.txt" />
      <None Include="Assets\CoreGame.asmdef" />
      <None Include="Assets\_Shader\ImageBlitShader\AddBlitShader.shader" />
-     <None Include="Assets\_Shader\FX\Range\RangeShaderV5.shader" />
  <Reference Include="Unity.Postprocessing.Runtime">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
  </Reference>

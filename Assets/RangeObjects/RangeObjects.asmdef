@@ -7,7 +7,8 @@
         "OdinSerializer",
         "Editor_Common",
         "Obstacle",
-        "Unity.Burst"
+        "Unity.Burst",
+        "Unity.RenderPipelines.Lightweight.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -55,7 +55,7 @@ namespace RTPuzzle
 
 
             RangeObjectV2Manager.Get().Init();
-            GroundEffectsManagerV2.Get().Init(LevelManager.GetCurrentLevel());
+            GroundEffectsManagerV2.Get().Init(puzzleConfigurationManager.PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData[LevelManager.GetCurrentLevel()].LevelRangeEffectInherentData);
             InteractiveObjectV2Manager.Get().Init();
 
             CameraMovementManager.Get().Init();

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using GameConfigurationID;
 using Obstacle;
-using RangeObjects;
 
-namespace RTPuzzle
+namespace RangeObjects
 {
     public interface IAbstractGroundEffectManager
     {

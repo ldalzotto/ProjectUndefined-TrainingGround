@@ -1,7 +1,6 @@
-﻿using RangeObjects;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace RTPuzzle
+namespace RangeObjects
 {
     public class RoundedFrustumGroundEffectManager : AbstractGroundEffectManager
     {

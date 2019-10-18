@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GameConfigurationID;
-using RangeObjects;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -12,11 +11,6 @@ namespace RTPuzzle
         public Dictionary<LevelZonesID, LevelConfigurationData> LevelConfiguration()
         {
             return PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData;
-        }
-
-        public Dictionary<RangeTypeID, RangeTypeInherentConfigurationData> RangeTypeConfiguration()
-        {
-            return PuzzleGameConfiguration.RangeTypeConfiguration.ConfigurationInherentData;
         }
 
         public Dictionary<DottedLineID, DottedLineInherentData> DottedLineConfiguration()

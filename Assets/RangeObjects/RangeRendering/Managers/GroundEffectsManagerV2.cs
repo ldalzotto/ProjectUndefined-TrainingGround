@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreGame;
-using GameConfigurationID;
 using Obstacle;
-using RangeObjects;
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Rendering;
 
-namespace RTPuzzle
+namespace RangeObjects
 {
     public class GroundEffectsManagerV2 : GameSingleton<GroundEffectsManagerV2>
     {
@@ -39,7 +37,7 @@ namespace RTPuzzle
         public Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>> RangeRenderDatas => rangeRenderDatas;
 #endif
 
-        public void Init(LevelZonesID currentLevelID)
+        public void Init(LevelRangeEffectInherentData LevelRangeEffectInherentData)
         {
             #region Init Values
 
@@ -49,7 +47,6 @@ namespace RTPuzzle
 
             #region External Dependencies
 
-            PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
 
             #endregion
@@ -61,7 +58,8 @@ namespace RTPuzzle
 
             #endregion
 
-            MasterRangeMaterial = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleMaterialConfiguration.MasterRangeMaterial;
+            RangeTypeConfiguration = RangeTypeConfigurationGameObject.Get().RangeRenderingConfiguration.RangeTypeConfiguration;
+            MasterRangeMaterial = new Material(RangeTypeConfigurationGameObject.Get().RangeRenderingConfiguration.MasterRangeShader);
 
             RangeDrawCommand = new CommandBuffer();
             RangeDrawCommand.name = GetType().Name + "." + nameof(RangeDrawCommand);
@@ -77,7 +75,6 @@ namespace RTPuzzle
                     .ToArray(), GameObject.FindWithTag(TagConstants.ROOT_CHUNK_ENVIRONMENT));
 
             //master range shader color level adjuster
-            var LevelRangeEffectInherentData = PuzzleGameConfigurationManager.LevelConfiguration()[currentLevelID].LevelRangeEffectInherentData;
             MasterRangeMaterial.SetFloat("_AlbedoBoost", 1f + LevelRangeEffectInherentData.DeltaIntensity);
             MasterRangeMaterial.SetFloat("_RangeMixFactor", 0.5f + LevelRangeEffectInherentData.DeltaMixFactor);
         }
@@ -116,7 +113,7 @@ namespace RTPuzzle
 
         #region External Dependencies
 
-        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private RangeTypeConfiguration RangeTypeConfiguration;
         private CoreMaterialConfiguration CoreMaterialConfiguration;
 
         private ObstaclesListenerManager ObstaclesListenerManager = ObstaclesListenerManager.Get();
@@ -136,21 +133,21 @@ namespace RTPuzzle
                 if (RangeObjectV2.GetType() == typeof(SphereRangeObjectV2))
                 {
                     var SphereRangeObjectRenderingDataProvider = new SphereRangeObjectRenderingDataProvider((SphereRangeObjectV2) RangeObjectV2, rangeTypeID);
-                    var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], SphereRangeObjectRenderingDataProvider);
+                    var addedRange = new SphereGroundEffectManager(RangeTypeConfiguration.ConfigurationInherentData[rangeTypeID], SphereRangeObjectRenderingDataProvider);
                     addedRange.OnRangeCreated(SphereRangeObjectRenderingDataProvider);
                     rangeRenderDatas[rangeTypeID].Add(SphereRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new CircleRangeRenderData(addedRange));
                 }
                 else if (RangeObjectV2.GetType() == typeof(BoxRangeObjectV2))
                 {
                     var BoxRangeObjectRenderingDataProvider = new BoxRangeObjectRenderingDataProvider((BoxRangeObjectV2) RangeObjectV2, rangeTypeID);
-                    var addedRange = new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], BoxRangeObjectRenderingDataProvider);
+                    var addedRange = new BoxGroundEffectManager(RangeTypeConfiguration.ConfigurationInherentData[rangeTypeID], BoxRangeObjectRenderingDataProvider);
                     addedRange.OnRangeCreated(BoxRangeObjectRenderingDataProvider);
                     rangeRenderDatas[rangeTypeID].Add(BoxRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new BoxRangeRenderData(addedRange));
                 }
                 else if (RangeObjectV2.GetType() == typeof(RoundedFrustumRangeObjectV2))
                 {
                     var RoundedFrustumRangeObjectRenderingDataProvider = new FrustumRangeObjectRenderingDataProvider((RoundedFrustumRangeObjectV2) RangeObjectV2, rangeTypeID);
-                    var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], RoundedFrustumRangeObjectRenderingDataProvider);
+                    var addedRange = new RoundedFrustumGroundEffectManager(RangeTypeConfiguration.ConfigurationInherentData[rangeTypeID], RoundedFrustumRangeObjectRenderingDataProvider);
                     addedRange.OnRangeCreated(RoundedFrustumRangeObjectRenderingDataProvider);
                     rangeRenderDatas[rangeTypeID].Add(RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
                 }

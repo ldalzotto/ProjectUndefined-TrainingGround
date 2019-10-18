@@ -65,14 +65,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Lib\PuzzleDiscussionWindowManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Lib\PuzzleDiscussionWindowsContainer.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Managers\PuzzleDiscussionManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Lib\GroundEffectIgnoredGroundObjectType.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Lib\GroundEffectType.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManager\AbstractGroundEffectManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManager\BoxGroundEffectManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManager\FrustumGroundEffectManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManager\RoundedFrustumGroundEffectManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManager\SphereGroundEffectManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManagerV2.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\ExposedInterfaces\IGameOverManagerEventListener.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\Managers\GameOverManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
@@ -147,7 +139,6 @@
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystem.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystemDefinition.cs" />
      <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\PuzzleSelectionObjectRederingPassFeature.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\RenderPipeline\RangeRenderingPassFeature.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Actions\PuzzleTutorialTextAction.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Edges\PuzzleTutorialTextEdge.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Nodes\PuzzleTutorialTextNode.cs" />

@@ -1,8 +1,7 @@
 ﻿using Obstacle;
-using RangeObjects;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace RangeObjects
 {
     public class FrustumGroundEffectManager : AbstractGroundEffectManager
     {

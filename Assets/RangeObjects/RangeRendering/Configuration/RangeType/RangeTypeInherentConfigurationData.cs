@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace RangeObjects
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "RangeTypeInherentConfigurationData", menuName = "Configuration/PuzzleGame/RangeTypeConfiguration/RangeTypeInherentConfigurationData", order = 1)]
     public class RangeTypeInherentConfigurationData : ScriptableObject
     {
-        public Material InRangeEffectMaterial;
         public float RangeAnimationSpeed;
         public Color RangeBaseColor;
 

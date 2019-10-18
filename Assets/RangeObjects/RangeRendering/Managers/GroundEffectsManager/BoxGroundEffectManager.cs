@@ -1,8 +1,7 @@
 ﻿using CoreGame;
-using RangeObjects;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace RangeObjects
 {
     public class BoxGroundEffectManager : AbstractGroundEffectManager
     {

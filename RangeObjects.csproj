@@ -63,8 +63,6 @@
      <Compile Include="Assets\RangeObjects\RangeIntersection\Managers\RangeIntersectionCalculationManagerV2.cs" />
      <Compile Include="Assets\RangeObjects\RangeIntersection\Managers\RangeIntersectionCalculatorManager.cs" />
      <Compile Include="Assets\RangeObjects\RangeIntersection\Systems\RangeIntersectionV2System.cs" />
-     <Compile Include="Assets\RangeObjects\RangeObject\Configuration\RangeConfiguration\RangeTypeConfiguration.cs" />
-     <Compile Include="Assets\RangeObjects\RangeObject\Configuration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
      <Compile Include="Assets\RangeObjects\RangeObject\Initializer\InitializerTypes\BoxRangeObjectInitialization.cs" />
      <Compile Include="Assets\RangeObjects\RangeObject\Initializer\InitializerTypes\FrustumRangeObjectInitialization.cs" />
      <Compile Include="Assets\RangeObjects\RangeObject\Initializer\InitializerTypes\RoundedFrustumRangeObjectInitialization.cs" />
@@ -80,9 +78,30 @@
      <Compile Include="Assets\RangeObjects\RangeObject\RangeObjectV2.cs" />
      <Compile Include="Assets\RangeObjects\RangeObject\RangeObjectV2PhysicsEventListenerComponent.cs" />
      <Compile Include="Assets\RangeObjects\RangeObject\Systems\RangeObjectV2Systems.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Components\GroundEffectIgnoredGroundObjectType.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Components\GroundEffectType.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\LevelRangeEffectInherentData.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeRenderingConfiguration.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeType\RangeTypeConfiguration.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeType\RangeTypeInherentConfigurationData.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeTypeConfigurationGameObject.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeTypeID.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Managers\GroundEffectsManager\AbstractGroundEffectManager.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Managers\GroundEffectsManager\BoxGroundEffectManager.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Managers\GroundEffectsManager\FrustumGroundEffectManager.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Managers\GroundEffectsManager\RoundedFrustumGroundEffectManager.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Managers\GroundEffectsManager\SphereGroundEffectManager.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\Managers\GroundEffectsManagerV2.cs" />
+     <Compile Include="Assets\RangeObjects\RangeRendering\RangeRenderingPassFeature.cs" />
+     <None Include="Assets\RangeObjects\RangeRendering\Shader\RangeShaderV5_Calculations.hlsl" />
+     <None Include="Assets\RangeObjects\RangeRendering\Shader\RangeShaderV5_StructDefinition.hlsl" />
      <None Include="Assets\RangeObjects\RangeObjects.asmdef" />
+     <None Include="Assets\RangeObjects\RangeRendering\Shader\RangeShaderV5.shader" />
  <Reference Include="Unity.Burst">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
+ <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
@@ -675,3 +694,4 @@
   </Target>
   -->
 </Project>
+                   
