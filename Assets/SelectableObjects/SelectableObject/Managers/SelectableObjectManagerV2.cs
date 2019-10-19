@@ -22,13 +22,6 @@ namespace SelectableObject
 
         public void Init(IGameInputManager GameInputManager)
         {
-            #region Event Registering
-
-            SelectableObjectEventsManager.RegisterOnSelectableObjectEnterEventAction(OnSelectableObjectEnder);
-            SelectableObjectEventsManager.RegisterOnSelectableObjectExitEventAction(RemoveInteractiveObjectFromSelectable);
-
-            #endregion
-
             #region Exnternal Dependencies
 
             var CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
@@ -78,29 +71,29 @@ namespace SelectableObject
             CurrentSelectedObject = SelectableObject;
         }
 
-        private void RemoveInteractiveObjectFromSelectable(ISelectableObjectSystem selectableObject)
+        internal void RemoveInteractiveObjectFromSelectable(ISelectableObjectSystem selectableObject)
         {
             if (CurrentSelectedObject != null && interactableObjects.Contains(CurrentSelectedObject)) SetCurrentSelectedObject(default(ISelectableObjectSystem));
 
             interactableObjects.Remove(selectableObject);
         }
 
-        private void OnSelectableObjectEnder(ISelectableObjectSystem selectableObject)
+        internal void OnSelectableObjectEnter(ISelectableObjectSystem selectableObject)
         {
             if (!interactableObjects.Contains(selectableObject)) interactableObjects.Add(selectableObject);
         }
+
+        #region External Dependencies
+
+        private IGameInputManager GameInputManager;
+        private SelectableObjectEventsManager SelectableObjectEventsManager = SelectableObjectEventsManager.Get();
+
+        #endregion
 
         #region Internal State
 
         private ISelectableObjectSystem CurrentSelectedObject;
         private List<ISelectableObjectSystem> interactableObjects;
-
-        #endregion
-
-        #region External Dependencies
-
-        private SelectableObjectEventsManager SelectableObjectEventsManager = SelectableObjectEventsManager.Get();
-        private IGameInputManager GameInputManager;
 
         #endregion
     }

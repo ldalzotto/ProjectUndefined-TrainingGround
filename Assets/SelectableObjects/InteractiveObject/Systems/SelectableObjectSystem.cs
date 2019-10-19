@@ -28,7 +28,7 @@ namespace SelectableObject
 
         #region External Dependencies
 
-        private SelectableObjectEventsManager SelectableObjectEventsManager = SelectableObjectEventsManager.Get();
+        private SelectableObjectManagerV2 SelectableObjectManagerV2 = SelectableObjectManagerV2.Get();
 
         #endregion
 
@@ -66,12 +66,12 @@ namespace SelectableObject
 
         private void OnPlayerTriggerInSelectionEnter(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            SelectableObjectEventsManager.OnSelectableObjectEnter(this);
+            SelectableObjectManagerV2.OnSelectableObjectEnter(this);
         }
 
         private void OnPlayerTriggerInSelectionExit(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            SelectableObjectEventsManager.OnSelectableObjectExit(this);
+            SelectableObjectManagerV2.RemoveInteractiveObjectFromSelectable(this);
         }
 
         public override void OnDestroy()
