@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGame;
-using GameConfigurationID;
 using RangeObjects;
 using UnityEngine;
 
@@ -51,16 +50,12 @@ namespace InteractiveObjects
             return elapsedTime / DisarmSystemDefinition.DisarmTime;
         }
 
-        public override void TickAlways(float d)
+        public override void Tick(float d)
         {
             if (progressbar.gameObject.activeSelf) progressbar.Tick(GetDisarmPercentage01());
-        }
-
-        public override void Tick(float d, float timeAttenuationFactor)
-        {
             if (InteractiveObjectDisarmingThisObject.Count > 0)
                 for (var i = 0; i < InteractiveObjectDisarmingThisObject.Count; i++)
-                    IncreaseTimeElapsedBy(d * timeAttenuationFactor);
+                    IncreaseTimeElapsedBy(d);
         }
 
         public override void OnDestroy()

@@ -110,8 +110,7 @@ namespace AdventureGame
                 PlayerPointOfInterestSelectionManager.Get().Tick(d);
                 PlayerManager.Tick(d);
 
-                InteractiveObjectV2Manager.Get().TickAlways(d);
-                InteractiveObjectV2Manager.Get().Tick(d, 1f);
+                InteractiveObjectV2Manager.Get().Tick(d);
                 InteractiveObjectV2Manager.Get().AfterTicks();
 
                 NPCManager.Tick(d);

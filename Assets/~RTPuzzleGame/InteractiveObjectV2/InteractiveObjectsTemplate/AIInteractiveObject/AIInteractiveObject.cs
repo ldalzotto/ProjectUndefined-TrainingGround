@@ -1,12 +1,11 @@
-﻿
-namespace InteractiveObjects
+﻿namespace InteractiveObjects
 {
     public abstract class A_AIInteractiveObject<INIT> : CoreInteractiveObject where INIT : AbstractAIInteractiveObjectInitializerData
     {
         protected INIT AIInteractiveObjectInitializerData;
-
-        protected AnimationObjectSystem AnimationObjectSystem;
         protected AIMoveToDestinationSystem AIMoveToDestinationSystem;
+
+        [VE_Nested] protected AnimationObjectSystem AnimationObjectSystem;
         protected LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
         public A_AIInteractiveObject(IInteractiveGameObject interactiveGameObject, INIT AIInteractiveObjectInitializerData) : base(interactiveGameObject)
@@ -14,48 +13,41 @@ namespace InteractiveObjects
             interactiveGameObject.CreateAgent(AIInteractiveObjectInitializerData.AIAgentDefinition);
             interactiveGameObject.CreateLogicCollider(AIInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
-            this.AnimationObjectSystem = new AnimationObjectSystem(this);
-            this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, this.OnAIDestinationReached);
-            this.LineVisualFeedbackSystem = new LineVisualFeedbackSystem(this.InteractiveGameObject);
+            AnimationObjectSystem = new AnimationObjectSystem(this);
+            AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, OnAIDestinationReached);
+            LineVisualFeedbackSystem = new LineVisualFeedbackSystem(InteractiveGameObject);
         }
 
-        public override void TickAlways(float d)
+        public override void Tick(float d)
         {
-            this.AIMoveToDestinationSystem.TickAlways(d);
-            this.AnimationObjectSystem.TickAlways(d);
-            this.LineVisualFeedbackSystem.TickAlways(d);
+            AnimationObjectSystem.Tick(d);
+            LineVisualFeedbackSystem.Tick(d);
         }
 
         public override void SetAIDestination(AIDestination AIDestination)
         {
-            this.AIMoveToDestinationSystem.SetDestination(AIDestination);
+            AIMoveToDestinationSystem.SetDestination(AIDestination);
         }
 
         public override void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
         {
-            this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
+            AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
 
-        public override void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)
+        public override void OnAnimationObjectSetUnscaledSpeedMagnitude(float unscaledSpeedMagnitude)
         {
-            this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent);
-        }
-
-        public override void TickWhenTimeIsStopped()
-        {
-            this.AIMoveToDestinationSystem.TickWhenTimeIsStopped();
+            AnimationObjectSystem.SetUnscaledSpeedMagnitude(unscaledSpeedMagnitude);
         }
 
         public override void AfterTicks()
         {
-            this.AIMoveToDestinationSystem.AfterTicks();
+            AIMoveToDestinationSystem.AfterTicks();
         }
 
         public override void Destroy()
         {
-            this.LineVisualFeedbackSystem.OnDestroy();
+            LineVisualFeedbackSystem.OnDestroy();
             base.Destroy();
         }
     }
-
 }

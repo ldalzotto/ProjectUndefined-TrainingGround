@@ -27,11 +27,6 @@ namespace InteractiveObjects
         };
     }
 
-    public struct AnimationObjectSetUnscaledSpeedMagnitudeEvent
-    {
-        public float UnscaledSpeedMagnitude;
-    }
-
     [Serializable]
     [SceneHandleDraw]
     public class AIAgentDefinition

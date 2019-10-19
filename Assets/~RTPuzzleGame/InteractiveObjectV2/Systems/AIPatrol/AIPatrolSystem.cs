@@ -9,24 +9,21 @@ namespace InteractiveObjects
 
         public AIPatrolSystem(CoreInteractiveObject AssociatedCoreInteractiveObject, AIPatrolSystemDefinition AIPatrolSystemDefinition)
         {
-            this.SequencedActionPlayer = new SequencedActionPlayer(AIPatrolSystemDefinition.AIPatrolGraph.AIPatrolGraphActions(AssociatedCoreInteractiveObject), null, OnCutsceneEnded: null);
-            this.SequencedActionPlayer.Play();
+            SequencedActionPlayer = new SequencedActionPlayer(AIPatrolSystemDefinition.AIPatrolGraph.AIPatrolGraphActions(AssociatedCoreInteractiveObject), null, null);
+            SequencedActionPlayer.Play();
         }
 
-        public override void Tick(float d, float timeAttenuationFactor)
+        public override void Tick(float d)
         {
-            this.SequencedActionPlayer.Tick(d * timeAttenuationFactor);
+            SequencedActionPlayer.Tick(d);
         }
 
         public void OnAIDestinationReached()
         {
-            foreach (var currentAction in this.SequencedActionPlayer.GetCurrentActions(includeWorkflowNested: true))
+            foreach (var currentAction in SequencedActionPlayer.GetCurrentActions(true))
             {
                 var destinationReachedListeningNode = currentAction as IActionAbortedOnDestinationReached;
-                if (destinationReachedListeningNode != null)
-                {
-                    destinationReachedListeningNode.OnDestinationReached();
-                }
+                if (destinationReachedListeningNode != null) destinationReachedListeningNode.OnDestinationReached();
             }
         }
     }

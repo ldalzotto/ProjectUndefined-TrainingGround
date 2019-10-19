@@ -4,7 +4,7 @@ namespace InteractiveObjects
 {
     public class AnimationObjectSystem : AInteractiveObjectSystem
     {
-        [VE_Ignore] private AnimationDataManager animationDataManager;
+        [VE_Nested] private AnimationDataManager animationDataManager;
 
         #region State
 
@@ -25,14 +25,14 @@ namespace InteractiveObjects
             animationDataManager = new AnimationDataManager(objectAnimator);
         }
 
-        public override void TickAlways(float d)
+        public override void Tick(float d)
         {
             animationDataManager.Tick(UnscaledSpeedMagnitude);
         }
 
-        public void SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)
+        public void SetUnscaledSpeedMagnitude(float UnscaledSpeedMagnitude)
         {
-            UnscaledSpeedMagnitude = AnimationObjectSetUnscaledSpeedMagnitudeEvent.UnscaledSpeedMagnitude;
+            this.UnscaledSpeedMagnitude = UnscaledSpeedMagnitude;
         }
     }
 }

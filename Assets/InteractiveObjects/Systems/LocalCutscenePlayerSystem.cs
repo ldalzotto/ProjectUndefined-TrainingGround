@@ -8,8 +8,9 @@ namespace InteractiveObjects
     {
         private SequencedActionPlayer CurrentPlayingCutscene;
 
-        public override void TickAlways(float d)
+        public override void Tick(float d)
         {
+            base.Tick(d);
             if (CurrentPlayingCutscene != null) CurrentPlayingCutscene.Tick(d);
         }
 

@@ -31,25 +31,11 @@ namespace InteractiveObjects
                     InteractiveObjects[InteractiveObjectIndex].FixedTick(d);
         }
 
-        public void TickAlways(float d)
+        public void Tick(float d)
         {
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < InteractiveObjects.Count; InteractiveObjectIndex++)
                 if (InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
-                    InteractiveObjects[InteractiveObjectIndex].TickAlways(d);
-        }
-
-        public void Tick(float d, float timeAttenuationFactor)
-        {
-            for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < InteractiveObjects.Count; InteractiveObjectIndex++)
-                if (InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
-                    InteractiveObjects[InteractiveObjectIndex].Tick(d, timeAttenuationFactor);
-        }
-
-        public void TickWhenTimeIsStopped()
-        {
-            for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < InteractiveObjects.Count; InteractiveObjectIndex++)
-                if (InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
-                    InteractiveObjects[InteractiveObjectIndex].TickWhenTimeIsStopped();
+                    InteractiveObjects[InteractiveObjectIndex].Tick(d);
         }
 
         public void AfterTicks()

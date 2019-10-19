@@ -12,7 +12,6 @@ namespace InteractiveObjects
         Animator Animator { get; }
         List<Renderer> Renderers { get; }
         Collider LogicCollider { get; }
-        Rigidbody LogicRigidBody { get; }
         Rigidbody PhysicsRigidbody { get; }
         NavMeshAgent Agent { get; }
 
@@ -39,45 +38,39 @@ namespace InteractiveObjects
         public InteractiveGameObject(GameObject InteractiveGameObjectParent)
         {
             var childRenderers = InteractiveGameObjectParent.GetComponentsInChildren<Renderer>();
-            if (childRenderers != null)
-            {
-                this.AverageModelBounds = BoundsHelper.GetAverageRendererBounds(childRenderers);
-            }
+            if (childRenderers != null) AverageModelBounds = BoundsHelper.GetAverageRendererBounds(childRenderers);
 
-            this.Animator = InteractiveGameObjectParent.GetComponent<Animator>();
-            if (this.Animator == null)
-            {
-                this.Animator = InteractiveGameObjectParent.GetComponentInChildren<Animator>();
-            }
+            Animator = InteractiveGameObjectParent.GetComponent<Animator>();
+            if (Animator == null) Animator = InteractiveGameObjectParent.GetComponentInChildren<Animator>();
 
             this.InteractiveGameObjectParent = InteractiveGameObjectParent;
-            this.Renderers = RendererRetrievableHelper.GetAllRederers(this.InteractiveGameObjectParent, particleRenderers: false);
+            Renderers = RendererRetrievableHelper.GetAllRederers(this.InteractiveGameObjectParent, false);
 
-            this.Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
+            Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
             InitAgent();
 
-            this.PhysicsRigidbody = this.InteractiveGameObjectParent.GetComponent<Rigidbody>();
+            PhysicsRigidbody = this.InteractiveGameObjectParent.GetComponent<Rigidbody>();
         }
 
         public GameObject InteractiveGameObjectParent { get; private set; }
 
         public BoxCollider GetLogicColliderAsBox()
         {
-            return (BoxCollider) this.LogicCollider;
+            return (BoxCollider) LogicCollider;
         }
 
         public void CreateAgent(AIAgentDefinition AIAgentDefinition)
         {
-            if (this.Agent == null)
+            if (Agent == null)
             {
-                this.Agent = this.InteractiveGameObjectParent.AddComponent<NavMeshAgent>();
-                this.Agent.stoppingDistance = AIAgentDefinition.AgentStoppingDistance;
-                this.Agent.height = AIAgentDefinition.AgentHeight;
-                this.Agent.acceleration = 99999999f;
-                this.Agent.angularSpeed = 99999999f;
+                Agent = InteractiveGameObjectParent.AddComponent<NavMeshAgent>();
+                Agent.stoppingDistance = AIAgentDefinition.AgentStoppingDistance;
+                Agent.height = AIAgentDefinition.AgentHeight;
+                Agent.acceleration = 99999999f;
+                Agent.angularSpeed = 99999999f;
             }
 
-            this.InitAgent();
+            InitAgent();
         }
 
         public void CreateLogicCollider(InteractiveObjectLogicCollider InteractiveObjectLogicCollider)
@@ -85,15 +78,15 @@ namespace InteractiveObjects
             if (InteractiveObjectLogicCollider.Enabled)
             {
                 var LogicColliderObject = new GameObject("LogicCollider");
-                LogicColliderObject.transform.parent = this.InteractiveGameObjectParent.transform;
+                LogicColliderObject.transform.parent = InteractiveGameObjectParent.transform;
                 LogicColliderObject.transform.localPosition = Vector3.zero;
                 LogicColliderObject.transform.localRotation = Quaternion.identity;
                 LogicColliderObject.transform.localScale = Vector3.one;
 
-                this.LogicCollider = LogicColliderObject.AddComponent<BoxCollider>();
-                this.LogicCollider.isTrigger = true;
-                ((BoxCollider) this.LogicCollider).center = InteractiveObjectLogicCollider.LocalCenter;
-                ((BoxCollider) this.LogicCollider).size = InteractiveObjectLogicCollider.LocalSize;
+                LogicCollider = LogicColliderObject.AddComponent<BoxCollider>();
+                LogicCollider.isTrigger = true;
+                ((BoxCollider) LogicCollider).center = InteractiveObjectLogicCollider.LocalCenter;
+                ((BoxCollider) LogicCollider).size = InteractiveObjectLogicCollider.LocalSize;
 
                 if (InteractiveObjectLogicCollider.HasRigidBody)
                 {
@@ -106,15 +99,14 @@ namespace InteractiveObjects
 
         public TransformStruct GetTransform()
         {
-            return new TransformStruct(this.InteractiveGameObjectParent.transform);
+            return new TransformStruct(InteractiveGameObjectParent.transform);
         }
 
         public TransformStruct GetLogicColliderCenterTransform()
         {
-            var returnTransform = this.GetTransform();
-            if (this.LogicCollider != null)
-            {
-                switch (this.LogicCollider)
+            var returnTransform = GetTransform();
+            if (LogicCollider != null)
+                switch (LogicCollider)
                 {
                     case BoxCollider logicBoxCollider:
                         returnTransform = new TransformStruct() {WorldPosition = returnTransform.WorldPosition + logicBoxCollider.center, WorldRotation = returnTransform.WorldRotation, LossyScale = returnTransform.LossyScale};
@@ -122,27 +114,26 @@ namespace InteractiveObjects
                     default:
                         break;
                 }
-            }
 
             return returnTransform;
         }
 
         public Matrix4x4 GetLocalToWorld()
         {
-            return this.InteractiveGameObjectParent.transform.localToWorldMatrix;
+            return InteractiveGameObjectParent.transform.localToWorldMatrix;
         }
 
         public BoxDefinition GetLogicColliderBoxDefinition()
         {
-            return new BoxDefinition(this.GetLogicColliderAsBox());
+            return new BoxDefinition(GetLogicColliderAsBox());
         }
 
         private void InitAgent()
         {
-            if (this.Agent != null)
+            if (Agent != null)
             {
-                this.Agent.updatePosition = false;
-                this.Agent.updateRotation = false;
+                Agent.updatePosition = false;
+                Agent.updateRotation = false;
             }
         }
 
@@ -152,7 +143,6 @@ namespace InteractiveObjects
         public Animator Animator { get; private set; }
         public List<Renderer> Renderers { get; private set; }
         public Collider LogicCollider { get; private set; }
-        public Rigidbody LogicRigidBody { get; private set; }
 
         public Rigidbody PhysicsRigidbody { get; private set; }
         public NavMeshAgent Agent { get; private set; }

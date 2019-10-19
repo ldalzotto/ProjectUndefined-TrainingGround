@@ -2,64 +2,37 @@
 
 namespace InteractiveObjects
 {
-
     public class AIInteractiveObjectTest : A_AIInteractiveObject<AIInteractiveObjectTestInitializerData>
     {
-        #region State
-        [VE_Nested]
-        private AIPatrollingState AIPatrollingState;
-        [VE_Nested]
-        private AIAttractiveObjectState AIAttractiveObjectState;
-        [VE_Nested]
-        private AIDisarmObjectState AIDisarmObjectState;
-        #endregion
-
         private AIPatrolSystem AIPatrolSystem;
-        [VE_Nested]
-        private SightObjectSystem SightObjectSystem;
         private LocalCutscenePlayerSystem LocalCutscenePlayerSystem;
+        [VE_Nested] private SightObjectSystem SightObjectSystem;
 
         public AIInteractiveObjectTest(IInteractiveGameObject interactiveGameObject, AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
         {
-            this.AIPatrollingState = new AIPatrollingState();
-            this.AIAttractiveObjectState = new AIAttractiveObjectState(new BoolVariable(false, this.OnAIIsJustAttractedByAttractiveObject, this.OnAIIsNoMoreAttractedByAttractiveObject));
-            this.AIDisarmObjectState = new AIDisarmObjectState(new BoolVariable(false, this.OnAIIsJustDisarmingObject, this.OnAIIsNoMoreJustDisarmingObject));
-            this.interactiveObjectTag = new InteractiveObjectTag { IsAi = true };
+            AIPatrollingState = new AIPatrollingState();
+            AIAttractiveObjectState = new AIAttractiveObjectState(new BoolVariable(false, OnAIIsJustAttractedByAttractiveObject, OnAIIsNoMoreAttractedByAttractiveObject));
+            AIDisarmObjectState = new AIDisarmObjectState(new BoolVariable(false, OnAIIsJustDisarmingObject, OnAIIsNoMoreJustDisarmingObject));
+            interactiveObjectTag = new InteractiveObjectTag {IsAi = true};
 
-            this.AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
+            AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
 
-            this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct { IsAttractiveObject = 1 },
-                      this.OnSightObjectSystemJustIntersected, this.OnSightObjectSystemIntersectedNothing, this.OnSightObjectSystemNoMoreIntersected);
-            this.LocalCutscenePlayerSystem = new LocalCutscenePlayerSystem();
+            SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsAttractiveObject = 1},
+                OnSightObjectSystemJustIntersected, OnSightObjectSystemIntersectedNothing, OnSightObjectSystemNoMoreIntersected);
+            LocalCutscenePlayerSystem = new LocalCutscenePlayerSystem();
 
-            this.AfterConstructor();
+            AfterConstructor();
         }
 
-        public override void Tick(float d, float timeAttenuationFactor)
+        public override void Tick(float d)
         {
+            base.Tick(d);
+            LocalCutscenePlayerSystem.Tick(d);
+            if (!AIDisarmObjectState.IsDisarming.GetValue() && !AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue()) AIPatrollingState.isPatrolling = true;
 
-            if (!this.AIDisarmObjectState.IsDisarming.GetValue() && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
-            {
-                this.AIPatrollingState.isPatrolling = true;
-            }
+            if (AIPatrollingState.isPatrolling) AIPatrolSystem.Tick(d);
 
-            if (this.AIPatrollingState.isPatrolling)
-            {
-                this.AIPatrolSystem.Tick(d, timeAttenuationFactor);
-            }
-
-            this.AIMoveToDestinationSystem.Tick(d, timeAttenuationFactor);
-        }
-
-        public override void TickAlways(float d)
-        {
-            this.LocalCutscenePlayerSystem.TickAlways(d);
-            base.TickAlways(d);
-        }
-
-        public override void TickWhenTimeIsStopped()
-        {
-            base.TickWhenTimeIsStopped();
+            AIMoveToDestinationSystem.Tick(d);
         }
 
         public override void AfterTicks()
@@ -74,97 +47,102 @@ namespace InteractiveObjects
 
         public override void OnAIDestinationReached()
         {
-            this.AIPatrolSystem.OnAIDestinationReached();
+            AIPatrolSystem.OnAIDestinationReached();
         }
 
+        public override void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
+        {
+            AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
+            AIMoveToDestinationSystem.ClearPath();
+            AIDisarmObjectState.IsDisarming.SetValue(true);
+        }
+
+        public override void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
+        {
+            AIDisarmObjectState.IsDisarming.SetValue(false);
+        }
+
+        public void OnAIIsJustDisarmingObject()
+        {
+            LocalCutscenePlayerSystem.PlayCutscene(AIInteractiveObjectInitializerData.DisarmObjectAnimation.GetSequencedActions(this));
+        }
+
+        public void OnAIIsNoMoreJustDisarmingObject()
+        {
+            LocalCutscenePlayerSystem.KillCurrentCutscene();
+        }
+
+        private void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            if (!AIDisarmObjectState.IsDisarming.GetValue())
+            {
+                AIPatrollingState.isPatrolling = false;
+                SwitchToAttractedState(IntersectedInteractiveObject);
+                if (!AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue()) LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, IntersectedInteractiveObject);
+            }
+        }
+
+        private void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            OnSightObjectSystemJustIntersected(IntersectedInteractiveObject);
+        }
+
+        private void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+        }
+
+        #region State
+
+        [VE_Nested] private AIPatrollingState AIPatrollingState;
+        [VE_Nested] private AIAttractiveObjectState AIAttractiveObjectState;
+        [VE_Nested] private AIDisarmObjectState AIDisarmObjectState;
+
+        #endregion
+
         #region Attractive Object
+
         public override void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
-            if (!this.AIDisarmObjectState.IsDisarming.GetValue())
-            {
-                SwitchToAttractedState(OtherInteractiveObject);
-            }
+            if (!AIDisarmObjectState.IsDisarming.GetValue()) SwitchToAttractedState(OtherInteractiveObject);
         }
 
         private void SwitchToAttractedState(CoreInteractiveObject OtherInteractiveObject)
         {
             if (OtherInteractiveObject.InteractiveObjectTag.IsAttractiveObject || OtherInteractiveObject.InteractiveObjectTag.IsPlayer)
             {
-                this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
-                this.AIPatrollingState.isPatrolling = false;
-                this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+                AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
+                AIPatrollingState.isPatrolling = false;
+                SetAIDestination(new AIDestination {WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition});
             }
         }
 
         public override void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject)
         {
-            if (!this.AIDisarmObjectState.IsDisarming.GetValue() && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
-            {
-                this.SwitchToAttractedState(OtherInteractiveObject);
-            }
+            if (!AIDisarmObjectState.IsDisarming.GetValue() && !AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue()) SwitchToAttractedState(OtherInteractiveObject);
         }
 
         public override void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
-            if (this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
+            if (AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
             {
-                this.AIMoveToDestinationSystem.ClearPath();
-                this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
+                AIMoveToDestinationSystem.ClearPath();
+                AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
             }
-            this.LineVisualFeedbackSystem.DestroyLine(OtherInteractiveObject);
+
+            LineVisualFeedbackSystem.DestroyLine(OtherInteractiveObject);
         }
 
         public void OnAIIsJustAttractedByAttractiveObject()
         {
-            this.SetAISpeedAttenuationFactor(this.AIInteractiveObjectInitializerData.AISpeedWhenAttracted);
-            this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, this.AIAttractiveObjectState.AttractedInteractiveObject);
+            SetAISpeedAttenuationFactor(AIInteractiveObjectInitializerData.AISpeedWhenAttracted);
+            LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, AIAttractiveObjectState.AttractedInteractiveObject);
         }
 
         public void OnAIIsNoMoreAttractedByAttractiveObject()
         {
-            this.LineVisualFeedbackSystem.DestroyLine(this.AIAttractiveObjectState.AttractedInteractiveObject);
+            LineVisualFeedbackSystem.DestroyLine(AIAttractiveObjectState.AttractedInteractiveObject);
         }
+
         #endregion
-
-        public override void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
-        {
-            this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
-            this.AIMoveToDestinationSystem.ClearPath();
-            this.AIDisarmObjectState.IsDisarming.SetValue(true);
-        }
-
-        public override void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
-        {
-            this.AIDisarmObjectState.IsDisarming.SetValue(false);
-        }
-
-        public void OnAIIsJustDisarmingObject()
-        {
-            this.LocalCutscenePlayerSystem.PlayCutscene(this.AIInteractiveObjectInitializerData.DisarmObjectAnimation.GetSequencedActions(this));
-        }
-
-        public void OnAIIsNoMoreJustDisarmingObject()
-        {
-            this.LocalCutscenePlayerSystem.KillCurrentCutscene();
-        }
-
-        private void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
-        {
-            if (!this.AIDisarmObjectState.IsDisarming.GetValue())
-            {
-                this.AIPatrollingState.isPatrolling = false;
-                this.SwitchToAttractedState(IntersectedInteractiveObject);
-                if (!this.AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue())
-                {
-                    this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, IntersectedInteractiveObject);
-                }
-            }
-        }
-
-        private void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
-        {
-            this.OnSightObjectSystemJustIntersected(IntersectedInteractiveObject);
-        }
-        private void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
     }
 }

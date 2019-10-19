@@ -3,62 +3,59 @@
     [SceneHandleDraw]
     public class AggressiveAIObject : A_AIInteractiveObject<AggressiveObjectInitializerData>
     {
-        [VE_Nested]
-        private AIPatrollingState AIPatrollingState;
-
-        [DrawNested]
-        private SightObjectSystem SightObjectSystem;
+        [VE_Nested] private AIPatrollingState AIPatrollingState;
 
         private AIPatrolSystem AIPatrolSystem;
 
+        [DrawNested] private SightObjectSystem SightObjectSystem;
+
         public AggressiveAIObject(IInteractiveGameObject interactiveGameObject, AggressiveObjectInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
         {
-            this.interactiveObjectTag = new InteractiveObjectTag { IsAi = true };
-            this.AIPatrollingState = new AIPatrollingState();
-            this.AIPatrollingState.isPatrolling = true;
-            this.AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
-            this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct { IsPlayer = 1 },
-            this.OnSightObjectSystemJustIntersected, this.OnSightObjectSystemIntersectedNothing, this.OnSightObjectSystemNoMoreIntersected);
+            interactiveObjectTag = new InteractiveObjectTag {IsAi = true};
+            AIPatrollingState = new AIPatrollingState();
+            AIPatrollingState.isPatrolling = true;
+            AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
+            SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsPlayer = 1},
+                OnSightObjectSystemJustIntersected, OnSightObjectSystemIntersectedNothing, OnSightObjectSystemNoMoreIntersected);
 
-            this.AfterConstructor();
-        }
-
-        public override void Tick(float d, float timeAttenuationFactor)
-        {
-            if (this.AIPatrollingState.isPatrolling)
-            {
-                this.AIPatrolSystem.Tick(d, timeAttenuationFactor);
-            }
-            this.AIMoveToDestinationSystem.Tick(d, timeAttenuationFactor);
+            AfterConstructor();
         }
 
-        #region Sight Event
-        protected void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        public override void Tick(float d)
         {
-            this.AIPatrollingState.isPatrolling = false;
-            this.SetAISpeedAttenuationFactor(AIMovementSpeedDefinition.RUN);
-            this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+            base.Tick(d);
+            if (AIPatrollingState.isPatrolling) AIPatrolSystem.Tick(d);
+
+            AIMoveToDestinationSystem.Tick(d);
         }
-        protected void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
-        {
-            this.OnSightObjectSystemJustIntersected(IntersectedInteractiveObject);
-        }
-        protected void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
-        {
-            if (this.SightObjectSystem.CurrentlyIntersectedInteractiveObjects.Count > 0)
-            {
-                this.OnSightObjectSystemJustIntersected(this.SightObjectSystem.CurrentlyIntersectedInteractiveObjects[0]);
-            }
-            else
-            {
-                this.AIPatrollingState.isPatrolling = true;
-            }
-        }
-        #endregion
 
         public override void OnAIDestinationReached()
         {
-            this.AIPatrolSystem.OnAIDestinationReached();
+            AIPatrolSystem.OnAIDestinationReached();
         }
+
+        #region Sight Event
+
+        protected void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            AIPatrollingState.isPatrolling = false;
+            SetAISpeedAttenuationFactor(AIMovementSpeedDefinition.RUN);
+            SetAIDestination(new AIDestination {WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition});
+        }
+
+        protected void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            OnSightObjectSystemJustIntersected(IntersectedInteractiveObject);
+        }
+
+        protected void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            if (SightObjectSystem.CurrentlyIntersectedInteractiveObjects.Count > 0)
+                OnSightObjectSystemJustIntersected(SightObjectSystem.CurrentlyIntersectedInteractiveObjects[0]);
+            else
+                AIPatrollingState.isPatrolling = true;
+        }
+
+        #endregion
     }
 }

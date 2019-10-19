@@ -16,9 +16,9 @@ namespace InteractiveObjects
             PlayerInteractiveObject.FixedTick(d);
         }
 
-        public void TickAlways(float d)
+        public void Tick(float d)
         {
-            PlayerInteractiveObject.TickAlways(d);
+            PlayerInteractiveObject.Tick(d);
         }
 
         public void LateTick(float d)

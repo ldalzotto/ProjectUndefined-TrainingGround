@@ -1,87 +1,129 @@
-﻿using CoreGame;
-using System;
+﻿using System;
+using CoreGame;
+using Object = UnityEngine.Object;
 
 namespace InteractiveObjects
 {
-    public abstract class CoreInteractiveObject 
+    public abstract class CoreInteractiveObject
     {
         #region External Dependencies
+
         private InteractiveObjectEventsManager InteractiveObjectEventsManager = InteractiveObjectEventsManager.Get();
+
         #endregion
 
-        public IInteractiveGameObject InteractiveGameObject { get; protected set; }
+        [VE_Nested] protected InteractiveObjectTag interactiveObjectTag;
 
-        [VE_Nested]
-        protected InteractiveObjectTag interactiveObjectTag;
-        public InteractiveObjectTag InteractiveObjectTag { get => interactiveObjectTag; }
+        [VE_Ignore] protected bool isAskingToBeDestroyed;
 
-        public BaseCutsceneController CutsceneController { get; private set; }
-
-        [VE_Ignore]
-        protected bool isAskingToBeDestroyed;
-        public bool IsAskingToBeDestroyed { get => isAskingToBeDestroyed; }
-
-        [VE_Ignore]
-        public bool IsUpdatedInMainManager;
+        [VE_Ignore] public bool IsUpdatedInMainManager;
 
         public CoreInteractiveObject(IInteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
         {
-            this.isAskingToBeDestroyed = false;
+            isAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
-            this.CutsceneController = new BaseCutsceneController(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
+            CutsceneController = new BaseCutsceneController(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
         }
+
+        public IInteractiveGameObject InteractiveGameObject { get; protected set; }
+
+        public InteractiveObjectTag InteractiveObjectTag => interactiveObjectTag;
+
+        public BaseCutsceneController CutsceneController { get; private set; }
+
+        public bool IsAskingToBeDestroyed => isAskingToBeDestroyed;
 
         protected void AfterConstructor()
         {
-            this.InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
+            InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
         }
 
-        public virtual void FixedTick(float d) { }
-        public virtual void TickAlways(float d) { }
-        public virtual void Tick(float d, float timeAttenuationFactor) { }
-        public virtual void TickWhenTimeIsStopped() { }
-        public virtual void AfterTicks() { }
-        public virtual void LateTick(float d) { }
+        public virtual void FixedTick(float d)
+        {
+        }
+
+        public virtual void Tick(float d)
+        {
+        }
+
+        public virtual void AfterTicks()
+        {
+        }
+
+        public virtual void LateTick(float d)
+        {
+        }
 
         public virtual void Destroy()
         {
-            this.InteractiveObjectEventsManager.OnInteractiveObjectDestroyed(this);
-            UnityEngine.Object.Destroy(this.InteractiveGameObject.InteractiveGameObjectParent);
+            InteractiveObjectEventsManager.OnInteractiveObjectDestroyed(this);
+            Object.Destroy(InteractiveGameObject.InteractiveGameObjectParent);
         }
 
         #region Animation Object Events
-        public virtual void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent) { }
+
+        public virtual void OnAnimationObjectSetUnscaledSpeedMagnitude(float UnscaledSpeedMagnitude)
+        {
+        }
+
         #endregion
 
         #region AI Events
-        public virtual void SetAIDestination(AIDestination AIDestination) { }
-        public virtual void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition) { }
-        public virtual void OnAIDestinationReached() { }
+
+        public virtual void SetAIDestination(AIDestination AIDestination)
+        {
+        }
+
+        public virtual void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        {
+        }
+
+        public virtual void OnAIDestinationReached()
+        {
+        }
+
         #endregion
 
         #region Attractive Object Events
-        public virtual void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject) { }
-        public virtual void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject) { }
-        public virtual void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject) { }
+
+        public virtual void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject)
+        {
+        }
+
+        public virtual void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject)
+        {
+        }
+
+        public virtual void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject)
+        {
+        }
+
         #endregion
 
         #region Disarm Object Events
-        public virtual void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject) { }
-        public virtual void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject) { }
+
+        public virtual void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
+        {
+        }
+
+        public virtual void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
+        {
+        }
+
         #endregion
     }
 
     public class InteractiveObjectTag
     {
-        public bool IsAttractiveObject;
         public bool IsAi;
+        public bool IsAttractiveObject;
+        public bool IsLevelCompletionZone;
         public bool IsObstacle;
         public bool IsPlayer;
-        public bool IsLevelCompletionZone;
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct InteractiveObjectTagStruct
     {
         public int IsAttractiveObject;
@@ -101,11 +143,11 @@ namespace InteractiveObjects
 
         public bool Compare(InteractiveObjectTag InteractiveObjectTag)
         {
-            return (this.IsAttractiveObject == -1 || this.IsAttractiveObject == Convert.ToInt32(InteractiveObjectTag.IsAttractiveObject))
-                && (this.IsAi == -1 || this.IsAi == Convert.ToInt32(InteractiveObjectTag.IsAi))
-                && (this.IsObstacle == -1 || this.IsObstacle == Convert.ToInt32(InteractiveObjectTag.IsObstacle))
-                && (this.IsPlayer == -1 || this.IsPlayer == Convert.ToInt32(InteractiveObjectTag.IsPlayer))
-                && (this.IsLevelCompletionZone == -1 || this.IsLevelCompletionZone == Convert.ToInt32(InteractiveObjectTag.IsLevelCompletionZone));
+            return (IsAttractiveObject == -1 || IsAttractiveObject == Convert.ToInt32(InteractiveObjectTag.IsAttractiveObject))
+                   && (IsAi == -1 || IsAi == Convert.ToInt32(InteractiveObjectTag.IsAi))
+                   && (IsObstacle == -1 || IsObstacle == Convert.ToInt32(InteractiveObjectTag.IsObstacle))
+                   && (IsPlayer == -1 || IsPlayer == Convert.ToInt32(InteractiveObjectTag.IsPlayer))
+                   && (IsLevelCompletionZone == -1 || IsLevelCompletionZone == Convert.ToInt32(InteractiveObjectTag.IsLevelCompletionZone));
         }
     }
 }

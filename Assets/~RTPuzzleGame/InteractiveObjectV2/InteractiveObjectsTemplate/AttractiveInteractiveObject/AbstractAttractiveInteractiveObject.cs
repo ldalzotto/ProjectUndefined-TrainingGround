@@ -1,5 +1,4 @@
-﻿using RTPuzzle;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace InteractiveObjects
 {
@@ -8,52 +7,54 @@ namespace InteractiveObjects
     {
         protected INIT AttractiveObjectInitializerData;
 
-        [VE_Nested]
-        private AttractiveObjectSystem AttractiveObjectSystem;
+        [VE_Nested] private AttractiveObjectSystem AttractiveObjectSystem;
 
         public AbstractAttractiveInteractiveObject(IInteractiveGameObject interactiveGameObject, INIT InteractiveObjectInitializerData) : base(interactiveGameObject)
         {
             interactiveGameObject.CreateLogicCollider(InteractiveObjectInitializerData.InteractiveObjectLogicCollider);
-            this.interactiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
-            this.AttractiveObjectInitializerData = InteractiveObjectInitializerData;
+            interactiveObjectTag = new InteractiveObjectTag {IsAttractiveObject = true};
+            AttractiveObjectInitializerData = InteractiveObjectInitializerData;
 
             var physicsInteractionSelectionGuard = new InteractiveObjectTagStruct(isAi: 1);
-            this.AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, InteractiveObjectInitializerData.AttractiveObjectSystemDefinition,
-                this.OnAssociatedAttractiveSystemJustIntersected, this.OnAssociatedAttractiveSystemNoMoreIntersected, this.OnAssociatedAttractiveSystemInterestedNothing);
+            AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, InteractiveObjectInitializerData.AttractiveObjectSystemDefinition,
+                OnAssociatedAttractiveSystemJustIntersected, OnAssociatedAttractiveSystemNoMoreIntersected, OnAssociatedAttractiveSystemInterestedNothing);
         }
 
 
-        public override void Tick(float d, float timeAttenuationFactor)
+        public override void Tick(float d)
         {
-            base.Tick(d, timeAttenuationFactor);
+            base.Tick(d);
 
-            this.AttractiveObjectSystem.Tick(d, timeAttenuationFactor);
-            this.isAskingToBeDestroyed = this.isAskingToBeDestroyed || (this.AttractiveObjectSystem != null && this.AttractiveObjectSystem.IsAskingTobedestroyed);
+            AttractiveObjectSystem.Tick(d);
+            isAskingToBeDestroyed = isAskingToBeDestroyed || AttractiveObjectSystem != null && AttractiveObjectSystem.IsAskingTobedestroyed;
         }
 
         public override void Destroy()
         {
-            this.AttractiveObjectSystem.OnDestroy();
+            AttractiveObjectSystem.OnDestroy();
             base.Destroy();
         }
 
         #region Attractive Object Events
+
         private void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemJustIntersected");
             IntersectedInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
         }
+
         private void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
             //  Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
             IntersectedInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
         }
+
         private void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemNoMoreIntersected");
             IntersectedInteractiveObject.OnOtherAttractiveObjectNoMoreIntersected(this);
         }
+
         #endregion
     }
-
 }

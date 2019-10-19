@@ -22,10 +22,9 @@ namespace AdventureGame
             AfterConstructor();
         }
 
-        public override void TickAlways(float d)
+        public override void Tick(float d)
         {
-            base.TickAlways(d);
-            AnimationObjectSystem.TickAlways(d);
+            AnimationObjectSystem.Tick(d);
         }
     }
 }

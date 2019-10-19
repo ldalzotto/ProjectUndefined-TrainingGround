@@ -1,73 +1,65 @@
-﻿using CoreGame;
+﻿using System.Collections.Generic;
+using CoreGame;
 using RTPuzzle;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace InteractiveObjects
 {
     public class PlayerInteractiveObject : CoreInteractiveObject
     {
-        public PlayerInteractiveObjectInitializerData PlayerInteractiveObjectInitializerData { get; private set; }
-
-        #region External Dependencies
-        private PlayerActionManager PlayerActionManager;
-        [VE_Nested]
-        private BlockingCutscenePlayerManager BlockingCutscenePlayer;
-        #endregion
-
-        [VE_Ignore]
-        private PlayerInputMoveManager PlayerInputMoveManager;
-        [VE_Ignore]
-        private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
-        [VE_Ignore]
-        private PlayerSelectionWheelManager PlayerSelectionWheelManager;
-        [VE_Ignore]
-        private LevelResetManager LevelResetManager;
-        [VE_Ignore]
-        private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager;
-
         #region Systems
-        [VE_Ignore]
-        private AnimationObjectSystem AnimationObjectSystem;
+
+        [VE_Nested] private AnimationObjectSystem AnimationObjectSystem;
+
         #endregion
+
+        [VE_Ignore] private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager;
+        [VE_Ignore] private LevelResetManager LevelResetManager;
+        [VE_Ignore] private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
+
+        [VE_Ignore] private PlayerInputMoveManager PlayerInputMoveManager;
+        [VE_Ignore] private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
         public PlayerInteractiveObject(IInteractiveGameObject interactiveGameObject, InteractiveObjectLogicCollider InteractiveObjectLogicCollider) : base(interactiveGameObject, false)
         {
             interactiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
-            this.interactiveObjectTag = new InteractiveObjectTag { IsPlayer = true };
+            interactiveObjectTag = new InteractiveObjectTag {IsPlayer = true};
 
-            this.PlayerInteractiveObjectInitializerData = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerInteractiveObjectInitializerData;
+            PlayerInteractiveObjectInitializerData = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerInteractiveObjectInitializerData;
 
             #region External Dependencies
-            this.PlayerActionManager = PlayerActionManager.Get();
+
+            PlayerActionManager = PlayerActionManager.Get();
             var puzzleEventsManager = PuzzleEventsManager.Get();
-            this.BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
+            BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
             var LevelConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.LevelConfiguration;
             var LevelManager = CoreGameSingletonInstances.LevelManager;
+
             #endregion
 
-            this.AnimationObjectSystem = new AnimationObjectSystem(this);
+            AnimationObjectSystem = new AnimationObjectSystem(this);
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
-            this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
-            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
-            this.PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, puzzleEventsManager, this.PlayerActionManager);
-            this.LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
-            this.LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
+            PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
+            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
+            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, puzzleEventsManager, PlayerActionManager);
+            LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
+            LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
 
-            this.AfterConstructor();
+            AfterConstructor();
         }
 
-        public override void TickAlways(float d)
+        public PlayerInteractiveObjectInitializerData PlayerInteractiveObjectInitializerData { get; private set; }
+
+        public override void Tick(float d)
         {
             if (!LevelResetManager.Tick(d))
             {
-
-                if (!PlayerActionManager.IsActionExecuting() && !this.BlockingCutscenePlayer.Playing)
+                if (!PlayerActionManager.IsActionExecuting() && !BlockingCutscenePlayer.Playing)
                 {
-                    if (!PlayerSelectionWheelManager.AwakeOrSleepWheel(this.LevelDependenatPlayerActionsManager))
+                    if (!PlayerSelectionWheelManager.AwakeOrSleepWheel(LevelDependenatPlayerActionsManager))
                     {
                         if (!PlayerActionManager.IsWheelEnabled())
                         {
@@ -76,7 +68,7 @@ namespace InteractiveObjects
                         else
                         {
                             PlayerInputMoveManager.ResetSpeed();
-                            PlayerSelectionWheelManager.TriggerActionOnInput(this.LevelDependenatPlayerActionsManager);
+                            PlayerSelectionWheelManager.TriggerActionOnInput(LevelDependenatPlayerActionsManager);
                         }
                     }
                 }
@@ -85,8 +77,9 @@ namespace InteractiveObjects
                     PlayerInputMoveManager.ResetSpeed();
                 }
             }
-            this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(new AnimationObjectSetUnscaledSpeedMagnitudeEvent { UnscaledSpeedMagnitude = this.GetNormalizedSpeed() });
-            this.AnimationObjectSystem.TickAlways(d);
+
+            AnimationObjectSystem.SetUnscaledSpeedMagnitude(GetNormalizedSpeed());
+            AnimationObjectSystem.Tick(d);
         }
 
         public override void FixedTick(float d)
@@ -95,55 +88,65 @@ namespace InteractiveObjects
             PlayerBodyPhysicsEnvironment.FixedTick(d);
         }
 
+        #region External Dependencies
+
+        private PlayerActionManager PlayerActionManager;
+        [VE_Nested] private BlockingCutscenePlayerManager BlockingCutscenePlayer;
+
+        #endregion
+
         #region Logical Conditions
+
         public bool HasPlayerMovedThisFrame()
         {
             return PlayerInputMoveManager.HasMoved;
         }
+
         public float GetNormalizedSpeed()
         {
             return PlayerInputMoveManager.PlayerSpeedMagnitude;
         }
+
         #endregion
     }
 
     #region Player Action Managers
-    class LevelDependenatPlayerActionsManager
+
+    internal class LevelDependenatPlayerActionsManager
     {
-        private PlayerInteractiveObject PlayerInteractiveObjectRef;
         private LevelConfigurationData CurrentLevelConfigurationData;
         private List<RTPPlayerAction> PlayerActionsAssociatedToLevel;
+        private PlayerInteractiveObject PlayerInteractiveObjectRef;
 
         public LevelDependenatPlayerActionsManager(PlayerInteractiveObject PlayerInteractiveObjectRef, LevelConfiguration levelConfiguration, LevelManager LevelManager)
         {
             this.PlayerInteractiveObjectRef = PlayerInteractiveObjectRef;
-            this.PlayerActionsAssociatedToLevel = new List<RTPPlayerAction>();
-            this.CurrentLevelConfigurationData = levelConfiguration.ConfigurationInherentData[LevelManager.LevelID];
+            PlayerActionsAssociatedToLevel = new List<RTPPlayerAction>();
+            CurrentLevelConfigurationData = levelConfiguration.ConfigurationInherentData[LevelManager.LevelID];
         }
 
         public List<RTPPlayerAction> GetPlayerActionsAssociatedToLevel()
         {
-            if (this.PlayerActionsAssociatedToLevel.Count == 0)
-            {
-                foreach (var levelStaticPlayerActionInherentData in this.CurrentLevelConfigurationData.ConfiguredPlayerActions)
-                {
-                    this.PlayerActionsAssociatedToLevel.Add(levelStaticPlayerActionInherentData.BuildPlayerAction(this.PlayerInteractiveObjectRef));
-                }
-            }
-            return this.PlayerActionsAssociatedToLevel;
+            if (PlayerActionsAssociatedToLevel.Count == 0)
+                foreach (var levelStaticPlayerActionInherentData in CurrentLevelConfigurationData.ConfiguredPlayerActions)
+                    PlayerActionsAssociatedToLevel.Add(levelStaticPlayerActionInherentData.BuildPlayerAction(PlayerInteractiveObjectRef));
+
+            return PlayerActionsAssociatedToLevel;
         }
     }
 
-    class PlayerSelectionWheelManager
+    internal class PlayerSelectionWheelManager
     {
-        #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
-        #endregion
-
         private IGameInputManager GameInputManager;
-        private PlayerActionManager PlayerActionManager;
 
         private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManagerRef;
+        private PlayerActionManager PlayerActionManager;
+
+        #region External Dependencies
+
+        private PuzzleEventsManager PuzzleEventsManager;
+
+        #endregion
 
         public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PuzzleEventsManager PuzzleEventsManager, PlayerActionManager PlayerActionManager)
         {
@@ -159,16 +162,17 @@ namespace InteractiveObjects
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
                     PlayerActionManager.AddActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
-                    this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelAwake();
+                    PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelAwake();
                     return true;
                 }
             }
             else if (GameInputManager.CurrentInput.CancelButtonD())
             {
-                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelSleep();
+                PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelSleep();
                 PlayerActionManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
                 return true;
             }
+
             return false;
         }
 
@@ -176,18 +180,21 @@ namespace InteractiveObjects
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
-                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelNodeSelected();
+                PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelNodeSelected();
                 PlayerActionManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
             }
         }
-
     }
+
     #endregion
 
     #region Level Reset Manager
-    class LevelResetManager
+
+    internal class LevelResetManager
     {
         private const float TIME_PUSHED_TO_RESET_S = 1f;
+
+        private float currentTimePressed = 0f;
         private IGameInputManager GameInputManager;
         private PuzzleEventsManager PuzzleEventsManager;
 
@@ -196,8 +203,6 @@ namespace InteractiveObjects
             GameInputManager = gameInputManager;
             PuzzleEventsManager = puzzleEventsManager;
         }
-
-        private float currentTimePressed = 0f;
 
         public bool Tick(float d)
         {
@@ -215,8 +220,10 @@ namespace InteractiveObjects
             {
                 currentTimePressed = 0f;
             }
+
             return false;
         }
     }
+
     #endregion
 }

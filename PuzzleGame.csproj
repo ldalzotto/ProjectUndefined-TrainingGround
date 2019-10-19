@@ -65,8 +65,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Lib\PuzzleDiscussionWindowManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Lib\PuzzleDiscussionWindowsContainer.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Managers\PuzzleDiscussionManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\ExposedInterfaces\IGameOverManagerEventListener.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\GameOver\GameLoopManager\Managers\GameOverManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfiguration.cs" />
@@ -82,10 +80,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\TimeFlow\Managers\TimeFlowBarGameObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\TimeFlow\Managers\TimeFlowBarManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\TimeFlow\Managers\TimeFlowManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\TimeFlow\Managers\TimeFlowPlayPauseManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineInherentData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\ExposedInterfaces\IDottedLineRendererManagerEvent.cs" />

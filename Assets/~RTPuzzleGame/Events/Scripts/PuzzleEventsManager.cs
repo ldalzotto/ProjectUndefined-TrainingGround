@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : GameSingleton<PuzzleEventsManager>, IGameOverManagerEventListener
+    public class PuzzleEventsManager : GameSingleton<PuzzleEventsManager>
     {
         public PuzzleEventsManager()
         {
@@ -15,16 +15,6 @@ namespace RTPuzzle
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
             LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
         }
-
-        #region IGameOverManagerEventListener
-
-        public void PZ_EVT_GameOver()
-        {
-            Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
-            OnPuzzleToAdventureLevel(LevelMemoryManager.LastAdventureLevel);
-        }
-
-        #endregion
 
         #region IPlayerActionManagerEventListener
 

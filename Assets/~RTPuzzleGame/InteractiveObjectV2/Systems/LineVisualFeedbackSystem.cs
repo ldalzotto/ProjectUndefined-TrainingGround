@@ -1,52 +1,49 @@
-﻿using CoreGame;
+﻿using System.Collections.Generic;
+using CoreGame;
 using GameConfigurationID;
 using RTPuzzle;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace InteractiveObjects
 {
-    public class LineVisualFeedbackSystem
+    public class LineVisualFeedbackSystem : AInteractiveObjectSystem
     {
+        private IInteractiveGameObject InteractiveGameObjectRef;
+        private List<ILinePositioning> linePositionings = new List<ILinePositioning>();
+        private List<DottedLine> lines = new List<DottedLine>();
         private Vector3 positionOffsetFromNPC;
 
         private List<CoreInteractiveObject> sourceTriggeringInteractiveObjects = new List<CoreInteractiveObject>();
-        private List<ILinePositioning> linePositionings = new List<ILinePositioning>();
-        private List<DottedLine> lines = new List<DottedLine>();
-
-        private IInteractiveGameObject InteractiveGameObjectRef;
 
         public LineVisualFeedbackSystem(IInteractiveGameObject InteractiveGameObject)
         {
-            this.InteractiveGameObjectRef = InteractiveGameObject;
+            InteractiveGameObjectRef = InteractiveGameObject;
             //position calculation
-            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(InteractiveGameObject.AverageModelBounds);
+            positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(InteractiveGameObject.AverageModelBounds);
         }
 
-        public void TickAlways(float d)
+        public override void Tick(float d)
         {
-            for (var i = 0; i < this.lines.Count; i++)
+            for (var i = 0; i < lines.Count; i++)
             {
-                var startPosition = this.InteractiveGameObjectRef.GetTransform().WorldPosition + this.positionOffsetFromNPC;
-                this.lines[i].Tick(d, startPosition, this.linePositionings[i].GetEndPosition(startPosition));
+                var startPosition = InteractiveGameObjectRef.GetTransform().WorldPosition + positionOffsetFromNPC;
+                lines[i].Tick(d, startPosition, linePositionings[i].GetEndPosition(startPosition));
             }
         }
 
-        public void OnDestroy()
+        public override void OnDestroy()
         {
-            for (var i = 0; i < this.lines.Count; i++)
-            {
-                this.DestroyLine(this.sourceTriggeringInteractiveObjects[i]);
-            }
+            for (var i = 0; i < lines.Count; i++) DestroyLine(sourceTriggeringInteractiveObjects[i]);
         }
 
         #region External Events
+
         public void CreateLineFollowing(DottedLineID DottedLineID, CoreInteractiveObject TargetInteractiveGameObject)
         {
-            this.sourceTriggeringInteractiveObjects.Add(TargetInteractiveGameObject);
-            this.lines.Add(new DottedLine(DottedLineID));
+            sourceTriggeringInteractiveObjects.Add(TargetInteractiveGameObject);
+            lines.Add(new DottedLine(DottedLineID));
             var targetGameObject = TargetInteractiveGameObject.InteractiveGameObject;
-            this.linePositionings.Add(new LineFollowTransformPositioning(targetGameObject.InteractiveGameObjectParent.transform, targetGameObject.AverageModelBounds));
+            linePositionings.Add(new LineFollowTransformPositioning(targetGameObject.InteractiveGameObjectParent.transform, targetGameObject.AverageModelBounds));
         }
 
         /*
@@ -60,16 +57,16 @@ namespace InteractiveObjects
 
         public void DestroyLine(CoreInteractiveObject sourceInteractiveObject)
         {
-            var index = this.sourceTriggeringInteractiveObjects.IndexOf(sourceInteractiveObject);
+            var index = sourceTriggeringInteractiveObjects.IndexOf(sourceInteractiveObject);
             if (index >= 0)
             {
-                this.sourceTriggeringInteractiveObjects.RemoveAt(index);
-                this.linePositionings.RemoveAt(index);
-                this.lines[index].OnDestroy();
-                this.lines.RemoveAt(index);
+                sourceTriggeringInteractiveObjects.RemoveAt(index);
+                linePositionings.RemoveAt(index);
+                lines[index].OnDestroy();
+                lines.RemoveAt(index);
             }
         }
+
         #endregion
     }
-
 }

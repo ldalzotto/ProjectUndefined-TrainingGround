@@ -4,7 +4,7 @@ namespace CoreGame
 {
     public class AnimationDataManager
     {
-        private Animator animator;
+        [VE_Ignore] private Animator animator;
 
         private bool updateSpeed = false;
 

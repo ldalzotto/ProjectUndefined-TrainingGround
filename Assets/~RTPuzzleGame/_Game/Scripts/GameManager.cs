@@ -1,4 +1,3 @@
-using System.Collections;
 using CoreGame;
 using InteractiveObjects;
 using Obstacle;
@@ -40,8 +39,6 @@ namespace RTPuzzle
         {
             OnStart();
 
-            Coroutiner.Instance.StartCoroutine(EndOfFixedUpdate());
-
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
 
@@ -60,9 +57,6 @@ namespace RTPuzzle
 
             CameraMovementManager.Get().Init();
 
-            TimeFlowBarManager.Get().Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
-            TimeFlowManager.Get().Init(TimeFlowBarManager.Get());
-            TimeFlowPlayPauseManager.Get().Init();
             CircleFillBarRendererManager.Get().Init();
             TutorialManager.Init();
             InteractiveObjectSelectionManager.Get().Init(CoreGameSingletonInstances.GameInputManager);
@@ -82,47 +76,31 @@ namespace RTPuzzle
 
                 BeforeTick(d);
 
-                if (!GameOverManager.Get().OnGameOver)
-                {
-                    TutorialManager.Tick(d);
 
-                    PuzzleTutorialEventSenderManager.Get().Tick(d);
-                    BlockingCutscenePlayer.Tick(d);
+                TutorialManager.Tick(d);
 
-                    PlayerActionManager.Get().Tick(d);
-                    PlayerInteractiveObjectManager.Get().TickAlways(d);
+                PuzzleTutorialEventSenderManager.Get().Tick(d);
+                BlockingCutscenePlayer.Tick(d);
 
-                    CameraMovementManager.Get().Tick(d);
+                PlayerActionManager.Get().Tick(d);
+                PlayerInteractiveObjectManager.Get().Tick(d);
 
-                    ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
-                    RangeIntersectionCalculationManagerV2.Get().Tick(d);
+                CameraMovementManager.Get().Tick(d);
 
-                    RangeObjectV2Manager.Get().Tick(d);
+                ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
+                RangeIntersectionCalculationManagerV2.Get().Tick(d);
 
-                    TimeFlowManager.Get().Tick(d);
-                    GameOverManager.Get().Tick(d);
-                    TimeFlowPlayPauseManager.Get().Tick(TimeFlowManager.Get().IsAbleToFlowTime());
+                RangeObjectV2Manager.Get().Tick(d);
 
-                    InteractiveObjectV2Manager.Get().TickAlways(d);
+                InteractiveObjectV2Manager.Get().Tick(d);
 
-                    if (TimeFlowManager.Get().IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
-                    {
-                        InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.Get().GetTimeAttenuation());
-                        PlayerActionManager.Get().TickWhenTimeFlows(d, TimeFlowManager.Get().GetTimeAttenuation());
-                    }
-                    else
-                    {
-                        InteractiveObjectV2Manager.Get().TickWhenTimeIsStopped();
-                    }
+                InteractiveObjectV2Manager.Get().AfterTicks();
 
-                    InteractiveObjectV2Manager.Get().AfterTicks();
-
-                    PuzzleDiscussionManager.Tick(d);
-                    GroundEffectsManagerV2.Get().Tick(d);
-                    DottedLineRendererManager.Get().Tick();
-                    InteractiveObjectSelectionManager.Get().Tick(d);
-                    CircleFillBarRendererManager.Get().Tick(d);
-                }
+                PuzzleDiscussionManager.Tick(d);
+                GroundEffectsManagerV2.Get().Tick(d);
+                DottedLineRendererManager.Get().Tick();
+                InteractiveObjectSelectionManager.Get().Tick(d);
+                CircleFillBarRendererManager.Get().Tick(d);
 
 #if UNITY_EDITOR
                 EditorOnlyManagers.Tick(d);
@@ -133,12 +111,10 @@ namespace RTPuzzle
         private void LateUpdate()
         {
             var d = Time.deltaTime;
-            if (!GameOverManager.Get().OnGameOver)
-            {
-                PlayerInteractiveObjectManager.Get().LateTick(d);
-                InteractiveObjectV2Manager.Get().LateTick(d);
-                PlayerActionManager.Get().LateTick(d);
-            }
+
+            PlayerInteractiveObjectManager.Get().LateTick(d);
+            InteractiveObjectV2Manager.Get().LateTick(d);
+            PlayerActionManager.Get().LateTick(d);
 
             ObstacleOcclusionCalculationManagerV2.Get().LateTick();
             RangeIntersectionCalculationManagerV2.Get().LateTick();
@@ -147,22 +123,9 @@ namespace RTPuzzle
         private void FixedUpdate()
         {
             var d = Time.fixedDeltaTime;
-            if (!GameOverManager.Get().OnGameOver)
-            {
-                PlayerInteractiveObjectManager.Get().FixedTick(d);
-                InteractiveObjectV2Manager.Get().FixedTick(d);
-            }
-        }
 
-        private IEnumerator EndOfFixedUpdate()
-        {
-            yield return new WaitForFixedUpdate();
-
-            if (!GameOverManager.Get().OnGameOver)
-            {
-            }
-
-            yield return EndOfFixedUpdate();
+            PlayerInteractiveObjectManager.Get().FixedTick(d);
+            InteractiveObjectV2Manager.Get().FixedTick(d);
         }
 
         private void OnDestroy()

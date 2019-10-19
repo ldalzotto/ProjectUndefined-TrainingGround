@@ -1,5 +1,4 @@
 ﻿using System;
-using GameConfigurationID;
 using RangeObjects;
 
 namespace InteractiveObjects
@@ -36,9 +35,9 @@ namespace InteractiveObjects
 
         public bool IsAskingTobedestroyed { get; private set; }
 
-        public override void Tick(float d, float timeAttenuationFactor)
+        public override void Tick(float d)
         {
-            AttractiveObjectLifetimeTimer.Tick(d, timeAttenuationFactor);
+            AttractiveObjectLifetimeTimer.Tick(d);
             IsAskingTobedestroyed = AttractiveObjectLifetimeTimer.IsTimeOver();
         }
 
@@ -68,9 +67,9 @@ namespace InteractiveObjects
 
         #endregion
 
-        public void Tick(float d, float timeAttenuationFactor)
+        public void Tick(float d)
         {
-            elapsedTime += d * timeAttenuationFactor;
+            elapsedTime += d;
         }
     }
 }

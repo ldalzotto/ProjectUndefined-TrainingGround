@@ -21,20 +21,11 @@ namespace InteractiveObjects
             AISpeedEventDispatcher = new AISpeedEventDispatcher(CoreInteractiveObject, AIInteractiveObjectInitializerData);
         }
 
-        public override void TickAlways(float d)
+        public override void Tick(float d)
         {
             AIDestinationMoveManager.TickDestinationReached();
-        }
-
-        public override void Tick(float d, float timeAttenuationFactor)
-        {
             AIDestinationMoveManager.EnableAgent();
-            AIDestinationMoveManager.Tick(d, timeAttenuationFactor);
-        }
-
-        public override void TickWhenTimeIsStopped()
-        {
-            AIDestinationMoveManager.DisableAgent();
+            AIDestinationMoveManager.Tick(d);
         }
 
         public override void AfterTicks()
@@ -98,13 +89,13 @@ namespace InteractiveObjects
                 }
         }
 
-        public void Tick(float d, float timeAttenuationFactor)
+        public void Tick(float d)
         {
-            CurrentTimeAttenuated = d * timeAttenuationFactor;
-            UpdateAgentTransform(d, timeAttenuationFactor);
+            DeltaTime = d;
+            UpdateAgentTransform(d);
         }
 
-        private void UpdateAgentTransform(float d, float timeAttenuationFactor)
+        private void UpdateAgentTransform(float d)
         {
             objectAgent.speed = AIInteractiveObjectInitializerData.SpeedMultiplicationFactor * AIMovementDefinitions.AIMovementSpeedAttenuationFactorLookup[currentSpeedAttenuationFactor];
 
@@ -122,7 +113,7 @@ namespace InteractiveObjects
                 else
                     targetRotation = Quaternion.LookRotation((objectAgent.path.corners[1] - objectAgent.path.corners[0]).normalized, Vector3.up);
 
-                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, AIInteractiveObjectInitializerData.RotationSpeed * d * timeAttenuationFactor);
+                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, AIInteractiveObjectInitializerData.RotationSpeed * d);
 
                 updatePosition =
                     Quaternion.Angle(objectAgent.transform.rotation, targetRotation) <= AIInteractiveObjectInitializerData.MinAngleThatAllowThePositionUpdate;
@@ -130,7 +121,7 @@ namespace InteractiveObjects
             else if (CurrentDestination.HasValue && CurrentDestination.Value.Rotation.HasValue)
             {
                 var targetRotation = CurrentDestination.Value.Rotation.Value;
-                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, AIInteractiveObjectInitializerData.RotationSpeed * d * timeAttenuationFactor);
+                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, AIInteractiveObjectInitializerData.RotationSpeed * d);
             }
 
             if (updatePosition)
@@ -144,8 +135,8 @@ namespace InteractiveObjects
             //   Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
             Vector3 velocitySetted = default;
             NavMeshHit pathHit;
-            objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * CurrentTimeAttenuated, out pathHit);
-            if (CurrentTimeAttenuated > 0) objectAgent.velocity = (pathHit.position - objectAgent.transform.position) / CurrentTimeAttenuated;
+            objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * DeltaTime, out pathHit);
+            if (DeltaTime > 0) objectAgent.velocity = (pathHit.position - objectAgent.transform.position) / DeltaTime;
 
             objectAgent.nextPosition = pathHit.position;
         }
@@ -163,7 +154,7 @@ namespace InteractiveObjects
 
         #region State
 
-        private float CurrentTimeAttenuated;
+        private float DeltaTime;
 
         public AIDestination? CurrentDestination { get; private set; }
 
@@ -210,14 +201,6 @@ namespace InteractiveObjects
             objectAgent.isStopped = false;
         }
 
-        public void DisableAgent()
-        {
-            // Debug.Log(MyLog.Format("Agent disabled"));
-            objectAgent.isStopped = true;
-            objectAgent.nextPosition = objectAgent.transform.position;
-            objectAgent.speed = 0f;
-        }
-
         public void ClearPath()
         {
             CurrentDestination = null;
@@ -247,7 +230,7 @@ namespace InteractiveObjects
         public void AfterTicks(bool hasCurrentlyADestination)
         {
             var currentSpeed = (hasCurrentlyADestination ? AssociatedInteractiveObject.InteractiveGameObject.Agent.speed : 0) / AIInteractiveObjectInitializerData.SpeedMultiplicationFactor;
-            AssociatedInteractiveObject.OnAnimationObjectSetUnscaledSpeedMagnitude(new AnimationObjectSetUnscaledSpeedMagnitudeEvent {UnscaledSpeedMagnitude = currentSpeed});
+            AssociatedInteractiveObject.OnAnimationObjectSetUnscaledSpeedMagnitude(currentSpeed);
         }
     }
 }
