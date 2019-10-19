@@ -713,6 +713,10 @@
       <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
       <Name>RangeObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="SelectableObjects_Interfaces.csproj">
+      <Project>{1A25ED86-E332-816C-7EE6-8D768A3D8986}</Project>
+      <Name>SelectableObjects_Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="SelectionObjects.csproj">
       <Project>{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}</Project>
       <Name>SelectionObjects</Name>

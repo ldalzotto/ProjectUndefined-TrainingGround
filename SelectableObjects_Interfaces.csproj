@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}</ProjectGuid>
+    <ProjectGuid>{1A25ED86-E332-816C-7EE6-8D768A3D8986}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>SelectionObjects</AssemblyName>
+    <AssemblyName>SelectableObjects_Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,16 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\SelectableObjects\InteractiveObject\Systems\SelectableObjectSystem.cs" />
-     <Compile Include="Assets\SelectableObjects\InteractiveObject\Systems\SelectableObjectSystemDefinition.cs" />
-     <Compile Include="Assets\SelectableObjects\SelectableObject\Lib\SelectableObjectIconAnimation.cs" />
-     <Compile Include="Assets\SelectableObjects\SelectableObject\Managers\SelectableObjectManagerV2.cs" />
-     <Compile Include="Assets\SelectableObjects\SelectableObjectsRendering\PuzzleSelectionObjectRederingPassFeature.cs" />
-     <Compile Include="Assets\SelectableObjects\SelectableObjectsRendering\SelectableObjectRendererManager.cs" />
-     <None Include="Assets\SelectableObjects\SelectableObjects.asmdef" />
- <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
- <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\SelectableObjects\SelectableObjects_Interfaces\Events\SelectableObjectEventsManager.cs" />
+     <Compile Include="Assets\SelectableObjects\SelectableObjects_Interfaces\InteractiveObject\Systems\ISelectableObjectSystem.cs" />
+     <None Include="Assets\SelectableObjects\SelectableObjects_Interfaces\SelectableObjects_Interfaces.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -620,29 +613,9 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="SelectableObjects_Interfaces.csproj">
-      <Project>{1A25ED86-E332-816C-7EE6-8D768A3D8986}</Project>
-      <Name>SelectableObjects_Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="CoreGame.csproj">
       <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
       <Name>CoreGame</Name>
-    </ProjectReference>
-    <ProjectReference Include="Editor_Common.csproj">
-      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
-      <Name>Editor_Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
-      <Name>OdinSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="InteractiveObjects.csproj">
-      <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
-      <Name>InteractiveObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="RangeObjects.csproj">
-      <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
-      <Name>RangeObjects</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

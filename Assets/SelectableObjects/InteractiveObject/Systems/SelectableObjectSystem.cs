@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using InteractiveObjects;
 using RangeObjects;
+using SelectableObjects_Interfaces;
 using UnityEngine;
 
 namespace SelectableObject
@@ -13,14 +14,6 @@ namespace SelectableObject
 
     #endregion
 
-    public interface ISelectableObjectSystem
-    {
-        //TODO -> replace object with RTPPlayerAction ref
-        object AssociatedPlayerAction { get; }
-        ExtendedBounds GetAverageModelBoundLocalSpace();
-
-        Transform GetTransform();
-    }
 
     public class SelectableObjectSystem : AInteractiveObjectSystem, ISelectableObjectSystem
     {

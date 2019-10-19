@@ -1,13 +1,7 @@
 {
-    "name": "SelectionObjects",
+    "name": "SelectableObjects_Interfaces",
     "references": [
-        "SelectableObjects_Interfaces",
-        "CoreGame",
-        "Editor_Common",
-        "OdinSerializer",
-        "Unity.RenderPipelines.Lightweight.Runtime",
-        "InteractiveObjects",
-        "RangeObjects"
+        "CoreGame"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

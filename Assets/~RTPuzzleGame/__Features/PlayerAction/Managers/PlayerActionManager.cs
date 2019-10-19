@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using CoreGame;
 using InteractiveObjects;
-using SelectableObject;
+using SelectableObject_Interfaces;
+using SelectableObjects_Interfaces;
 using UnityEngine;
 
 namespace RTPuzzle

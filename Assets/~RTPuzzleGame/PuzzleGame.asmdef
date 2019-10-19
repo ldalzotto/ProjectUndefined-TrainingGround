@@ -9,6 +9,7 @@
         "InteractiveObjects",
         "Obstacle",
         "RangeObjects",
+        "SelectableObjects_Interfaces",
         "SelectionObjects"
     ],
     "includePlatforms": [],

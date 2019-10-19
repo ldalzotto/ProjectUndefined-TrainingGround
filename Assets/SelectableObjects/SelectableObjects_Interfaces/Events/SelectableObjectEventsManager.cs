@@ -1,7 +1,8 @@
 ﻿using System;
 using CoreGame;
+using SelectableObjects_Interfaces;
 
-namespace SelectableObject
+namespace SelectableObject_Interfaces
 {
     public class SelectableObjectEventsManager : GameSingleton<SelectableObjectEventsManager>
     {
