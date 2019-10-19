@@ -2,12 +2,12 @@
 
 namespace CoreGame
 {
-    public abstract class PlayerManagerType : MonoBehaviour
+    //TODO -> To remove when PlayerObject module is created !
+    public class PlayerManagerType : MonoBehaviour
     {
         public PlayerPosition GetPlayerPosition()
         {
-            return new PlayerPosition(this.transform.position, this.transform.rotation);
+            return new PlayerPosition(transform.position, transform.rotation);
         }
     }
-
 }

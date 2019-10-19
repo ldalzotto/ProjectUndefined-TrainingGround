@@ -1,16 +1,16 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using InteractiveObjects;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "DummyPlayerActionInherentData", menuName = "Test/DummyPlayerActionInherentData", order = 1)]
     public class DummyPlayerActionInherentData : PlayerActionInherentData
     {
         public override RTPPlayerAction BuildPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
         {
-            return new DummyPlayerAction(this.CorePlayerActionDefinition);
+            return new DummyPlayerAction(CorePlayerActionDefinition);
         }
     }
 
@@ -41,5 +41,4 @@ namespace RTPuzzle
         {
         }
     }
-
 }

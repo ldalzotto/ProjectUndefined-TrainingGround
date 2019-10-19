@@ -1,17 +1,14 @@
-﻿using OdinSerializer;
+﻿using System;
+using CoreGame;
 
 namespace InteractiveObjects
 {
-    [System.Serializable]
+    [Serializable]
     [SceneHandleDraw]
     public abstract class AbstractAIInteractiveObjectInitializerData : AbstractInteractiveObjectV2Definition
     {
-        public float SpeedMultiplicationFactor = 20f;
-        public float RotationSpeed = 5f;
-        public float MinAngleThatAllowThePositionUpdate = 45f;
-        [DrawNested]
-        public AIAgentDefinition AIAgentDefinition;
-        [DrawNested]
-        public InteractiveObjectLogicCollider InteractiveObjectLogicCollider;
+        [DrawNested] public AIAgentDefinition AIAgentDefinition;
+        [DrawNested] public InteractiveObjectLogicCollider InteractiveObjectLogicCollider;
+        public TransformMoveManagerComponentV3 TransformMoveManagerComponentV3;
     }
 }

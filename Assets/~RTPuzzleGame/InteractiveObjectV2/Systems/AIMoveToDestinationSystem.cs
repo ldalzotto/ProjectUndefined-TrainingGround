@@ -97,7 +97,8 @@ namespace InteractiveObjects
 
         private void UpdateAgentTransform(float d)
         {
-            objectAgent.speed = AIInteractiveObjectInitializerData.SpeedMultiplicationFactor * AIMovementDefinitions.AIMovementSpeedAttenuationFactorLookup[currentSpeedAttenuationFactor];
+            var TransformMoveManagerComponentV3 = AIInteractiveObjectInitializerData.TransformMoveManagerComponentV3;
+            objectAgent.speed = TransformMoveManagerComponentV3.SpeedMultiplicationFactor * AIMovementDefinitions.AIMovementSpeedAttenuationFactorLookup[currentSpeedAttenuationFactor];
 
             var updatePosition = true;
             // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
@@ -113,15 +114,16 @@ namespace InteractiveObjects
                 else
                     targetRotation = Quaternion.LookRotation((objectAgent.path.corners[1] - objectAgent.path.corners[0]).normalized, Vector3.up);
 
-                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, AIInteractiveObjectInitializerData.RotationSpeed * d);
+                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, TransformMoveManagerComponentV3.RotationSpeed * d);
 
                 updatePosition =
-                    Quaternion.Angle(objectAgent.transform.rotation, targetRotation) <= AIInteractiveObjectInitializerData.MinAngleThatAllowThePositionUpdate;
+                    !TransformMoveManagerComponentV3.IsPositionUpdateConstrained ||
+                    TransformMoveManagerComponentV3.IsPositionUpdateConstrained && Quaternion.Angle(objectAgent.transform.rotation, targetRotation) <= TransformMoveManagerComponentV3.TransformPositionUpdateConstraints.MinAngleThatAllowThePositionUpdate;
             }
             else if (CurrentDestination.HasValue && CurrentDestination.Value.Rotation.HasValue)
             {
                 var targetRotation = CurrentDestination.Value.Rotation.Value;
-                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, AIInteractiveObjectInitializerData.RotationSpeed * d);
+                objectAgent.transform.rotation = Quaternion.Slerp(objectAgent.transform.rotation, targetRotation, TransformMoveManagerComponentV3.RotationSpeed * d);
             }
 
             if (updatePosition)
@@ -229,7 +231,7 @@ namespace InteractiveObjects
 
         public void AfterTicks(bool hasCurrentlyADestination)
         {
-            var currentSpeed = (hasCurrentlyADestination ? AssociatedInteractiveObject.InteractiveGameObject.Agent.speed : 0) / AIInteractiveObjectInitializerData.SpeedMultiplicationFactor;
+            var currentSpeed = (hasCurrentlyADestination ? AssociatedInteractiveObject.InteractiveGameObject.Agent.speed : 0) / AIInteractiveObjectInitializerData.TransformMoveManagerComponentV3.SpeedMultiplicationFactor;
             AssociatedInteractiveObject.OnAnimationObjectSetUnscaledSpeedMagnitude(currentSpeed);
         }
     }

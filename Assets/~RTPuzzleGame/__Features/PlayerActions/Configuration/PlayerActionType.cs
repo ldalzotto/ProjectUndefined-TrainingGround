@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-
-namespace RTPuzzle
+﻿namespace RTPuzzle
 {
     public enum PlayerActionType
     {
         UNCLASSIFIED = 0,
         TYTEST_TYPE = 1
     }
-
 }

@@ -162,8 +162,6 @@
      <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\DummyCutsceneNode.cs" />
      <Compile Include="Assets\~CoreGame\Cutscene\Graph\Parameters\CutsceneParametersName.cs" />
      <Compile Include="Assets\~CoreGame\Cutscene\Graph\Parameters\ParametrizedAnimationID.cs" />
-     <Compile Include="Assets\~CoreGame\DataComponent\ADataComponent.cs" />
-     <Compile Include="Assets\~CoreGame\DataComponent\DataComponentContainer.cs" />
      <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
@@ -201,8 +199,6 @@
      <Compile Include="Assets\~CoreGame\Persistance\Script\AutoSaveIcon.cs" />
      <Compile Include="Assets\~CoreGame\Persistance\Script\PersistanceManager.cs" />
      <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerCommonComponents.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerPhysicsMovementComponent.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV3.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAdventurePositionManager.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\AnimationDataManager.cs" />
@@ -229,10 +225,6 @@
      <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
      <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
      <Compile Include="Assets\~CoreGame\UI\CanvasScalerManager.cs" />
-     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayout.cs" />
-     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
-     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
-     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
      <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
      <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
      <None Include="Assets\~CoreGame\CircleFillBar\CircleBar.shader" />

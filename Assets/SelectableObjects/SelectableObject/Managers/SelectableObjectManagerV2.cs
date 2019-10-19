@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
-using SelectableObject_Interfaces;
 using SelectableObjects_Interfaces;
 
 namespace SelectableObject

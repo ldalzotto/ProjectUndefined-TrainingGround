@@ -65,11 +65,11 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfigurationData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\LevelCompletion\Managers\LevelCompletionManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionType.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\DummyAction\DummyPlayerActionInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Lib\ActionExecution\RTPPlayerAction.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Managers\PlayerActionManager.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Configuration\PlayerActionInherentData.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Configuration\PlayerActionType.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\DummyAction\DummyPlayerActionInherentData.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Lib\ActionExecution\RTPPlayerAction.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Managers\PlayerActionManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />

@@ -1,26 +1,22 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
-
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
-    [System.Serializable]
+    [Serializable]
     public class TransformMoveManagerComponentV3
     {
+        [HideInInspector] public bool IsPositionUpdateConstrained = false;
+        public float RotationSpeed = 5f;
         public float SpeedMultiplicationFactor = 20f;
-        public float RotationSpeed = 10f;
 
-        [HideInInspector]
-        public bool IsPositionUpdateConstrained = false;
-
-        [Foldable(true, nameof(TransformMoveManagerComponentV3.IsPositionUpdateConstrained))]
+        [Foldable(true, nameof(IsPositionUpdateConstrained))]
         public TransformPositionUpdateConstraints TransformPositionUpdateConstraints;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class TransformPositionUpdateConstraints
     {
-        [Range(0f, 360f)]
-        public float MinAngleThatAllowThePositionUpdate = 45f;
+        [Range(0f, 360f)] public float MinAngleThatAllowThePositionUpdate = 45f;
     }
 }
