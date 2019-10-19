@@ -2,6 +2,7 @@ using CoreGame;
 using InteractiveObjects;
 using Obstacle;
 using RangeObjects;
+using SelectableObject;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -48,8 +49,8 @@ namespace RTPuzzle
 
             CircleFillBarRendererManager.Get().Init();
             TutorialManager.Init();
-            InteractiveObjectSelectionManager.Get().Init(CoreGameSingletonInstances.GameInputManager);
-
+            SelectableObjectManagerV2.Get().Init(CoreGameSingletonInstances.GameInputManager);
+            PlayerActionManager.Get().Init();
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();
@@ -84,7 +85,7 @@ namespace RTPuzzle
 
             GroundEffectsManagerV2.Get().Tick(d);
             DottedLineRendererManager.Get().Tick();
-            InteractiveObjectSelectionManager.Get().Tick(d);
+            SelectableObjectManagerV2.Get().Tick(d);
             CircleFillBarRendererManager.Get().Tick(d);
 
 #if UNITY_EDITOR

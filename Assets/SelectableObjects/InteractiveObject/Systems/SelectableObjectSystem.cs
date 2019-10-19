@@ -1,10 +1,9 @@
 ﻿using CoreGame;
-using GameConfigurationID;
+using InteractiveObjects;
 using RangeObjects;
-using RTPuzzle;
 using UnityEngine;
 
-namespace InteractiveObjects
+namespace SelectableObject
 {
     #region Callback Events
 
@@ -12,30 +11,34 @@ namespace InteractiveObjects
 
     public delegate void OnPlayerTriggerInSelectionExitDelegate(CoreInteractiveObject IntersectedInteractiveObject);
 
-    public delegate RTPPlayerAction ProvideSelectableObjectPlayerActionDelegate(PlayerInteractiveObject PlayerInteractiveObject);
-
     #endregion
 
-    public class SelectableObjectSystem : AInteractiveObjectSystem, ISelectableModule
+    public interface ISelectableObjectSystem
+    {
+        //TODO -> replace object with RTPPlayerAction ref
+        object AssociatedPlayerAction { get; }
+        ExtendedBounds GetAverageModelBoundLocalSpace();
+
+        Transform GetTransform();
+    }
+
+    public class SelectableObjectSystem : AInteractiveObjectSystem, ISelectableObjectSystem
     {
         private CoreInteractiveObject AssociatedInteractiveObject;
-        private RTPPlayerAction AssociatedPlayerAction;
-
-        private ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerActionDelegate;
 
         #region External Dependencies
 
-        private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
+        private SelectableObjectEventsManager SelectableObjectEventsManager = SelectableObjectEventsManager.Get();
 
         #endregion
 
         private RangeObjectV2 SphereRange;
 
         public SelectableObjectSystem(CoreInteractiveObject AssociatedInteractiveObject,
-            SelectableObjectSystemDefinition SelectableObjectSystemDefinition,
-            ProvideSelectableObjectPlayerActionDelegate ProvideSelectableObjectPlayerAction)
+            SelectableObjectSystemDefinition SelectableObjectSystemDefinition, object AssociatedPlayerAction) //TODO -> replace object with RTPPlayerAction ref
         {
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
+            this.AssociatedPlayerAction = AssociatedPlayerAction;
             SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization()
                 {
                     RangeTypeID = RangeTypeID.NOT_DISPLAYED,
@@ -46,13 +49,10 @@ namespace InteractiveObjects
                     }
                 }, AssociatedInteractiveObject, AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.name + "_SelectionRangeTrigger");
             SphereRange.RegisterPhysicsEventListener(new SelectableObjectPhysicsEventListener(OnPlayerTriggerInSelectionEnter, OnPlayerTriggerInSelectionExit));
-            ProvideSelectableObjectPlayerActionDelegate = ProvideSelectableObjectPlayerAction;
         }
 
-        public RTPPlayerAction GetAssociatedPlayerAction()
-        {
-            return AssociatedPlayerAction;
-        }
+        //TODO -> replace object with RTPPlayerAction ref
+        public object AssociatedPlayerAction { get; private set; }
 
         public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
@@ -66,14 +66,12 @@ namespace InteractiveObjects
 
         private void OnPlayerTriggerInSelectionEnter(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            AssociatedPlayerAction = ProvideSelectableObjectPlayerActionDelegate((PlayerInteractiveObject) IntersectedInteractiveObject);
-            PuzzleEventsManager.PZ_EVT_OnActionInteractableEnter(this);
+            SelectableObjectEventsManager.OnSelectableObjectEnter(this);
         }
 
         private void OnPlayerTriggerInSelectionExit(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
-            AssociatedPlayerAction = null;
+            SelectableObjectEventsManager.OnSelectableObjectExit(this);
         }
 
         public override void OnDestroy()

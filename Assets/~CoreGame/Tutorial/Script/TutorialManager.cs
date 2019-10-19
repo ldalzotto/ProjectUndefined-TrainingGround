@@ -1,97 +1,93 @@
-﻿using GameConfigurationID;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace CoreGame
 {
     public class TutorialManager : MonoBehaviour, TutorialStepManagerEventListener
     {
+        private TutorialStepManager PlayingTutorialStepManager;
         private TutorialActionInput TutorialActionInput;
 
-        #region External Dependencies
-        private TutorialStepConfiguration TutorialStepConfiguration;
+        #region Internal Managers
+
+        private TutorialStatePersister TutorialStatePersister;
+
         #endregion
 
-        #region Internal Managers
-        private TutorialStatePersister TutorialStatePersister;
+        #region External Dependencies
+
+        private TutorialStepConfiguration TutorialStepConfiguration;
+
         #endregion
 
         #region State
+
         private List<TutorialStepID> TutorialStepFInishedThisFrame;
+
         #endregion
 
+        public void Init()
+        {
+            TutorialStepConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.TutorialStepConfiguration();
+            TutorialActionInput = new TutorialActionInput(CoreGameSingletonInstances.GameCanvas,
+                CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration(),
+                CoreGameSingletonInstances.DiscussionPositionManager,
+                CoreGameSingletonInstances.PlayerManagerType);
+            TutorialStatePersister = new TutorialStatePersister();
+            TutorialStepFInishedThisFrame = new List<TutorialStepID>();
+        }
+
+        public void Tick(float d)
+        {
+            if (PlayingTutorialStepManager != null) PlayingTutorialStepManager.Tick(d);
+        }
+
         #region Data Retrieval 
+
         public bool GetTutorialCurrentState(TutorialStepID TutorialStepID)
         {
-            return this.TutorialStatePersister.GetTutorialState(TutorialStepID);
+            return TutorialStatePersister.GetTutorialState(TutorialStepID);
         }
 
         public bool IsTutorialStepPlaying()
         {
-            return this.PlayingTutorialStepManager != null;
+            return PlayingTutorialStepManager != null;
         }
+
         #endregion
 
-        private TutorialStepManager PlayingTutorialStepManager;
-
         #region External Events
+
         public void PlayTutorialStep(TutorialStepID tutorialStepID)
         {
-            if (this.PlayingTutorialStepManager != null)
-            {
-                this.PlayingTutorialStepManager.Interrupt();
-            }
+            if (PlayingTutorialStepManager != null) PlayingTutorialStepManager.Interrupt();
 
-            if (!this.TutorialStatePersister.GetTutorialState(tutorialStepID))
+            if (!TutorialStatePersister.GetTutorialState(tutorialStepID))
             {
-                this.TutorialActionInput.TutorialStepID = tutorialStepID;
-                this.PlayingTutorialStepManager = new TutorialStepManager(this.TutorialActionInput, tutorialStepID, this);
-                this.PlayingTutorialStepManager.Play(this.TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialGraph);
+                TutorialActionInput.TutorialStepID = tutorialStepID;
+                PlayingTutorialStepManager = new TutorialStepManager(TutorialActionInput, tutorialStepID, this);
+                PlayingTutorialStepManager.Play(TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialGraph);
             }
         }
 
         public void Abort()
         {
-            if (this.PlayingTutorialStepManager != null)
-            {
-                this.PlayingTutorialStepManager.Interrupt();
-            }
+            if (PlayingTutorialStepManager != null) PlayingTutorialStepManager.Interrupt();
         }
 
         public void OnTutorialStepManagerEnd(TutorialStepID tutorialStepID)
         {
-            this.TutorialStatePersister.SetTutorialState(tutorialStepID, true);
-            this.PlayingTutorialStepManager = null;
+            TutorialStatePersister.SetTutorialState(tutorialStepID, true);
+            PlayingTutorialStepManager = null;
         }
 
         public void SendEventToTutorialGraph(TutorialGraphEventType tutorialGraphEvent)
         {
-            if (this.PlayingTutorialStepManager != null)
-            {
-                this.PlayingTutorialStepManager.ReceiveTutorialGraphEvent(tutorialGraphEvent);
-            }
+            if (PlayingTutorialStepManager != null) PlayingTutorialStepManager.ReceiveTutorialGraphEvent(tutorialGraphEvent);
         }
+
         #endregion
-
-        public void Init()
-        {
-            this.TutorialStepConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.TutorialStepConfiguration();
-            this.TutorialActionInput = new TutorialActionInput(CoreGameSingletonInstances.GameCanvas,
-               CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration(),
-               CoreGameSingletonInstances.DiscussionPositionManager,
-                CoreGameSingletonInstances.PlayerManagerType);
-            this.TutorialStatePersister = new TutorialStatePersister();
-            this.TutorialStepFInishedThisFrame = new List<TutorialStepID>();
-        }
-
-        public void Tick(float d)
-        {
-            if (this.PlayingTutorialStepManager != null)
-            {
-                this.PlayingTutorialStepManager.Tick(d);
-            }
-        }
-
     }
 
     public interface TutorialStepManagerEventListener
@@ -99,52 +95,40 @@ namespace CoreGame
         void OnTutorialStepManagerEnd(TutorialStepID tutorialStepID);
     }
 
-    class TutorialStepManager
+    internal class TutorialStepManager
     {
-
-        private TutorialStepManagerEventListener TutorialStepManagerEventListener;
-
         private TutorialActionInput TutorialActionInput;
         private SequencedActionManager tutorialPlayer;
         private TutorialStepID tutorialStepID;
+        private TutorialStepManagerEventListener TutorialStepManagerEventListener;
 
         public TutorialStepManager(TutorialActionInput TutorialActionInput, TutorialStepID tutorialStepID, TutorialStepManagerEventListener TutorialStepManagerEventListener)
         {
             this.TutorialActionInput = TutorialActionInput;
-            this.tutorialPlayer = new SequencedActionManager((action) => this.tutorialPlayer.OnAddAction(action, this.TutorialActionInput), null, OnNoMoreActionToPlay: () =>
-            {
-                TutorialStepManagerEventListener.OnTutorialStepManagerEnd(tutorialStepID);
-            });
+            tutorialPlayer = new SequencedActionManager((action) => tutorialPlayer.OnAddAction(action, this.TutorialActionInput), null, () => { TutorialStepManagerEventListener.OnTutorialStepManagerEnd(tutorialStepID); });
         }
 
         public void Play(TutorialGraph TutorialGraph)
         {
-            this.tutorialPlayer.OnAddActions(TutorialGraph.GetRootActions(), this.TutorialActionInput);
+            tutorialPlayer.OnAddActions(TutorialGraph.GetRootActions(), TutorialActionInput);
         }
 
         public void Tick(float d)
         {
-            this.tutorialPlayer.Tick(d);
+            tutorialPlayer.Tick(d);
         }
 
         public void Interrupt()
         {
-            this.tutorialPlayer.InterruptAllActions();
+            tutorialPlayer.InterruptAllActions();
         }
 
         public void ReceiveTutorialGraphEvent(TutorialGraphEventType tutorialGraphEvent)
         {
-            foreach (var currentAction in this.tutorialPlayer.GetCurrentActions())
-            {
+            foreach (var currentAction in tutorialPlayer.GetCurrentActions())
                 if (typeof(ITutorialEventListener).IsAssignableFrom(currentAction.GetType()))
-                {
-                    if(tutorialGraphEvent == TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE)
-                    {
-                        ((ITutorialEventListener)currentAction).OnPlayerActionWheelAwake();
-                    }
-                }
-            }
+                    if (tutorialGraphEvent == TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE)
+                        ((ITutorialEventListener) currentAction).OnPlayerActionWheelAwake();
         }
     }
-
 }

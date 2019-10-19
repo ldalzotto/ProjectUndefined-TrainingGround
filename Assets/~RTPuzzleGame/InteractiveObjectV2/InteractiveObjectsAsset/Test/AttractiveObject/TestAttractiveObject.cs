@@ -1,10 +1,12 @@
 ﻿using RTPuzzle;
+using SelectableObject;
 
 namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class TestAttractiveObject : AbstractAttractiveInteractiveObject<TestAttractiveObjectInitializerData>
     {
+        [VE_Ignore] private RTPPlayerAction AssociatedPlayerAction;
         [VE_Nested] [DrawNested] private DisarmObjectSystem DisarmObjectSystem;
 
         [VE_Nested] private SelectableObjectSystem SelectableObjectSystem;
@@ -12,8 +14,8 @@ namespace InteractiveObjects
         public TestAttractiveObject(IInteractiveGameObject interactiveGameObject, TestAttractiveObjectInitializerData InteractiveObjectInitializerData) : base(interactiveGameObject, InteractiveObjectInitializerData)
         {
             DisarmObjectSystem = new DisarmObjectSystem(this, InteractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct {IsAi = 1}, OnAssociatedDisarmObjectTriggerEnter, OnAssciatedDisarmObjectTriggerExit);
-            SelectableObjectSystem = new SelectableObjectSystem(this, InteractiveObjectInitializerData.SelectableObjectSystemDefinition, ProvideSelectableObjectPlayerAction);
-
+            SelectableObjectSystem = new SelectableObjectSystem(this, InteractiveObjectInitializerData.SelectableObjectSystemDefinition,
+                AttractiveObjectInitializerData.SelectableGrabActionDefinition.BuildPlayerAction(PlayerInteractiveObjectManager.Get().PlayerInteractiveObject));
             AfterConstructor();
         }
 
@@ -33,15 +35,6 @@ namespace InteractiveObjects
             SelectableObjectSystem.OnDestroy();
             base.Destroy();
         }
-
-        #region Selectable Object
-
-        private RTPPlayerAction ProvideSelectableObjectPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
-        {
-            return AttractiveObjectInitializerData.SelectableGrabActionDefinition.BuildPlayerAction(PlayerInteractiveObject);
-        }
-
-        #endregion
 
         #region Disarm Object Events
 

@@ -36,21 +36,6 @@ namespace RTPuzzle
 
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
-        private InteractiveObjectSelectionManager InteractiveObjectSelectionManager = InteractiveObjectSelectionManager.Get();
-
-        #endregion
-
-        #region IActionInteractableObjectModuleEventListener
-
-        public void PZ_EVT_OnActionInteractableEnter(ISelectableModule actionInteractableObjectModule)
-        {
-            InteractiveObjectSelectionManager.OnSelectableEnter(actionInteractableObjectModule);
-        }
-
-        public void PZ_EVT_OnActionInteractableExit(ISelectableModule actionInteractableObjectModule)
-        {
-            InteractiveObjectSelectionManager.OnSelectableExit(actionInteractableObjectModule);
-        }
 
         #endregion
 
