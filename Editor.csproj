@@ -89,13 +89,6 @@
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizardEditorProfile.cs" />
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelHierarchyCreation.cs" />
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelSceneConfigurationCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\AdventureBaseLevelCreationWizard.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\AdventureBaseLevelCreationWizardEditorProfile.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\Modules\AdventureLevelDynamicCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\Modules\EditorInformations.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\Modules\LevelHierarchyCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\Modules\LevelSceneConfigurationCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\Modules\LevelSceneCreation.cs" />
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\Helper\LevelPathHelper.cs" />
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\LevelChunkCreationWizard.cs" />
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\LevelChunkCreationWizardEditorProfile.cs" />
@@ -119,24 +112,6 @@
      <Compile Include="Assets\Editor\DynamicEditorCreation\DynamicEditorCreation.cs" />
      <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
      <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\CutsceneNodeEditor.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditor.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditorProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\AdventureDiscussionTextOnlyNode\AdventureDiscussionTextOnlyNodeEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\AdventureDiscussionTextOnlyNode\AdventureDiscussionTextOnlyNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\Common\DiscussionConnectionNodeEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\Common\TextOnly\AbstractDiscussionTextOnlyNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\Common\TextOnly\AbstractTextOnlyNodeEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\AdventureDiscussionChoiceInputEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\AdventureDiscussionChoiceNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\DiscussionChoiceToTextEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\DisucssionChoiceText\DiscussionChoiceTextInputEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\DisucssionChoiceText\DiscussionChoiceTextNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionStartNode\DiscussionStartEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionStartNode\DiscussionStartNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\FixedScreenPositionTextOnlyNode\FixedScreenPositionDiscussionTextOnlyNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\FixedScreenPositionTextOnlyNode\FixedScreenPositionTextOnlyNodeEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\PuzzleCutsceneNodeEditor.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionEdgeProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionNodeProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionToNodeEdgeV2.cs" />
@@ -148,13 +123,6 @@
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineWorkflowActionNode\Templated\TimelineWorklowActionTemplatedNodeProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineWorkflowActionNode\TimelineWorklowActionEdgeV2.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineWorkflowActionNode\WorkflowActionToNodeEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\DiscussionTimelineNodeEditor.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\DiscussionTimelineNodeEditorProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineNode\DiscussionTimelineNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\AddDiscussionTree\AddDiscussionTreeWorkflowActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\AddDiscussionTree\AddDiscussionTreeWorkflowActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\RemoveDiscussionTree\RemoveDiscussionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\RemoveDiscussionTree\RemoveDiscussionTreeNodeProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\LevelAvailabilityNodeEditor.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\LevelAvailabilityNodeEditorProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineActionsNode\LevelCompletedTimelineActionEdgeV2.cs" />
@@ -162,65 +130,6 @@
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineNode\LevelAvailabilityNodeProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineWorkflowActionNode\LevelAvailabilityLevelCompletedWorkflowActionEdge.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineWorkflowActionNode\LevelUnlockWorklowActionV2.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\Abstract\ContextActionNode\ContextActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\Abstract\ContextActionNode\ContextActionInputEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\Abstract\ContextActionNode\ContextActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\Abstract\ContextActionNode\ContextActionOutputEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\Abstract\TimelineWorkflowLinked\TimelineContextActionLinkedEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\Abstract\TimelineWorkflowLinked\TimelineContextActionLinkedNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\AnimatorContextAction\AnimatorContextActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\AnimatorContextAction\AnimatorContextActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\CutsceneContextAction\CutsceneContextActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\CutsceneContextAction\CutsceneContextActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\LevelTransitionAction\LevelZoneTransitionActionActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\LevelTransitionAction\LevelZoneTransitionActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\TalkContextAction\TalkContextActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\TalkContextAction\TalkContextActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ScenarioNodeEditor.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ScenarioNodeEditorProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddContextAction\AddContextActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddContextAction\AddContextActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddDiscussionAction\AddDiscussionActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddDiscussionAction\AddDiscussionActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddItemRelatedContextAction\AddItemContextActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddItemRelatedContextAction\AddItemContextActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\ExecuteContextAction\ExecuteContextActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\ExecuteContextAction\ExecuteContextActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\CutsceneTimelineAction\CutsceneTimelineActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\CutsceneTimelineAction\CutsceneTimelineActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\DiscussionChoiceAction\DiscussionChoiceScenearioActionTimelineActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\DiscussionChoiceAction\DiscussionChoiceScenearioActionTimelineActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\GiveScenarioAction\GiveScenarioActionTimelineActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\GiveScenarioAction\GiveScenarioActionTimelineActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\GrabScenarioAction\GrabScenarioActionTimelineActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\GrabScenarioAction\GrabScenarioActionTimelineActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\ScenarioNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddGrabbableItem\AddGrabbableItemWorkflowActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddGrabbableItem\AddGrabbableItemWorkflowActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddInventoryItemGiveAction\AddItemInteractionActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddInventoryItemGiveAction\AddItemInteractionActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddItemGive\AddItemGiveEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddItemGive\AddItemGiveNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddPOItoItemInteraction\AddPOItoItemInteractionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddPOItoItemInteraction\AddPOItoItemInteractionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddReceivableItem\AddReceivableItemEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddReceivableItem\AddReceivableItemNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddTransitionLevel\AddTransitionLevelEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\AddTransitionLevel\AddTransitionLevelNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\DisablePOI\DisablePOIEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\DisablePOI\DisablePOINodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\EnablePOI\EnablePOIEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\EnablePOI\EnablePOINodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveDiscussionAction\RemoveDiscussionActionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveDiscussionAction\RemoveDiscussionActionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveGrabbableItem\RemoveGrabbableItemEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveGrabbableItem\RemoveGrabbableItemNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemovePOItoItemInteraction\RemovePOItoItemInteractionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemovePOItoItemInteraction\RemovePOItoItemInteractionNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveReceivableItem\RemoveReceivableItemEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveReceivableItem\RemoveReceivableItemNodeProfile.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\SetAnimationPositionAction\SetAnimationPositionEdge.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\SetAnimationPositionAction\SetAnimationPositionNodeProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TutorialNodeEditor.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
@@ -249,7 +158,6 @@
      <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\SetModelModule.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Level\AddEnvironmentModel.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateAdventureLevel.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />
@@ -281,8 +189,6 @@
      <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
      <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
      <Compile Include="Assets\Editor\MaterialProperties\ShowOnKeywordDrawer.cs" />
-     <Compile Include="Assets\Editor\ObjectDefinition\ObjectDefinitionCustomEditor.cs" />
-     <Compile Include="Assets\Editor\ObjectDefinition\PointOfInterestDefinitionCustomEditor.cs" />
      <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
      <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
      <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\IncludeConfigurationPropertyDrawer.cs" />
@@ -860,10 +766,6 @@
     <ProjectReference Include="CoreGame.csproj">
       <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
       <Name>CoreGame</Name>
-    </ProjectReference>
-    <ProjectReference Include="AdventureGame.csproj">
-      <Project>{F319901D-3EB0-3BCC-43D7-16A349AA2A07}</Project>
-      <Name>AdventureGame</Name>
     </ProjectReference>
     <ProjectReference Include="PuzzleGame.csproj">
       <Project>{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}</Project>

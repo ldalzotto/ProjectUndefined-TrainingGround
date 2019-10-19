@@ -56,11 +56,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Tests\~AdventureGame\Common\PointOfInterestObjectBuilder\ContextActionOnlyDefinition.cs" />
-     <Compile Include="Assets\Tests\~AdventureGame\Common\PointOfInterestObjectBuilder\PointOfInterestIDTree.cs" />
-     <Compile Include="Assets\Tests\~AdventureGame\Common\PointOfInterestObjectBuilder\PointOfInterestInitialization.cs" />
-     <Compile Include="Assets\Tests\~AdventureGame\Common\TestAdventureGameManager.cs" />
-     <Compile Include="Assets\Tests\~AdventureGame\PlayerSelection\AdventurePlayerSelectionTest.cs" />
      <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\AbstractTimelineTest.cs" />
      <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionEdgeProfile.cs" />
      <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionNodeProfile.cs" />
@@ -637,10 +632,6 @@
     <ProjectReference Include="PuzzleGame.csproj">
       <Project>{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}</Project>
       <Name>PuzzleGame</Name>
-    </ProjectReference>
-    <ProjectReference Include="AdventureGame.csproj">
-      <Project>{F319901D-3EB0-3BCC-43D7-16A349AA2A07}</Project>
-      <Name>AdventureGame</Name>
     </ProjectReference>
     <ProjectReference Include="CoreGame.csproj">
       <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>

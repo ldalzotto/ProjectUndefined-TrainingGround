@@ -1,185 +1,143 @@
-﻿using AdventureGame;
-using Editor_MainGameCreationWizard;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Editor_MainGameCreationWizard;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Editor_GameDesigner
 {
-    [System.Serializable]
-    public abstract class BaseModuleWizardModule<T, ABSTRACT_MODULE> : IGameDesignerModule where T : UnityEngine.Object
+    [Serializable]
+    public abstract class BaseModuleWizardModule<T, ABSTRACT_MODULE> : IGameDesignerModule where T : Object
     {
-        [NonSerialized]
-        protected CommonGameConfigurations CommonGameConfigurations;
+        [SerializeField] protected bool add;
+
+        [SerializeField] private List<Type> AvailableModules;
+        [NonSerialized] protected CommonGameConfigurations CommonGameConfigurations;
         protected GameObject currentSelectedObjet;
 
-        [SerializeField]
-        private List<Type> AvailableModules;
-        [SerializeField]
-        private int selectedModuleIndex;
-
-        [SerializeField]
-        protected GameDesignerEditorProfile GameDesignerEditorProfile;
+        [SerializeField] protected GameDesignerEditorProfile GameDesignerEditorProfile;
 
         protected SerializedObject GameDesignerEditorProfileSO;
+        [SerializeField] protected bool remove;
 
-        [SerializeField]
-        protected bool add;
-        [SerializeField]
-        protected bool remove;
+        [SerializeField] private Vector2 scrollPosition;
+        [SerializeField] private int selectedModuleIndex;
 
-        protected abstract void OnEdit(T RootModuleObject, Type selectedType);
-        protected abstract string POIModuleDescription(Type selectedType);
-        protected abstract List<ABSTRACT_MODULE> GetModules(T RootModuleObject);
-        protected virtual bool AdditionalEditCondition(Type selectedType) { return true; }
+        public bool Add => add;
 
-        public bool Add { get => add; }
-        public bool Remove { get => remove; }
-        public GameObject CurrentSelectedObjet { get => currentSelectedObjet; }
+        public bool Remove => remove;
+
+        public GameObject CurrentSelectedObjet => currentSelectedObjet;
 
         public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
-            if (this.CommonGameConfigurations == null)
+            if (CommonGameConfigurations == null)
             {
-                this.CommonGameConfigurations = new CommonGameConfigurations();
-                EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations);
+                CommonGameConfigurations = new CommonGameConfigurations();
+                EditorInformationsHelper.InitProperties(ref CommonGameConfigurations);
             }
 
-            if (this.GameDesignerEditorProfile == null)
-            {
-                this.GameDesignerEditorProfile = GameDesignerEditorProfile;
-            }
+            if (this.GameDesignerEditorProfile == null) this.GameDesignerEditorProfile = GameDesignerEditorProfile;
 
-            if (this.GameDesignerEditorProfileSO == null)
-            {
-                this.GameDesignerEditorProfileSO = new SerializedObject(this.GameDesignerEditorProfile);
-            }
+            if (GameDesignerEditorProfileSO == null) GameDesignerEditorProfileSO = new SerializedObject(this.GameDesignerEditorProfile);
 
-            this.currentSelectedObjet = GameDesignerHelper.GetCurrentSceneSelectedObject();
-            this.selectedModuleIndex = EditorGUILayout.Popup(this.selectedModuleIndex, this.AvailableModules.ConvertAll(t => t.Name).ToArray());
-            EditorGUILayout.HelpBox(this.POIModuleDescription(this.AvailableModules[this.selectedModuleIndex]), MessageType.None);
+            currentSelectedObjet = GameDesignerHelper.GetCurrentSceneSelectedObject();
+            selectedModuleIndex = EditorGUILayout.Popup(selectedModuleIndex, AvailableModules.ConvertAll(t => t.Name).ToArray());
+            EditorGUILayout.HelpBox(POIModuleDescription(AvailableModules[selectedModuleIndex]), MessageType.None);
 
             T selectedPointOfIterestType = null;
-            if (this.currentSelectedObjet != null)
-            {
-                selectedPointOfIterestType = this.currentSelectedObjet.GetComponent<T>();
-            }
+            if (currentSelectedObjet != null) selectedPointOfIterestType = currentSelectedObjet.GetComponent<T>();
 
-            bool additionalEditAllowed = this.AdditionalEditCondition(this.AvailableModules[this.selectedModuleIndex]);
+            var additionalEditAllowed = AdditionalEditCondition(AvailableModules[selectedModuleIndex]);
 
             EditorGUILayout.BeginHorizontal();
-            bool newAdd = GUILayout.Toggle(this.add, "ADD", EditorStyles.miniButtonLeft);
-            bool newRemove = GUILayout.Toggle(this.remove, "REMOVE", EditorStyles.miniButtonRight);
+            var newAdd = GUILayout.Toggle(add, "ADD", EditorStyles.miniButtonLeft);
+            var newRemove = GUILayout.Toggle(remove, "REMOVE", EditorStyles.miniButtonRight);
 
             if (newAdd && newRemove)
             {
-                if (this.add && !this.remove)
+                if (add && !remove)
                 {
-                    this.add = false;
-                    this.remove = true;
+                    add = false;
+                    remove = true;
                 }
-                else if (!this.add && this.remove)
+                else if (!add && remove)
                 {
-                    this.add = true;
-                    this.remove = false;
+                    add = true;
+                    remove = false;
                 }
                 else
                 {
-                    this.add = newAdd;
-                    this.remove = newRemove;
+                    add = newAdd;
+                    remove = newRemove;
                 }
             }
             else
             {
-                this.add = newAdd;
-                this.remove = newRemove;
+                add = newAdd;
+                remove = newRemove;
             }
 
             EditorGUILayout.EndHorizontal();
 
 
-            EditorGUI.BeginDisabledGroup(this.IsDisabled() || !additionalEditAllowed);
+            EditorGUI.BeginDisabledGroup(IsDisabled() || !additionalEditAllowed);
             if (GUILayout.Button("EDIT"))
             {
-                this.OnEnabled();
-                this.OnEdit(selectedPointOfIterestType, this.AvailableModules[this.selectedModuleIndex]);
-                EditorUtility.SetDirty(this.currentSelectedObjet);
+                OnEnabled();
+                OnEdit(selectedPointOfIterestType, AvailableModules[selectedModuleIndex]);
+                EditorUtility.SetDirty(currentSelectedObjet);
             }
+
             EditorGUI.EndDisabledGroup();
 
-            if (this.currentSelectedObjet != null && selectedPointOfIterestType != null)
-            {
-                this.DoModuleListing(selectedPointOfIterestType);
-            }
+            if (currentSelectedObjet != null && selectedPointOfIterestType != null) DoModuleListing(selectedPointOfIterestType);
 
-            this.GameDesignerEditorProfileSO.ApplyModifiedProperties();
-            this.GameDesignerEditorProfileSO.Update();
+            GameDesignerEditorProfileSO.ApplyModifiedProperties();
+            GameDesignerEditorProfileSO.Update();
         }
-
-        private bool IsDisabled()
-        {
-            return this.currentSelectedObjet == null || this.currentSelectedObjet.GetComponent<T>() == null;
-        }
-
-        private void DoModuleListing(T pointOfInterestType)
-        {
-            EditorGUILayout.Separator();
-            EditorGUILayout.LabelField("POI Modules : ");
-            this.scrollPosition = EditorGUILayout.BeginScrollView(this.scrollPosition);
-
-            var foundedModules = this.GetModules(pointOfInterestType);
-
-            EditorGUILayout.BeginVertical();
-            if (foundedModules != null)
-            {
-                foreach (var foundedModule in foundedModules)
-                {
-                    if (GUILayout.Button(new GUIContent(foundedModule.GetType().Name, this.POIModuleDescription(foundedModule.GetType()))))
-                    {
-                        this.selectedModuleIndex = this.AvailableModules.IndexOf(foundedModule.GetType());
-
-                    }
-                }
-            }
-            EditorGUILayout.EndVertical();
-            EditorGUILayout.EndScrollView();
-        }
-
-        [SerializeField]
-        private Vector2 scrollPosition;
 
         public void OnEnabled()
         {
-            this.AvailableModules = TypeHelper.GetAllTypeAssignableFrom(typeof(ABSTRACT_MODULE)).ToList().Select(m => m).Where(m => !m.IsAbstract).ToList();
+            AvailableModules = TypeHelper.GetAllTypeAssignableFrom(typeof(ABSTRACT_MODULE)).ToList().Select(m => m).Where(m => !m.IsAbstract).ToList();
         }
 
         public void OnDisabled()
         {
         }
 
-        private void POIModuleSwitch(Type selectedType, Action PointOfInterestModelObjectModuleAction, Action PointOfInterestCutsceneControllerAction,
-            Action PointOfInterestVisualMovementModuleAction,
-            Action PointOfInterestTrackerModuleAction)
+        protected abstract void OnEdit(T RootModuleObject, Type selectedType);
+        protected abstract string POIModuleDescription(Type selectedType);
+        protected abstract List<ABSTRACT_MODULE> GetModules(T RootModuleObject);
+
+        protected virtual bool AdditionalEditCondition(Type selectedType)
         {
-            if (selectedType == typeof(PointOfInterestModelObjectModule))
-            {
-                PointOfInterestModelObjectModuleAction.Invoke();
-            }
-            else if (selectedType == typeof(PointOfInterestCutsceneControllerModule))
-            {
-                PointOfInterestCutsceneControllerAction.Invoke();
-            }
-            else if (selectedType == typeof(PointOfInterestVisualMovementModule))
-            {
-                PointOfInterestVisualMovementModuleAction.Invoke();
-            }
-            else if (selectedType == typeof(PointOfInterestTrackerModule))
-            {
-                PointOfInterestTrackerModuleAction.Invoke();
-            }
+            return true;
         }
 
+        private bool IsDisabled()
+        {
+            return currentSelectedObjet == null || currentSelectedObjet.GetComponent<T>() == null;
+        }
+
+        private void DoModuleListing(T pointOfInterestType)
+        {
+            EditorGUILayout.Separator();
+            EditorGUILayout.LabelField("POI Modules : ");
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+            var foundedModules = GetModules(pointOfInterestType);
+
+            EditorGUILayout.BeginVertical();
+            if (foundedModules != null)
+                foreach (var foundedModule in foundedModules)
+                    if (GUILayout.Button(new GUIContent(foundedModule.GetType().Name, POIModuleDescription(foundedModule.GetType()))))
+                        selectedModuleIndex = AvailableModules.IndexOf(foundedModule.GetType());
+
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndScrollView();
+        }
     }
 }

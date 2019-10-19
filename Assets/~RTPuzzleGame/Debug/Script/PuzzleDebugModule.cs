@@ -1,4 +1,3 @@
-using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -8,9 +7,6 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         public bool InstantProjectileHit;
         public bool TriggerLevelSuccessEvent;
-
-        [Header("Discussion Test")] public DiscussionTreeId DiscussionTreeID;
-        public bool PlayerDiscussionTree;
 
         #region External Dependencies
 

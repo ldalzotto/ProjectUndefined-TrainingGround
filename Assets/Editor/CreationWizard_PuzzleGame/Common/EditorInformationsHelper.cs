@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AdventureGame;
 using ConfigurationEditor;
 using CoreGame;
 using CreationWizard;
@@ -25,36 +24,20 @@ namespace Editor_MainGameCreationWizard
 
             #endregion
 
-            #region Adventure Common Prefabs
-
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePOIPrefab, "BasePOIPrefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BaseAdventureLevelDynamics, "BaseAdventureLevelDynamics");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.CommonAdventureObjects, "CommonAdventureObjects");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.AdventureGameManagersNonPersistant, "_AdventureGameManagersNonPersistant");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePointOfInterestTrackerModule, "BasePOITrackerModule");
-
-            #endregion
-
             //TODO configuration initialization
             if (CommonGameConfigurations.Configurations.Count == 0)
-            {
                 foreach (var configurationType in TypeHelper.GetAllGameConfigurationTypes())
-                {
                     CommonGameConfigurations.Configurations.Add(configurationType, (IConfigurationSerialization) AssetFinder.SafeAssetFind("t:" + configurationType.Name)[0]);
-                }
-            }
         }
 
         public static string ComputeErrorState(ref CommonGameConfigurations CommonGameConfigurations)
         {
-            return NonNullityFieldCheck(NonNullityFieldCheck(CommonGameConfigurations.AdventureCommonPrefabs)
-                    .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs))
-                )
+            return NonNullityFieldCheck(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs))
                 .ToList()
                 .Find((s) => !string.IsNullOrEmpty(s));
         }
 
-        static List<string> NonNullityFieldCheck(object containerObjectToCheck)
+        private static List<string> NonNullityFieldCheck(object containerObjectToCheck)
         {
             return containerObjectToCheck.GetType().GetFields().ToList().ConvertAll(field => { return ErrorHelper.NonNullity((Object) field.GetValue(containerObjectToCheck), field.Name); });
         }
@@ -63,27 +46,24 @@ namespace Editor_MainGameCreationWizard
     [Serializable]
     public class CommonGameConfigurations
     {
-        public AdventureCommonPrefabs AdventureCommonPrefabs;
-
         public Dictionary<Type, IConfigurationSerialization> Configurations;
 
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
 
         public CommonGameConfigurations()
         {
-            this.PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
-            this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
-            this.Configurations = new Dictionary<Type, IConfigurationSerialization>();
+            PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
+            Configurations = new Dictionary<Type, IConfigurationSerialization>();
         }
 
         public T GetConfiguration<T>() where T : IConfigurationSerialization
         {
-            return (T) this.Configurations[typeof(T)];
+            return (T) Configurations[typeof(T)];
         }
 
         public IConfigurationSerialization GetConfiguration(Type configurationType)
         {
-            return this.Configurations[configurationType];
+            return Configurations[configurationType];
         }
     }
 
@@ -96,15 +76,5 @@ namespace Editor_MainGameCreationWizard
         [MyReadOnly] public GameObject CorePuzzleSceneElements;
         [MyReadOnly] public GameManagerPersistanceInstance GameManagerPersistanceInstance;
         [MyReadOnly] public PuzzleDebugModule PuzzleDebugModule;
-    }
-
-    [Serializable]
-    public class AdventureCommonPrefabs
-    {
-        [MyReadOnly] public GameObject AdventureGameManagersNonPersistant;
-        [MyReadOnly] public LevelManager BaseAdventureLevelDynamics;
-        [MyReadOnly] public PointOfInterestTrackerModule BasePointOfInterestTrackerModule;
-        [MyReadOnly] public GameObject BasePOIPrefab;
-        [MyReadOnly] public GameObject CommonAdventureObjects;
     }
 }

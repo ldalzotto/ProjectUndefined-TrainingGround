@@ -1,22 +1,20 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "CoreConfiguration", menuName = "Configuration/CoreGame/CoreConfiguration", order = 1)]
     public class CoreConfiguration : GameConfiguration
     {
-        public LevelZonesSceneConfiguration LevelZonesSceneConfiguration;
-        public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
-        public LevelHierarchyConfiguration LevelHierarchyConfiguration;
-        public TimelineConfiguration TimelineConfiguration;
         public AnimationConfiguration AnimationConfiguration;
-        public DiscussionTreeConfiguration DiscussionTreeConfiguration;
-        public InputConfiguration InputConfiguration;
+        public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
         public DiscussionTextConfiguration DiscussionTextConfiguration;
-        public TutorialStepConfiguration TutorialStepConfiguration;
+        public InputConfiguration InputConfiguration;
+        public LevelHierarchyConfiguration LevelHierarchyConfiguration;
+        public LevelZonesSceneConfiguration LevelZonesSceneConfiguration;
         public SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
+        public TimelineConfiguration TimelineConfiguration;
+        public TutorialStepConfiguration TutorialStepConfiguration;
     }
 }
-

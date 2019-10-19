@@ -14,13 +14,7 @@ namespace GameConfigurationID {
   [System.Serializable()]
   public enum TimelineID {
     
-    DISCUSSION_TIMELINE = 0,
-    
-    SCENARIO_TIMELINE = 1,
-    
     LEVEL_AVAILABILITY_TIMELINE = 2,
-    
-    CUTSCENE_TIMELINE = 3,
     
     TESTING_TIMELINE = 99999,
   }

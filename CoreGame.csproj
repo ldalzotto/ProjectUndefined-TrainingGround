@@ -115,7 +115,6 @@
      <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
      <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarRendererManager.cs" />
      <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarType.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\Abstract\AbstractObjectDefinitionConfigurationInherentData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
@@ -130,7 +129,6 @@
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfigurationData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\ChunkZonesSceneConfiguration\ChunkZonesSceneConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTree.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTreeConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfigurationInherentData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfiguration.cs" />
@@ -173,8 +171,6 @@
      <Compile Include="Assets\~CoreGame\DataComponent\ADataComponent.cs" />
      <Compile Include="Assets\~CoreGame\DataComponent\DataComponentContainer.cs" />
      <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\AbstractDiscussionWindowManager.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\AbstractDiscussionWindowsContainer.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
@@ -191,7 +187,6 @@
      <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
      <Compile Include="Assets\~CoreGame\EventVariables\BoolVariable.cs" />
      <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
-     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
      <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
      <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkFXTransitionManager.cs" />
      <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkTracker.cs" />
@@ -220,9 +215,6 @@
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerManagerType.cs" />
-     <Compile Include="Assets\~CoreGame\PointOfInterest\AGhostPOIManager.cs" />
-     <Compile Include="Assets\~CoreGame\PointOfInterest\APointOfInterestEventManager.cs" />
-     <Compile Include="Assets\~CoreGame\PointOfInterest\APointOfInterestType.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\SelectableObjectsManager\Script\AbstractSelectableObjectSelectionManager.cs" />

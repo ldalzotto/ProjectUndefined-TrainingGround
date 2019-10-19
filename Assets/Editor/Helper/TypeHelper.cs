@@ -30,7 +30,6 @@ public class TypeHelper
             typeof(IConfigurationSerialization)
                 .Assembly.GetTypes()
                 .Union(typeof(GameManager).Assembly.GetTypes())
-                .Union(typeof(AdventureGame.GameManager).Assembly.GetTypes())
                 .Union(typeof(InteractiveObjectV2Manager).Assembly.GetTypes())
                 .Union(typeof(RangeObjectV2).Assembly.GetTypes())
                 .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface).ToArray();

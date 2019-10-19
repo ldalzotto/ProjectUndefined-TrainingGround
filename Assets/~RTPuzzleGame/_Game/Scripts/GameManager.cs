@@ -14,13 +14,6 @@ namespace RTPuzzle
         private EditorOnlyManagers EditorOnlyManagers;
 #endif
 
-        #region Persistance Dependencies
-
-        private AInventoryMenu InventoryMenu;
-
-        #endregion
-
-        private PuzzleDiscussionManager PuzzleDiscussionManager;
         private TutorialManager TutorialManager;
 
         private void Awake()
@@ -39,12 +32,8 @@ namespace RTPuzzle
         {
             OnStart();
 
-            InventoryMenu = AInventoryMenu.FindCurrentInstance();
-            InventoryMenu.gameObject.SetActive(false);
-
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
-            PuzzleDiscussionManager = PuzzleGameSingletonInstances.PuzzleDiscussionManager;
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
             var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
@@ -60,7 +49,6 @@ namespace RTPuzzle
             CircleFillBarRendererManager.Get().Init();
             TutorialManager.Init();
             InteractiveObjectSelectionManager.Get().Init(CoreGameSingletonInstances.GameInputManager);
-            PuzzleDiscussionManager.Init();
 
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
@@ -70,42 +58,38 @@ namespace RTPuzzle
 
         private void Update()
         {
-            if (!IsInitializing)
-            {
-                var d = Time.deltaTime;
+            var d = Time.deltaTime;
 
-                BeforeTick(d);
+            BeforeTick(d);
 
 
-                TutorialManager.Tick(d);
+            TutorialManager.Tick(d);
 
-                PuzzleTutorialEventSenderManager.Get().Tick(d);
-                BlockingCutscenePlayer.Tick(d);
+            PuzzleTutorialEventSenderManager.Get().Tick(d);
+            BlockingCutscenePlayer.Tick(d);
 
-                PlayerActionManager.Get().Tick(d);
-                PlayerInteractiveObjectManager.Get().Tick(d);
+            PlayerActionManager.Get().Tick(d);
+            PlayerInteractiveObjectManager.Get().Tick(d);
 
-                CameraMovementManager.Get().Tick(d);
+            CameraMovementManager.Get().Tick(d);
 
-                ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
-                RangeIntersectionCalculationManagerV2.Get().Tick(d);
+            ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
+            RangeIntersectionCalculationManagerV2.Get().Tick(d);
 
-                RangeObjectV2Manager.Get().Tick(d);
+            RangeObjectV2Manager.Get().Tick(d);
 
-                InteractiveObjectV2Manager.Get().Tick(d);
+            InteractiveObjectV2Manager.Get().Tick(d);
 
-                InteractiveObjectV2Manager.Get().AfterTicks();
+            InteractiveObjectV2Manager.Get().AfterTicks();
 
-                PuzzleDiscussionManager.Tick(d);
-                GroundEffectsManagerV2.Get().Tick(d);
-                DottedLineRendererManager.Get().Tick();
-                InteractiveObjectSelectionManager.Get().Tick(d);
-                CircleFillBarRendererManager.Get().Tick(d);
+            GroundEffectsManagerV2.Get().Tick(d);
+            DottedLineRendererManager.Get().Tick();
+            InteractiveObjectSelectionManager.Get().Tick(d);
+            CircleFillBarRendererManager.Get().Tick(d);
 
 #if UNITY_EDITOR
-                EditorOnlyManagers.Tick(d);
+            EditorOnlyManagers.Tick(d);
 #endif
-            }
         }
 
         private void LateUpdate()

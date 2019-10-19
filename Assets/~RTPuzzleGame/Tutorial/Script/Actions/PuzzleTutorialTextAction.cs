@@ -22,7 +22,8 @@ namespace RTPuzzle
 
         protected override ITutorialTextActionManager GetTutorialTextManager(TutorialActionInput tutorialActionInput)
         {
-            if (tutorialActionInput.TutorialStepID == TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE) return new PuzzlePlayerActionWheelOpenTutorialTextActionManager();
+            if (tutorialActionInput.TutorialStepID == TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE)
+                return new PuzzlePlayerActionWheelOpenTutorialTextActionManager();
 
             return null;
         }
@@ -38,7 +39,8 @@ namespace RTPuzzle
 
         public void OnPlayerActionWheelAwake()
         {
-            if (TutorialActionInput.TutorialStepID == TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE) ((PuzzlePlayerActionWheelOpenTutorialTextActionManager) TutorialTextActionManager).OnPlayerActionWheelAwake();
+            if (TutorialActionInput.TutorialStepID == TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE)
+                ((PuzzlePlayerActionWheelOpenTutorialTextActionManager) TutorialTextActionManager).OnPlayerActionWheelAwake();
         }
 
         public void OnPlayerActionWheelSleep()
