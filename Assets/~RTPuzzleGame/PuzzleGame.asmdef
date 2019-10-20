@@ -12,7 +12,6 @@
         "RangeObjects",
         "SelectableObjects_Interfaces",
         "SelectionObjects",
-        "SelectionWheel",
         "PlayerObject_Interface",
         "PlayerActions"
     ],

@@ -720,10 +720,6 @@
       <Project>{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}</Project>
       <Name>SelectionObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="SelectionWheel.csproj">
-      <Project>{4E3711AE-A0AA-604D-8C9C-B3BF9D2FF27C}</Project>
-      <Name>SelectionWheel</Name>
-    </ProjectReference>
     <ProjectReference Include="PlayerObject_Interface.csproj">
       <Project>{42804222-6A23-CC02-C65B-A45131BAA9EB}</Project>
       <Name>PlayerObject_Interface</Name>

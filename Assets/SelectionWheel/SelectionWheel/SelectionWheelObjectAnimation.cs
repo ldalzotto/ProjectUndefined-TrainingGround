@@ -30,7 +30,7 @@ namespace SelectionWheel
             };
 
             AnimationGraph = PlayableGraph.Create(GetType().Name);
-            AnimationGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+            AnimationGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
 
             EnterTransitionAnimationClipPlayable = AnimationClipPlayable.Create(AnimationGraph, enterTransitionAnimationClip);
             EnterTransitionAnimationClipPlayable.SetApplyFootIK(false);
@@ -45,8 +45,6 @@ namespace SelectionWheel
         {
             if (DoesGraphMustbeUpdated == true)
             {
-                AnimationGraph.Evaluate(d);
-
                 if (SelectionWheelObjectAnimationVariables[SelectionWheelObjectAnimationVarableType.OpenAnimation].GetValue())
                 {
                     if (EnterTransitionAnimationClipPlayable.GetTime() >= EnterTransitionAnimationClipPlayable.GetAnimationClip().length) SelectionWheelObjectAnimationVariables[SelectionWheelObjectAnimationVarableType.OpenAnimation].SetValue(false);

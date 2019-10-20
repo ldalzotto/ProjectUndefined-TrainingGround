@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
@@ -29,7 +30,7 @@ public class PlayableAnimationTest : MonoBehaviour
     private void Start()
     {
         PlayableGraph = PlayableGraph.Create(GetType().Name);
-        PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.Manual);
+        PlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
 
         var playableOutput = AnimationPlayableOutput.Create(PlayableGraph, "Animation", GetComponent<Animator>());
         mainMixer = AnimationMixerPlayable.Create(PlayableGraph, normalizeWeights: true);
@@ -62,14 +63,19 @@ public class PlayableAnimationTest : MonoBehaviour
         PlayableGraph.Play();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         mainMixer.SetInputWeight(0, RunWeight);
         mainMixer.SetInputWeight(1, 1f - RunWeight);
 
         if (clip3InputNb >= 0) AnimationLayerMixerPlayable.SetInputWeight(clip3InputNb, LayerClip3Weight);
 
-        PlayableGraph.Evaluate(Time.deltaTime);
+    }
+
+    private void LateUpdate()
+    {
+       
+        // PlayableGraph.Evaluate(Time.deltaTime);
 
         if (PlayClip3)
         {
