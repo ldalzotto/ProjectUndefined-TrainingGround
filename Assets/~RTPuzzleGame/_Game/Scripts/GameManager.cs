@@ -105,6 +105,7 @@ namespace RTPuzzle
             PlayerInteractiveObjectManager.Get().LateTick(d);
             InteractiveObjectV2Manager.Get().LateTick(d);
             PlayerActionManager.Get().LateTick(d);
+            SelectionWheelObject.Get().LateTick(d);
 
             ObstacleOcclusionCalculationManagerV2.Get().LateTick();
             RangeIntersectionCalculationManagerV2.Get().LateTick();

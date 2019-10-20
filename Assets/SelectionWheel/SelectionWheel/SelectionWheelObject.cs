@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CoreGame;
 using UnityEngine;
 
@@ -11,11 +9,11 @@ namespace SelectionWheel
         private const string ACTION_NODE_CONTAINER_OBJECT_NAME = "ActionNodesContainer";
         private ActionWheelActiveNodeManager ActionWheelActiveNodeManager;
         private ActionWheelNodePositionManager ActionWheelNodePositionManager;
-        private ContextActionWhelleEnterExitAnimationManager ContextActionWhelleEnterExitAnimationManager;
+        private SelectionWheelObjectAnimation SelectionWheelObjectAnimation;
 
         private SelectionWheelPositionManager SelectionWheelPositionManager;
         private SelectionWheelNode[] wheelNodes;
-        public GameObject SelectionWheelGameObject { get; private set; }
+        public SelectionWheelGameObject SelectionWheelGameObject { get; private set; }
 
         #region State
 
@@ -42,7 +40,11 @@ namespace SelectionWheel
 
                 var SelectionWheelGlobalConfiguration = SelectionWheelGlobalConfigurationGameObject.Get().SelectionWheelGlobalConfiguration;
 
-                if (SelectionWheelGameObject == null) SelectionWheelGameObject = SelectionWheelInstancer.CreateSelectionWheelGameObject(SelectionWheelGlobalConfiguration.SelectionWheelPrefab, CoreGameSingletonInstances.GameCanvas);
+                if (SelectionWheelGameObject == null)
+                {
+                    SelectionWheelGameObject = new SelectionWheelGameObject(CoreGameSingletonInstances.GameCanvas);
+                    SelectionWheelObjectAnimation = new SelectionWheelObjectAnimation(SelectionWheelGameObject, SelectionWheelGlobalConfiguration.SelectionWheelEnterAnimation, OnExitAnimationFinished);
+                }
 
                 #region External Dependencies
 
@@ -51,20 +53,18 @@ namespace SelectionWheel
                 #endregion
 
                 SelectionWheelPositionManager = new SelectionWheelPositionManager(this, SelectionWheelGlobalConfiguration, followingTransform);
-                ContextActionWhelleEnterExitAnimationManager = new ContextActionWhelleEnterExitAnimationManager(SelectionWheelGameObject.GetComponent<Animator>());
+                SelectionWheelObjectAnimation.PlayEnterAnimation();
                 ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(SelectionWheelGlobalConfiguration.NonSelectedMaterial, SelectionWheelGlobalConfiguration.SelectedMaterial);
                 ActionWheelNodePositionManager = new ActionWheelNodePositionManager(SelectionWheelGlobalConfiguration.ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);
                 wheelNodes = new SelectionWheelNode[wheelNodeDatas.Count];
-                var actionNodeContainerObject = SelectionWheelGameObject.transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
                 for (var i = 0; i < wheelNodeDatas.Count; i++)
                 {
                     var wheelNode = SelectionWheelNode.Instantiate(wheelNodeDatas[i]);
-                    wheelNode.transform.SetParent(actionNodeContainerObject, false);
+                    wheelNode.transform.SetParent(SelectionWheelGameObject.SelectionWheelNodeContainerGameObject.transform, false);
                     wheelNodes[i] = wheelNode;
                 }
 
                 ActionWheelNodePositionManager.InitNodes(wheelNodes);
-                ContextActionWhelleEnterExitAnimationManager.Init();
                 ActionWheelActiveNodeManager.SelectedNodeChanged(wheelNodes);
             }
         }
@@ -74,30 +74,8 @@ namespace SelectionWheel
             if (IsWheelEnabled)
             {
                 IsWheelEnabled = false;
-
-                var actionNodeContainerObject = SelectionWheelGameObject.transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
-                var transformToDestroy = new Transform[actionNodeContainerObject.childCount];
-                for (var i = 0; i < actionNodeContainerObject.childCount; i++) transformToDestroy[i] = actionNodeContainerObject.GetChild(i);
-
-                if (transformToDestroy != null && transformToDestroy.Length > 0)
-                {
-                    if (destroyImmediate)
-                    {
-                        ContextActionWhelleEnterExitAnimationManager.PlayExitAnimation();
-                        for (var i = 0; i < transformToDestroy.Length; i++)
-                            if (transformToDestroy[i] != null)
-                                MonoBehaviour.Destroy(transformToDestroy[i].gameObject);
-                    }
-                    else
-                    {
-                        Coroutiner.Instance.StartCoroutine(ContextActionWhelleEnterExitAnimationManager.ExitCoroutine(() =>
-                        {
-                            for (var i = 0; i < transformToDestroy.Length; i++)
-                                if (transformToDestroy[i] != null)
-                                    MonoBehaviour.Destroy(transformToDestroy[i].gameObject);
-                        }));
-                    }
-                }
+                SelectionWheelObjectAnimation.PlayExitAnimation();
+                if (destroyImmediate) OnExitAnimationFinished();
             }
         }
 
@@ -110,6 +88,12 @@ namespace SelectionWheel
             }
         }
 
+        private void OnExitAnimationFinished()
+        {
+            foreach (Transform child in SelectionWheelGameObject.SelectionWheelNodeContainerGameObject.transform)
+                MonoBehaviour.Destroy(child.gameObject);
+        }
+
         public void Tick(float d)
         {
             if (IsWheelEnabled)
@@ -120,6 +104,11 @@ namespace SelectionWheel
                 foreach (var wheelNode in wheelNodes)
                     wheelNode.Tick(d);
             }
+        }
+
+        public void LateTick(float d)
+        {
+            if (SelectionWheelObjectAnimation != null) SelectionWheelObjectAnimation.LateTick(d);
         }
 
         public SelectionWheelNodeData GetSelectedNodeData()
@@ -147,8 +136,8 @@ namespace SelectionWheel
 
         public void Tick(float d)
         {
-            SelectionWheelObjectRef.SelectionWheelGameObject.transform.position
-                = Camera.main.WorldToScreenPoint(FollowWorldTransform.position) + new Vector3(0, SelectionWheelGlobalConfigurationRef.ActionWheelNodePositionManagerComponent.DistanceFromCenter, 0);
+            SelectionWheelObjectRef.SelectionWheelGameObject.SetTransformPosition
+                (Camera.main.WorldToScreenPoint(FollowWorldTransform.position) + new Vector3(0, SelectionWheelGlobalConfigurationRef.ActionWheelNodePositionManagerComponent.DistanceFromCenter, 0));
         }
     }
 
@@ -261,38 +250,6 @@ namespace SelectionWheel
                     activeNode.SetActiveText(true);
                     return;
                 }
-        }
-    }
-
-    #endregion
-
-    #region Wheel Enter/Exit animations
-
-    internal class ContextActionWhelleEnterExitAnimationManager
-    {
-        private Animator ContextActionWheelAnimator;
-
-        public ContextActionWhelleEnterExitAnimationManager(Animator contextActionWHeelAnimator)
-        {
-            ContextActionWheelAnimator = contextActionWHeelAnimator;
-        }
-
-        public void Init()
-        {
-            ContextActionWheelAnimator.Play("Enter");
-        }
-
-        public void PlayExitAnimation()
-        {
-            ContextActionWheelAnimator.Play("Exit");
-        }
-
-        public IEnumerator ExitCoroutine(Action afterAnimationEndCallback)
-        {
-            PlayExitAnimation();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfAnimation(ContextActionWheelAnimator, "Exit", 0);
-            afterAnimationEndCallback.Invoke();
         }
     }
 

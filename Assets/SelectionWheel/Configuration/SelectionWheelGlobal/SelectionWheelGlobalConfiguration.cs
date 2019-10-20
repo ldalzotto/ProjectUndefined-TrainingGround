@@ -11,7 +11,7 @@ namespace SelectionWheel
         public ActionWheelNodePositionManagerComponent ActionWheelNodePositionManagerComponent;
         public Material NonSelectedMaterial;
         public Material SelectedMaterial;
-        public GameObject SelectionWheelPrefab;
+        public AnimationClip SelectionWheelEnterAnimation;
     }
 
     [Serializable]
