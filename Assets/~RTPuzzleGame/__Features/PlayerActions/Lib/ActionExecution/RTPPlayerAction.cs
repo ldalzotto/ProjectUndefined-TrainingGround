@@ -1,5 +1,4 @@
-using CoreGame;
-using GameConfigurationID;
+using SelectionWheel;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -22,7 +21,7 @@ namespace RTPuzzle
         protected RTPPlayerAction(CorePlayerActionDefinition CorePlayerActionDefinition)
         {
             PlayerActionType = CorePlayerActionDefinition.PlayerActionType;
-            var SelectionWheelNodeConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.SelectionWheelNodeConfiguration;
+            var SelectionWheelNodeConfiguration = SelectionWheelNodeConfigurationGameObject.Get().SelectionWheelNodeConfiguration;
             SelectionWheelNodeConfigurationData = SelectionWheelNodeConfiguration.ConfigurationInherentData[CorePlayerActionDefinition.ActionWheelNodeConfigurationId];
 
             this.CorePlayerActionDefinition = CorePlayerActionDefinition;

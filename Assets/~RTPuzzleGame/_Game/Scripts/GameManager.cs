@@ -3,6 +3,7 @@ using InteractiveObjects;
 using Obstacle;
 using RangeObjects;
 using SelectableObject;
+using SelectionWheel;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -50,6 +51,8 @@ namespace RTPuzzle
             CircleFillBarRendererManager.Get().Init();
             TutorialManager.Init();
             SelectableObjectManagerV2.Get().Init(CoreGameSingletonInstances.GameInputManager);
+
+            SelectionWheelObject.Get().Init();
             PlayerActionManager.Get().Init();
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
@@ -70,6 +73,8 @@ namespace RTPuzzle
             BlockingCutscenePlayer.Tick(d);
 
             PlayerActionManager.Get().Tick(d);
+            SelectionWheelObject.Get().Tick(d);
+
             PlayerInteractiveObjectManager.Get().Tick(d);
 
             CameraMovementManager.Get().Tick(d);

@@ -29,6 +29,10 @@ namespace CoreGame
 
         public void Init()
         {
+            #region Event Registering
+
+            #endregion
+
             TutorialStepConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.TutorialStepConfiguration();
             TutorialActionInput = new TutorialActionInput(CoreGameSingletonInstances.GameCanvas,
                 CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration(),

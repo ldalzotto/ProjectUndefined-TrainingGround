@@ -10,7 +10,8 @@
         "Obstacle",
         "RangeObjects",
         "SelectableObjects_Interfaces",
-        "SelectionObjects"
+        "SelectionObjects",
+        "SelectionWheel"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

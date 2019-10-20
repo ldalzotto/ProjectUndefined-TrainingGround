@@ -1,12 +1,8 @@
 {
-    "name": "CoreGame",
+    "name": "SelectionWheel",
     "references": [
-        "Unity.Postprocessing.Runtime",
-        "Editor_Common",
-        "OdinSerializer",
-        "GameConfigurationID",
-        "Unity.InputSystem",
-        "Unity.RenderPipelines.Lightweight.Runtime"
+        "CoreGame",
+        "OdinSerializer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

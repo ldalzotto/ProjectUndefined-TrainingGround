@@ -69,7 +69,6 @@
      <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\LevelZonesID.cs" />
-     <Compile Include="Assets\@GameConfigurationID\IDs\SelectionWheelNodeConfigurationId.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\TimelineID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\TutorialStepID.cs" />
      <None Include="Assets\@GameConfigurationID\GameConfigurationID.asmdef" />

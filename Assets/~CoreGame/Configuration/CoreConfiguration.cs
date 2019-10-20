@@ -13,7 +13,6 @@ namespace CoreGame
         public InputConfiguration InputConfiguration;
         public LevelHierarchyConfiguration LevelHierarchyConfiguration;
         public LevelZonesSceneConfiguration LevelZonesSceneConfiguration;
-        public SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
         public TimelineConfiguration TimelineConfiguration;
         public TutorialStepConfiguration TutorialStepConfiguration;
     }

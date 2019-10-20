@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
 using RTPuzzle;
+using SelectionWheel;
 using UnityEngine;
 
 namespace InteractiveObjects
@@ -30,6 +31,7 @@ namespace InteractiveObjects
             #region External Dependencies
 
             PlayerActionManager = PlayerActionManager.Get();
+            SelectionWheelObject = SelectionWheelObject.Get();
             var puzzleEventsManager = PuzzleEventsManager.Get();
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
@@ -44,7 +46,7 @@ namespace InteractiveObjects
 
             PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
-            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, puzzleEventsManager, PlayerActionManager);
+            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, puzzleEventsManager, PlayerActionManager, SelectionWheelObject);
             LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
             LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
 
@@ -61,7 +63,7 @@ namespace InteractiveObjects
                 {
                     if (!PlayerSelectionWheelManager.AwakeOrSleepWheel(LevelDependenatPlayerActionsManager))
                     {
-                        if (!PlayerActionManager.IsWheelEnabled())
+                        if (!SelectionWheelObject.IsWheelEnabled)
                         {
                             PlayerInputMoveManager.Tick(d);
                         }
@@ -92,6 +94,7 @@ namespace InteractiveObjects
 
         private PlayerActionManager PlayerActionManager;
         [VE_Nested] private BlockingCutscenePlayerManager BlockingCutscenePlayer;
+        private SelectionWheelObject SelectionWheelObject;
 
         #endregion
 
@@ -138,7 +141,6 @@ namespace InteractiveObjects
     internal class PlayerSelectionWheelManager
     {
         private IGameInputManager GameInputManager;
-
         private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManagerRef;
         private PlayerActionManager PlayerActionManager;
 
@@ -148,16 +150,19 @@ namespace InteractiveObjects
 
         #endregion
 
-        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PuzzleEventsManager PuzzleEventsManager, PlayerActionManager PlayerActionManager)
+        private SelectionWheelObject SelectionWheelObject;
+
+        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PuzzleEventsManager PuzzleEventsManager, PlayerActionManager PlayerActionManager, SelectionWheelObject SelectionWheelObject)
         {
             GameInputManager = gameInputManager;
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.PlayerActionManager = PlayerActionManager;
+            this.SelectionWheelObject = SelectionWheelObject;
         }
 
         public bool AwakeOrSleepWheel(LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager)
         {
-            if (!PlayerActionManager.IsWheelEnabled())
+            if (!SelectionWheelObject.IsWheelEnabled)
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {

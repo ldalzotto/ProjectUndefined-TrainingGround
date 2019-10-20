@@ -1,16 +1,14 @@
-﻿using OdinSerializer;
-using System;
+﻿using System;
+using OdinSerializer;
 using UnityEngine;
 
-namespace CoreGame
+namespace SelectionWheel
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "SelectionWheelNodeConfigurationData", menuName = "Configuration/PuzzleGame/SelectionWheelNodeConfiguration/SelectionWheelNodeConfigurationData", order = 1)]
     public class SelectionWheelNodeConfigurationData : SerializedScriptableObject
     {
-        public Sprite WheelNodeIcon;
         public string DescriptionText;
+        public Sprite WheelNodeIcon;
     }
-
 }
-

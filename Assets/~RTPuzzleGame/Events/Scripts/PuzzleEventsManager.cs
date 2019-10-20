@@ -1,6 +1,8 @@
 using CoreGame;
 using GameConfigurationID;
+using InteractiveObjects;
 using RangeObjects;
+using SelectionWheel;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -43,13 +45,14 @@ namespace RTPuzzle
 
         public void PZ_EVT_OnPlayerActionWheelAwake()
         {
-            PlayerActionManager.Get().OnSelectionWheelAwake();
+            SelectionWheelEventsManager.Get().OnWheelAwake(PlayerActionManager.Get().GetCurrentAvailableActions().ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData),
+                PlayerInteractiveObjectManager.Get().GetPlayerGameObject().InteractiveGameObjectParent.transform);
             TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
         }
 
         public void PZ_EVT_OnPlayerActionWheelSleep(bool destroyImmediate = false)
         {
-            PlayerActionManager.Get().OnSelectionWheelSleep(destroyImmediate);
+            SelectionWheelEventsManager.Get().OnWheelSleep(destroyImmediate);
         }
 
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()

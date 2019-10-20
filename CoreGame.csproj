@@ -129,8 +129,6 @@
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfigurationData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TimelineConfiguration\TimelineConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepInherentData.cs" />
@@ -207,8 +205,6 @@
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerManagerType.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
-     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
-     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
      <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV2.cs" />
      <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineManagerV2.cs" />

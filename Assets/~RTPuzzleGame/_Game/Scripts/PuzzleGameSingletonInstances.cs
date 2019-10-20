@@ -8,7 +8,6 @@ namespace RTPuzzle
         private static BlockingCutscenePlayerManager blockingCutscenePlayer;
         private static PuzzleStaticConfigurationContainer puzzleStaticConfigurationContainer;
         private static PuzzleDebugModule puzzleDebugModule;
-        private static SelectionWheel puzzleSelectionWheel;
 
         public static PuzzleGameConfigurationManager PuzzleGameConfigurationManager => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleGameConfigurationManager, obj => puzzleGameConfigurationManager = obj);
 
@@ -17,7 +16,5 @@ namespace RTPuzzle
         public static PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleStaticConfigurationContainer, obj => puzzleStaticConfigurationContainer = obj);
 
         public static PuzzleDebugModule PuzzleDebugModule => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDebugModule, obj => puzzleDebugModule = obj);
-
-        public static SelectionWheel PuzzleSelectionWheel => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleSelectionWheel, obj => puzzleSelectionWheel = obj);
     }
 }

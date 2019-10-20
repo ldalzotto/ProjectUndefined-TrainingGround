@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
+namespace SelectionWheel {
   
   
   [System.Serializable()]

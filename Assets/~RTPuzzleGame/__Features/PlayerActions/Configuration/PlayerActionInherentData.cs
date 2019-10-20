@@ -1,8 +1,7 @@
 ﻿using System;
-using CoreGame;
-using GameConfigurationID;
 using InteractiveObjects;
 using OdinSerializer;
+using SelectionWheel;
 using UnityEngine;
 
 namespace RTPuzzle
