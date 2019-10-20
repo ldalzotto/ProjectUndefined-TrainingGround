@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
 using GameConfigurationID;
+using InteractiveObjects_Interfaces;
 using RTPuzzle;
 using UnityEngine;
 

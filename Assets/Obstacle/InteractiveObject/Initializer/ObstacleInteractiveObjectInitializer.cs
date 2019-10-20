@@ -1,5 +1,6 @@
 ﻿using System;
 using InteractiveObjects;
+using InteractiveObjects_Interfaces;
 using UnityEngine;
 
 namespace Obstacle
@@ -27,7 +28,7 @@ namespace Obstacle
     [SceneHandleDraw]
     public class ObstacleInteractiveObjectInitializerData
     {
-        [DrawNested] public InteractiveObjectLogicCollider InteractiveObjectLogicCollider;
+        [DrawNested] public InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider;
         public SquareObstacleSystemInitializationData SquareObstacleSystemInitializationData;
     }
 }

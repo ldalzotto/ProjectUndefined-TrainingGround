@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InteractiveObjects
+namespace InteractiveObjects_Interfaces
 {
     public struct AIDestination
     {
@@ -35,5 +35,20 @@ namespace InteractiveObjects
         public float AgentHeight = 2f;
 
         [WireCircle(R = 0f, G = 1f, B = 0f)] public float AgentStoppingDistance = 0.5f;
+    }
+
+
+    [Serializable]
+    [SceneHandleDraw]
+    public class InteractiveObjectLogicColliderDefinition
+    {
+        public bool Enabled = true;
+        public bool HasRigidBody = true;
+
+        [WireBox(R = 1, G = 1, B = 0, CenterFieldName = nameof(InteractiveObjectLogicColliderDefinition.LocalCenter),
+            SizeFieldName = nameof(InteractiveObjectLogicColliderDefinition.LocalSize))]
+        public Vector3 LocalCenter;
+
+        public Vector3 LocalSize;
     }
 }

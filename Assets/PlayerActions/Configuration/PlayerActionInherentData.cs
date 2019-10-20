@@ -1,6 +1,6 @@
 ﻿using System;
-using InteractiveObjects;
 using OdinSerializer;
+using PlayerObject_Interfaces;
 using SelectionWheel;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ namespace RTPuzzle
     {
         public CorePlayerActionDefinition CorePlayerActionDefinition;
 
-        public abstract RTPPlayerAction BuildPlayerAction(PlayerInteractiveObject PlayerInteractiveObject);
+        public abstract RTPPlayerAction BuildPlayerAction(IPlayerInteractiveObject PlayerInteractiveObject);
     }
 
     [Serializable]

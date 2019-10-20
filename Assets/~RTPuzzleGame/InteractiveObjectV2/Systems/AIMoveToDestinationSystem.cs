@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using InteractiveObjects_Interfaces;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace InteractiveObjects

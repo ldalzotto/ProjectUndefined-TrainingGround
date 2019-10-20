@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
+using InteractiveObjects_Interfaces;
+using PlayerActions;
 using PlayerObject_Interfaces;
 using RTPuzzle;
-using SelectionWheel;
 using UnityEngine;
 
 namespace InteractiveObjects
@@ -22,7 +23,7 @@ namespace InteractiveObjects
         [VE_Ignore] private PlayerInputMoveManager PlayerInputMoveManager;
         [VE_Ignore] private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
-        public PlayerInteractiveObject(IInteractiveGameObject interactiveGameObject, InteractiveObjectLogicCollider InteractiveObjectLogicCollider) : base(interactiveGameObject, false)
+        public PlayerInteractiveObject(IInteractiveGameObject interactiveGameObject, InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider) : base(interactiveGameObject, false)
         {
             interactiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
             interactiveObjectTag = new InteractiveObjectTag {IsPlayer = true};
@@ -31,8 +32,6 @@ namespace InteractiveObjects
 
             #region External Dependencies
 
-            PlayerActionManager = PlayerActionManager.Get();
-            SelectionWheelObject = SelectionWheelObject.Get();
             var puzzleEventsManager = PuzzleEventsManager.Get();
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
@@ -47,7 +46,7 @@ namespace InteractiveObjects
 
             PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
-            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, puzzleEventsManager, PlayerActionManager, SelectionWheelObject);
+            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, PlayerActionEventManager.Get(), PlayerActionWheelManager.Get());
             LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
             LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
 
@@ -64,7 +63,7 @@ namespace InteractiveObjects
                 {
                     if (!PlayerSelectionWheelManager.AwakeOrSleepWheel(LevelDependenatPlayerActionsManager))
                     {
-                        if (!SelectionWheelObject.IsWheelEnabled)
+                        if (!PlayerActionWheelManager.IsSelectionWheelEnabled())
                         {
                             PlayerInputMoveManager.Tick(d);
                         }
@@ -93,9 +92,9 @@ namespace InteractiveObjects
 
         #region External Dependencies
 
-        private PlayerActionManager PlayerActionManager;
+        private PlayerActionManager PlayerActionManager = PlayerActionManager.Get();
+        private PlayerActionWheelManager PlayerActionWheelManager = PlayerActionWheelManager.Get();
         [VE_Nested] private BlockingCutscenePlayerManager BlockingCutscenePlayer;
-        private SelectionWheelObject SelectionWheelObject;
 
         #endregion
 
@@ -141,41 +140,40 @@ namespace InteractiveObjects
 
     internal class PlayerSelectionWheelManager
     {
+        private IPlayerInteractiveObject IPlayerInteractiveObjectRef;
         private IGameInputManager GameInputManager;
         private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManagerRef;
-        private PlayerActionManager PlayerActionManager;
 
         #region External Dependencies
 
         private PuzzleEventsManager PuzzleEventsManager;
+        private PlayerActionEventManager PlayerActionEventManager;
+        private PlayerActionWheelManager PlayerActionWheelManager;
 
         #endregion
 
-        private SelectionWheelObject SelectionWheelObject;
-
-        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PuzzleEventsManager PuzzleEventsManager, PlayerActionManager PlayerActionManager, SelectionWheelObject SelectionWheelObject)
+        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PlayerActionEventManager PlayerActionEventManager, PlayerActionWheelManager PlayerActionWheelManager)
         {
             GameInputManager = gameInputManager;
-            this.PuzzleEventsManager = PuzzleEventsManager;
-            this.PlayerActionManager = PlayerActionManager;
-            this.SelectionWheelObject = SelectionWheelObject;
+            this.PlayerActionEventManager = PlayerActionEventManager;
+            this.PlayerActionWheelManager = PlayerActionWheelManager;
         }
 
         public bool AwakeOrSleepWheel(LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager)
         {
-            if (!SelectionWheelObject.IsWheelEnabled)
+            if (!this.PlayerActionWheelManager.IsSelectionWheelEnabled())
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
-                    PlayerActionManager.AddActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
-                    PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelAwake();
+                    PlayerActionEventManager.AddActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
+                    PlayerActionEventManager.AwakePlayerActionSelectionWheel();
                     return true;
                 }
             }
             else if (GameInputManager.CurrentInput.CancelButtonD())
             {
-                PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelSleep();
-                PlayerActionManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
+                this.PlayerActionEventManager.SleepPlayerActionSelectionWheel(false);
+                PlayerActionEventManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
                 return true;
             }
 
@@ -186,8 +184,13 @@ namespace InteractiveObjects
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
-                PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelNodeSelected();
-                PlayerActionManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
+                var selectedAction = this.PlayerActionWheelManager.GetCurrentlySelectedPlayerAction();
+                if (selectedAction.CanBeExecuted())
+                {
+                    this.PlayerActionEventManager.ExecuteAction(selectedAction);
+                }
+
+                this.PlayerActionEventManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace InteractiveObjects
+﻿using InteractiveObjects_Interfaces;
+
+namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class AggressiveAIObject : A_AIInteractiveObject<AggressiveObjectInitializerData>

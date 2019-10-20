@@ -1,4 +1,6 @@
-﻿namespace InteractiveObjects
+﻿using InteractiveObjects_Interfaces;
+
+namespace InteractiveObjects
 {
     public abstract class A_AIInteractiveObject<INIT> : CoreInteractiveObject where INIT : AbstractAIInteractiveObjectInitializerData
     {

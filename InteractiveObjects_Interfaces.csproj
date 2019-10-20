@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{A56A5795-1CB9-EF28-85DE-67DC873B52CC}</ProjectGuid>
+    <ProjectGuid>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Obstacle</AssemblyName>
+    <AssemblyName>InteractiveObjects_Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,17 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Obstacle\InteractiveObject\Initializer\ObstacleInteractiveObjectInitializer.cs" />
-     <Compile Include="Assets\Obstacle\InteractiveObject\ObstacleInteractiveObject.cs" />
-     <Compile Include="Assets\Obstacle\InteractiveObject\ObstacleOcclusionFrustums\SquareObstacleOcclusionFrustumsDefinition.cs" />
-     <Compile Include="Assets\Obstacle\Managers\ObstacleInteractiveObjectManager.cs" />
-     <Compile Include="Assets\Obstacle\Managers\ObstacleOcclusionCalculationManagerV2.cs" />
-     <Compile Include="Assets\Obstacle\Managers\ObstaclesListenerManager.cs" />
-     <Compile Include="Assets\Obstacle\RangeObject\Systems\ObstacleListenerSystem.cs" />
-     <None Include="Assets\Obstacle\Obstacle.asmdef" />
- <Reference Include="Unity.Burst">
- <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\InteractiveObjects\InteractiveObjects_Interfaces\CommonConstants\InteractiveObjectsConstants.cs" />
+     <Compile Include="Assets\InteractiveObjects\InteractiveObjects_Interfaces\IInteractiveGameObject.cs" />
+     <None Include="Assets\InteractiveObjects\InteractiveObjects_Interfaces\InteractiveObjects_Interfaces.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -621,29 +613,13 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="InteractiveObjects.csproj">
-      <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
-      <Name>InteractiveObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
-      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
-      <Name>InteractiveObjects_Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="Editor_Common.csproj">
-      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
-      <Name>Editor_Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="GameConfigurationID.csproj">
-      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
-      <Name>GameConfigurationID</Name>
-    </ProjectReference>
     <ProjectReference Include="CoreGame.csproj">
       <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
       <Name>CoreGame</Name>
     </ProjectReference>
-    <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
-      <Name>OdinSerializer</Name>
+    <ProjectReference Include="Editor_Common.csproj">
+      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
+      <Name>Editor_Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

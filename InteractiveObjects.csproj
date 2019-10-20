@@ -56,7 +56,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\InteractiveObjects\CommonConstants\InteractiveObjectsConstants.cs" />
      <Compile Include="Assets\InteractiveObjects\Configuration\AbstractInteractiveObjectV2Definition.cs" />
      <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2Configuration.cs" />
      <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2ConfigurationGameObject.cs" />
@@ -635,6 +634,10 @@
     <ProjectReference Include="Editor_Common.csproj">
       <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
       <Name>Editor_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
+      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
+      <Name>InteractiveObjects_Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

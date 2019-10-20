@@ -1,9 +1,9 @@
 using CoreGame;
 using InteractiveObjects;
 using Obstacle;
+using PlayerActions;
 using RangeObjects;
 using SelectableObject;
-using SelectionWheel;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -52,7 +52,8 @@ namespace RTPuzzle
             TutorialManager.Init();
             SelectableObjectManagerV2.Get().Init(CoreGameSingletonInstances.GameInputManager);
 
-            SelectionWheelObject.Get().Init();
+            PlayerActionEventManager.Get().Init();
+            PlayerActionWheelManager.Get().Init(PlayerInteractiveObjectManager.Get().PlayerInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform);
             PlayerActionManager.Get().Init();
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
@@ -73,7 +74,7 @@ namespace RTPuzzle
             BlockingCutscenePlayer.Tick(d);
 
             PlayerActionManager.Get().Tick(d);
-            SelectionWheelObject.Get().Tick(d);
+            PlayerActionWheelManager.Get().Tick(d);
 
             PlayerInteractiveObjectManager.Get().Tick(d);
 
@@ -105,7 +106,7 @@ namespace RTPuzzle
             PlayerInteractiveObjectManager.Get().LateTick(d);
             InteractiveObjectV2Manager.Get().LateTick(d);
             PlayerActionManager.Get().LateTick(d);
-            SelectionWheelObject.Get().LateTick(d);
+            PlayerActionWheelManager.Get().LateTick(d);
 
             ObstacleOcclusionCalculationManagerV2.Get().LateTick();
             RangeIntersectionCalculationManagerV2.Get().LateTick();

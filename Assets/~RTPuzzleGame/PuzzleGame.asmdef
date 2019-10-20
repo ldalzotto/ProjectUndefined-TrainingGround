@@ -7,12 +7,14 @@
         "GameConfigurationID",
         "Unity.RenderPipelines.Lightweight.Runtime",
         "InteractiveObjects",
+        "InteractiveObjects_Interfaces",
         "Obstacle",
         "RangeObjects",
         "SelectableObjects_Interfaces",
         "SelectionObjects",
         "SelectionWheel",
-        "PlayerObject_Interface"
+        "PlayerObject_Interface",
+        "PlayerActions"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

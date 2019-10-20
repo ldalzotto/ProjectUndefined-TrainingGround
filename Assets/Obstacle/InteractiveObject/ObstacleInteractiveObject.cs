@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
 using InteractiveObjects;
+using InteractiveObjects_Interfaces;
 using UnityEngine;
 
 namespace Obstacle

@@ -1,17 +1,15 @@
-﻿using RTPuzzle;
+﻿using System;
+using InteractiveObjects_Interfaces;
 
 namespace InteractiveObjects
 {
-    [System.Serializable]
+    [Serializable]
     [SceneHandleDraw]
     public abstract class AbstractAttractiveObjectInitializerData : AbstractInteractiveObjectV2Definition
     {
-        [DrawNested]
-        public InteractiveObjectLogicCollider InteractiveObjectLogicCollider;
+        [DrawNested] public InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider;
 
-        [DrawNested]
-        [Inline(createAtSameLevelIfAbsent: true)]
+        [DrawNested] [Inline(createAtSameLevelIfAbsent: true)]
         public AttractiveObjectSystemDefinition AttractiveObjectSystemDefinition;
     }
-
 }

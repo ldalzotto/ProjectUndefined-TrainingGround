@@ -1,9 +1,11 @@
-﻿namespace InteractiveObjects
+﻿using InteractiveObjects_Interfaces;
+
+namespace InteractiveObjects
 {
     [SceneHandleDraw]
     public class PlayerInteractiveObjectInitializer : InteractiveObjectInitializer
     {
-        [DrawNested] public InteractiveObjectLogicCollider InteractiveObjectLogicCollider;
+        [DrawNested] public InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider;
 
         public override void Init()
         {

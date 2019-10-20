@@ -1,14 +1,14 @@
 {
-    "name": "SelectionObjects",
+    "name": "PlayerActions",
     "references": [
-        "SelectableObjects_Interfaces",
+        "PlayerObject_Interface",
+        "SelectionWheel",
         "CoreGame",
-        "Editor_Common",
         "OdinSerializer",
-        "Unity.RenderPipelines.Lightweight.Runtime",
-        "InteractiveObjects",
-        "InteractiveObjects_Interfaces",
-        "RangeObjects"
+        "SelectableObjects_Interfaces",
+        "Editor_Common",
+        "PlayerActions_Interfaces",
+        "InteractiveObjects_Interfaces"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

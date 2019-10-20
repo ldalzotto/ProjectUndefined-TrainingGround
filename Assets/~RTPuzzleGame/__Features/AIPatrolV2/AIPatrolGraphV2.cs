@@ -2,6 +2,7 @@
 using InteractiveObjects;
 using OdinSerializer;
 using System.Collections.Generic;
+using InteractiveObjects_Interfaces;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -20,6 +21,7 @@ namespace RTPuzzle
                 WorldRotation = AIPatrolGraphPosition.WorldRotation
             };
         }
+
         public abstract List<SequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject);
 
         protected AIMoveToActionV2 CreateAIMoveToActionV2(CoreInteractiveObject InvolvedInteractiveObject, AIMoveToActionInputData AIMoveToActionInputData, List<SequencedAction> nextActions)

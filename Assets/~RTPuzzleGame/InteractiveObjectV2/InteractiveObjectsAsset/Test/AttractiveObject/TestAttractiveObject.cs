@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using InteractiveObjects_Interfaces;
+using RTPuzzle;
 using SelectableObject;
 
 namespace InteractiveObjects

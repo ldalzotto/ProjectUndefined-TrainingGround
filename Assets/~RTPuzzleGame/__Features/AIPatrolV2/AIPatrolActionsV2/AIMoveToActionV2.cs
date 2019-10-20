@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using InteractiveObjects;
 using System.Collections.Generic;
+using InteractiveObjects_Interfaces;
 
 namespace RTPuzzle
 {
@@ -18,7 +19,9 @@ namespace RTPuzzle
             this.AIMovementSpeed = AIMovementSpeed;
         }
 
-        public override void AfterFinishedEventProcessed() { }
+        public override void AfterFinishedEventProcessed()
+        {
+        }
 
         public override bool ComputeFinishedConditions()
         {
@@ -53,5 +56,4 @@ namespace RTPuzzle
             this.destinationReached = true;
         }
     }
-
 }

@@ -1,19 +1,18 @@
-﻿using UnityEngine;
-using System.Collections;
-using InteractiveObjects;
+﻿using System;
+using PlayerObject_Interfaces;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "GrabObjectActionInherentData", menuName = "Test/GrabObjectActionInherentData", order = 1)]
     public class GrabObjectActionInherentData : PlayerActionInherentData
     {
         public PlayerActionInherentData AddedPlayerActionInherentData;
-        
-        public override RTPPlayerAction BuildPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
+
+        public override RTPPlayerAction BuildPlayerAction(IPlayerInteractiveObject PlayerInteractiveObject)
         {
             return new GrabObjectAction(this.AddedPlayerActionInherentData.BuildPlayerAction(PlayerInteractiveObject), this.CorePlayerActionDefinition);
         }
     }
-
 }

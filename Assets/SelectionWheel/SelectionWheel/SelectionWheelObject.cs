@@ -4,9 +4,8 @@ using UnityEngine;
 
 namespace SelectionWheel
 {
-    public class SelectionWheelObject : GameSingleton<SelectionWheelObject>
+    public class SelectionWheelObject
     {
-        private const string ACTION_NODE_CONTAINER_OBJECT_NAME = "ActionNodesContainer";
         private ActionWheelActiveNodeManager ActionWheelActiveNodeManager;
         private ActionWheelNodePositionManager ActionWheelNodePositionManager;
         private SelectionWheelObjectAnimation SelectionWheelObjectAnimation;
@@ -21,18 +20,14 @@ namespace SelectionWheel
 
         #endregion
 
-        public void Init()
+        private Transform followingWorldTransform;
+
+        public SelectionWheelObject(Transform followingWorldTransform)
         {
-            #region Event Registering
-
-            SelectionWheelEventsManager.Get().RegisterOnWheelAwakeEventListener(AwakeWheel);
-            SelectionWheelEventsManager.Get().RegisterOnWheelSleepEventListener(SleepWheel);
-            SelectionWheelEventsManager.Get().RegisterOnWheelRefreshEvent(RefreshWheel);
-
-            #endregion
+            this.followingWorldTransform = followingWorldTransform;
         }
 
-        private void AwakeWheel(List<SelectionWheelNodeData> wheelNodeDatas, Transform followingTransform)
+        public void AwakeWheel(List<SelectionWheelNodeData> wheelNodeDatas)
         {
             if (!IsWheelEnabled)
             {
@@ -52,7 +47,7 @@ namespace SelectionWheel
 
                 #endregion
 
-                SelectionWheelPositionManager = new SelectionWheelPositionManager(this, SelectionWheelGlobalConfiguration, followingTransform);
+                SelectionWheelPositionManager = new SelectionWheelPositionManager(this, SelectionWheelGlobalConfiguration, this.followingWorldTransform);
                 SelectionWheelObjectAnimation.PlayEnterAnimation();
                 ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(SelectionWheelGlobalConfiguration.NonSelectedMaterial, SelectionWheelGlobalConfiguration.SelectedMaterial);
                 ActionWheelNodePositionManager = new ActionWheelNodePositionManager(SelectionWheelGlobalConfiguration.ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);
@@ -69,7 +64,7 @@ namespace SelectionWheel
             }
         }
 
-        private void SleepWheel(bool destroyImmediate = false)
+        public void SleepWheel(bool destroyImmediate = false)
         {
             if (IsWheelEnabled)
             {
@@ -79,12 +74,12 @@ namespace SelectionWheel
             }
         }
 
-        private void RefreshWheel(List<SelectionWheelNodeData> wheelNodeDatas, Transform followingTransform)
+        public void RefreshWheel(List<SelectionWheelNodeData> wheelNodeDatas)
         {
             if (IsWheelEnabled)
             {
-                SelectionWheelEventsManager.Get().OnWheelSleep(true);
-                SelectionWheelEventsManager.Get().OnWheelAwake(wheelNodeDatas, followingTransform);
+                this.SleepWheel(true);
+                this.AwakeWheel(wheelNodeDatas);
             }
         }
 

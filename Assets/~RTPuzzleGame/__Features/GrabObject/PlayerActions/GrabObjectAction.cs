@@ -1,3 +1,5 @@
+using PlayerActions;
+
 namespace RTPuzzle
 {
     public class GrabObjectAction : RTPPlayerAction
@@ -17,7 +19,7 @@ namespace RTPuzzle
         public override void FirstExecution()
         {
             base.FirstExecution();
-            PlayerActionManager.Get().IncreaseOrAddActionsRemainingExecutionAmount(this.addedPlayerAction, 1);
+            PlayerActionEventManager.Get().IncreaseOrAddActionsRemainingExecutionAmount(this.addedPlayerAction, 1);
             this.PlayerActionConsumed();
         }
 
@@ -25,8 +27,16 @@ namespace RTPuzzle
         {
         }
 
-        public override void GizmoTick() { }
-        public override void GUITick() { }
-        public override void LateTick(float d) { }
+        public override void GizmoTick()
+        {
+        }
+
+        public override void GUITick()
+        {
+        }
+
+        public override void LateTick(float d)
+        {
+        }
     }
 }

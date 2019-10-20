@@ -1,5 +1,5 @@
 ﻿using System;
-using InteractiveObjects;
+using PlayerObject_Interfaces;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -8,7 +8,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "DummyPlayerActionInherentData", menuName = "Test/DummyPlayerActionInherentData", order = 1)]
     public class DummyPlayerActionInherentData : PlayerActionInherentData
     {
-        public override RTPPlayerAction BuildPlayerAction(PlayerInteractiveObject PlayerInteractiveObject)
+        public override RTPPlayerAction BuildPlayerAction(IPlayerInteractiveObject PlayerInteractiveObject)
         {
             return new DummyPlayerAction(CorePlayerActionDefinition);
         }

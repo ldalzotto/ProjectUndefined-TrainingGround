@@ -1,4 +1,5 @@
 ﻿using GameConfigurationID;
+using InteractiveObjects_Interfaces;
 
 namespace InteractiveObjects
 {

@@ -1,8 +1,6 @@
 using CoreGame;
 using GameConfigurationID;
-using InteractiveObjects;
 using RangeObjects;
-using SelectionWheel;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -29,41 +27,6 @@ namespace RTPuzzle
 
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
-
-        #endregion
-
-        #region Player Action Wheel Event
-
-        public void PZ_EVT_OnPlayerActionWheelAwake()
-        {
-            SelectionWheelEventsManager.Get().OnWheelAwake(PlayerActionManager.Get().GetCurrentAvailableActions().ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData),
-                PlayerInteractiveObjectManager.Get().GetPlayerGameObject().InteractiveGameObjectParent.transform);
-
-            //TODO -> when tutorial will have it's own module, add this to the SelectionWheel awake event listener
-            TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
-        }
-
-        public void PZ_EVT_OnPlayerActionWheelSleep(bool destroyImmediate = false)
-        {
-            SelectionWheelEventsManager.Get().OnWheelSleep(destroyImmediate);
-        }
-
-        public void PZ_EVT_OnPlayerActionWheelRefresh()
-        {
-            SelectionWheelEventsManager.Get().OnWheelRefresh(PlayerActionManager.Get().GetCurrentAvailableActions().ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData),
-                PlayerInteractiveObjectManager.Get().GetPlayerGameObject().InteractiveGameObjectParent.transform);
-        }
-
-
-        public void PZ_EVT_OnPlayerActionWheelNodeSelected()
-        {
-            var selectedAction = PlayerActionManager.Get().GetCurrentSelectedAction();
-            if (selectedAction.CanBeExecuted())
-            {
-                PZ_EVT_OnPlayerActionWheelSleep(false);
-                PlayerActionManager.Get().ExecuteAction(selectedAction);
-            }
-        }
 
         #endregion
 

@@ -787,6 +787,10 @@
       <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
       <Name>InteractiveObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
+      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
+      <Name>InteractiveObjects_Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="RangeObjects.csproj">
       <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
       <Name>RangeObjects</Name>

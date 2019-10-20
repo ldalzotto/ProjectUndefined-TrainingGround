@@ -65,11 +65,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfigurationData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\LevelCompletion\Managers\LevelCompletionManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Configuration\PlayerActionInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Configuration\PlayerActionType.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\DummyAction\DummyPlayerActionInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Lib\ActionExecution\RTPPlayerAction.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerActions\Managers\PlayerActionManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
@@ -705,6 +700,10 @@
       <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
       <Name>InteractiveObjects</Name>
     </ProjectReference>
+    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
+      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
+      <Name>InteractiveObjects_Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="Obstacle.csproj">
       <Project>{A56A5795-1CB9-EF28-85DE-67DC873B52CC}</Project>
       <Name>Obstacle</Name>
@@ -728,6 +727,10 @@
     <ProjectReference Include="PlayerObject_Interface.csproj">
       <Project>{42804222-6A23-CC02-C65B-A45131BAA9EB}</Project>
       <Name>PlayerObject_Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="PlayerActions.csproj">
+      <Project>{63AE0CB7-735A-D4CD-7DAE-B8ABD6F2883E}</Project>
+      <Name>PlayerActions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

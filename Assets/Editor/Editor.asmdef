@@ -8,6 +8,7 @@
     "OdinSerializer",
     "GameConfigurationID",
     "InteractiveObjects",
+    "InteractiveObjects_Interfaces",
     "RangeObjects"
   ],
   "includePlatforms": [

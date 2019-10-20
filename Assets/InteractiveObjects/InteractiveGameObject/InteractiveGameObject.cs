@@ -1,30 +1,11 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
+using InteractiveObjects_Interfaces;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace InteractiveObjects
 {
-    public interface IInteractiveGameObject
-    {
-        GameObject InteractiveGameObjectParent { get; }
-        ExtendedBounds AverageModelBounds { get; }
-        Animator Animator { get; }
-        List<Renderer> Renderers { get; }
-        Collider LogicCollider { get; }
-        Rigidbody PhysicsRigidbody { get; }
-        NavMeshAgent Agent { get; }
-
-        BoxCollider GetLogicColliderAsBox();
-        TransformStruct GetTransform();
-        TransformStruct GetLogicColliderCenterTransform();
-        Matrix4x4 GetLocalToWorld();
-        BoxDefinition GetLogicColliderBoxDefinition();
-
-        void CreateAgent(AIAgentDefinition AIAgentDefinition);
-        void CreateLogicCollider(InteractiveObjectLogicCollider InteractiveObjectLogicCollider);
-    }
-
     public static class InteractiveGameObjectFactory
     {
         public static IInteractiveGameObject Build(GameObject InteractiveGameObjectParent)
@@ -73,9 +54,9 @@ namespace InteractiveObjects
             InitAgent();
         }
 
-        public void CreateLogicCollider(InteractiveObjectLogicCollider InteractiveObjectLogicCollider)
+        public void CreateLogicCollider(InteractiveObjectLogicColliderDefinition interactiveObjectLogicColliderDefinition)
         {
-            if (InteractiveObjectLogicCollider.Enabled)
+            if (interactiveObjectLogicColliderDefinition.Enabled)
             {
                 var LogicColliderObject = new GameObject("LogicCollider");
                 LogicColliderObject.transform.parent = InteractiveGameObjectParent.transform;
@@ -85,10 +66,10 @@ namespace InteractiveObjects
 
                 LogicCollider = LogicColliderObject.AddComponent<BoxCollider>();
                 LogicCollider.isTrigger = true;
-                ((BoxCollider) LogicCollider).center = InteractiveObjectLogicCollider.LocalCenter;
-                ((BoxCollider) LogicCollider).size = InteractiveObjectLogicCollider.LocalSize;
+                ((BoxCollider) LogicCollider).center = interactiveObjectLogicColliderDefinition.LocalCenter;
+                ((BoxCollider) LogicCollider).size = interactiveObjectLogicColliderDefinition.LocalSize;
 
-                if (InteractiveObjectLogicCollider.HasRigidBody)
+                if (interactiveObjectLogicColliderDefinition.HasRigidBody)
                 {
                     var rb = LogicColliderObject.AddComponent<Rigidbody>();
                     rb.isKinematic = true;

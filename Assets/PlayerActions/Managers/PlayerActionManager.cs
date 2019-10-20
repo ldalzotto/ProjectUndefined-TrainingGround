@@ -1,30 +1,15 @@
 using System;
 using System.Collections.Generic;
 using CoreGame;
-using SelectableObjects_Interfaces;
 using SelectionWheel;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public interface IPlayerActionManagerDataRetrieval
-    {
-        RTPPlayerAction GetCurrentSelectedAction();
-        RTPPlayerAction GetCurrentRunningAction();
-    }
-
-    public class PlayerActionManager : GameSingleton<PlayerActionManager>, IPlayerActionManagerDataRetrieval
+    public class PlayerActionManager : GameSingleton<PlayerActionManager>
     {
         private PlayerActionExecutionManager PlayerActionExecutionManager;
         private PlayerActionsAvailableManager PlayerActionsAvailableManager;
-
-        #region External Dependencies
-
-        private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
-
-        #endregion
-
-        private SelectionWheelObject SelectionWheel;
 
         #region Internal Events
 
@@ -34,26 +19,14 @@ namespace RTPuzzle
 
         public void Init()
         {
-            #region External Dependencies
-
-            var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
-
-            #endregion
-
-            SelectionWheel = SelectionWheelObject.Get();
-
-            PlayerActionExecutionManager = new PlayerActionExecutionManager(() => OnPlayerActionFinishedEvent.Invoke());
-            PlayerActionsAvailableManager = new PlayerActionsAvailableManager();
-
             #region Event Register
 
             OnPlayerActionFinishedEvent += OnPlayerActionFinished;
 
-            SelectableObjectEventsManager.Get().RegisterOnSelectableObjectSelectedEventAction(OnSelectableObjectSelected);
-            SelectableObjectEventsManager.Get().RegisterOnSelectableObjectNoMoreSelectedEventAction(OnSelectableObjectDeSelected);
-
             #endregion
+
+            PlayerActionExecutionManager = new PlayerActionExecutionManager(() => OnPlayerActionFinishedEvent.Invoke());
+            PlayerActionsAvailableManager = new PlayerActionsAvailableManager();
         }
 
         public void Tick(float d)
@@ -81,7 +54,7 @@ namespace RTPuzzle
             PlayerActionExecutionManager.GUITick();
         }
 
-        public void ExecuteAction(RTPPlayerAction rTPPlayerAction)
+        internal void ExecuteAction(RTPPlayerAction rTPPlayerAction)
         {
             PlayerActionExecutionManager.ExecuteAction(rTPPlayerAction);
         }
@@ -91,41 +64,29 @@ namespace RTPuzzle
             PlayerActionExecutionManager.StopAction();
         }
 
-        public void IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction RTPPlayerAction, int deltaRemaining)
+        internal void IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction RTPPlayerAction, int deltaRemaining)
         {
             PlayerActionsAvailableManager.IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction, deltaRemaining);
         }
 
-        public void AddActionToAvailable(RTPPlayerAction addedAction)
-        {
-            PlayerActionsAvailableManager.AddActionToAvailable(addedAction);
-            PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
-        }
-
-        public void AddActionsToAvailable(List<RTPPlayerAction> addedActions)
+        internal void AddActionsToAvailable(List<RTPPlayerAction> addedActions)
         {
             foreach (var addedAction in addedActions) AddActionToAvailable(addedAction);
         }
 
-        public void RemoveActionToAvailable(RTPPlayerAction removedAction)
+        internal void RemoveActionsToAvailable(List<RTPPlayerAction> removedActions)
         {
-            PlayerActionsAvailableManager.RemoveActionToAvailable(removedAction);
-            PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
+            foreach (var removedAction in removedActions) this.PlayerActionsAvailableManager.RemoveActionToAvailable(removedAction);
         }
 
-        public void RemoveActionsToAvailable(List<RTPPlayerAction> removedActions)
+        internal void RemoveActionToAvailable(RTPPlayerAction removedAction)
         {
-            foreach (var removedAction in removedActions) RemoveActionToAvailable(removedAction);
+            this.PlayerActionsAvailableManager.RemoveActionToAvailable(removedAction);
         }
 
-        private void OnSelectableObjectSelected(ISelectableObjectSystem SelectableObject)
+        internal void AddActionToAvailable(RTPPlayerAction addedAction)
         {
-            AddActionToAvailable(SelectableObject.AssociatedPlayerAction as RTPPlayerAction);
-        }
-
-        private void OnSelectableObjectDeSelected(ISelectableObjectSystem SelectableObject)
-        {
-            RemoveActionToAvailable(SelectableObject.AssociatedPlayerAction as RTPPlayerAction);
+            PlayerActionsAvailableManager.AddActionToAvailable(addedAction);
         }
 
         #region Logical Conditions
@@ -139,11 +100,6 @@ namespace RTPuzzle
 
         #region Data Retrieval
 
-        public RTPPlayerAction GetCurrentSelectedAction()
-        {
-            return (SelectionWheel.GetSelectedNodeData() as PlayerSelectionWheelNodeData).Data as RTPPlayerAction;
-        }
-
         public RTPPlayerAction GetCurrentRunningAction()
         {
             if (!IsActionExecuting())
@@ -152,9 +108,9 @@ namespace RTPuzzle
                 return PlayerActionExecutionManager.CurrentAction;
         }
 
-        public List<RTPPlayerAction> GetCurrentAvailableActions()
+        internal List<RTPPlayerAction> GetCurrentAvailablePlayerActions()
         {
-            return PlayerActionsAvailableManager.CurrentAvailableActions.MultiValueGetValues();
+            return this.PlayerActionsAvailableManager.CurrentAvailableActions.MultiValueGetValues();
         }
 
         #endregion
