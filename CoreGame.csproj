@@ -226,6 +226,7 @@
      <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
      <Compile Include="Assets\~CoreGame\UI\CanvasScalerManager.cs" />
      <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
+     <Compile Include="Assets\Test\PlayableAnimationTest.cs" />
      <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
      <None Include="Assets\~CoreGame\CircleFillBar\CircleBar.shader" />
      <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
