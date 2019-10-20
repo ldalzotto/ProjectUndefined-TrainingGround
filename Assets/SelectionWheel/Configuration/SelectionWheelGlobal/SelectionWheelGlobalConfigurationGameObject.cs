@@ -7,7 +7,7 @@ namespace SelectionWheel
         private static SelectionWheelGlobalConfigurationGameObject Instace;
 
         [SerializeField] private SelectionWheelGlobalConfiguration selectionWheelGlobalConfiguration;
-        public SelectionWheelGlobalConfiguration SelectionWheelGlobalConfiguration => SelectionWheelGlobalConfiguration;
+        public SelectionWheelGlobalConfiguration SelectionWheelGlobalConfiguration => selectionWheelGlobalConfiguration;
 
         public static SelectionWheelGlobalConfigurationGameObject Get()
         {

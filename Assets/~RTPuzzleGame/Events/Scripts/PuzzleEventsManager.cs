@@ -18,15 +18,6 @@ namespace RTPuzzle
             LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
         }
 
-        #region IPlayerActionManagerEventListener
-
-        public void PZ_EVT_OnPlayerActionWheelRefresh()
-        {
-            PZ_EVT_OnPlayerActionWheelSleep(true);
-            PZ_EVT_OnPlayerActionWheelAwake();
-        }
-
-        #endregion
 
         #region External Dependencies
 
@@ -47,6 +38,8 @@ namespace RTPuzzle
         {
             SelectionWheelEventsManager.Get().OnWheelAwake(PlayerActionManager.Get().GetCurrentAvailableActions().ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData),
                 PlayerInteractiveObjectManager.Get().GetPlayerGameObject().InteractiveGameObjectParent.transform);
+
+            //TODO -> when tutorial will have it's own module, add this to the SelectionWheel awake event listener
             TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
         }
 
@@ -54,6 +47,13 @@ namespace RTPuzzle
         {
             SelectionWheelEventsManager.Get().OnWheelSleep(destroyImmediate);
         }
+
+        public void PZ_EVT_OnPlayerActionWheelRefresh()
+        {
+            SelectionWheelEventsManager.Get().OnWheelRefresh(PlayerActionManager.Get().GetCurrentAvailableActions().ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData),
+                PlayerInteractiveObjectManager.Get().GetPlayerGameObject().InteractiveGameObjectParent.transform);
+        }
+
 
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()
         {

@@ -8,6 +8,8 @@ namespace SelectionWheel
     {
         public delegate void OnWheelAwakeEventDelegate(List<SelectionWheelNodeData> availableNodes, Transform followingWorldTransform);
 
+        public delegate void OnWheelRefreshEventDelegate(List<SelectionWheelNodeData> availableNodes, Transform followingWorldTransform);
+
         public delegate void OnWheelSleepEventDelegate(bool destroyImmediate);
 
         private event OnWheelAwakeEventDelegate OnWheelAwakeEvent;
@@ -19,7 +21,7 @@ namespace SelectionWheel
 
         public void OnWheelAwake(List<SelectionWheelNodeData> availableNodes, Transform followingWorldTransform)
         {
-            if (OnWheelAwakeEvent != null) OnWheelAwakeEvent.Invoke(availableNodes, followingWorldTransform);
+            OnWheelAwakeEvent.Invoke(availableNodes, followingWorldTransform);
         }
 
         private event OnWheelSleepEventDelegate OnWheelSleepEvent;
@@ -31,7 +33,19 @@ namespace SelectionWheel
 
         public void OnWheelSleep(bool destroyImmediate)
         {
-            if (OnWheelSleepEvent != null) OnWheelSleepEvent.Invoke(destroyImmediate);
+            OnWheelSleepEvent.Invoke(destroyImmediate);
+        }
+
+        private event OnWheelRefreshEventDelegate OnWheelRefreshEvent;
+
+        public void RegisterOnWheelRefreshEvent(OnWheelRefreshEventDelegate OnWheelRefreshEventDelegate)
+        {
+            OnWheelRefreshEvent += OnWheelRefreshEventDelegate;
+        }
+
+        public void OnWheelRefresh(List<SelectionWheelNodeData> availableNodes, Transform followingWorldTransform)
+        {
+            OnWheelRefreshEvent.Invoke(availableNodes, followingWorldTransform);
         }
     }
 }

@@ -29,6 +29,7 @@ namespace SelectionWheel
 
             SelectionWheelEventsManager.Get().RegisterOnWheelAwakeEventListener(AwakeWheel);
             SelectionWheelEventsManager.Get().RegisterOnWheelSleepEventListener(SleepWheel);
+            SelectionWheelEventsManager.Get().RegisterOnWheelRefreshEvent(RefreshWheel);
 
             #endregion
         }
@@ -72,6 +73,8 @@ namespace SelectionWheel
         {
             if (IsWheelEnabled)
             {
+                IsWheelEnabled = false;
+
                 var actionNodeContainerObject = SelectionWheelGameObject.transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
                 var transformToDestroy = new Transform[actionNodeContainerObject.childCount];
                 for (var i = 0; i < actionNodeContainerObject.childCount; i++) transformToDestroy[i] = actionNodeContainerObject.GetChild(i);
@@ -96,8 +99,15 @@ namespace SelectionWheel
                     }
                 }
             }
+        }
 
-            IsWheelEnabled = false;
+        private void RefreshWheel(List<SelectionWheelNodeData> wheelNodeDatas, Transform followingTransform)
+        {
+            if (IsWheelEnabled)
+            {
+                SelectionWheelEventsManager.Get().OnWheelSleep(true);
+                SelectionWheelEventsManager.Get().OnWheelAwake(wheelNodeDatas, followingTransform);
+            }
         }
 
         public void Tick(float d)
