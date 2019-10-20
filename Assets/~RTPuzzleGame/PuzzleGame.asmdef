@@ -11,7 +11,8 @@
         "RangeObjects",
         "SelectableObjects_Interfaces",
         "SelectionObjects",
-        "SelectionWheel"
+        "SelectionWheel",
+        "PlayerObject_Interface"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

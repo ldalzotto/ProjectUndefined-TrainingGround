@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
+using PlayerObject_Interfaces;
 using RTPuzzle;
 using SelectionWheel;
 using UnityEngine;
 
 namespace InteractiveObjects
 {
-    public class PlayerInteractiveObject : CoreInteractiveObject
+    public class PlayerInteractiveObject : CoreInteractiveObject, IPlayerInteractiveObject
     {
         #region Systems
 
