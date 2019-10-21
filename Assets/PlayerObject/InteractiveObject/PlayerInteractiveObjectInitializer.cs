@@ -1,6 +1,7 @@
-﻿using InteractiveObjects_Interfaces;
+﻿using InteractiveObjects;
+using InteractiveObjects_Interfaces;
 
-namespace InteractiveObjects
+namespace PlayerObject
 {
     [SceneHandleDraw]
     public class PlayerInteractiveObjectInitializer : InteractiveObjectInitializer

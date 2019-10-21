@@ -1,5 +1,6 @@
 ﻿using InteractiveObjects_Interfaces;
 using PlayerActions;
+using PlayerObject;
 using SelectableObject;
 
 namespace InteractiveObjects

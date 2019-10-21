@@ -1,26 +1,26 @@
-﻿using CoreGame;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using CoreGame;
 
-namespace RTPuzzle
+namespace PlayerObject
 {
-    public class BlockingCutscenePlayerManager : MonoBehaviour
+    public class BlockingCutscenePlayerManager : GameSingleton<BlockingCutscenePlayerManager>
     {
-        private bool playing;
-        public bool Playing { get => playing; }
+        public bool Playing { get; private set; }
 
-        [VE_Ignore]
-        private SequencedActionManager cutscenePlayer;
+        [VE_Ignore] private SequencedActionManager cutscenePlayer;
 
         public void Play(List<SequencedAction> SequencingActions, Action onCutsceneEnd = null)
         {
-            this.playing = true;
+            this.Playing = true;
             this.cutscenePlayer = new SequencedActionManager((action) => this.cutscenePlayer.OnAddAction(action, null), null, OnNoMoreActionToPlay: () =>
             {
                 this.cutscenePlayer = null;
-                this.playing = false;
-                if (onCutsceneEnd != null) { onCutsceneEnd.Invoke(); }
+                this.Playing = false;
+                if (onCutsceneEnd != null)
+                {
+                    onCutsceneEnd.Invoke();
+                }
             });
             this.cutscenePlayer.OnAddActions(SequencingActions, null);
         }

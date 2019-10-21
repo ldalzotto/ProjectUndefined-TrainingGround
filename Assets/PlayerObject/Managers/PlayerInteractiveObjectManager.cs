@@ -1,7 +1,7 @@
 ﻿using CoreGame;
 using InteractiveObjects_Interfaces;
 
-namespace InteractiveObjects
+namespace PlayerObject
 {
     public class PlayerInteractiveObjectManager : GameSingleton<PlayerInteractiveObjectManager>
     {

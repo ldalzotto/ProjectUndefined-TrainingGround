@@ -4,6 +4,7 @@ using InteractiveObjects;
 using LevelManagement;
 using Obstacle;
 using PlayerActions;
+using PlayerObject;
 using RangeObjects;
 using SelectableObject;
 using UnityEngine;
@@ -12,8 +13,6 @@ namespace RTPuzzle
 {
     public class GameManager : AsbtractCoreGameManager
     {
-        private BlockingCutscenePlayerManager BlockingCutscenePlayer;
-
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
 #endif
@@ -36,7 +35,6 @@ namespace RTPuzzle
         {
             OnStart();
 
-            BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
@@ -69,7 +67,7 @@ namespace RTPuzzle
             TutorialManager.Tick(d);
 
             PuzzleTutorialEventSenderManager.Get().Tick(d);
-            BlockingCutscenePlayer.Tick(d);
+            BlockingCutscenePlayerManager.Get().Tick(d);
 
             PlayerActionEntryPoint.Get().Tick(d);
 

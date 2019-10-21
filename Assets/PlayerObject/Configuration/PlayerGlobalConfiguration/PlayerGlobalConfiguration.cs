@@ -1,15 +1,15 @@
 ﻿using System;
+using OdinSerializer;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace PlayerObject
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "PuzzleGlobalStaticConfiguration", menuName = "Configuration/PuzzleGame/StaticConfiguration/PuzzleGlobalStaticConfiguration", order = 1)]
-    public class PuzzleGlobalStaticConfiguration : ScriptableObject
+    [CreateAssetMenu(fileName = "PlayerGlobalConfiguration", menuName = "Configuration/CoreGame/PlayerGlobalConfiguration/PlayerGlobalConfiguration", order = 1)]
+    public class PlayerGlobalConfiguration : SerializedScriptableObject
     {
         public PlayerInteractiveObjectInitializerData PlayerInteractiveObjectInitializerData;
     }
-
 
     [Serializable]
     public class PlayerInteractiveObjectInitializerData

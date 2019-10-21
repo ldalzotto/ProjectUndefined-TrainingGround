@@ -18,8 +18,6 @@ namespace RTPuzzle
     [System.Serializable()]
     public class PuzzleGameConfiguration : CoreGame.GameConfiguration
     {
-        public RangeTypeConfiguration RangeTypeConfiguration;
-        
         public RTPuzzle.DottedLineConfiguration DottedLineConfiguration;
     }
 }

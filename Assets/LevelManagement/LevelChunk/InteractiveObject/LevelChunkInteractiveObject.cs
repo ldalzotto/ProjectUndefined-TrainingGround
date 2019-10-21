@@ -39,7 +39,7 @@ namespace LevelManagement
         #endregion
 
         public LevelChunkInteractiveObject(IInteractiveGameObject interactiveGameObject, LevelChunkInteractiveObjectDefinition LevelChunkInteractiveObjectDefinition)
-            : base(interactiveGameObject, IsUpdatedInMainManager: true)
+            : base(interactiveGameObject, IsUpdatedInMainManager: false)
         {
             this.LevelChunkInteractiveObjectDefinition = LevelChunkInteractiveObjectDefinition;
             this.LevelChunkTrackerSystem = new LevelChunkTrackerSystem(this, LevelChunkInteractiveObjectDefinition, this.OnLevelChunkTriggerEnter, this.OnLevelChunkTriggerExit);

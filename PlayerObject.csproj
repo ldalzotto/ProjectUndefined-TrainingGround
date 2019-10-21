@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}</ProjectGuid>
+    <ProjectGuid>{D724B571-7DAE-8593-0240-BB4D3341B93B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>PuzzleGame</AssemblyName>
+    <AssemblyName>PlayerObject</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,68 +56,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIMoveToActionV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIWarpActionV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\Interfaces\IActionAbortedOnDestinationReached.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolGraphV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\LevelCompletion\Managers\LevelCompletionManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\ILinePositioning.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\LineFollowTransformPositioning.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LineTypes\DottedLine.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LineTypes\DottedLineGameObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Managers\DottedLineManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Managers\DottedLineRendererManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PuzzleGameSingletonInstances.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfigurationContainer.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzleMaterialConfiguration\PuzzleMaterialConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzlePrefabConfiguration\PuzzlePrefabConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveAIObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTest.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTestInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIPatrolGraphTest.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AITestDisarmLocalCutscene.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AbstractAIInteractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveInteractiveObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIMoveToDestinationSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystemDefinition.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystemDefinition.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\DisarmObject\DisarmobjectSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\DisarmObject\DisarmSystemDefinition.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystemDefinition.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LineVisualFeedbackSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystemDefinition.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Actions\PuzzleTutorialTextAction.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Edges\PuzzleTutorialTextEdge.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Nodes\PuzzleTutorialTextNode.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\PuzzleTutorialEventSender.cs" />
-     <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
-     <None Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Shader\DottedLineShader.shader" />
- <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
- <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\PlayerObject\BlockingCutscene\BlockingCutscenePlayerManager.cs" />
+     <Compile Include="Assets\PlayerObject\Configuration\PlayerConfigurationGameObject.cs" />
+     <Compile Include="Assets\PlayerObject\Configuration\PlayerGlobalConfiguration\PlayerGlobalConfiguration.cs" />
+     <Compile Include="Assets\PlayerObject\InteractiveObject\PlayerInteractiveObject.cs" />
+     <Compile Include="Assets\PlayerObject\InteractiveObject\PlayerInteractiveObjectInitializer.cs" />
+     <Compile Include="Assets\PlayerObject\Managers\PlayerInteractiveObjectManager.cs" />
+     <None Include="Assets\PlayerObject\PlayerObject.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -672,21 +617,13 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="PlayerObject_Interface.csproj">
+      <Project>{42804222-6A23-CC02-C65B-A45131BAA9EB}</Project>
+      <Name>PlayerObject_Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="CoreGame.csproj">
       <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
       <Name>CoreGame</Name>
-    </ProjectReference>
-    <ProjectReference Include="Editor_Common.csproj">
-      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
-      <Name>Editor_Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
-      <Name>OdinSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="GameConfigurationID.csproj">
-      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
-      <Name>GameConfigurationID</Name>
     </ProjectReference>
     <ProjectReference Include="InteractiveObjects.csproj">
       <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
@@ -696,45 +633,17 @@
       <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
       <Name>InteractiveObjects_Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="Obstacle.csproj">
-      <Project>{A56A5795-1CB9-EF28-85DE-67DC873B52CC}</Project>
-      <Name>Obstacle</Name>
-    </ProjectReference>
-    <ProjectReference Include="RangeObjects.csproj">
-      <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
-      <Name>RangeObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="SelectableObjects_Interfaces.csproj">
-      <Project>{1A25ED86-E332-816C-7EE6-8D768A3D8986}</Project>
-      <Name>SelectableObjects_Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="SelectionObjects.csproj">
-      <Project>{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}</Project>
-      <Name>SelectionObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="PlayerObject_Interface.csproj">
-      <Project>{42804222-6A23-CC02-C65B-A45131BAA9EB}</Project>
-      <Name>PlayerObject_Interface</Name>
-    </ProjectReference>
     <ProjectReference Include="PlayerActions.csproj">
       <Project>{63AE0CB7-735A-D4CD-7DAE-B8ABD6F2883E}</Project>
       <Name>PlayerActions</Name>
     </ProjectReference>
-    <ProjectReference Include="LevelManagement_Interfaces.csproj">
-      <Project>{A57781E4-D853-FCD5-B604-158EA14A06F7}</Project>
-      <Name>LevelManagement_Interfaces</Name>
+    <ProjectReference Include="Editor_Common.csproj">
+      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
+      <Name>Editor_Common</Name>
     </ProjectReference>
-    <ProjectReference Include="GameLoop.csproj">
-      <Project>{639B2A1B-495A-2DE9-D504-C31C8A831882}</Project>
-      <Name>GameLoop</Name>
-    </ProjectReference>
-    <ProjectReference Include="LevelManagement.csproj">
-      <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
-      <Name>LevelManagement</Name>
-    </ProjectReference>
-    <ProjectReference Include="PlayerObject.csproj">
-      <Project>{D724B571-7DAE-8593-0240-BB4D3341B93B}</Project>
-      <Name>PlayerObject</Name>
+    <ProjectReference Include="OdinSerializer.csproj">
+      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
+      <Name>OdinSerializer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

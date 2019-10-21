@@ -1,7 +1,13 @@
 {
     "name": "PlayerObject",
     "references": [
-        "PlayerObject_Interface"
+        "PlayerObject_Interface",
+"CoreGame",
+"InteractiveObjects",
+"InteractiveObjects_Interfaces",
+"PlayerActions",
+"Editor_Common",
+"OdinSerializer"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,12 +1,11 @@
 ﻿using CoreGame;
+using InteractiveObjects;
 using InteractiveObjects_Interfaces;
-using LevelManagement;
 using PlayerActions;
 using PlayerObject_Interfaces;
-using RTPuzzle;
 using UnityEngine;
 
-namespace InteractiveObjects
+namespace PlayerObject
 {
     public class PlayerInteractiveObject : CoreInteractiveObject, IPlayerInteractiveObject
     {
@@ -16,7 +15,6 @@ namespace InteractiveObjects
 
         #endregion
 
-        [VE_Ignore] private LevelResetManager LevelResetManager;
         [VE_Ignore] private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
 
         [VE_Ignore] private PlayerInputMoveManager PlayerInputMoveManager;
@@ -27,15 +25,11 @@ namespace InteractiveObjects
             interactiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
             interactiveObjectTag = new InteractiveObjectTag {IsPlayer = true};
 
-            PlayerInteractiveObjectInitializerData = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleGlobalStaticConfiguration.PlayerInteractiveObjectInitializerData;
+            PlayerInteractiveObjectInitializerData = PlayerConfigurationGameObject.Get().PlayerGlobalConfiguration.PlayerInteractiveObjectInitializerData;
 
             #region External Dependencies
 
-            var puzzleEventsManager = PuzzleEventsManager.Get();
-            BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
-            var LevelConfiguration = LevelManagementConfigurationGameObject.Get().LevelConfiguration;
-            var LevelManager = LevelManagement.LevelManager.Get();
 
             #endregion
 
@@ -47,7 +41,6 @@ namespace InteractiveObjects
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(this, GameInputManager,
                 PlayerActionEntryPoint.Get());
-            LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
 
             AfterConstructor();
         }
@@ -56,27 +49,24 @@ namespace InteractiveObjects
 
         public override void Tick(float d)
         {
-            if (!LevelResetManager.Tick(d))
+            if (!this.PlayerActionEntryPoint.IsActionExecuting() && !BlockingCutscenePlayer.Playing)
             {
-                if (!this.PlayerActionEntryPoint.IsActionExecuting() && !BlockingCutscenePlayer.Playing)
+                if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
                 {
-                    if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
+                    if (!this.PlayerActionEntryPoint.IsSelectionWheelEnabled())
                     {
-                        if (!this.PlayerActionEntryPoint.IsSelectionWheelEnabled())
-                        {
-                            PlayerInputMoveManager.Tick(d);
-                        }
-                        else
-                        {
-                            PlayerInputMoveManager.ResetSpeed();
-                            PlayerSelectionWheelManager.TriggerActionOnInput();
-                        }
+                        PlayerInputMoveManager.Tick(d);
+                    }
+                    else
+                    {
+                        PlayerInputMoveManager.ResetSpeed();
+                        PlayerSelectionWheelManager.TriggerActionOnInput();
                     }
                 }
-                else
-                {
-                    PlayerInputMoveManager.ResetSpeed();
-                }
+            }
+            else
+            {
+                PlayerInputMoveManager.ResetSpeed();
             }
 
             AnimationObjectSystem.SetUnscaledSpeedMagnitude(GetNormalizedSpeed());
@@ -92,7 +82,7 @@ namespace InteractiveObjects
         #region External Dependencies
 
         private PlayerActionEntryPoint PlayerActionEntryPoint = PlayerActionEntryPoint.Get();
-        [VE_Nested] private BlockingCutscenePlayerManager BlockingCutscenePlayer;
+        [VE_Nested] private BlockingCutscenePlayerManager BlockingCutscenePlayer = BlockingCutscenePlayerManager.Get();
 
         #endregion
 
@@ -120,7 +110,6 @@ namespace InteractiveObjects
 
         #region External Dependencies
 
-        private PuzzleEventsManager PuzzleEventsManager;
         private PlayerActionEntryPoint PlayerActionEntryPoint;
 
         #endregion
@@ -162,45 +151,6 @@ namespace InteractiveObjects
                     this.PlayerActionEntryPoint.ExecuteAction(selectedAction);
                 }
             }
-        }
-    }
-
-    #endregion
-
-    #region Level Reset Manager
-
-    internal class LevelResetManager
-    {
-        private const float TIME_PUSHED_TO_RESET_S = 1f;
-
-        private float currentTimePressed = 0f;
-        private IGameInputManager GameInputManager;
-        private PuzzleEventsManager PuzzleEventsManager;
-
-        public LevelResetManager(IGameInputManager gameInputManager, PuzzleEventsManager puzzleEventsManager)
-        {
-            GameInputManager = gameInputManager;
-            PuzzleEventsManager = puzzleEventsManager;
-        }
-
-        public bool Tick(float d)
-        {
-            if (GameInputManager.CurrentInput.PuzzleResetButton())
-            {
-                currentTimePressed += d;
-                if (currentTimePressed >= TIME_PUSHED_TO_RESET_S)
-                {
-                    currentTimePressed = 0f;
-                    PuzzleEventsManager.PZ_EVT_LevelReseted();
-                    return true;
-                }
-            }
-            else
-            {
-                currentTimePressed = 0f;
-            }
-
-            return false;
         }
     }
 
