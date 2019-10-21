@@ -13,7 +13,8 @@
         "SelectableObjects_Interfaces",
         "SelectionObjects",
         "PlayerObject_Interface",
-        "PlayerActions"
+        "PlayerActions",
+"GameLoop"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

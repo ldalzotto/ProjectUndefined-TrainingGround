@@ -33,7 +33,7 @@ namespace SelectableObject
             public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
             {
                 var levelManager = CoreGameSingletonInstances.LevelManager;
-                if (levelManager != null && levelManager.CurrentLevelType == LevelType.PUZZLE)
+                if (levelManager != null && levelManager.CurrentLevelType != LevelType.STARTMENU)
                 {
                     var selectableObjectManagerV2 = SelectableObjectManagerV2.Get();
                     if (selectableObjectManagerV2.SelectableObjectRendererManager != null

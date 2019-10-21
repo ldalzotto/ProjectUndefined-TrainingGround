@@ -1,7 +1,8 @@
 ﻿using System.Collections;
+using CoreGame;
 using UnityEngine;
 
-namespace CoreGame
+namespace GameLoop
 {
     public abstract class AsbtractCoreGameManager : MonoBehaviour
     {
@@ -23,7 +24,6 @@ namespace CoreGame
             if (this.levelType != LevelType.STARTMENU)
             {
                 CoreGameSingletonInstances.PlayerAdventurePositionManager.Init();
-                CoreGameSingletonInstances.LevelMemoryManager.Init(levelType, CoreGameSingletonInstances.LevelManager);
                 CoreGameSingletonInstances.LevelChunkFXTransitionManager.Init();
                 CoreGameSingletonInstances.Coroutiner.StartCoroutine(InitializeTimelinesAtEndOfFrame());
             }

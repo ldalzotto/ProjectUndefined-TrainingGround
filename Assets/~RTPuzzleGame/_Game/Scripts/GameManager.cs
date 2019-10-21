@@ -1,4 +1,5 @@
 using CoreGame;
+using GameLoop;
 using InteractiveObjects;
 using Obstacle;
 using PlayerActions;
@@ -23,7 +24,7 @@ namespace RTPuzzle
             FindObjectOfType<GameManagerPersistanceInstance>().Init();
             AfterGameManagerPersistanceInstanceInitialization();
             //Level chunk initialization
-            OnAwake(LevelType.PUZZLE);
+            OnAwake(LevelType.GAME);
         }
 
         protected virtual void AfterGameManagerPersistanceInstanceInitialization()

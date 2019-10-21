@@ -14,7 +14,6 @@ namespace CoreGame
         private static TimelinesEventManager timelinesEventManager;
         private static LevelTransitionManager levelTransitionManager;
         private static LevelManagerEventManager levelManagerEventManager;
-        private static LevelMemoryManager levelMemoryManager;
         private static PlayerAdventurePositionManager playerAdventurePositionManager;
         private static LevelManager levelManager;
         private static DiscussionPositionManager discussionPositionManager;
@@ -44,8 +43,6 @@ namespace CoreGame
 
         public static LevelManagerEventManager LevelManagerEventManager => FindAndSetInstanceIfNull(levelManagerEventManager, obj => levelManagerEventManager = obj);
 
-        public static LevelMemoryManager LevelMemoryManager => FindAndSetInstanceIfNull(levelMemoryManager, obj => levelMemoryManager = obj);
-
         public static PlayerAdventurePositionManager PlayerAdventurePositionManager => FindAndSetInstanceIfNull(playerAdventurePositionManager, obj => playerAdventurePositionManager = obj);
 
         public static LevelManager LevelManager => FindAndSetInstanceIfNull(levelManager, obj => levelManager = obj);
@@ -64,10 +61,8 @@ namespace CoreGame
         {
             get
             {
-                if (LevelManager.CurrentLevelType == LevelType.ADVENTURE)
-                    return GameObject.FindGameObjectWithTag(TagConstants.ADVENTURE_CANVAS).GetComponent<Canvas>();
-                else if (LevelManager.CurrentLevelType == LevelType.PUZZLE)
-                    return GameObject.FindGameObjectWithTag(TagConstants.PUZZLE_CANVAS).GetComponent<Canvas>();
+                if (LevelManager.CurrentLevelType == LevelType.GAME)
+                    return GameObject.FindGameObjectWithTag(TagConstants.GAME_CANVAS).GetComponent<Canvas>();
                 else if (LevelManager.CurrentLevelType == LevelType.STARTMENU) return GameObject.FindGameObjectWithTag(TagConstants.START_MENU_CANVAS).GetComponent<Canvas>();
 
                 return null;

@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</ProjectGuid>
+    <ProjectGuid>{639B2A1B-495A-2DE9-D504-C31C8A831882}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>CoreGame</AssemblyName>
+    <AssemblyName>GameLoop</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,196 +56,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
-     <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
-     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
-     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
-     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameLogHandler.cs" />
-     <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
-     <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\CoreGameSingletonInstances.cs" />
-     <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\GameSingleton.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\LayerConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\NavMeshConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\PointOfInterestTypeConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\SceneConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\StringConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\TagConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\AnimationPlayerHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\BoundsHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\ComponentSearchExtensions.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\ComponentSearchHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\ComputeBufferHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\DynamicComputeBufferManager.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\FunctionalExtensions.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\GameInputHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\GenericAnimatorHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\GizmoHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\MultiValueDictionary.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\MyEditorStyles.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\ProceduralTextureHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\QuaterionHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\RandomHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\RendererRetrievableHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\SceneLoadingHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\SerializationHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\StructHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\TransformChangeListener.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\TransformExtensions.cs" />
-     <Compile Include="Assets\~CoreGame\_Interfaces\DataRetrieval\IMeshRendererRetrievable.cs" />
-     <Compile Include="Assets\~CoreGame\_Interfaces\DataRetrieval\IRenderBoundRetrievable.cs" />
-     <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimeline.cs" />
-     <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimelinePersister.cs" />
-     <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimelinesManager.cs" />
-     <Compile Include="Assets\~CoreGame\AbstractTimeline\TimeLineAction.cs" />
-     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedAction.cs" />
-     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedActionManager.cs" />
-     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedActionPlayer.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
-     <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
-     <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarRendererManager.cs" />
-     <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarType.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CoreMaterialConfiguration\CoreMaterialConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CorePrefabConfiguration\CorePrefabConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionTextConfiguration\DiscussionTextConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\GlobalGameConfiguration\GlobalGameConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\Input\CoreInputConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfigurationData.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\ChunkZonesSceneConfiguration\ChunkZonesSceneConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTree.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfigurationInherentData.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfigurationData.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TimelineConfiguration\TimelineConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepInherentData.cs" />
-     <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
-     <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />
-     <Compile Include="Assets\~CoreGame\CustomYields\WaitForNavAgentDestinationReached.cs" />
-     <Compile Include="Assets\~CoreGame\CustomYields\WaitForParticlesToNotEmit.cs" />
-     <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCtusceneController.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCutscenePlayerManager.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractRotateAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\BaseCutsceneAnimationAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\Branch\BranchInfiniteLoopAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowAbortAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowWaitForSecondsAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\DummyCutsceneAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\AbstractCutsceneGraph.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\Abstract\ACutsceneEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\Branch\BranchInfiniteLoopEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneActionConnectionEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneWorkflowAbortEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneWorkflowWaitForSecondsEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\DummyCutsceneEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\Abstract\ACutsceneNode.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\Branch\BranchInfiniteLoopNode.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneStartNode.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneWorkflowAbortNode.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneWorkflowWaitForSecondsNode.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\DummyCutsceneNode.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Parameters\CutsceneParametersName.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Parameters\ParametrizedAnimationID.cs" />
-     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionTextInherentData.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Images\InputImageType.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionManager.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionMarker.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionsType.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Text\GeneratedText.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Text\GeneratedTextDimensions.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Text\GeneratedTextParameter.cs" />
-     <Compile Include="Assets\~CoreGame\EnumDependantProperty\ByEnumProperty.cs" />
-     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
-     <Compile Include="Assets\~CoreGame\EventVariables\BoolVariable.cs" />
-     <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkFXTransitionManager.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkTracker.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkType.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelManager.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelTransitionManager.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\StartLevelManager.cs" />
-     <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
-     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
-     <Compile Include="Assets\~CoreGame\Math\FrustumPointsPositions.cs" />
-     <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
-     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
-     <Compile Include="Assets\~CoreGame\Math\ShapeDefinitions.cs" />
-     <Compile Include="Assets\~CoreGame\Math\Types\StartEndSlice.cs" />
-     <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
-     <Compile Include="Assets\~CoreGame\Persistance\Script\AbstractGamePersister.cs" />
-     <Compile Include="Assets\~CoreGame\Persistance\Script\AutoSaveIcon.cs" />
-     <Compile Include="Assets\~CoreGame\Persistance\Script\PersistanceManager.cs" />
-     <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV3.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAdventurePositionManager.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\AnimationDataManager.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerManagerType.cs" />
-     <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
-     <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
-     <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
-     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV2.cs" />
-     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineManagerV2.cs" />
-     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineAction\LevelCompletedTimelineAction.cs" />
-     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
-     <Compile Include="Assets\~CoreGame\Timelines\TimelinesEventManager.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\Abstract\AbstractTutorialTextAction.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialActionInput.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialTextAction.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Edges\TutorialTextEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Nodes\TutorialTextNode.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\TutorialGraph.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialGraphEvents.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
-     <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
-     <Compile Include="Assets\Test\PlayableAnimationTest.cs" />
-     <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
-     <None Include="Assets\~CoreGame\CircleFillBar\CircleBar.shader" />
-     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
-     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2Include.cginc" />
-     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
-     <None Include="Assets\_Shader\VertexLit\VertexLitForwardPass.hlsl" />
-     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2VertexDisplacement.cginc" />
-     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
-     <None Include="Assets\_Shader\VertexLit\VertexLit.shader" />
-     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
-     <None Include="Assets\_Shader\FX\Smoke\SmokeShaderParticles.shader" />
-     <None Include="Assets\_Shader\Noise\noiseSimplex.cginc" />
-     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2.shader" />
-     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2_Transparent.shader" />
-     <None Include="Assets\~CoreGame\Discussion\Font\LICENSE.txt" />
-     <None Include="Assets\CoreGame.asmdef" />
-     <None Include="Assets\_Shader\ImageBlitShader\AddBlitShader.shader" />
- <Reference Include="Unity.Postprocessing.Runtime">
- <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
- </Reference>
- <Reference Include="Unity.InputSystem">
- <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.InputSystem.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
- <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\_GameLoop\AsbtractCoreGameManager.cs" />
+     <None Include="Assets\_GameLoop\GameLoop.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -800,17 +612,9 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Editor_Common.csproj">
-      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
-      <Name>Editor_Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
-      <Name>OdinSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="GameConfigurationID.csproj">
-      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
-      <Name>GameConfigurationID</Name>
+    <ProjectReference Include="CoreGame.csproj">
+      <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
+      <Name>CoreGame</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

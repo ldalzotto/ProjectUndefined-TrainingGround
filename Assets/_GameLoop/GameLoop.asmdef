@@ -1,11 +1,8 @@
 {
-    "name": "~StartMenu",
+    "name": "GameLoop",
     "references": [
-        "CoreGame",
-        "GameConfigurationID",
-        "OdinSerializer",
-"GameLoop"
-    ],
+"CoreGame"
+],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

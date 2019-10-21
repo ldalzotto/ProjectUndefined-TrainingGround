@@ -728,6 +728,10 @@
       <Project>{63AE0CB7-735A-D4CD-7DAE-B8ABD6F2883E}</Project>
       <Name>PlayerActions</Name>
     </ProjectReference>
+    <ProjectReference Include="GameLoop.csproj">
+      <Project>{639B2A1B-495A-2DE9-D504-C31C8A831882}</Project>
+      <Name>GameLoop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

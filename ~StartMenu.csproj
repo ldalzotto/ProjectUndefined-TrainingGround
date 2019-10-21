@@ -631,6 +631,10 @@
       <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
       <Name>OdinSerializer</Name>
     </ProjectReference>
+    <ProjectReference Include="GameLoop.csproj">
+      <Project>{639B2A1B-495A-2DE9-D504-C31C8A831882}</Project>
+      <Name>GameLoop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameLoop;
 using UnityEngine;
 
 namespace StartMenu
@@ -24,5 +25,4 @@ namespace StartMenu
             this.BeforeTick(d);
         }
     }
-
 }

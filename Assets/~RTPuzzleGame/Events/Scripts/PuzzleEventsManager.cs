@@ -13,7 +13,6 @@ namespace RTPuzzle
             TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             LevelManager = CoreGameSingletonInstances.LevelManager;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
-            LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
         }
 
 
@@ -26,7 +25,6 @@ namespace RTPuzzle
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
 
         private TutorialManager TutorialManager;
-        private LevelMemoryManager LevelMemoryManager;
 
         #endregion
 
@@ -36,20 +34,13 @@ namespace RTPuzzle
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
             TimelinesEventManager.OnScenarioActionExecuted(new LevelCompletedTimelineAction(LevelManager.GetCurrentLevel()));
-            OnPuzzleToAdventureLevel(LevelMemoryManager.LastAdventureLevel);
+            //     OnPuzzleToAdventureLevel(LevelMemoryManager.LastAdventureLevel);
         }
 
         public void PZ_EVT_LevelReseted()
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelReseted"));
             OnPuzzleToPuzzleLevel(LevelManager.LevelID);
-        }
-
-        private void OnPuzzleToAdventureLevel(LevelZonesID levelZonesID)
-        {
-            IDottedLineRendererManagerEvent.OnLevelExit();
-            GroundEffectsManagerV2.OnLevelExit();
-            PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
         }
 
         private void OnPuzzleToPuzzleLevel(LevelZonesID levelZonesID)

@@ -6,24 +6,41 @@ namespace CoreGame
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField]
-        private LevelZonesID levelID;
-        [SerializeField]
-        private LevelZoneChunkID currentLevelZoneChunkWherePlayerIsID = LevelZoneChunkID.NONE;
-        [SerializeField]
-        private List<LevelZoneChunkID> allLoadedLevelZonesChunkID;
+        [SerializeField] private LevelZonesID levelID;
+        [SerializeField] private LevelZoneChunkID currentLevelZoneChunkWherePlayerIsID = LevelZoneChunkID.NONE;
+        [SerializeField] private List<LevelZoneChunkID> allLoadedLevelZonesChunkID;
 
-        public LevelZonesID LevelID { get => levelID; set => levelID = value; }
-        public List<LevelZoneChunkID> AllLoadedLevelZonesChunkID { get => allLoadedLevelZonesChunkID; }
-        public LevelZoneChunkID CurrentLevelZoneChunkWherePlayerIsID { get => currentLevelZoneChunkWherePlayerIsID; }
+        public LevelZonesID LevelID
+        {
+            get => levelID;
+            set => levelID = value;
+        }
+
+        public List<LevelZoneChunkID> AllLoadedLevelZonesChunkID
+        {
+            get => allLoadedLevelZonesChunkID;
+        }
+
+        public LevelZoneChunkID CurrentLevelZoneChunkWherePlayerIsID
+        {
+            get => currentLevelZoneChunkWherePlayerIsID;
+        }
 
         #region Internal Managers
+
         private EnvironmentSceneLevelManager EnvironmentSceneLevelManager;
+
         #endregion
 
         #region Internal State
+
         private LevelType currentLevelType;
-        public LevelType CurrentLevelType { get => currentLevelType; }
+
+        public LevelType CurrentLevelType
+        {
+            get => currentLevelType;
+        }
+
         #endregion
 
         public void Init(LevelType currentLevelType)
@@ -33,18 +50,22 @@ namespace CoreGame
         }
 
         #region External Event
+
         public List<AsyncOperation> OnAdventureToPuzzleLevel(LevelZonesID nextPuzzleLevel)
         {
             return this.EnvironmentSceneLevelManager.OnAdventureToPuzzleLevel(nextPuzzleLevel);
         }
+
         internal List<AsyncOperation> OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
         {
             return this.EnvironmentSceneLevelManager.LoadAllLevelsAsync(nextPuzzleLevel);
         }
+
         public List<AsyncOperation> OnStartMenuToLevel(LevelZonesID nextLevel)
         {
             return this.EnvironmentSceneLevelManager.LoadAllLevelsAsync(nextLevel);
         }
+
         public void OnChunkLevelEnter(LevelChunkType NextLevelChunk)
         {
             Debug.Log(MyLog.Format("LevelManager OnChunkLevelEnter"));
@@ -53,28 +74,36 @@ namespace CoreGame
 
         public void OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)
         {
-            if (this.allLoadedLevelZonesChunkID == null) { this.allLoadedLevelZonesChunkID = new List<LevelZoneChunkID>(); }
+            if (this.allLoadedLevelZonesChunkID == null)
+            {
+                this.allLoadedLevelZonesChunkID = new List<LevelZoneChunkID>();
+            }
+
             this.allLoadedLevelZonesChunkID.Add(levelZoneChunkID);
         }
+
         #endregion
 
 
         #region Data Retrieval
+
         public LevelZonesID GetCurrentLevel()
         {
             return levelID;
         }
+
         #endregion
     }
 
     class EnvironmentSceneLevelManager
     {
-
         #region External Dependencies
+
         private LevelAvailabilityManager LevelAvailabilityManager;
         private LevelManager LevelManagerRef;
         private LevelManagerEventManager LevelManagerEventManager;
         private CoreConfigurationManager CoreConfigurationManager;
+
         #endregion
 
         public EnvironmentSceneLevelManager(LevelAvailabilityManager levelAvailabilityManager, LevelManager LevelManagerRef, CoreConfigurationManager CoreConfigurationManager, LevelManagerEventManager LevelManagerEventManager)
@@ -106,6 +135,7 @@ namespace CoreGame
                     }
                 }
             }
+
             return sceneLoadOperations;
         }
 
@@ -123,6 +153,7 @@ namespace CoreGame
                     }
                 }
             }
+
             return sceneUnloadOperations;
         }
 
@@ -135,13 +166,11 @@ namespace CoreGame
         {
             return SceneLoadingHelper.SceneUnLoadWIthoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
         }
-
-
     }
 
     public enum LevelType
     {
-        ADVENTURE, PUZZLE, STARTMENU
+        GAME,
+        STARTMENU
     }
-
 }
