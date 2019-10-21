@@ -31,6 +31,7 @@ namespace InteractiveObjects
             InitAgent();
 
             PhysicsRigidbody = this.InteractiveGameObjectParent.GetComponent<Rigidbody>();
+            PhysicsCollider = this.InteractiveGameObjectParent.GetComponent<Collider>();
         }
 
         public GameObject InteractiveGameObjectParent { get; private set; }
@@ -126,6 +127,7 @@ namespace InteractiveObjects
         public Collider LogicCollider { get; private set; }
 
         public Rigidbody PhysicsRigidbody { get; private set; }
+        public Collider PhysicsCollider { get; private set; }
         public NavMeshAgent Agent { get; private set; }
 
         #endregion

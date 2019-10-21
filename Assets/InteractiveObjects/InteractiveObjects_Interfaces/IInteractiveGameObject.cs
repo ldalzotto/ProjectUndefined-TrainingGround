@@ -13,6 +13,7 @@ namespace InteractiveObjects_Interfaces
         List<Renderer> Renderers { get; }
         Collider LogicCollider { get; }
         Rigidbody PhysicsRigidbody { get; }
+        Collider PhysicsCollider { get; }
         NavMeshAgent Agent { get; }
 
         BoxCollider GetLogicColliderAsBox();
