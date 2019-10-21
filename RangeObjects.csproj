@@ -80,7 +80,6 @@
      <Compile Include="Assets\RangeObjects\RangeObject\Systems\RangeObjectV2Systems.cs" />
      <Compile Include="Assets\RangeObjects\RangeRendering\Components\GroundEffectIgnoredGroundObjectType.cs" />
      <Compile Include="Assets\RangeObjects\RangeRendering\Components\GroundEffectType.cs" />
-     <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\LevelRangeEffectInherentData.cs" />
      <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeRenderingConfiguration.cs" />
      <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeType\RangeTypeConfiguration.cs" />
      <Compile Include="Assets\RangeObjects\RangeRendering\Configuration\RangeType\RangeTypeInherentConfigurationData.cs" />
@@ -668,6 +667,10 @@
     <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
       <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
       <Name>InteractiveObjects_Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="LevelManagement_Interfaces.csproj">
+      <Project>{A57781E4-D853-FCD5-B604-158EA14A06F7}</Project>
+      <Name>LevelManagement_Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="GameConfigurationID.csproj">
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>

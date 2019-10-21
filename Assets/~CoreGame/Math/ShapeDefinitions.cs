@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -11,7 +12,7 @@ namespace CoreGame
      *   C4----C3     
      */
 
-    [System.Serializable]
+    [Serializable]
     public struct FrustumV2
     {
         public Vector3 Center;
@@ -43,7 +44,6 @@ namespace CoreGame
             //We abort calculation if not facing
             if (IsFacing)
             {
-
                 Vector3 C5 = C1 + ((C1 - WorldStartAngleProjection) * this.FaceDistance);
                 Vector3 C6 = C2 + ((C2 - WorldStartAngleProjection) * this.FaceDistance);
                 Vector3 C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
@@ -70,7 +70,7 @@ namespace CoreGame
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct FrustumFaceV2
     {
         public Vector3 FaceOffsetFromCenter;
@@ -78,12 +78,14 @@ namespace CoreGame
         public float Width;
     }
 
-    [System.Serializable]
+    [Serializable]
     public enum FrustumCalculationType
     {
-        FACE, PROJECTION
+        FACE,
+        PROJECTION
     }
 
+    [Serializable]
     public struct BoxDefinition
     {
         public Vector3 LocalCenter;

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using PlayerActions;
-using RangeObjects;
+using LevelManagement_Interfaces;
 using UnityEngine;
 
 namespace LevelManagement
@@ -10,8 +8,6 @@ namespace LevelManagement
     [CreateAssetMenu(fileName = "LevelConfigurationData", menuName = "Configuration/PuzzleGame/LevelConfiguration/LevelConfigurationDataData", order = 1)]
     public class LevelConfigurationData : ScriptableObject
     {
-        [SerializeField] public List<PlayerActionInherentData> ConfiguredPlayerActions;
-
         [SerializeField] public LevelRangeEffectInherentData LevelRangeEffectInherentData;
     }
 }

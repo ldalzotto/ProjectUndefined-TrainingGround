@@ -6,43 +6,30 @@ namespace LevelManagement
 {
     public class LevelManagerEventManager : GameSingleton<LevelManagerEventManager>
     {
-        public List<AsyncOperation> CORE_EVT_OnAdventureToPuzzleLevel(LevelZonesID nextLevel)
-        {
-            CoreGameSingletonInstances.PlayerAdventurePositionManager.OnAdventureToPuzzleLevel();
-            StartLevelManager.Get().OnStartLevelChange(nextLevel);
-            return LevelManager.Get().OnAdventureToPuzzleLevel(nextLevel);
-        }
-
-        public List<AsyncOperation> CORE_EVT_OnPuzzleToAdventureLevel(LevelZonesID nextLevel)
-        {
-            StartLevelManager.Get().OnStartLevelChange(nextLevel);
-            return LevelManager.Get().OnPuzzleToAdventureLevel(nextLevel);
-        }
-
-        public List<AsyncOperation> CORE_EVT_OnPuzzleToPuzzleLevel(LevelZonesID nextLevel)
+        public List<AsyncOperation> OnPuzzleToPuzzleLevel(LevelZonesID nextLevel)
         {
             return LevelManager.Get().OnAdventureToPuzzleLevel(nextLevel);
         }
 
-        public List<AsyncOperation> CORE_EVT_OnStartMenuToLevel(LevelZonesID nextLevel)
+        public List<AsyncOperation> OnStartMenuToLevel(LevelZonesID nextLevel)
         {
             StartLevelManager.Get().OnStartLevelChange(nextLevel);
             return LevelManager.Get().OnStartMenuToLevel(nextLevel);
         }
 
-        public void CORE_EVT_OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)
+        public void OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)
         {
-            LevelChunkType.DestroyAllDestroyOnStartObjects();
+            LevelChunkInteractiveObject.DestroyAllDestroyOnStartObjects();
             LevelManager.Get().OnLevelChunkLoaded(levelZoneChunkID);
         }
 
-        public void CORE_EVT_OnChunkLevelEnter(LevelChunkTracker enteredLevelChunkTracker)
+        public void OnChunkLevelEnter(LevelChunkInteractiveObject enteredLevelChunkTracker)
         {
             LevelChunkFXTransitionManager.Get().OnChunkLevelEnter(enteredLevelChunkTracker);
-            LevelManager.Get().OnChunkLevelEnter(enteredLevelChunkTracker.AssociatedLevelChunkType);
+            LevelManager.Get().OnChunkLevelEnter(enteredLevelChunkTracker);
         }
 
-        public void CORE_EVT_OnChunkLevelExit(LevelChunkTracker exitedLevelChunkTracker)
+        public void OnChunkLevelExit(LevelChunkInteractiveObject exitedLevelChunkTracker)
         {
             LevelChunkFXTransitionManager.Get().OnChunkLevelExit(exitedLevelChunkTracker);
         }

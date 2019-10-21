@@ -1,15 +1,13 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using RTPuzzle;
-using System;
 
 namespace Tests
 {
-
     public class MockPersistanceManager : PersistanceManager
     {
         public override void Init()
         {
-
         }
 
         public override void Tick(float d)
@@ -28,29 +26,16 @@ namespace Tests
 
     public class MockDottedLineRendererManager : DottedLineRendererManager
     {
-
         public override void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
         {
-
         }
 
         protected override void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
-        {
-
-        }
-
-        public override void OnDottedLineDestroyed(DottedLine dottedLine)
-        {
-
-        }
-
-        public override void OnLevelExit()
         {
         }
 
         public override void Tick()
         {
         }
-
     }
 }

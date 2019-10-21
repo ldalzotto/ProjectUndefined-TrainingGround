@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreGame;
+using LevelManagement_Interfaces;
 using Obstacle;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -168,16 +169,10 @@ namespace RangeObjects
             }
         }
 
-        public void OnLevelExit()
-        {
-            //release buffers
-            ForEachRangeRenderData((rangeRenderData) => { rangeRenderData.Dispose(); });
-        }
-
         public override void OnDestroy()
         {
             base.OnDestroy();
-            OnLevelExit();
+            ForEachRangeRenderData((rangeRenderData) => { rangeRenderData.Dispose(); });
         }
 
         #endregion

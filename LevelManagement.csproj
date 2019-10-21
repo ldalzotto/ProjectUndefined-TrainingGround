@@ -69,17 +69,19 @@
      <Compile Include="Assets\LevelManagement\Configuration\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
      <Compile Include="Assets\LevelManagement\Configuration\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
      <Compile Include="Assets\LevelManagement\Events\LevelManagerEventManager.cs" />
-     <Compile Include="Assets\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
+     <Compile Include="Assets\LevelManagement\LevelAvailability\Manager\LevelAvailabilityManager.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV2.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineManagerV2.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\TimelineAction\LevelCompletedTimelineAction.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\LevelChunkFXTransitionManager.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\LevelChunkTracker.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\LevelChunkType.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\LevelManager.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\LevelTransitionManager.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\StartLevelManager.cs" />
+     <Compile Include="Assets\LevelManagement\LevelChunk\InteractiveObject\LevelChunkInteractiveObject.cs" />
+     <Compile Include="Assets\LevelManagement\LevelChunk\InteractiveObject\LevelChunkInteractiveObjectInitializer.cs" />
+     <Compile Include="Assets\LevelManagement\LevelChunk\InteractiveObject\Systems\LevelChunkTrackerSystem.cs" />
+     <Compile Include="Assets\LevelManagement\LevelChunk\InteractiveObject\Systems\LevelChunkTransitionFXSystem.cs" />
+     <Compile Include="Assets\LevelManagement\LevelChunk\Managers\LevelChunkFXTransitionManager.cs" />
+     <Compile Include="Assets\LevelManagement\Managers\LevelManager.cs" />
+     <Compile Include="Assets\LevelManagement\Managers\LevelTransitionManager.cs" />
+     <Compile Include="Assets\LevelManagement\Managers\StartLevelManager.cs" />
      <Compile Include="Assets\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
      <None Include="Assets\LevelManagement\LevelManagement.asmdef" />
  <Reference Include="Unity.Postprocessing.Runtime">
@@ -639,6 +641,10 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="LevelManagement_Interfaces.csproj">
+      <Project>{A57781E4-D853-FCD5-B604-158EA14A06F7}</Project>
+      <Name>LevelManagement_Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="CoreGame.csproj">
       <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
       <Name>CoreGame</Name>
@@ -651,17 +657,21 @@
       <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
       <Name>OdinSerializer</Name>
     </ProjectReference>
-    <ProjectReference Include="GameConfigurationID.csproj">
-      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
-      <Name>GameConfigurationID</Name>
+    <ProjectReference Include="InteractiveObjects.csproj">
+      <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
+      <Name>InteractiveObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="PlayerActions.csproj">
-      <Project>{63AE0CB7-735A-D4CD-7DAE-B8ABD6F2883E}</Project>
-      <Name>PlayerActions</Name>
+    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
+      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
+      <Name>InteractiveObjects_Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="RangeObjects.csproj">
       <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
       <Name>RangeObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="GameConfigurationID.csproj">
+      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
+      <Name>GameConfigurationID</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

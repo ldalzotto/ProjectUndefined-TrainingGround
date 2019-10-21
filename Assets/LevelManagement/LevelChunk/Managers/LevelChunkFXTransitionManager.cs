@@ -9,7 +9,7 @@ namespace LevelManagement
         private CurrentTransitionableLevelFXTypeManager CurrentTransitionableLevelFXTypeManager;
         private FXTransitionAnimationManager FXTransitionAnimationManager;
 
-        private List<LevelChunkTracker> currentInsideTracker = new List<LevelChunkTracker>();
+        private List<LevelChunkInteractiveObject> currentInsideTracker = new List<LevelChunkInteractiveObject>();
 
         public void Init()
         {
@@ -18,7 +18,7 @@ namespace LevelManagement
 
         #region External Events
 
-        public void OnChunkLevelEnter(LevelChunkTracker nextLevelChunkTracker)
+        public void OnChunkLevelEnter(LevelChunkInteractiveObject nextLevelChunkTracker)
         {
             if (!this.currentInsideTracker.Contains(nextLevelChunkTracker))
             {
@@ -27,7 +27,7 @@ namespace LevelManagement
             }
         }
 
-        public void OnChunkLevelExit(LevelChunkTracker levelChunkTracker)
+        public void OnChunkLevelExit(LevelChunkInteractiveObject levelChunkTracker)
         {
             this.currentInsideTracker.Remove(levelChunkTracker);
             if (this.currentInsideTracker.Count == 1)
@@ -65,28 +65,28 @@ namespace LevelManagement
 
         private List<FXTransitionAnimationManager> AnimationManagers;
 
-        public void OnChunkLevelEnter(LevelChunkTracker nextLevelChunkTracker)
+        public void OnChunkLevelEnter(LevelChunkInteractiveObject nextLevelChunkInteractiveObject)
         {
             if (old == null)
             {
-                this.old = nextLevelChunkTracker.TransitionableLevelFXType;
+                this.old = nextLevelChunkInteractiveObject.GetTransitionableLevelFXType();
                 Debug.Log(MyLog.Format("SAME"));
                 this.OnNewChunkLevel(this.old, this.current, forceInstantTransition: true);
             }
             else if (current == null)
             {
-                if (this.old != nextLevelChunkTracker.TransitionableLevelFXType)
+                if (this.old != nextLevelChunkInteractiveObject.GetTransitionableLevelFXType())
                 {
-                    this.current = nextLevelChunkTracker.TransitionableLevelFXType;
+                    this.current = nextLevelChunkInteractiveObject.GetTransitionableLevelFXType();
                     this.OnNewChunkLevel(this.old, this.current);
                 }
             }
             else
             {
-                if (this.current != nextLevelChunkTracker.TransitionableLevelFXType)
+                if (this.current != nextLevelChunkInteractiveObject.GetTransitionableLevelFXType())
                 {
                     this.old = this.current;
-                    this.current = nextLevelChunkTracker.TransitionableLevelFXType;
+                    this.current = nextLevelChunkInteractiveObject.GetTransitionableLevelFXType();
                     this.OnNewChunkLevel(this.old, this.current);
                 }
             }
@@ -102,9 +102,9 @@ namespace LevelManagement
 
         #region Logical conditions
 
-        public bool IsCurrentChunkTrackerEqualsTo(LevelChunkTracker compareChunkTracker)
+        public bool IsCurrentChunkTrackerEqualsTo(LevelChunkInteractiveObject compareChunkInteractiveObject)
         {
-            return this.current != null && this.current == compareChunkTracker.TransitionableLevelFXType;
+            return this.current != null && this.current == compareChunkInteractiveObject.GetTransitionableLevelFXType();
         }
 
         #endregion

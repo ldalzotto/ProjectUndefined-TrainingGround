@@ -6,4 +6,6 @@
     public const string GAME_CANVAS = "PuzzleCanvas";
     public const string START_MENU_CANVAS = "StartMenuCanvas";
     public const string ROOT_CHUNK_ENVIRONMENT = "RootChunkEnvironment";
+    public const string MAIN_DIRECTIONAL_LIGHT = "MainDirectionalLight";
+    public const string MAIN_POSTPROCESSING_VOLUME = "MainPostProcessingVolume";
 }

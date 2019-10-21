@@ -1,16 +1,18 @@
-﻿using CoreGame;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreGame;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class DottedLineRendererManager : GameSingleton<DottedLineRendererManager>, IDottedLineRendererManagerEvent
+    public class DottedLineRendererManager : GameSingleton<DottedLineRendererManager>
     {
         #region External Dependencies
+
         private PuzzleMaterialConfiguration PuzzleMaterialConfiguration;
+
         #endregion
 
         private DottedLineManagerThread DottedLineManagerThreadObject;
@@ -19,7 +21,10 @@ namespace RTPuzzle
 
         private Dictionary<int, DottedLine> dottedLines = new Dictionary<int, DottedLine>();
 
-        public Dictionary<int, DottedLine> DottedLines { get => dottedLines; }
+        public Dictionary<int, DottedLine> DottedLines
+        {
+            get => dottedLines;
+        }
 
         public DottedLineRendererManager()
         {
@@ -45,8 +50,17 @@ namespace RTPuzzle
                         combine[i].mesh = this.PuzzleMaterialConfiguration.RangeDiamondMesh;
                         combine[i].transform = ComputeBeziersInnerPointResponse.Transforms[i];
                     }
+
                     this.DottedLines[ComputeBeziersInnerPointResponse.ID].GetMesh().CombineMeshes(combine, true, true);
                 }
+            }
+        }
+
+        public override void OnDestroy()
+        {
+            lock (this.ComputeBeziersInnerPointResponses)
+            {
+                this.ComputeBeziersInnerPointResponses.Clear();
             }
         }
 
@@ -59,13 +73,6 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public virtual void OnDottedLineDestroyed(DottedLine dottedLine)
-        {
-            if (this.dottedLines.ContainsKey(dottedLine.GetUniqueID()))
-            {
-                this.dottedLines.Remove(dottedLine.GetUniqueID());
-            }
-        }
 
         public virtual void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
         {
@@ -73,13 +80,6 @@ namespace RTPuzzle
             this.DottedLineManagerThreadObject.OnComputeBeziersInnerPointEvent(DottedLine.BuildComputeBeziersInnerPointEvent());
         }
 
-        public virtual void OnLevelExit()
-        {
-            lock (this.ComputeBeziersInnerPointResponses)
-            {
-                this.ComputeBeziersInnerPointResponses.Clear();
-            }
-        }
         #endregion
     }
 
@@ -105,6 +105,7 @@ namespace RTPuzzle
                 {
                     this.computeBeziersInnerPointTasks[ComputeBeziersInnerPointEvent.ID].Cancel();
                 }
+
                 this.computeBeziersInnerPointTasks[ComputeBeziersInnerPointEvent.ID] = tokenSource;
             }
 
@@ -120,7 +121,7 @@ namespace RTPuzzle
             int pointNumber = Convert.ToInt32(ComputeBeziersInnerPointEvent.BeziersControlPoints.GetPointsRawDistance() * (ComputeBeziersInnerPointEvent.PointNumberPerUnitDistance));
             for (var i = 0; i <= pointNumber; i++)
             {
-                Vector3 worldPosition = ComputeBeziersInnerPointEvent.BeziersControlPoints.ResolvePoint((float)i / (float)pointNumber);
+                Vector3 worldPosition = ComputeBeziersInnerPointEvent.BeziersControlPoints.ResolvePoint((float) i / (float) pointNumber);
                 ComputeBeziersInnerPointEventResponse.Transforms.Add(Matrix4x4.TRS(worldPosition, Quaternion.identity, ComputeBeziersInnerPointEvent.MeshScale));
             }
 
@@ -135,6 +136,7 @@ namespace RTPuzzle
 
 
     #region Events
+
     public class ComputeBeziersInnerPointEvent
     {
         public int ID;
@@ -156,5 +158,6 @@ namespace RTPuzzle
         public int ID;
         public List<Matrix4x4> Transforms;
     }
+
     #endregion
 }

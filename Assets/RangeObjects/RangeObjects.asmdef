@@ -4,6 +4,7 @@
         "CoreGame",
         "InteractiveObjects",
         "InteractiveObjects_Interfaces",
+        "LevelManagement_Interfaces",
         "GameConfigurationID",
         "OdinSerializer",
         "Editor_Common",

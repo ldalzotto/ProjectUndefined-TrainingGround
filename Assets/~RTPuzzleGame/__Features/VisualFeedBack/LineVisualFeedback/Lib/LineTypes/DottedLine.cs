@@ -10,7 +10,9 @@ namespace RTPuzzle
         private DottedLineGameObject dottedLineGameObject;
 
         #region External Dependencies
-        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent = DottedLineRendererManager.Get();
+
+        private DottedLineRendererManager DottedLineRendererManager = DottedLineRendererManager.Get();
+
         #endregion
 
         public DottedLine(DottedLineID dottedLineID)
@@ -32,13 +34,19 @@ namespace RTPuzzle
         {
             return this.dottedLineGameObject.GetMesh();
         }
-        public int GetUniqueID() { return this.dottedLineGameObject.GetInstanceID(); }
+
+        public int GetUniqueID()
+        {
+            return this.dottedLineGameObject.GetInstanceID();
+        }
 
         #region State
+
         private BeziersControlPoints BeziersControlPoints;
         private float currentPosition = 0f;
         private Vector3 LastFrameWorldSpaceStartPoint;
         private Vector3 LastFrameWorldSpaceEndPoint;
+
         #endregion
 
         public void Tick(float d, Vector3 worldSpaceStartPoint, Vector3 worldSpaceEndPoint)
@@ -84,8 +92,9 @@ namespace RTPuzzle
             {
                 BeziersControlPointsShape = BeziersControlPointsShape.STRAIGHT;
             }
+
             this.BeziersControlPoints = BeziersControlPoints.Build(worldSpaceStartPoint, worldSpaceEndPoint, Vector3.up, BeziersControlPointsShape);
-            this.IDottedLineRendererManagerEvent.OnComputeBeziersInnerPointEvent(this);
+            this.DottedLineRendererManager.OnComputeBeziersInnerPointEvent(this);
         }
 
         private void ClearLine()
@@ -101,6 +110,5 @@ namespace RTPuzzle
                 Gizmos.DrawWireSphere(this.BeziersControlPoints.P3, 0.5f);
             }
         }
-
     }
 }

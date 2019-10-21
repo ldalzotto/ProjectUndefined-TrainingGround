@@ -47,7 +47,7 @@ namespace CoreGame
                 var gameCanvas = GameObject.FindGameObjectWithTag(TagConstants.GAME_CANVAS);
                 if (gameCanvas == null)
                 {
-                    gameCanvas = GameObject.FindGameObjectWithTag(TagConstants.GAME_CANVAS);
+                    gameCanvas = GameObject.FindGameObjectWithTag(TagConstants.START_MENU_CANVAS);
                 }
 
                 return gameCanvas.GetComponent<Canvas>();

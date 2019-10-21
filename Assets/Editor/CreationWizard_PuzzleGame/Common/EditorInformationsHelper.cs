@@ -72,7 +72,7 @@ namespace Editor_MainGameCreationWizard
     [Serializable]
     public class PuzzleLevelCommonPrefabs
     {
-        [MyReadOnly] public LevelChunkType BaseLevelChunkPrefab;
+        [MyReadOnly] public LevelChunkInteractiveObjectInitializer BaseLevelChunkPrefab;
         [MyReadOnly] public LevelManager BasePuzzleLevelDynamics;
         [MyReadOnly] public GameObject CorePuzzleSceneElements;
         [MyReadOnly] public GameManagerPersistanceInstance GameManagerPersistanceInstance;

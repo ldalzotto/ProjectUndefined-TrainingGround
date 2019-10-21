@@ -69,20 +69,15 @@ namespace LevelManagement
             return this.EnvironmentSceneLevelManager.OnAdventureToPuzzleLevel(nextPuzzleLevel);
         }
 
-        internal List<AsyncOperation> OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
-        {
-            return this.EnvironmentSceneLevelManager.LoadAllLevelsAsync(nextPuzzleLevel);
-        }
-
         public List<AsyncOperation> OnStartMenuToLevel(LevelZonesID nextLevel)
         {
             return this.EnvironmentSceneLevelManager.LoadAllLevelsAsync(nextLevel);
         }
 
-        public void OnChunkLevelEnter(LevelChunkType NextLevelChunk)
+        public void OnChunkLevelEnter(LevelChunkInteractiveObject NextLevelChunk)
         {
             Debug.Log(MyLog.Format("LevelManager OnChunkLevelEnter"));
-            this.currentLevelZoneChunkWherePlayerIsID = NextLevelChunk.LevelZoneChunkID;
+            this.currentLevelZoneChunkWherePlayerIsID = NextLevelChunk.GetLevelZoneChunkID();
         }
 
         public void OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)
@@ -140,12 +135,12 @@ namespace LevelManagement
                     var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(this.LevelManagementConfigurationGameObject.ChunkZonesSceneConfiguration.GetSceneName(levelChunk), async);
                     if (sceneLoadAsyncOperation != null)
                     {
-                        sceneLoadAsyncOperation.completed += (asyncOperation) => { this.LevelManagerEventManager.CORE_EVT_OnLevelChunkLoaded(levelChunk); };
+                        sceneLoadAsyncOperation.completed += (asyncOperation) => { this.LevelManagerEventManager.OnLevelChunkLoaded(levelChunk); };
                         sceneLoadOperations.Add(sceneLoadAsyncOperation);
                     }
                     else if (!async)
                     {
-                        this.LevelManagerEventManager.CORE_EVT_OnLevelChunkLoaded(levelChunk);
+                        this.LevelManagerEventManager.OnLevelChunkLoaded(levelChunk);
                     }
                 }
             }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RangeObjects
+namespace LevelManagement_Interfaces
 {
     [Serializable]
     public class LevelRangeEffectInherentData

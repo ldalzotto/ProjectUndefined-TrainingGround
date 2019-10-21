@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "~StartMenu", "~StartMenu.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor_Common", "Editor_Common.csproj", "{D2645906-D846-DC24-BADC-9B49DE344A34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelManagement", "LevelManagement.csproj", "{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectionObjects", "SelectionObjects.csproj", "{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdinSerializer", "OdinSerializer.csproj", "{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}"
@@ -18,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreGame", "CoreGame.csproj", "{948A25C1-0736-7139-A2ED-866DC90C0DB2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectionWheel", "SelectionWheel.csproj", "{4E3711AE-A0AA-604D-8C9C-B3BF9D2FF27C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelManagement", "LevelManagement.csproj", "{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveObjects", "InteractiveObjects.csproj", "{741991FE-D211-F6D8-2B2A-0EB0F573E16F}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerActions", "PlayerActions.csproj", "{63AE0CB7-735A-D4CD-7DAE-B8ABD6F2883E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerObject_Interface", "PlayerObject_Interface.csproj", "{42804222-6A23-CC02-C65B-A45131BAA9EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelManagement_Interfaces", "LevelManagement_Interfaces.csproj", "{A57781E4-D853-FCD5-B604-158EA14A06F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor.csproj", "{2DD87826-BED4-3147-BE7B-C30240F79B63}"
 EndProject
@@ -57,10 +59,6 @@ Global
 		{D2645906-D846-DC24-BADC-9B49DE344A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2645906-D846-DC24-BADC-9B49DE344A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2645906-D846-DC24-BADC-9B49DE344A34}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ED6129A-F77C-7D87-CFDC-573822D6A1E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +79,10 @@ Global
 		{4E3711AE-A0AA-604D-8C9C-B3BF9D2FF27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E3711AE-A0AA-604D-8C9C-B3BF9D2FF27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E3711AE-A0AA-604D-8C9C-B3BF9D2FF27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{741991FE-D211-F6D8-2B2A-0EB0F573E16F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{741991FE-D211-F6D8-2B2A-0EB0F573E16F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{741991FE-D211-F6D8-2B2A-0EB0F573E16F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -117,6 +119,10 @@ Global
 		{42804222-6A23-CC02-C65B-A45131BAA9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42804222-6A23-CC02-C65B-A45131BAA9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42804222-6A23-CC02-C65B-A45131BAA9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A57781E4-D853-FCD5-B604-158EA14A06F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A57781E4-D853-FCD5-B604-158EA14A06F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A57781E4-D853-FCD5-B604-158EA14A06F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A57781E4-D853-FCD5-B604-158EA14A06F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,13 +1,15 @@
 {
     "name": "LevelManagement",
     "references": [
+        "LevelManagement_Interfaces",
         "CoreGame",
         "Editor_Common",
         "OdinSerializer",
         "Unity.Postprocessing.Runtime",
-"GameConfigurationID",
-"PlayerActions",
-"RangeObjects"
+        "InteractiveObjects",
+        "InteractiveObjects_Interfaces",
+        "RangeObjects",
+        "GameConfigurationID"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

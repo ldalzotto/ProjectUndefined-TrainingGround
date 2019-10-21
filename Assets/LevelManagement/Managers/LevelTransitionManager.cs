@@ -12,16 +12,6 @@ namespace LevelManagement
 
         #region External Events
 
-        public void OnAdventureToPuzzleLevel(LevelZonesID nextZone)
-        {
-            OnLevelChange(nextZone, LevelChangeType.ADVENTURE_TO_PUZZLE);
-        }
-
-        public void OnPuzzleToAdventureLevel(LevelZonesID nextZone)
-        {
-            OnLevelChange(nextZone, LevelChangeType.PUZZLE_TO_ADVENTURE);
-        }
-
         public void OnPuzzleToPuzzleLevel(LevelZonesID nextZone)
         {
             OnLevelChange(nextZone, LevelChangeType.PUZZLE_TO_PUZZLE);
@@ -37,21 +27,13 @@ namespace LevelManagement
             isNewZoneLoading = true;
 
             List<AsyncOperation> chunkOperations = null;
-            if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE)
+            if (LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE)
             {
-                chunkOperations = LevelManagerEventManager.Get().CORE_EVT_OnAdventureToPuzzleLevel(nextZone);
-            }
-            else if (LevelChangeType == LevelChangeType.PUZZLE_TO_ADVENTURE)
-            {
-                chunkOperations = LevelManagerEventManager.Get().CORE_EVT_OnPuzzleToAdventureLevel(nextZone);
-            }
-            else if (LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE)
-            {
-                chunkOperations = LevelManagerEventManager.Get().CORE_EVT_OnPuzzleToPuzzleLevel(nextZone);
+                chunkOperations = LevelManagerEventManager.Get().OnPuzzleToPuzzleLevel(nextZone);
             }
             else if (LevelChangeType == LevelChangeType.FROM_STARTMENU)
             {
-                chunkOperations = LevelManagerEventManager.Get().CORE_EVT_OnStartMenuToLevel(nextZone);
+                chunkOperations = LevelManagerEventManager.Get().OnStartMenuToLevel(nextZone);
             }
 
             foreach (var chunkOperation in chunkOperations)
@@ -91,8 +73,6 @@ namespace LevelManagement
 
         enum LevelChangeType
         {
-            PUZZLE_TO_ADVENTURE,
-            ADVENTURE_TO_PUZZLE,
             PUZZLE_TO_PUZZLE,
             FROM_STARTMENU
         }

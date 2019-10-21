@@ -67,7 +67,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\ExposedInterfaces\IDottedLineRendererManagerEvent.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\ILinePositioning.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\LineFollowTransformPositioning.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LineTypes\DottedLine.cs" />
@@ -725,6 +724,10 @@
     <ProjectReference Include="PlayerActions.csproj">
       <Project>{63AE0CB7-735A-D4CD-7DAE-B8ABD6F2883E}</Project>
       <Name>PlayerActions</Name>
+    </ProjectReference>
+    <ProjectReference Include="LevelManagement_Interfaces.csproj">
+      <Project>{A57781E4-D853-FCD5-B604-158EA14A06F7}</Project>
+      <Name>LevelManagement_Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="GameLoop.csproj">
       <Project>{639B2A1B-495A-2DE9-D504-C31C8A831882}</Project>

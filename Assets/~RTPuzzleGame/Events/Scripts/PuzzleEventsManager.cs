@@ -21,7 +21,7 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
-        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent = DottedLineRendererManager.Get();
+        private DottedLineRendererManager DottedLineRendererManager = DottedLineRendererManager.Get();
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
 
         private TutorialManager TutorialManager;
@@ -45,8 +45,6 @@ namespace RTPuzzle
 
         private void OnPuzzleToPuzzleLevel(LevelZonesID levelZonesID)
         {
-            IDottedLineRendererManagerEvent.OnLevelExit();
-            GroundEffectsManagerV2.OnLevelExit();
             PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);
         }
 

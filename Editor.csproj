@@ -157,7 +157,6 @@
      <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\GenericCreateInEditorModule.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\SetModelModule.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\AddEnvironmentModel.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
      <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />
