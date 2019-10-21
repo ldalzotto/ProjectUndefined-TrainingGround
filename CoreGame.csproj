@@ -201,7 +201,9 @@
      <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
      <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
      <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
-     <Compile Include="Assets\Test\PlayableAnimationTest.cs" />
+     <Compile Include="Assets\Test\PlayableAnimatorTest\AnimatorSetterTest.cs" />
+     <Compile Include="Assets\Test\PlayableAnimatorTest\MyAnimatorBehavior.cs" />
+     <Compile Include="Assets\Test\PlayableAnimatorTest\PlayableAnimationTest.cs" />
      <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
      <None Include="Assets\~CoreGame\CircleFillBar\CircleBar.shader" />
      <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
