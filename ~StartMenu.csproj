@@ -635,6 +635,10 @@
       <Project>{639B2A1B-495A-2DE9-D504-C31C8A831882}</Project>
       <Name>GameLoop</Name>
     </ProjectReference>
+    <ProjectReference Include="LevelManagement.csproj">
+      <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
+      <Name>LevelManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

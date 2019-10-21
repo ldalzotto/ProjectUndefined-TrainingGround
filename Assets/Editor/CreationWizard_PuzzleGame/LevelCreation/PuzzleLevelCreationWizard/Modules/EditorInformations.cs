@@ -10,14 +10,14 @@ using System;
 using CoreGame;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
+using LevelManagement;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
     [System.Serializable]
     public class EditorInformations : CreationModuleComponent
     {
-        [SerializeField]
-        public EditorInformationsData EditorInformationsData;
+        [SerializeField] public EditorInformationsData EditorInformationsData;
 
         protected override string headerDescriptionLabel => "Base informations used by the creation wizard.";
 
@@ -45,25 +45,23 @@ namespace Editor_PuzzleLevelCreationWizard
         public override string ComputeWarningState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
-            return new List<string>() {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelConfiguration>()),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelZonesSceneConfiguration>()),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>()),
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name)
-            }
-            .Find((s) => !string.IsNullOrEmpty(s));
+            return new List<string>()
+                {
+                    ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelConfiguration>()),
+                    ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelZonesSceneConfiguration>()),
+                    ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>()),
+                    ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name)
+                }
+                .Find((s) => !string.IsNullOrEmpty(s));
         }
     }
 
     [System.Serializable]
     public class EditorInformationsData
     {
-        [CustomEnum()]
-        public LevelZonesID LevelZonesID;
-        [CustomEnum()]
-        public LevelZonesID AssociatedAdventureLevelID;
+        [CustomEnum()] public LevelZonesID LevelZonesID;
+        [CustomEnum()] public LevelZonesID AssociatedAdventureLevelID;
 
         public CommonGameConfigurations CommonGameConfigurations;
     }
-
 }

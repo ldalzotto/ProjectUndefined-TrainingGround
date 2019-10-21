@@ -9,13 +9,8 @@ namespace CoreGame
         private static ATimelinesManager aTimelinesManager;
         private static GameInputManager gameInputManager;
         private static Coroutiner coroutiner;
-        private static LevelChunkFXTransitionManager levelChunkFXTransitionManager;
-        private static LevelAvailabilityManager levelAvailabilityManager;
         private static TimelinesEventManager timelinesEventManager;
-        private static LevelTransitionManager levelTransitionManager;
-        private static LevelManagerEventManager levelManagerEventManager;
         private static PlayerAdventurePositionManager playerAdventurePositionManager;
-        private static LevelManager levelManager;
         private static DiscussionPositionManager discussionPositionManager;
         private static CoreConfigurationManager coreConfigurationManager;
         private static PlayerManagerType playerManagerType;
@@ -23,7 +18,6 @@ namespace CoreGame
         private static AutoSaveIcon autoSaveIcon;
         private static DiscussionPositionsType discussionPositionsType;
         private static TutorialManager tutorialManager;
-        private static StartLevelManager startLevelManager;
 
         public static PersistanceManager PersistanceManager => FindAndSetInstanceIfNull(persistanceManager, obj => persistanceManager = obj);
 
@@ -32,20 +26,9 @@ namespace CoreGame
         public static GameInputManager GameInputManager => FindAndSetInstanceIfNull(gameInputManager, obj => gameInputManager = obj);
 
         public static Coroutiner Coroutiner => FindAndSetInstanceIfNull(coroutiner, obj => coroutiner = obj);
-
-        public static LevelChunkFXTransitionManager LevelChunkFXTransitionManager => FindAndSetInstanceIfNull(levelChunkFXTransitionManager, obj => levelChunkFXTransitionManager = obj);
-
-        public static LevelAvailabilityManager LevelAvailabilityManager => FindAndSetInstanceIfNull(levelAvailabilityManager, obj => levelAvailabilityManager = obj);
-
         public static TimelinesEventManager TimelinesEventManager => FindAndSetInstanceIfNull(timelinesEventManager, obj => timelinesEventManager = obj);
 
-        public static LevelTransitionManager LevelTransitionManager => FindAndSetInstanceIfNull(levelTransitionManager, obj => levelTransitionManager = obj);
-
-        public static LevelManagerEventManager LevelManagerEventManager => FindAndSetInstanceIfNull(levelManagerEventManager, obj => levelManagerEventManager = obj);
-
         public static PlayerAdventurePositionManager PlayerAdventurePositionManager => FindAndSetInstanceIfNull(playerAdventurePositionManager, obj => playerAdventurePositionManager = obj);
-
-        public static LevelManager LevelManager => FindAndSetInstanceIfNull(levelManager, obj => levelManager = obj);
 
         public static DiscussionPositionManager DiscussionPositionManager => FindAndSetInstanceIfNull(discussionPositionManager, obj => discussionPositionManager = obj);
 
@@ -61,19 +44,19 @@ namespace CoreGame
         {
             get
             {
-                if (LevelManager.CurrentLevelType == LevelType.GAME)
-                    return GameObject.FindGameObjectWithTag(TagConstants.GAME_CANVAS).GetComponent<Canvas>();
-                else if (LevelManager.CurrentLevelType == LevelType.STARTMENU) return GameObject.FindGameObjectWithTag(TagConstants.START_MENU_CANVAS).GetComponent<Canvas>();
+                var gameCanvas = GameObject.FindGameObjectWithTag(TagConstants.GAME_CANVAS);
+                if (gameCanvas == null)
+                {
+                    gameCanvas = GameObject.FindGameObjectWithTag(TagConstants.GAME_CANVAS);
+                }
 
-                return null;
+                return gameCanvas.GetComponent<Canvas>();
             }
         }
 
         public static DiscussionPositionsType DiscussionPositionsType => FindAndSetInstanceIfNull(discussionPositionsType, obj => discussionPositionsType = obj);
 
         public static TutorialManager TutorialManager => FindAndSetInstanceIfNull(tutorialManager, obj => tutorialManager = obj);
-
-        public static StartLevelManager StartLevelManager => NewInstanceIfNull(startLevelManager, obj => startLevelManager = obj);
 
         public static T FindAndSetInstanceIfNull<T>(T obj, Action<T> setter) where T : Behaviour
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
 using InteractiveObjects_Interfaces;
+using LevelManagement;
 using PlayerActions;
 using PlayerObject_Interfaces;
 using RTPuzzle;
@@ -36,7 +37,7 @@ namespace InteractiveObjects
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
             var LevelConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.LevelConfiguration;
-            var LevelManager = CoreGameSingletonInstances.LevelManager;
+            var LevelManager = LevelManagement.LevelManager.Get();
 
             #endregion
 

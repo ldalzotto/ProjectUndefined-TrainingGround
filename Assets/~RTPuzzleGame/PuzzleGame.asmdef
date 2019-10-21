@@ -14,7 +14,8 @@
         "SelectionObjects",
         "PlayerObject_Interface",
         "PlayerActions",
-"GameLoop"
+"GameLoop",
+"LevelManagement"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

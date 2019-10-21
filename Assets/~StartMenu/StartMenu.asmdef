@@ -4,7 +4,8 @@
         "CoreGame",
         "GameConfigurationID",
         "OdinSerializer",
-"GameLoop"
+"GameLoop",
+"LevelManagement"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

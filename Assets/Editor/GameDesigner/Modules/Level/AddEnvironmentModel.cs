@@ -1,18 +1,15 @@
-﻿using CoreGame;
-using System;
+﻿using System;
+using LevelManagement;
 using UnityEngine;
 
 namespace Editor_GameDesigner
 {
-    [System.Serializable]
+    [Serializable]
     public class AddEnvironmentModel : AddPrefabModule<GameObject>
     {
         protected override Func<GameObject> ParentGameObject
         {
-            get
-            {
-                return () => this.currentSelectedObjet.FindChildObjectRecursively("Environment");
-            }
+            get { return () => this.currentSelectedObjet.FindChildObjectRecursively("Environment"); }
         }
 
         protected override bool IsAbleToAdd()

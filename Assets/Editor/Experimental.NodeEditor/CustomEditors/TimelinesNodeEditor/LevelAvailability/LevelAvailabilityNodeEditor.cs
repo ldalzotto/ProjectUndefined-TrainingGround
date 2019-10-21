@@ -7,6 +7,7 @@ using UnityEditor;
 using NodeGraph;
 using CoreGame;
 using GameConfigurationID;
+using LevelManagement;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
@@ -16,11 +17,10 @@ namespace Editor_LevelAvailabilityNodeEditor
 
         protected override Dictionary<string, Type> NodePickerConfiguration => new Dictionary<string, Type>()
         {
-            {"TimelineActions//LevelCompleted", typeof(LevelCompletedTimelineActionNodeProfile) },
-            {"TimelineNodes//LevelAvailabilityNode", typeof(LevelAvailabilityNodeProfile) },
-            {"WorkflowActions//LevelUnlock", typeof(LevelUnlockWorklowActionV2) },
-            {"TimelineStartNode", typeof(TimelineStartNodeProfile) }
+            {"TimelineActions//LevelCompleted", typeof(LevelCompletedTimelineActionNodeProfile)},
+            {"TimelineNodes//LevelAvailabilityNode", typeof(LevelAvailabilityNodeProfile)},
+            {"WorkflowActions//LevelUnlock", typeof(LevelUnlockWorklowActionV2)},
+            {"TimelineStartNode", typeof(TimelineStartNodeProfile)}
         };
     }
-
 }

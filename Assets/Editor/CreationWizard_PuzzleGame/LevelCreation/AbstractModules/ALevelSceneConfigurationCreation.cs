@@ -1,12 +1,12 @@
 ﻿using CoreGame;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
+using LevelManagement;
 using UnityEditor;
 
 [System.Serializable]
 public abstract class ALevelSceneConfigurationCreation : CreateableScriptableObjectComponent<LevelZonesSceneConfigurationData>
 {
-
     protected abstract LevelZonesID GetLevelZonesID(AbstractCreationWizardEditorProfile editorProfile);
     protected abstract CommonGameConfigurations GetCommonGameConfigurations(AbstractCreationWizardEditorProfile editorProfile);
     protected abstract SceneAsset GetCreatedSceneAsset(AbstractCreationWizardEditorProfile editorProfile);
@@ -23,5 +23,4 @@ public abstract class ALevelSceneConfigurationCreation : CreateableScriptableObj
     {
         SerializableObjectHelper.Modify(this.CreatedObject, (so) => { so.FindProperty(nameof(this.CreatedObject.scene)).objectReferenceValue = this.GetCreatedSceneAsset(editorProfile); });
     }
-
 }

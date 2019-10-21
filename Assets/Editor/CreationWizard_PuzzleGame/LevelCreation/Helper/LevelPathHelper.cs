@@ -1,5 +1,5 @@
-﻿using GameConfigurationID;
-using System.IO;
+﻿using System.IO;
+using LevelManagement;
 
 namespace Editor_LevelCreation
 {
@@ -12,10 +12,11 @@ namespace Editor_LevelCreation
             {
                 Directory.CreateDirectory(directoryPath);
             }
+
             var scenePath = directoryPath + "/" + LevelZonesID.ToString() + ".unity";
             return scenePath;
         }
-        
+
         public static string BuilChunkPath(string LevelBasePath, LevelZonesID AdventureLevelID, LevelZoneChunkID LevelZoneChunkID)
         {
             var directoryPath = LevelBasePath + "/" + AdventureLevelID.ToString();
@@ -23,14 +24,14 @@ namespace Editor_LevelCreation
             {
                 Directory.CreateDirectory(directoryPath);
             }
+
             directoryPath = directoryPath + "/Chunks";
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
+
             return directoryPath + "/" + LevelZoneChunkID.ToString() + "_Chunk.unity";
         }
-
     }
 }
-

@@ -1,9 +1,10 @@
-﻿using Editor_MainGameCreationWizard;
-using GameConfigurationID;
+﻿using System;
+using Editor_MainGameCreationWizard;
+using LevelManagement;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
-    [System.Serializable]
+    [Serializable]
     public class LevelHierarchyCreation : ALevelHierarchyCreation
     {
         protected override CommonGameConfigurations GetCommonGameConfigurations(AbstractCreationWizardEditorProfile editorProfile)

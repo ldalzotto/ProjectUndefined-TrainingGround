@@ -1,0 +1,20 @@
+{
+    "name": "LevelManagement",
+    "references": [
+        "CoreGame",
+        "Editor_Common",
+        "OdinSerializer",
+        "Unity.Postprocessing.Runtime",
+"GameConfigurationID",
+"PlayerActions",
+"RangeObjects"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

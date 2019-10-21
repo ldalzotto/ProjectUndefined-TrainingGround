@@ -1,6 +1,7 @@
 using CoreGame;
 using GameLoop;
 using InteractiveObjects;
+using LevelManagement;
 using Obstacle;
 using PlayerActions;
 using RangeObjects;
@@ -40,11 +41,10 @@ namespace RTPuzzle
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
             var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            var LevelManager = CoreGameSingletonInstances.LevelManager;
 
 
             RangeObjectV2Manager.Get().Init();
-            GroundEffectsManagerV2.Get().Init(puzzleConfigurationManager.PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData[LevelManager.GetCurrentLevel()].LevelRangeEffectInherentData);
+            GroundEffectsManagerV2.Get().Init(puzzleConfigurationManager.PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData[LevelManager.Get().GetCurrentLevel()].LevelRangeEffectInherentData);
             InteractiveObjectV2Manager.Get().Init();
 
             CameraMovementManager.Get().Init();

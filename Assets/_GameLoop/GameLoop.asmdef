@@ -1,7 +1,8 @@
 {
     "name": "GameLoop",
     "references": [
-"CoreGame"
+"CoreGame",
+"LevelManagement"
 ],
     "includePlatforms": [],
     "excludePlatforms": [],

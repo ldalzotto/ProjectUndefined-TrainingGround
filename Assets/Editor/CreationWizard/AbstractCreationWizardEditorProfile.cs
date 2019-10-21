@@ -1,15 +1,14 @@
-﻿using ConfigurationEditor;
-using CoreGame;
-using GameConfigurationID;
-using OdinSerializer;
-using RTPuzzle;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ConfigurationEditor;
+using LevelManagement;
+using OdinSerializer;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-[System.Serializable]
+[Serializable]
 public abstract class AbstractCreationWizardEditorProfile : SerializedScriptableObject
 {
     [HideInInspector]
@@ -110,19 +109,19 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         }
     }
 
-    public void AddToGeneratedObjects(UnityEngine.Object[] objs)
+    public void AddToGeneratedObjects(Object[] objs)
     {
         foreach (var obj in objs)
         {
             this.creationWizardFeedLines.Add(new CreatedObjectFeedLine(AssetDatabase.GetAssetPath(obj)));
         }
     }
-    public void AddToGeneratedObjects(UnityEngine.Object obj)
+    public void AddToGeneratedObjects(Object obj)
     {
         this.creationWizardFeedLines.Add(new CreatedObjectFeedLine(AssetDatabase.GetAssetPath(obj)));
     }
 
-    public void GameConfigurationModified(UnityEngine.Object configuration, Enum key, UnityEngine.Object value)
+    public void GameConfigurationModified(Object configuration, Enum key, Object value)
     {
         this.creationWizardFeedLines.Add(new ConfigurationModifiedFeedLine(
             AssetDatabase.GetAssetPath(configuration), key, AssetDatabase.GetAssetPath(value)));
@@ -152,7 +151,7 @@ public interface ICreationWizardFeedLine
     void GUITick();
 }
 
-[System.Serializable]
+[Serializable]
 public class CreatedObjectFeedLine : ICreationWizardFeedLine
 {
     [SerializeField]
@@ -163,7 +162,7 @@ public class CreatedObjectFeedLine : ICreationWizardFeedLine
         this.filePath = filePath;
     }
 
-    private UnityEngine.Object createdAsset;
+    private Object createdAsset;
 
     public string FilePath { get => filePath; }
 
@@ -171,17 +170,17 @@ public class CreatedObjectFeedLine : ICreationWizardFeedLine
     {
         if (this.createdAsset == null)
         {
-            this.createdAsset = AssetDatabase.LoadAssetAtPath(this.filePath, typeof(UnityEngine.Object));
+            this.createdAsset = AssetDatabase.LoadAssetAtPath(this.filePath, typeof(Object));
         }
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("NEW : ", GUILayout.Width(35f));
-        EditorGUILayout.ObjectField(this.createdAsset, typeof(UnityEngine.Object), false);
+        EditorGUILayout.ObjectField(this.createdAsset, typeof(Object), false);
         EditorGUILayout.EndHorizontal();
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
 {
     [SerializeField]
@@ -204,17 +203,17 @@ public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
         EditorGUILayout.BeginVertical();
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Added configuration key : ", GUILayout.Width(150));
-        EditorGUILayout.ObjectField((UnityEngine.Object)this.configurationObject, typeof(UnityEngine.Object), false);
+        EditorGUILayout.ObjectField((Object)this.configurationObject, typeof(Object), false);
         EditorGUILayout.EndHorizontal();
         EditorGUI.indentLevel += 1;
         EditorGUILayout.LabelField(this.keySet.ToString());
-        EditorGUILayout.ObjectField(this.objectSet, typeof(UnityEngine.Object), false);
+        EditorGUILayout.ObjectField(this.objectSet, typeof(Object), false);
         EditorGUI.indentLevel -= 1;
         EditorGUILayout.EndVertical();
     }
 
     private IConfigurationSerialization configurationObject;
-    private UnityEngine.Object objectSet;
+    private Object objectSet;
 
     public string ConfigurationPath { get => configurationPath; }
 
@@ -222,11 +221,11 @@ public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
     {
         if (this.configurationObject == null)
         {
-            this.configurationObject = (IConfigurationSerialization)AssetDatabase.LoadAssetAtPath(this.configurationPath, typeof(UnityEngine.Object));
+            this.configurationObject = (IConfigurationSerialization)AssetDatabase.LoadAssetAtPath(this.configurationPath, typeof(Object));
         }
         if (this.objectSet == null)
         {
-            this.objectSet = AssetDatabase.LoadAssetAtPath(this.objectSetPath, typeof(UnityEngine.Object));
+            this.objectSet = AssetDatabase.LoadAssetAtPath(this.objectSetPath, typeof(Object));
         }
     }
 
@@ -237,7 +236,7 @@ public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
 
 }
 
-[System.Serializable]
+[Serializable]
 public class LevelHierarchyAddFeedLine : ICreationWizardFeedLine
 {
     [SerializeField]
@@ -268,7 +267,7 @@ public class LevelHierarchyAddFeedLine : ICreationWizardFeedLine
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class CreationWizardOrderConfiguration
 {
     private Type moduleType;

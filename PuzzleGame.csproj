@@ -62,8 +62,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolGraphV2.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\Level\Configuration\LevelConfigurationData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\LevelCompletion\Managers\LevelCompletionManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
@@ -731,6 +729,10 @@
     <ProjectReference Include="GameLoop.csproj">
       <Project>{639B2A1B-495A-2DE9-D504-C31C8A831882}</Project>
       <Name>GameLoop</Name>
+    </ProjectReference>
+    <ProjectReference Include="LevelManagement.csproj">
+      <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
+      <Name>LevelManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

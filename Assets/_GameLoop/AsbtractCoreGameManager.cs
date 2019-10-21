@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CoreGame;
+using LevelManagement;
 using UnityEngine;
 
 namespace GameLoop
@@ -15,16 +16,24 @@ namespace GameLoop
             this.levelType = levelType;
 
             CoreGameSingletonInstances.PersistanceManager.Init();
-            CoreGameSingletonInstances.StartLevelManager.Init();
-            CoreGameSingletonInstances.GameInputManager.Init(levelType);
-            CoreGameSingletonInstances.LevelAvailabilityManager.Init();
+            StartLevelManager.Get().Init();
+            if (levelType == LevelType.STARTMENU)
+            {
+                CoreGameSingletonInstances.GameInputManager.Init(CursorLockMode.Confined);
+            }
+            else
+            {
+                CoreGameSingletonInstances.GameInputManager.Init(CursorLockMode.Locked);
+            }
+
+            LevelAvailabilityManager.Get().Init();
             CoreGameSingletonInstances.ATimelinesManager.Init();
-            CoreGameSingletonInstances.LevelManager.Init(levelType);
+            LevelManager.Get().Init(levelType);
 
             if (this.levelType != LevelType.STARTMENU)
             {
                 CoreGameSingletonInstances.PlayerAdventurePositionManager.Init();
-                CoreGameSingletonInstances.LevelChunkFXTransitionManager.Init();
+                LevelChunkFXTransitionManager.Get().Init();
                 CoreGameSingletonInstances.Coroutiner.StartCoroutine(InitializeTimelinesAtEndOfFrame());
             }
         }
@@ -37,7 +46,7 @@ namespace GameLoop
         protected void BeforeTick(float d)
         {
             CoreGameSingletonInstances.PersistanceManager.Tick(d);
-            if (levelType != LevelType.STARTMENU) CoreGameSingletonInstances.LevelChunkFXTransitionManager.Tick(d);
+            if (levelType != LevelType.STARTMENU) LevelChunkFXTransitionManager.Get().Tick(d);
         }
 
         private IEnumerator InitializeTimelinesAtEndOfFrame()

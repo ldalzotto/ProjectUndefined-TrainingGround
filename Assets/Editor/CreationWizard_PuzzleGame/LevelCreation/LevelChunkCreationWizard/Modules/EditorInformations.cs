@@ -1,18 +1,17 @@
-﻿using CoreGame;
+﻿using System;
+using System.Collections.Generic;
 using CreationWizard;
 using Editor_MainGameCreationWizard;
-using GameConfigurationID;
-using System.Collections.Generic;
+using LevelManagement;
 using UnityEditor;
 using UnityEngine;
 
 namespace Editor_LevelChunkCreationWizard
 {
-    [System.Serializable]
+    [Serializable]
     public class EditorInformations : CreationModuleComponent
     {
-        [SerializeField]
-        public EditorInformationsData EditorInformationsData;
+        [SerializeField] public EditorInformationsData EditorInformationsData;
 
         protected override string headerDescriptionLabel => "Base informations used by the creation wizard.";
 
@@ -46,27 +45,24 @@ namespace Editor_LevelChunkCreationWizard
                 associatedPuzzleLevelWargning = ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedPuzzleLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name);
             }
 
-            return new List<string>() {
-                associatedPuzzleLevelWargning,
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID,this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<ChunkZonesSceneConfiguration>()),
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name)
-            }
-            .Find((s) => !string.IsNullOrEmpty(s));
+            return new List<string>()
+                {
+                    associatedPuzzleLevelWargning,
+                    ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name),
+                    ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<ChunkZonesSceneConfiguration>()),
+                    ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name)
+                }
+                .Find((s) => !string.IsNullOrEmpty(s));
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class EditorInformationsData
     {
-        [CustomEnum()]
-        public LevelZoneChunkID LevelZoneChunkID;
-        [CustomEnum()]
-        public LevelZonesID AssociatedAdventureLevelID;
-        [CustomEnum()]
-        public LevelZonesID AssociatedPuzzleLevelID = LevelZonesID.NONE;
+        [CustomEnum()] public LevelZoneChunkID LevelZoneChunkID;
+        [CustomEnum()] public LevelZonesID AssociatedAdventureLevelID;
+        [CustomEnum()] public LevelZonesID AssociatedPuzzleLevelID = LevelZonesID.NONE;
 
         public CommonGameConfigurations CommonGameConfigurations;
     }
-
 }

@@ -1,14 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using NodeGraph;
-using System.Collections.Generic;
-using CoreGame;
+﻿using System;
+using LevelManagement;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
-    [System.Serializable]
+    [Serializable]
     public class LevelUnlockWorklowActionV2 : TimelineWorklowActionTemplatedNodeProfile<LevelAvailabilityLevelCompletedWorkflowActionEdge, LevelUnlockWorkflowActionV2>
     {
     }
-
 }

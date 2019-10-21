@@ -15,12 +15,9 @@ namespace InteractiveObjects
 
         public AnimationObjectSystem(CoreInteractiveObject AssociatedInteractiveObject)
         {
-            var LevelManager = CoreGameSingletonInstances.LevelManager;
-
             var objectAnimator = AssociatedInteractiveObject.InteractiveGameObject.Animator;
             if (objectAnimator != null)
-                GenericAnimatorHelper.SetMovementLayer(objectAnimator, CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.AnimationConfiguration,
-                    LevelManager.CurrentLevelType);
+                GenericAnimatorHelper.SetMovementLayer(objectAnimator, CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.AnimationConfiguration);
 
             animationDataManager = new AnimationDataManager(objectAnimator);
         }

@@ -1,10 +1,11 @@
-﻿using Editor_MainGameCreationWizard;
-using GameConfigurationID;
+﻿using System;
+using Editor_MainGameCreationWizard;
+using LevelManagement;
 using UnityEditor;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
-    [System.Serializable]
+    [Serializable]
     public class LevelSceneConfigurationCreation : ALevelSceneConfigurationCreation //CreateableScriptableObjectComponent<LevelZonesSceneConfigurationData>
     {
         /*

@@ -6,6 +6,7 @@ using NodeGraph;
 using System;
 using CoreGame;
 using GameConfigurationID;
+using LevelManagement;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
@@ -13,5 +14,4 @@ namespace Editor_LevelAvailabilityNodeEditor
     public class LevelAvailabilityNodeProfile : TimelineNodeProfile<LevelAvailabilityTimelineNodeID>
     {
     }
-
 }

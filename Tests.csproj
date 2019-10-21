@@ -653,6 +653,10 @@
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>
     </ProjectReference>
+    <ProjectReference Include="LevelManagement.csproj">
+      <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
+      <Name>LevelManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

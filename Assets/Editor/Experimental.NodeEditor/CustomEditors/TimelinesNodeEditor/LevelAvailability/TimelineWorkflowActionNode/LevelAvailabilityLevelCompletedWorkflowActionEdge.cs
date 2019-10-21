@@ -1,13 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
+﻿using System;
+using LevelManagement;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
-    [System.Serializable]
+    [Serializable]
     public class LevelAvailabilityLevelCompletedWorkflowActionEdge : TimelineWorklowActionEdgeV2<LevelUnlockWorkflowActionV2>
     {
-
-      
     }
 }

@@ -3,12 +3,12 @@ using Editor_MainGameCreationWizard;
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
+using LevelManagement;
 using UnityEditor;
 
 [System.Serializable]
 public abstract class ALevelHierarchyCreation : CreateableScriptableObjectComponent<LevelHierarchyConfigurationData>
 {
-
     protected abstract LevelZonesID GetLevelZonesID(AbstractCreationWizardEditorProfile editorProfile);
     protected abstract CommonGameConfigurations GetCommonGameConfigurations(AbstractCreationWizardEditorProfile editorProfile);
 
@@ -20,7 +20,7 @@ public abstract class ALevelHierarchyCreation : CreateableScriptableObjectCompon
         editorProfile.GameConfigurationModified(this.GetCommonGameConfigurations(editorProfile).GetConfiguration<LevelHierarchyConfiguration>(), this.GetLevelZonesID(editorProfile), generatedHierarchy);
 
         var generatedHierarchySerialized = new SerializedObject(generatedHierarchy);
-        SerializableObjectHelper.SetArray((new List<LevelZoneChunkID>()).ConvertAll(e => (Enum)e), generatedHierarchySerialized.FindProperty(nameof(generatedHierarchy.LevelHierarchy)));
+        SerializableObjectHelper.SetArray((new List<LevelZoneChunkID>()).ConvertAll(e => (Enum) e), generatedHierarchySerialized.FindProperty(nameof(generatedHierarchy.LevelHierarchy)));
         generatedHierarchySerialized.ApplyModifiedProperties();
     }
 }

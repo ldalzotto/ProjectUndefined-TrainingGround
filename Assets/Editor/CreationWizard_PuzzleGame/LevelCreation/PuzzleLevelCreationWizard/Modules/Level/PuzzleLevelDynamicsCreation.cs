@@ -4,6 +4,7 @@ using CoreGame;
 using System;
 using System.Collections.Generic;
 using Editor_MainGameCreationWizard;
+using LevelManagement;
 using UnityEditor;
 
 namespace Editor_PuzzleLevelCreationWizard
@@ -13,13 +14,7 @@ namespace Editor_PuzzleLevelCreationWizard
     {
         public override Func<AbstractCreationWizardEditorProfile, LevelManager> BasePrefabProvider
         {
-            get
-            {
-                return (AbstractCreationWizardEditorProfile editorProfile) =>
-                {
-                    return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics;
-                };
-            }
+            get { return (AbstractCreationWizardEditorProfile editorProfile) => { return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics; }; }
         }
 
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
@@ -30,5 +25,4 @@ namespace Editor_PuzzleLevelCreationWizard
             PrefabUtility.SavePrefabAsset(createdLevelManager.gameObject);
         }
     }
-
 }

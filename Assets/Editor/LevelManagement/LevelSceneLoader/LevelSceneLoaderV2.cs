@@ -4,22 +4,24 @@ using UnityEditor;
 using CoreGame;
 using System.Collections.Generic;
 using System.Linq;
+using LevelManagement;
 using UnityEditor.SceneManagement;
 
 namespace Editor_LevelSceneLoader
 {
     public class LevelSceneLoaderV2 : EditorWindow
     {
-
         [MenuItem("Level/SceneLoadV2")]
         static void Init()
         {
-            LevelSceneLoaderV2 window = (LevelSceneLoaderV2)EditorWindow.GetWindow(typeof(LevelSceneLoaderV2));
+            LevelSceneLoaderV2 window = (LevelSceneLoaderV2) EditorWindow.GetWindow(typeof(LevelSceneLoaderV2));
             window.Show();
         }
 
         #region Styles
+
         private GUIStyle leftAlignedText;
+
         #endregion
 
         private LevelManager levelManager;
@@ -34,7 +36,6 @@ namespace Editor_LevelSceneLoader
                 this.leftAlignedText = new GUIStyle(EditorStyles.label);
                 this.leftAlignedText.alignment = TextAnchor.MiddleLeft;
             }
-
         }
 
         private void OnGUI()
@@ -61,6 +62,7 @@ namespace Editor_LevelSceneLoader
                     this.sceneLoadElligibility[sceneToLoad] = true;
                 }
             }
+
             if (GUILayout.Button(new GUIContent("o", "Unselect all"), EditorStyles.miniButtonRight, GUILayout.Width(20)))
             {
                 foreach (var sceneToLoad in this.sceneLoadElligibility.Keys.ToList())
@@ -68,6 +70,7 @@ namespace Editor_LevelSceneLoader
                     this.sceneLoadElligibility[sceneToLoad] = false;
                 }
             }
+
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
@@ -116,13 +119,9 @@ namespace Editor_LevelSceneLoader
                     Debug.LogError("The chunk zone configuration has not been found.");
                     return null;
                 }
-
             }
 
-            return levelHierarchyConfiguration.GetLevelHierarchy(levelManager.GetCurrentLevel()).ConvertAll((chunkId) =>
-            {
-                return chunkZonesConfiguration.ConfigurationInherentData[chunkId].scene;
-            });
+            return levelHierarchyConfiguration.GetLevelHierarchy(levelManager.GetCurrentLevel()).ConvertAll((chunkId) => { return chunkZonesConfiguration.ConfigurationInherentData[chunkId].scene; });
         }
 
         private void SceneLoadWithoutDuplicate(string sceneToLoadName)
@@ -136,6 +135,7 @@ namespace Editor_LevelSceneLoader
                     load = false;
                 }
             }
+
             if (load)
             {
                 var scene = AssetFinder.SafeSingleAssetFind<SceneAsset>(sceneToLoadName + " t:Scene");
@@ -156,11 +156,11 @@ namespace Editor_LevelSceneLoader
                     sceneIndex = i;
                 }
             }
+
             if (unload)
             {
                 EditorSceneManager.CloseScene(EditorSceneManager.GetSceneAt(sceneIndex), true);
             }
         }
     }
-
 }

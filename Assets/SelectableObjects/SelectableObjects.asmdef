@@ -8,7 +8,8 @@
         "Unity.RenderPipelines.Lightweight.Runtime",
         "InteractiveObjects",
         "InteractiveObjects_Interfaces",
-        "RangeObjects"
+        "RangeObjects",
+"LevelManagement"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

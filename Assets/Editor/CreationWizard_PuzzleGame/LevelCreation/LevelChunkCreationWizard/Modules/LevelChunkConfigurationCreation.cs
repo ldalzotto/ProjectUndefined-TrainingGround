@@ -1,10 +1,11 @@
-﻿using CoreGame;
+﻿using System;
 using Editor_MainGameCreationWizard;
+using LevelManagement;
 using UnityEditor;
 
 namespace Editor_LevelChunkCreationWizard
 {
-    [System.Serializable]
+    [Serializable]
     public class LevelChunkConfigurationCreation : CreateableScriptableObjectComponent<LevelZonesSceneConfigurationData>
     {
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)

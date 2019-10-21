@@ -1,8 +1,8 @@
 ﻿using GameConfigurationID;
+using LevelManagement;
 
 public class NamingConventionHelper
 {
-
     public static string BuildName(string baseName, LevelZonesID levelZoneID, PrefixType prefixType, SufixType sufixType)
     {
         string prefixTypeString = GetPrefix(prefixType);
@@ -75,6 +75,7 @@ public enum PrefixType
     WHEEL_NODE = 2,
     AI_FEEDBACK_MARK = 3
 }
+
 public enum SufixType
 {
     MODEL = 0,

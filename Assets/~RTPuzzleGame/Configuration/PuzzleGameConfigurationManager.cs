@@ -8,11 +8,6 @@ namespace RTPuzzle
     {
         public PuzzleGameConfiguration PuzzleGameConfiguration;
 
-        public Dictionary<LevelZonesID, LevelConfigurationData> LevelConfiguration()
-        {
-            return PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData;
-        }
-
         public Dictionary<DottedLineID, DottedLineInherentData> DottedLineConfiguration()
         {
             return PuzzleGameConfiguration.DottedLineConfiguration.ConfigurationInherentData;

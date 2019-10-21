@@ -1,14 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using NodeGraph;
-using System;
-using System.Collections.Generic;
-using UnityEditor;
-using CoreGame;
+﻿using System;
+using LevelManagement;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
-    [System.Serializable]
+    [Serializable]
     public class LevelCompletedTimelineActionEdgeV2 : TimelineActionEdgeProfile<LevelCompletedTimelineAction>
     {
     }

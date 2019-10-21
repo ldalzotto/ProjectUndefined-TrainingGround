@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System;
 using UnityEditor;
 using CoreGame;
+using LevelManagement;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
     [System.Serializable]
     public class LevelCompletedTimelineActionNodeProfile : TimelineActionNodeProfile<LevelCompletedTimelineActionEdgeV2, LevelCompletedTimelineAction>
     {
-
     }
-
 }

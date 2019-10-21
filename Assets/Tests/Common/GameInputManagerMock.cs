@@ -1,23 +1,22 @@
-﻿using CoreGame;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CoreGame;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 namespace Tests
 {
-
     public class GameTestMockedInputManager : GameInputManager
     {
         public static void SetupForTestScene()
         {
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            var gameInputManager = FindObjectOfType<GameInputManager>();
             var gameInputManagerGO = gameInputManager.gameObject;
-            MonoBehaviour.DestroyImmediate(gameInputManager);
+            DestroyImmediate(gameInputManager);
             gameInputManagerGO.AddComponent<GameTestMockedInputManager>();
         }
 
-        public override void Init(LevelType LevelType)
+        public override void Init(CursorLockMode CursorLockMode)
         {
             this.currentInput = new GameTestMockedXInput();
         }
@@ -29,7 +28,7 @@ namespace Tests
 
         public GameTestMockedXInput GetGameTestMockedXInput()
         {
-            return (GameTestMockedXInput)this.currentInput;
+            return (GameTestMockedXInput) this.currentInput;
         }
     }
 
@@ -41,6 +40,7 @@ namespace Tests
         public Vector3 locomotionAxis = Vector3.zero;
 
         #region Interface implementation
+
         public bool ActionButtonD()
         {
             return actionButtonD;
@@ -100,6 +100,7 @@ namespace Tests
         {
             return 0f;
         }
+
         #endregion
     }
 }

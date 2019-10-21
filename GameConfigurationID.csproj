@@ -66,9 +66,6 @@
      <Compile Include="Assets\@GameConfigurationID\IDs\DottedLineID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\InputID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\ItemID.cs" />
-     <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
-     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />
-     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZonesID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\TimelineID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\TutorialStepID.cs" />
      <None Include="Assets\@GameConfigurationID\GameConfigurationID.asmdef" />

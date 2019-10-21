@@ -1,4 +1,4 @@
-﻿using CoreGame;
+﻿using LevelManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.LWRP;
@@ -32,7 +32,7 @@ namespace SelectableObject
             // You don't have to call ScriptableRenderContext.submit, the render pipeline will call it at specific points in the pipeline.
             public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
             {
-                var levelManager = CoreGameSingletonInstances.LevelManager;
+                var levelManager = LevelManager.Get();
                 if (levelManager != null && levelManager.CurrentLevelType != LevelType.STARTMENU)
                 {
                     var selectableObjectManagerV2 = SelectableObjectManagerV2.Get();

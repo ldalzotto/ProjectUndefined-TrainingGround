@@ -9,10 +9,6 @@ namespace CoreGame
     [CreateAssetMenu(fileName = "GlobalGameConfiguration", menuName = "Configuration/CoreGame/GlobalGameConfiguration/GlobalGameConfiguration", order = 1)]
     public class GlobalGameConfiguration : SerializedScriptableObject
     {
-        [CustomEnum()]
-        public LevelZonesID NewGameStartLevelID;
-
         public CameraFollowManagerComponent CameraFollowManagerComponent;
     }
-
 }

@@ -1,12 +1,12 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using LevelManagement;
 
 namespace Editor_LevelChunkCreationWizard
 {
     [System.Serializable]
     public class LevelHierarchyModification : ModificationComponent
     {
-
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
@@ -22,6 +22,5 @@ namespace Editor_LevelChunkCreationWizard
                 editorProfile.LevelHierarchyAdded(LevelHierarchyConfiguration, levelZonesID, levelZoneChunkID);
             }
         }
-
     }
 }

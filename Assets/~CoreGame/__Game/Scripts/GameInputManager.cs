@@ -1,6 +1,6 @@
-﻿using GameConfigurationID;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -14,23 +14,17 @@ namespace CoreGame
 
     public class GameInputManager : MonoBehaviour, IGameInputManager
     {
-
         protected XInput currentInput;
 
-        public XInput CurrentInput { get => currentInput; }
+        public XInput CurrentInput
+        {
+            get => currentInput;
+        }
 
-        public virtual void Init(LevelType LevelType)
+        public virtual void Init(CursorLockMode CursorLockMode)
         {
             currentInput = new GameInput(new GameInputV2(CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.InputConfiguration), CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
-
-            if (LevelType == LevelType.STARTMENU)
-            {
-                Cursor.lockState = CursorLockMode.Confined;
-            }
-            else
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            Cursor.lockState = CursorLockMode;
         }
 
         private class GameInput : XInput
@@ -38,7 +32,10 @@ namespace CoreGame
             private GameInputV2 gameInputV2;
             private CoreInputConfiguration CoreInputConfiguration;
 
-            internal GameInputV2 GameInputV2 { get => gameInputV2; }
+            internal GameInputV2 GameInputV2
+            {
+                get => gameInputV2;
+            }
 
             public GameInput(GameInputV2 gameInputV2, CoreInputConfiguration CoreInputConfiguration)
             {
@@ -70,13 +67,14 @@ namespace CoreGame
             {
                 var rawDirection = new Vector3(-Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.LEFT_DOWN_HOLD))
                                                + Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.RIGHT_DOWN_HOLD)),
-                                               0,
-                                               -Convert.ToInt32(Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.DOWN_DOWN_HOLD)))
-                                               + Convert.ToInt32(Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.UP_DOWN_HOLD))));
+                    0,
+                    -Convert.ToInt32(Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.DOWN_DOWN_HOLD)))
+                    + Convert.ToInt32(Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.UP_DOWN_HOLD))));
                 if (Vector3.Distance(rawDirection, Vector3.zero) > 1)
                 {
                     rawDirection = rawDirection.normalized;
                 }
+
                 return rawDirection;
             }
 
@@ -86,6 +84,7 @@ namespace CoreGame
                 {
                     return Vector3.zero;
                 }
+
                 return new Vector3(Mouse.current.delta.x.ReadValue(), 0, Mouse.current.delta.y.ReadValue()) * Screen.width * this.CoreInputConfiguration.GetCursorMovementMouseSensitivity();
             }
 
@@ -131,16 +130,18 @@ namespace CoreGame
         }
 
         #region Data Retrieval
+
         public virtual Dictionary<Key, KeyControl> GetKeyToKeyControlLookup()
         {
-            return ((GameInput)this.currentInput).GameInputV2.KeyToKeyControlLookup;
+            return ((GameInput) this.currentInput).GameInputV2.KeyToKeyControlLookup;
         }
+
         public Dictionary<MouseButton, ButtonControl> GetMouseButtonControlLookup()
         {
-            return ((GameInput)this.currentInput).GameInputV2.MouseButtonControlLookup;
+            return ((GameInput) this.currentInput).GameInputV2.MouseButtonControlLookup;
         }
-        #endregion
 
+        #endregion
     }
 
     class GameInputV2
@@ -161,6 +162,7 @@ namespace CoreGame
             {
                 this.keyToKeyControlLookup[keyBoardKeyControl.keyCode] = keyBoardKeyControl;
             }
+
             this.mouseButtonControlLookup[MouseButton.LEFT_BUTTON] = Mouse.current.leftButton;
             this.mouseButtonControlLookup[MouseButton.RIGHT_BUTTON] = Mouse.current.rightButton;
             this.mouseScrollControlLookup[MouseScroll.SCROLL] = Mouse.current.scroll;
@@ -168,8 +170,15 @@ namespace CoreGame
             InputConfiguration = inputConfiguration;
         }
 
-        public Dictionary<Key, KeyControl> KeyToKeyControlLookup { get => keyToKeyControlLookup; }
-        public Dictionary<MouseButton, ButtonControl> MouseButtonControlLookup { get => mouseButtonControlLookup; }
+        public Dictionary<Key, KeyControl> KeyToKeyControlLookup
+        {
+            get => keyToKeyControlLookup;
+        }
+
+        public Dictionary<MouseButton, ButtonControl> MouseButtonControlLookup
+        {
+            get => mouseButtonControlLookup;
+        }
 
         public bool InputConditionsMet(InputID inputID)
         {
@@ -183,10 +192,13 @@ namespace CoreGame
             {
                 var inputConfigurationInherentData = this.InputConfiguration.ConfigurationInherentData[inputID];
 
-                if(inputConfigurationInherentData.AttributedMouseScroll != MouseScroll.NONE)
+                if (inputConfigurationInherentData.AttributedMouseScroll != MouseScroll.NONE)
                 {
                     inputConditionsMet = this.mouseScrollControlLookup[inputConfigurationInherentData.AttributedMouseScroll].y.ReadValue();
-                    if (inputConditionsMet != 0f) { return inputConditionsMet; }
+                    if (inputConditionsMet != 0f)
+                    {
+                        return inputConditionsMet;
+                    }
                 }
 
                 foreach (var attibutedKey in inputConfigurationInherentData.AttributedKeys)
@@ -199,7 +211,11 @@ namespace CoreGame
                     {
                         inputConditionsMet = Convert.ToSingle(this.keyToKeyControlLookup[attibutedKey].wasPressedThisFrame || this.keyToKeyControlLookup[attibutedKey].isPressed);
                     }
-                    if (inputConditionsMet != 0f) { return inputConditionsMet; }
+
+                    if (inputConditionsMet != 0f)
+                    {
+                        return inputConditionsMet;
+                    }
                 }
 
                 foreach (var attrubuteMouseButton in inputConfigurationInherentData.AttributedMouseButtons)
@@ -212,9 +228,14 @@ namespace CoreGame
                     {
                         inputConditionsMet = Convert.ToSingle(this.mouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame || this.mouseButtonControlLookup[attrubuteMouseButton].isPressed);
                     }
-                    if (inputConditionsMet != 0f) { return inputConditionsMet; }
+
+                    if (inputConditionsMet != 0f)
+                    {
+                        return inputConditionsMet;
+                    }
                 }
             }
+
             return inputConditionsMet;
         }
     }

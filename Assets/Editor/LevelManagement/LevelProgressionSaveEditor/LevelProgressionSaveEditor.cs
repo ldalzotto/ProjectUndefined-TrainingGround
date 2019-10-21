@@ -1,8 +1,8 @@
-﻿using CoreGame;
-using GameConfigurationID;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using CoreGame;
+using LevelManagement;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,7 +14,7 @@ namespace Editor_LevelProgressionSaveEditor
         [MenuItem("Level/LevelProgressionSaveEditor")]
         static void Init()
         {
-            LevelProgressionSaveEditor window = (LevelProgressionSaveEditor)EditorWindow.GetWindow(typeof(LevelProgressionSaveEditor));
+            LevelProgressionSaveEditor window = (LevelProgressionSaveEditor) GetWindow(typeof(LevelProgressionSaveEditor));
             window.Show();
         }
 
@@ -23,7 +23,9 @@ namespace Editor_LevelProgressionSaveEditor
         private RegexTextFinder LevelChunkIDSearch;
 
         #region Visual Elements
+
         private Box availabilityContainer;
+
         #endregion
 
         private void OnEnable()
@@ -31,15 +33,15 @@ namespace Editor_LevelProgressionSaveEditor
             this.LevelAvailabilityPersistanceManager = new LevelAvailabilityPersistanceManager();
             var folderPath = Path.Combine(Application.persistentDataPath, LevelAvailabilityPersistanceManager.FolderName);
             this.CurrentLevelAvailability = PersistanceManager.LoadStatic<LevelAvailability>(folderPath,
-              AbstractGamePersister<string>.GetDataPath(folderPath, LevelAvailabilityPersistanceManager.FileName, LevelAvailabilityPersistanceManager.FileExtension),
-              LevelAvailabilityPersistanceManager.FileName, LevelAvailabilityPersistanceManager.FileExtension, new BinaryFormatter());
+                AbstractGamePersister<string>.GetDataPath(folderPath, LevelAvailabilityPersistanceManager.FileName, LevelAvailabilityPersistanceManager.FileExtension),
+                LevelAvailabilityPersistanceManager.FileName, LevelAvailabilityPersistanceManager.FileExtension, new BinaryFormatter());
             this.LevelChunkIDSearch = new RegexTextFinder();
         }
 
         private void OnGUI()
         {
             EditorGUILayout.BeginVertical();
-          //  EditorGUILayout.TextArea(this.LevelAvailabilityPersistanceManager.GetDataPath());
+            //  EditorGUILayout.TextArea(this.LevelAvailabilityPersistanceManager.GetDataPath());
 
             this.LevelChunkIDSearch.GUITick();
             Dictionary<LevelZoneChunkID, bool> newValuesToSet = null;
@@ -60,8 +62,10 @@ namespace Editor_LevelProgressionSaveEditor
                         {
                             newValuesToSet = new Dictionary<LevelZoneChunkID, bool>();
                         }
+
                         newValuesToSet[levelChunkAvailability.Key] = toggelValue;
                     }
+
                     EditorGUILayout.EndHorizontal();
                 }
             }
@@ -82,8 +86,5 @@ namespace Editor_LevelProgressionSaveEditor
 
             EditorGUILayout.EndVertical();
         }
-
     }
-
 }
-

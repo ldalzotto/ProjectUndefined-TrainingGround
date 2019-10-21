@@ -1,5 +1,5 @@
 using CoreGame;
-using GameConfigurationID;
+using LevelManagement;
 using RangeObjects;
 using UnityEngine;
 
@@ -9,9 +9,9 @@ namespace RTPuzzle
     {
         public PuzzleEventsManager()
         {
-            PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
+            PuzzleLevelTransitionManager = LevelTransitionManager.Get();
             TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
-            LevelManager = CoreGameSingletonInstances.LevelManager;
+            LevelManager = LevelManager.Get();
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
         }
 

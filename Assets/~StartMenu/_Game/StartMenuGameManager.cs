@@ -1,5 +1,5 @@
-﻿using CoreGame;
-using GameLoop;
+﻿using GameLoop;
+using LevelManagement;
 using UnityEngine;
 
 namespace StartMenu
@@ -8,7 +8,7 @@ namespace StartMenu
     {
         private void Awake()
         {
-            GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
+            FindObjectOfType<GameManagerPersistanceInstance>().Init();
             this.OnAwake(LevelType.STARTMENU);
             StartMenuSingletonInstances.GameProgressionStateManager.Init();
             StartMenuManager.Init();

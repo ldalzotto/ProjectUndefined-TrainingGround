@@ -9,7 +9,8 @@
     "GameConfigurationID",
     "InteractiveObjects",
     "InteractiveObjects_Interfaces",
-    "RangeObjects"
+    "RangeObjects",
+"LevelManagement"
   ],
   "includePlatforms": [
     "Editor"

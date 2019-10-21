@@ -4,6 +4,7 @@ using CoreGame;
 using System;
 using System.Collections.Generic;
 using Editor_MainGameCreationWizard;
+using LevelManagement;
 using UnityEditor;
 
 namespace Editor_LevelChunkCreationWizard
@@ -13,13 +14,7 @@ namespace Editor_LevelChunkCreationWizard
     {
         public override Func<AbstractCreationWizardEditorProfile, LevelChunkType> BasePrefabProvider
         {
-            get
-            {
-                return (AbstractCreationWizardEditorProfile editorProfile) =>
-                {
-                    return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab;
-                };
-            }
+            get { return (AbstractCreationWizardEditorProfile editorProfile) => { return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab; }; }
         }
 
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)

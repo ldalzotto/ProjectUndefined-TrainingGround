@@ -8,11 +8,8 @@ namespace CoreGame
     public class CoreConfiguration : GameConfiguration
     {
         public AnimationConfiguration AnimationConfiguration;
-        public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
         public DiscussionTextConfiguration DiscussionTextConfiguration;
         public InputConfiguration InputConfiguration;
-        public LevelHierarchyConfiguration LevelHierarchyConfiguration;
-        public LevelZonesSceneConfiguration LevelZonesSceneConfiguration;
         public TimelineConfiguration TimelineConfiguration;
         public TutorialStepConfiguration TutorialStepConfiguration;
     }
