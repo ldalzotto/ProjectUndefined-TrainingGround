@@ -59,7 +59,7 @@
      <Compile Include="Assets\PlayerActions\Configuration\PlayerActionInherentData.cs" />
      <Compile Include="Assets\PlayerActions\Configuration\PlayerActionType.cs" />
      <Compile Include="Assets\PlayerActions\DummyAction\DummyPlayerActionInherentData.cs" />
-     <Compile Include="Assets\PlayerActions\Events\PlayerActionEventManager.cs" />
+     <Compile Include="Assets\PlayerActions\EntryPoint\PlayerActionEntryPoint.cs" />
      <Compile Include="Assets\PlayerActions\Lib\ActionExecution\RTPPlayerAction.cs" />
      <Compile Include="Assets\PlayerActions\Managers\PlayerActionManager.cs" />
      <Compile Include="Assets\PlayerActions\Managers\PlayerActionWheelManager.cs" />

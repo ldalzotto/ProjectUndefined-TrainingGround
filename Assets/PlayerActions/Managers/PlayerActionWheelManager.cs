@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace PlayerActions
 {
-    public class PlayerActionWheelManager : GameSingleton<PlayerActionWheelManager>
+    internal class PlayerActionWheelManager : GameSingleton<PlayerActionWheelManager>
     {
         private SelectionWheelObject PlayerActionSelectionWheel;
 

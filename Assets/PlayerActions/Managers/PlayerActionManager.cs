@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace PlayerActions
 {
-    public class PlayerActionManager : GameSingleton<PlayerActionManager>
+    internal class PlayerActionManager : GameSingleton<PlayerActionManager>
     {
         private PlayerActionExecutionManager PlayerActionExecutionManager;
         private PlayerActionsAvailableManager PlayerActionsAvailableManager;

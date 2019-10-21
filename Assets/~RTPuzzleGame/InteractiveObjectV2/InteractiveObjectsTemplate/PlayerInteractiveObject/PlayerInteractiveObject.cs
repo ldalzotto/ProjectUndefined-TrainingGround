@@ -47,7 +47,7 @@ namespace InteractiveObjects
             PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(this, GameInputManager,
-                PlayerActionEventManager.Get(), PlayerActionWheelManager.Get());
+                PlayerActionEntryPoint.Get());
             LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
             LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
 
@@ -60,11 +60,11 @@ namespace InteractiveObjects
         {
             if (!LevelResetManager.Tick(d))
             {
-                if (!PlayerActionManager.IsActionExecuting() && !BlockingCutscenePlayer.Playing)
+                if (!this.PlayerActionEntryPoint.IsActionExecuting() && !BlockingCutscenePlayer.Playing)
                 {
                     if (!PlayerSelectionWheelManager.AwakeOrSleepWheel(LevelDependenatPlayerActionsManager))
                     {
-                        if (!PlayerActionWheelManager.IsSelectionWheelEnabled())
+                        if (!this.PlayerActionEntryPoint.IsSelectionWheelEnabled())
                         {
                             PlayerInputMoveManager.Tick(d);
                         }
@@ -93,8 +93,7 @@ namespace InteractiveObjects
 
         #region External Dependencies
 
-        private PlayerActionManager PlayerActionManager = PlayerActionManager.Get();
-        private PlayerActionWheelManager PlayerActionWheelManager = PlayerActionWheelManager.Get();
+        private PlayerActionEntryPoint PlayerActionEntryPoint = PlayerActionEntryPoint.Get();
         [VE_Nested] private BlockingCutscenePlayerManager BlockingCutscenePlayer;
 
         #endregion
@@ -148,35 +147,33 @@ namespace InteractiveObjects
         #region External Dependencies
 
         private PuzzleEventsManager PuzzleEventsManager;
-        private PlayerActionEventManager PlayerActionEventManager;
-        private PlayerActionWheelManager PlayerActionWheelManager;
+        private PlayerActionEntryPoint PlayerActionEntryPoint;
 
         #endregion
 
         public PlayerSelectionWheelManager(PlayerInteractiveObject PlayerInteractiveObject, IGameInputManager gameInputManager,
-            PlayerActionEventManager PlayerActionEventManager, PlayerActionWheelManager PlayerActionWheelManager)
+            PlayerActionEntryPoint playerActionEntryPoint)
         {
             GameInputManager = gameInputManager;
-            this.PlayerActionEventManager = PlayerActionEventManager;
-            this.PlayerActionWheelManager = PlayerActionWheelManager;
+            this.PlayerActionEntryPoint = playerActionEntryPoint;
             this.PlayerInteractiveObjectRef = PlayerInteractiveObject;
         }
 
         public bool AwakeOrSleepWheel(LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager)
         {
-            if (!this.PlayerActionWheelManager.IsSelectionWheelEnabled())
+            if (!this.PlayerActionEntryPoint.IsSelectionWheelEnabled())
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
-                    PlayerActionEventManager.AddActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
-                    PlayerActionEventManager.AwakePlayerActionSelectionWheel(this.PlayerInteractiveObjectRef.InteractiveGameObject.InteractiveGameObjectParent.transform);
+                    PlayerActionEntryPoint.AddActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
+                    PlayerActionEntryPoint.AwakePlayerActionSelectionWheel(this.PlayerInteractiveObjectRef.InteractiveGameObject.InteractiveGameObjectParent.transform);
                     return true;
                 }
             }
             else if (GameInputManager.CurrentInput.CancelButtonD())
             {
-                this.PlayerActionEventManager.SleepPlayerActionSelectionWheel(false);
-                PlayerActionEventManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
+                this.PlayerActionEntryPoint.SleepPlayerActionSelectionWheel(false);
+                PlayerActionEntryPoint.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
                 return true;
             }
 
@@ -187,13 +184,13 @@ namespace InteractiveObjects
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
-                var selectedAction = this.PlayerActionWheelManager.GetCurrentlySelectedPlayerAction();
+                var selectedAction = this.PlayerActionEntryPoint.GetCurrentlySelectedPlayerAction();
                 if (selectedAction.CanBeExecuted())
                 {
-                    this.PlayerActionEventManager.ExecuteAction(selectedAction);
+                    this.PlayerActionEntryPoint.ExecuteAction(selectedAction);
                 }
 
-                this.PlayerActionEventManager.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
+                this.PlayerActionEntryPoint.RemoveActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
             }
         }
     }

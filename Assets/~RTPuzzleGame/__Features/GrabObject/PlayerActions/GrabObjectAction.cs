@@ -19,7 +19,7 @@ namespace RTPuzzle
         public override void FirstExecution()
         {
             base.FirstExecution();
-            PlayerActionEventManager.Get().IncreaseOrAddActionsRemainingExecutionAmount(this.addedPlayerAction, 1);
+            PlayerActionEntryPoint.Get().IncreaseOrAddActionsRemainingExecutionAmount(this.addedPlayerAction, 1);
             this.PlayerActionConsumed();
         }
 

@@ -52,9 +52,7 @@ namespace RTPuzzle
             TutorialManager.Init();
             SelectableObjectManagerV2.Get().Init(CoreGameSingletonInstances.GameInputManager);
 
-            PlayerActionEventManager.Get().Init();
-            PlayerActionWheelManager.Get().Init();
-            PlayerActionManager.Get().Init();
+            PlayerActionEntryPoint.Get().Init();
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();
@@ -73,8 +71,7 @@ namespace RTPuzzle
             PuzzleTutorialEventSenderManager.Get().Tick(d);
             BlockingCutscenePlayer.Tick(d);
 
-            PlayerActionManager.Get().Tick(d);
-            PlayerActionWheelManager.Get().Tick(d);
+            PlayerActionEntryPoint.Get().Tick(d);
 
             PlayerInteractiveObjectManager.Get().Tick(d);
 
@@ -105,8 +102,7 @@ namespace RTPuzzle
 
             PlayerInteractiveObjectManager.Get().LateTick(d);
             InteractiveObjectV2Manager.Get().LateTick(d);
-            PlayerActionManager.Get().LateTick(d);
-            PlayerActionWheelManager.Get().LateTick(d);
+            PlayerActionEntryPoint.Get().LateTick(d);
 
             ObstacleOcclusionCalculationManagerV2.Get().LateTick();
             RangeIntersectionCalculationManagerV2.Get().LateTick();
@@ -129,7 +125,7 @@ namespace RTPuzzle
         {
             if (Application.isPlaying)
             {
-                PlayerActionManager.Get().GizmoTick();
+                PlayerActionEntryPoint.Get().GizmoTick();
                 ObstaclesListenerManager.Get().GizmoTick();
                 RangeIntersectionCalculatorManager.Get().GizmoTick();
             }
@@ -137,7 +133,7 @@ namespace RTPuzzle
 
         private void OnGUI()
         {
-            if (Application.isPlaying) PlayerActionManager.Get().GUITick();
+            if (Application.isPlaying) PlayerActionEntryPoint.Get().GUITick();
         }
     }
 

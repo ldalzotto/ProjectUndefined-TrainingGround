@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace PlayerActions
 {
-    public class PlayerActionEventManager : GameSingleton<PlayerActionEventManager>
+    public class PlayerActionEntryPoint : GameSingleton<PlayerActionEntryPoint>
     {
         private PlayerActionManager PlayerActionManager = PlayerActionManager.Get();
         private PlayerActionWheelManager PlayerActionWheelManager = PlayerActionWheelManager.Get();
@@ -18,13 +18,66 @@ namespace PlayerActions
             SelectableObjectEventsManager.Get().RegisterOnSelectableObjectNoMoreSelectedEventAction(this.OnSelectableObjectDeSelected);
 
             #endregion
+
+            PlayerActionManager.Init();
+            PlayerActionWheelManager.Init();
         }
+
+        #region Per Frame Methods
+
+        public void Tick(float d)
+        {
+            this.PlayerActionManager.Tick(d);
+            this.PlayerActionWheelManager.Tick(d);
+        }
+
+        public void LateTick(float d)
+        {
+            this.PlayerActionManager.LateTick(d);
+            this.PlayerActionWheelManager.LateTick(d);
+        }
+
+        public void GizmoTick()
+        {
+            this.PlayerActionManager.GizmoTick();
+        }
+
+        public void GUITick()
+        {
+            this.PlayerActionManager.GUITick();
+        }
+
+        #endregion
+
+        #region Logical Conditions
+
+        public bool IsActionExecuting()
+        {
+            return this.PlayerActionManager.IsActionExecuting();
+        }
+
+        public bool IsSelectionWheelEnabled()
+        {
+            return this.PlayerActionWheelManager.IsSelectionWheelEnabled();
+        }
+
+        #endregion
+
+        #region Data Retrieval
+
+        public RTPPlayerAction GetCurrentlySelectedPlayerAction()
+        {
+            return this.PlayerActionWheelManager.GetCurrentlySelectedPlayerAction();
+        }
+
+        #endregion
+
+        #region Events and methods
 
         public void IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction RTPPlayerAction, int deltaRemaining)
         {
             this.PlayerActionManager.IncreaseOrAddActionsRemainingExecutionAmount(RTPPlayerAction, deltaRemaining);
         }
-
 
         public void ExecuteAction(RTPPlayerAction rTPPlayerAction)
         {
@@ -63,5 +116,7 @@ namespace PlayerActions
             this.PlayerActionManager.RemoveActionToAvailable(SelectableObject.AssociatedPlayerAction as RTPPlayerAction);
             this.PlayerActionWheelManager.PlayerActionWheelRefresh(this.PlayerActionManager.GetCurrentAvailablePlayerActions());
         }
+
+        #endregion
     }
 }
