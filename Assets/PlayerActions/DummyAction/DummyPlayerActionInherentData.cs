@@ -2,7 +2,7 @@
 using PlayerObject_Interfaces;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace PlayerActions
 {
     [Serializable]
     [CreateAssetMenu(fileName = "DummyPlayerActionInherentData", menuName = "Test/DummyPlayerActionInherentData", order = 1)]

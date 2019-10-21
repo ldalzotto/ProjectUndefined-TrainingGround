@@ -46,7 +46,8 @@ namespace InteractiveObjects
 
             PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.LogicCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
-            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(GameInputManager, PlayerActionEventManager.Get(), PlayerActionWheelManager.Get());
+            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(this, GameInputManager,
+                PlayerActionEventManager.Get(), PlayerActionWheelManager.Get());
             LevelResetManager = new LevelResetManager(GameInputManager, puzzleEventsManager);
             LevelDependenatPlayerActionsManager = new LevelDependenatPlayerActionsManager(this, LevelConfiguration, LevelManager);
 
@@ -140,7 +141,7 @@ namespace InteractiveObjects
 
     internal class PlayerSelectionWheelManager
     {
-        private IPlayerInteractiveObject IPlayerInteractiveObjectRef;
+        private PlayerInteractiveObject PlayerInteractiveObjectRef;
         private IGameInputManager GameInputManager;
         private LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManagerRef;
 
@@ -152,11 +153,13 @@ namespace InteractiveObjects
 
         #endregion
 
-        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PlayerActionEventManager PlayerActionEventManager, PlayerActionWheelManager PlayerActionWheelManager)
+        public PlayerSelectionWheelManager(PlayerInteractiveObject PlayerInteractiveObject, IGameInputManager gameInputManager,
+            PlayerActionEventManager PlayerActionEventManager, PlayerActionWheelManager PlayerActionWheelManager)
         {
             GameInputManager = gameInputManager;
             this.PlayerActionEventManager = PlayerActionEventManager;
             this.PlayerActionWheelManager = PlayerActionWheelManager;
+            this.PlayerInteractiveObjectRef = PlayerInteractiveObject;
         }
 
         public bool AwakeOrSleepWheel(LevelDependenatPlayerActionsManager LevelDependenatPlayerActionsManager)
@@ -166,7 +169,7 @@ namespace InteractiveObjects
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
                     PlayerActionEventManager.AddActionsToAvailable(LevelDependenatPlayerActionsManager.GetPlayerActionsAssociatedToLevel());
-                    PlayerActionEventManager.AwakePlayerActionSelectionWheel();
+                    PlayerActionEventManager.AwakePlayerActionSelectionWheel(this.PlayerInteractiveObjectRef.InteractiveGameObject.InteractiveGameObjectParent.transform);
                     return true;
                 }
             }

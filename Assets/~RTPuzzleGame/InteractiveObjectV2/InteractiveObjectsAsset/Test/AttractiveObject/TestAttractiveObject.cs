@@ -1,5 +1,5 @@
 ﻿using InteractiveObjects_Interfaces;
-using RTPuzzle;
+using PlayerActions;
 using SelectableObject;
 
 namespace InteractiveObjects

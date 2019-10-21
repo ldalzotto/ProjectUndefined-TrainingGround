@@ -3,15 +3,15 @@ using CoreGame;
 using SelectionWheel;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace PlayerActions
 {
     public class PlayerActionWheelManager : GameSingleton<PlayerActionWheelManager>
     {
         private SelectionWheelObject PlayerActionSelectionWheel;
 
-        public void Init(Transform followingTransform)
+        public void Init()
         {
-            this.PlayerActionSelectionWheel = new SelectionWheelObject(followingTransform);
+            this.PlayerActionSelectionWheel = new SelectionWheelObject();
         }
 
         public void Tick(float d)
@@ -26,9 +26,9 @@ namespace RTPuzzle
 
         #region External Events
 
-        internal void PlayerActionWheelAwake(List<RTPPlayerAction> availablePlayerActions)
+        internal void PlayerActionWheelAwake(List<RTPPlayerAction> availablePlayerActions, Transform followingWorldTransform)
         {
-            this.PlayerActionSelectionWheel.AwakeWheel(availablePlayerActions.ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData));
+            this.PlayerActionSelectionWheel.AwakeWheel(availablePlayerActions.ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData), followingWorldTransform);
         }
 
         internal void PlayerActionWheelSleep(bool detroyImmediate)

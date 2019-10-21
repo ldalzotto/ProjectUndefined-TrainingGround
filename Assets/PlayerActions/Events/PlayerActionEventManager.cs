@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CoreGame;
-using RTPuzzle;
 using SelectableObjects_Interfaces;
+using UnityEngine;
 
 namespace PlayerActions
 {
@@ -33,9 +32,9 @@ namespace PlayerActions
             this.PlayerActionWheelManager.PlayerActionWheelSleep(false);
         }
 
-        public void AwakePlayerActionSelectionWheel()
+        public void AwakePlayerActionSelectionWheel(Transform followingWorldTransform)
         {
-            this.PlayerActionWheelManager.PlayerActionWheelAwake(this.PlayerActionManager.GetCurrentAvailablePlayerActions());
+            this.PlayerActionWheelManager.PlayerActionWheelAwake(this.PlayerActionManager.GetCurrentAvailablePlayerActions(), followingWorldTransform);
         }
 
         public void SleepPlayerActionSelectionWheel(bool destroyImmediate)
@@ -46,13 +45,11 @@ namespace PlayerActions
         public void AddActionsToAvailable(List<RTPPlayerAction> addedActions)
         {
             this.PlayerActionManager.AddActionsToAvailable(addedActions);
-            this.PlayerActionWheelManager.PlayerActionWheelRefresh(this.PlayerActionManager.GetCurrentAvailablePlayerActions());
         }
 
         public void RemoveActionsToAvailable(List<RTPPlayerAction> removedActions)
         {
             this.PlayerActionManager.RemoveActionsToAvailable(removedActions);
-            this.PlayerActionWheelManager.PlayerActionWheelRefresh(this.PlayerActionManager.GetCurrentAvailablePlayerActions());
         }
 
         private void OnSelectableObjectSelected(ISelectableObjectSystem SelectableObject)

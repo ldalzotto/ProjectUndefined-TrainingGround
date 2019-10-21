@@ -4,7 +4,7 @@ using CoreGame;
 using SelectionWheel;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace PlayerActions
 {
     public class PlayerActionManager : GameSingleton<PlayerActionManager>
     {

@@ -17,21 +17,16 @@ namespace SelectionWheel
         #region State
 
         public bool IsWheelEnabled { get; private set; }
+        private Transform followingWorldTransform;
 
         #endregion
 
-        private Transform followingWorldTransform;
-
-        public SelectionWheelObject(Transform followingWorldTransform)
-        {
-            this.followingWorldTransform = followingWorldTransform;
-        }
-
-        public void AwakeWheel(List<SelectionWheelNodeData> wheelNodeDatas)
+        public void AwakeWheel(List<SelectionWheelNodeData> wheelNodeDatas, Transform followingWorldTransform)
         {
             if (!IsWheelEnabled)
             {
                 IsWheelEnabled = true;
+                this.followingWorldTransform = followingWorldTransform;
 
                 var SelectionWheelGlobalConfiguration = SelectionWheelGlobalConfigurationGameObject.Get().SelectionWheelGlobalConfiguration;
 
@@ -69,6 +64,7 @@ namespace SelectionWheel
             if (IsWheelEnabled)
             {
                 IsWheelEnabled = false;
+                this.followingWorldTransform = null;
                 SelectionWheelObjectAnimation.PlayExitAnimation();
                 if (destroyImmediate) OnExitAnimationFinished();
             }
@@ -78,8 +74,9 @@ namespace SelectionWheel
         {
             if (IsWheelEnabled)
             {
+                var currentFollowingWorldTransform = this.followingWorldTransform;
                 this.SleepWheel(true);
-                this.AwakeWheel(wheelNodeDatas);
+                this.AwakeWheel(wheelNodeDatas, currentFollowingWorldTransform);
             }
         }
 

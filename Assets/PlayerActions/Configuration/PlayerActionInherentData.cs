@@ -4,7 +4,7 @@ using PlayerObject_Interfaces;
 using SelectionWheel;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace PlayerActions
 {
     [Serializable]
     public abstract class PlayerActionInherentData : SerializedScriptableObject

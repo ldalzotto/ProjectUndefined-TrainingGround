@@ -53,7 +53,7 @@ namespace RTPuzzle
             SelectableObjectManagerV2.Get().Init(CoreGameSingletonInstances.GameInputManager);
 
             PlayerActionEventManager.Get().Init();
-            PlayerActionWheelManager.Get().Init(PlayerInteractiveObjectManager.Get().PlayerInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform);
+            PlayerActionWheelManager.Get().Init();
             PlayerActionManager.Get().Init();
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();

@@ -1,7 +1,7 @@
 using SelectionWheel;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace PlayerActions
 {
     public abstract class RTPPlayerAction
     {

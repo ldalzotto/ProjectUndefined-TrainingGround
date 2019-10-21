@@ -1,4 +1,4 @@
-﻿namespace RTPuzzle
+﻿namespace PlayerActions
 {
     public enum PlayerActionType
     {
