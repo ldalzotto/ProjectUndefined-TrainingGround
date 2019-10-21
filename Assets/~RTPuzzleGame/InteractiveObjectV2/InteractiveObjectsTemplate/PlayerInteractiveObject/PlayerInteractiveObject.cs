@@ -36,7 +36,7 @@ namespace InteractiveObjects
             var puzzleEventsManager = PuzzleEventsManager.Get();
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
-            var LevelConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleGameConfiguration.LevelConfiguration;
+            var LevelConfiguration = LevelManagementConfigurationGameObject.Get().LevelConfiguration;
             var LevelManager = LevelManagement.LevelManager.Get();
 
             #endregion

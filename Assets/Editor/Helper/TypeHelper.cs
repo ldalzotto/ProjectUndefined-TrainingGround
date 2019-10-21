@@ -6,6 +6,7 @@ using UnityEngine;
 #if UNITY_EDITOR
 using System;
 using System.Linq;
+using LevelManagement;
 using RangeObjects;
 
 public class TypeHelper
@@ -32,6 +33,7 @@ public class TypeHelper
                 .Union(typeof(GameManager).Assembly.GetTypes())
                 .Union(typeof(InteractiveObjectV2Manager).Assembly.GetTypes())
                 .Union(typeof(RangeObjectV2).Assembly.GetTypes())
+                .Union(typeof(LevelManager).Assembly.GetTypes())
                 .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface).ToArray();
     }
 

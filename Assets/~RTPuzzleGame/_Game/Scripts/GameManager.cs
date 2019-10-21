@@ -40,11 +40,10 @@ namespace RTPuzzle
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
-            var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
 
 
             RangeObjectV2Manager.Get().Init();
-            GroundEffectsManagerV2.Get().Init(puzzleConfigurationManager.PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData[LevelManager.Get().GetCurrentLevel()].LevelRangeEffectInherentData);
+            GroundEffectsManagerV2.Get().Init(LevelManagementConfigurationGameObject.Get().LevelConfiguration.ConfigurationInherentData[LevelManager.Get().GetCurrentLevel()].LevelRangeEffectInherentData);
             InteractiveObjectV2Manager.Get().Init();
 
             CameraMovementManager.Get().Init();

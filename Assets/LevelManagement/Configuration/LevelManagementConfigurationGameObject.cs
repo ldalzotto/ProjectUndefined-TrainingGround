@@ -20,5 +20,6 @@ namespace LevelManagement
         public LevelHierarchyConfiguration LevelHierarchyConfiguration;
         public LevelZonesSceneConfiguration LevelZonesSceneConfiguration;
         public GlobalLevelConfiguration GlobalLevelConfiguration;
+        public LevelConfiguration LevelConfiguration;
     }
 }

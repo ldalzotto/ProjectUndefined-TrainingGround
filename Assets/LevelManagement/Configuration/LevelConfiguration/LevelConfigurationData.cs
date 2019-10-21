@@ -4,7 +4,7 @@ using PlayerActions;
 using RangeObjects;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace LevelManagement
 {
     [Serializable]
     [CreateAssetMenu(fileName = "LevelConfigurationData", menuName = "Configuration/PuzzleGame/LevelConfiguration/LevelConfigurationDataData", order = 1)]

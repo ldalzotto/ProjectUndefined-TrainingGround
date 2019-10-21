@@ -3,7 +3,7 @@ using ConfigurationEditor;
 using LevelManagement;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace LevelManagement
 {
     [Serializable]
     [CreateAssetMenu(fileName = "LevelConfiguration", menuName = "Configuration/PuzzleGame/LevelConfiguration/LevelConfiguration", order = 1)]

@@ -4,6 +4,7 @@ using RTPuzzle;
 using System;
 using Editor_MainGameCreationWizard;
 using System.Collections.Generic;
+using LevelManagement;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
@@ -18,8 +19,7 @@ namespace Editor_PuzzleLevelCreationWizard
             var levelConfiguration = editorInformationsData.CommonGameConfigurations.GetConfiguration<LevelConfiguration>();
             var createdAsset = this.CreateAsset(InstancePath.GetConfigurationDataPath(levelConfiguration), editorInformationsData.LevelZonesID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
             levelConfiguration.SetEntry(editorInformationsData.LevelZonesID, createdAsset);
-              editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.GetConfiguration<LevelConfiguration>(), editorInformationsData.LevelZonesID, createdAsset);
+            editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.GetConfiguration<LevelConfiguration>(), editorInformationsData.LevelZonesID, createdAsset);
         }
-
     }
 }
