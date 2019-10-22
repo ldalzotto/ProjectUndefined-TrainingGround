@@ -113,6 +113,7 @@ namespace Tutorial
         private void OnTutorialStepFinished()
         {
             this.TutorialStepManagerEventListener.OnTutorialStepManagerEnd(this.TutorialStepID);
+            this.tutorialPlayer = null;
         }
 
         public void Interrupt()
@@ -120,7 +121,6 @@ namespace Tutorial
             if (tutorialPlayer != null)
             {
                 tutorialPlayer.InterruptAllActions();
-                tutorialPlayer = null;
             }
         }
 
