@@ -36,8 +36,7 @@ namespace CoreGame
             TutorialStepConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.TutorialStepConfiguration();
             TutorialActionInput = new TutorialActionInput(CoreGameSingletonInstances.GameCanvas,
                 CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration(),
-                CoreGameSingletonInstances.DiscussionPositionManager,
-                CoreGameSingletonInstances.PlayerManagerType);
+                CoreGameSingletonInstances.DiscussionPositionManager);
             TutorialStatePersister = new TutorialStatePersister();
             TutorialStepFInishedThisFrame = new List<TutorialStepID>();
         }

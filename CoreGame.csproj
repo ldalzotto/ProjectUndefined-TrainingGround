@@ -182,11 +182,7 @@
      <Compile Include="Assets\~CoreGame\Persistance\Script\PersistanceManager.cs" />
      <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV3.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAdventurePositionManager.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\AnimationDataManager.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerManagerType.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />

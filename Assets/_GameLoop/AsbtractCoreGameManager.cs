@@ -32,7 +32,6 @@ namespace GameLoop
 
             if (this.levelType != LevelType.STARTMENU)
             {
-                CoreGameSingletonInstances.PlayerAdventurePositionManager.Init();
                 LevelChunkFXTransitionManager.Get().Init();
                 CoreGameSingletonInstances.Coroutiner.StartCoroutine(InitializeTimelinesAtEndOfFrame());
             }

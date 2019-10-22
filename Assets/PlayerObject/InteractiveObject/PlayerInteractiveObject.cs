@@ -42,6 +42,11 @@ namespace PlayerObject
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(this, GameInputManager,
                 PlayerActionEntryPoint.Get());
 
+            //Getting persisted position
+            PlayerPositionPersistanceManager.Get().Init(this);
+            this.InteractiveGameObject.InteractiveGameObjectParent.transform.position = PlayerPositionPersistanceManager.Get().PlayerPositionBeforeLevelLoad.GetPosition();
+            this.InteractiveGameObject.InteractiveGameObjectParent.transform.rotation = PlayerPositionPersistanceManager.Get().PlayerPositionBeforeLevelLoad.GetQuaternion();
+
             AfterConstructor();
         }
 

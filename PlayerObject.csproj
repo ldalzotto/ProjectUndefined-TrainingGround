@@ -59,9 +59,12 @@
      <Compile Include="Assets\PlayerObject\BlockingCutscene\BlockingCutscenePlayerManager.cs" />
      <Compile Include="Assets\PlayerObject\Configuration\PlayerConfigurationGameObject.cs" />
      <Compile Include="Assets\PlayerObject\Configuration\PlayerGlobalConfiguration\PlayerGlobalConfiguration.cs" />
+     <Compile Include="Assets\PlayerObject\InteractiveObject\Managers\PlayerInteractiveObjectManager.cs" />
      <Compile Include="Assets\PlayerObject\InteractiveObject\PlayerInteractiveObject.cs" />
      <Compile Include="Assets\PlayerObject\InteractiveObject\PlayerInteractiveObjectInitializer.cs" />
-     <Compile Include="Assets\PlayerObject\Managers\PlayerInteractiveObjectManager.cs" />
+     <Compile Include="Assets\PlayerObject\Lib\PlayerBodyPhysicsEnvironment.cs" />
+     <Compile Include="Assets\PlayerObject\Lib\PlayerInputMoveManager.cs" />
+     <Compile Include="Assets\PlayerObject\PositionPersistance\PlayerPositionPersistanceManager.cs" />
      <None Include="Assets\PlayerObject\PlayerObject.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

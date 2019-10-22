@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using GameConfigurationID;
+﻿using GameConfigurationID;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -10,14 +9,12 @@ namespace CoreGame
         public Canvas MainCanvas;
         public DiscussionTextConfiguration DiscussionTextConfiguration;
         public DiscussionPositionManager DiscussionPositionManager;
-        public PlayerManagerType PlayerManagerType;
 
-        public TutorialActionInput(Canvas mainCanvas, DiscussionTextConfiguration discussionTextConfiguration, DiscussionPositionManager discussionPositionManager, PlayerManagerType playerManagerType)
+        public TutorialActionInput(Canvas mainCanvas, DiscussionTextConfiguration discussionTextConfiguration, DiscussionPositionManager discussionPositionManager)
         {
             MainCanvas = mainCanvas;
             DiscussionTextConfiguration = discussionTextConfiguration;
             DiscussionPositionManager = discussionPositionManager;
-            PlayerManagerType = playerManagerType;
         }
     }
 }

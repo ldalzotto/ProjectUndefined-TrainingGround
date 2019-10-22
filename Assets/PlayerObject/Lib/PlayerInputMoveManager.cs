@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
-namespace CoreGame
+namespace PlayerObject
 {
     #region Player Movement
+
     public abstract class PlayerMoveManager
     {
         private float SpeedMultiplicationFactor;
@@ -19,9 +21,20 @@ namespace CoreGame
             PlayerRigidBody = playerRigidBody;
         }
 
-        public PlayerSpeedProcessingInput PlayerSpeedProcessingInput { get => playerSpeedProcessingInput; }
-        public bool HasMoved { get => hasMoved; }
-        public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; }
+        public PlayerSpeedProcessingInput PlayerSpeedProcessingInput
+        {
+            get => playerSpeedProcessingInput;
+        }
+
+        public bool HasMoved
+        {
+            get => hasMoved;
+        }
+
+        public float PlayerSpeedMagnitude
+        {
+            get => playerSpeedMagnitude;
+        }
 
         public void Tick(float d)
         {
@@ -57,7 +70,7 @@ namespace CoreGame
         private IGameInputManager GameInputManager;
 
         public PlayerInputMoveManager(float SpeedMultiplicationFactor, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
-             : base(SpeedMultiplicationFactor, playerRigidBody)
+            : base(SpeedMultiplicationFactor, playerRigidBody)
         {
             CameraPivotPoint = cameraPivotPoint;
             GameInputManager = gameInputManager;
@@ -95,10 +108,18 @@ namespace CoreGame
             this.playerSpeedMagnitude = playerSpeedMagnitude;
         }
 
-        public Vector3 PlayerMovementOrientation { get => playerMovementOrientation; set => playerMovementOrientation = value; }
-        public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; set => playerSpeedMagnitude = value; }
+        public Vector3 PlayerMovementOrientation
+        {
+            get => playerMovementOrientation;
+            set => playerMovementOrientation = value;
+        }
+
+        public float PlayerSpeedMagnitude
+        {
+            get => playerSpeedMagnitude;
+            set => playerSpeedMagnitude = value;
+        }
     }
 
     #endregion
 }
-

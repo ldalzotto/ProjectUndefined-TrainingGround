@@ -10,10 +10,8 @@ namespace CoreGame
         private static GameInputManager gameInputManager;
         private static Coroutiner coroutiner;
         private static TimelinesEventManager timelinesEventManager;
-        private static PlayerAdventurePositionManager playerAdventurePositionManager;
         private static DiscussionPositionManager discussionPositionManager;
         private static CoreConfigurationManager coreConfigurationManager;
-        private static PlayerManagerType playerManagerType;
         private static CoreStaticConfigurationContainer coreStaticConfigurationContainer;
         private static AutoSaveIcon autoSaveIcon;
         private static DiscussionPositionsType discussionPositionsType;
@@ -28,13 +26,9 @@ namespace CoreGame
         public static Coroutiner Coroutiner => FindAndSetInstanceIfNull(coroutiner, obj => coroutiner = obj);
         public static TimelinesEventManager TimelinesEventManager => FindAndSetInstanceIfNull(timelinesEventManager, obj => timelinesEventManager = obj);
 
-        public static PlayerAdventurePositionManager PlayerAdventurePositionManager => FindAndSetInstanceIfNull(playerAdventurePositionManager, obj => playerAdventurePositionManager = obj);
-
         public static DiscussionPositionManager DiscussionPositionManager => FindAndSetInstanceIfNull(discussionPositionManager, obj => discussionPositionManager = obj);
 
         public static CoreConfigurationManager CoreConfigurationManager => FindAndSetInstanceIfNull(coreConfigurationManager, obj => coreConfigurationManager = obj);
-
-        public static PlayerManagerType PlayerManagerType => FindAndSetInstanceIfNull(playerManagerType, obj => playerManagerType = obj);
 
         public static CoreStaticConfigurationContainer CoreStaticConfigurationContainer => FindAndSetInstanceIfNull(coreStaticConfigurationContainer, obj => coreStaticConfigurationContainer = obj);
 

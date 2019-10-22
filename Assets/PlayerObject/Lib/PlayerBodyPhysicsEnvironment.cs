@@ -1,14 +1,15 @@
 ﻿using System;
+using CoreGame;
 using UnityEngine;
 
-namespace CoreGame
+namespace PlayerObject
 {
     public class PlayerBodyPhysicsEnvironment
     {
         private GroundRayCaster GroundRayCaster;
         private StickGroundBodyPositioner StickGroundBodyPositioner;
         private SlopeVelocityAdjuster SlopeVelocityAdjuster;
-        
+
         public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, Collider collider, float MinimumDistanceToStick)
         {
             GroundRayCaster = new GroundRayCaster(rigidbody, collider);
@@ -34,7 +35,6 @@ namespace CoreGame
         {
             this.SlopeVelocityAdjuster.ResetSpeed();
         }
-
     }
 
     class GroundRayCaster
@@ -109,7 +109,6 @@ namespace CoreGame
             rigidbody.velocity = slopeQuaternion * rigidbody.velocity;
             Debug.DrawRay(rigidbody.position, rigidBodyProjectedNormal * 10, Color.green);
             Debug.DrawRay(rigidbody.position, rigidbody.velocity * 10, Color.red);
-
         }
 
         internal void ResetSpeed()
