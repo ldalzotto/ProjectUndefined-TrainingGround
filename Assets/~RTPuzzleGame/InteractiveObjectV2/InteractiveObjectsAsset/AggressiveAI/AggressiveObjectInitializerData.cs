@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using AIObjects;
 using InteractiveObjects;
 
 namespace InteractiveObjects
@@ -20,4 +21,3 @@ namespace InteractiveObjects
         }
     }
 }
-

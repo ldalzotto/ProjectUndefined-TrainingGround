@@ -18,7 +18,9 @@
 "GameLoop",
 "LevelManagement",
 "PlayerObject",
-"Tutorial"
+"Tutorial",
+"AIObjects",
+"VisualFeedback"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

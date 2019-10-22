@@ -1,0 +1,19 @@
+{
+    "name": "AIObjects",
+    "references": [
+"CoreGame",
+"OdinSerializer",
+"Editor_Common",
+"InteractiveObjects",
+"InteractiveObjects_Interfaces",
+"VisualFeedback"
+],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

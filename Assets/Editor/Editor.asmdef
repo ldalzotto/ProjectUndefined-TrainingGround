@@ -11,7 +11,9 @@
     "InteractiveObjects_Interfaces",
     "RangeObjects",
 "LevelManagement",
-"Tutorial"
+"Tutorial",
+"AIObjects",
+"VisualFeedback"
   ],
   "includePlatforms": [
     "Editor"

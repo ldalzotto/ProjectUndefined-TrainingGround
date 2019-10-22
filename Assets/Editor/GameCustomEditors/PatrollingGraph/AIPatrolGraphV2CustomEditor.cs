@@ -1,6 +1,7 @@
 ﻿using RTPuzzle;
 using System.Collections.Generic;
 using System.Reflection;
+using AIObjects;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,12 +43,12 @@ public class AIPatrolGraphV2CustomEditor : Editor
                     {
                         case GraphPatrolLineAttribute WireTargetLineDrawAttribute:
 
-                            var sourcePosition = this.AddRootToPosition(((AIMoveToActionInputData)targetField.GetValue(target)).GetWorldPosition());
-                            var targetPosition = this.AddRootToPosition(((AIMoveToActionInputData)target.GetType().GetField(WireTargetLineDrawAttribute.FieldTargetWorldPosition).GetValue(target)).GetWorldPosition());
+                            var sourcePosition = this.AddRootToPosition(((AIMoveToActionInputData) targetField.GetValue(target)).GetWorldPosition());
+                            var targetPosition = this.AddRootToPosition(((AIMoveToActionInputData) target.GetType().GetField(WireTargetLineDrawAttribute.FieldTargetWorldPosition).GetValue(target)).GetWorldPosition());
                             HandlesHelper.DrawArrow(sourcePosition, targetPosition, Color.white);
                             break;
                         case GraphPatrolPointAttribute WireCircleAttributePositionned:
-                            var position = this.AddRootToPosition(((AIMoveToActionInputData)targetField.GetValue(target)).GetWorldPosition());
+                            var position = this.AddRootToPosition(((AIMoveToActionInputData) targetField.GetValue(target)).GetWorldPosition());
                             var oldC = Handles.color;
                             Handles.color = WireCircleAttributePositionned.GetColor();
                             Handles.DrawWireDisc(position, Vector3.up, 1f);
@@ -55,7 +56,6 @@ public class AIPatrolGraphV2CustomEditor : Editor
                             Handles.color = oldC;
                             break;
                     }
-
                 }
             }
 
@@ -67,5 +67,4 @@ public class AIPatrolGraphV2CustomEditor : Editor
     {
         return position + (target as AIPatrolGraphV2).RootWorldPosition;
     }
-
 }

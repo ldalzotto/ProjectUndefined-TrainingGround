@@ -1,14 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "PuzzleStaticConfiguration", menuName = "Configuration/PuzzleGame/StaticConfiguration/PuzzleStaticConfiguration", order = 1)]
     public class PuzzleStaticConfiguration : ScriptableObject
     {
         public RangeColorConfiguration RangeColorConfiguration;
-        public PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
         public PuzzleMaterialConfiguration PuzzleMaterialConfiguration;
     }
 }

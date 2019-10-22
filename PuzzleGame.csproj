@@ -56,30 +56,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIMoveToActionV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIWarpActionV2.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\Interfaces\IActionAbortedOnDestinationReached.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolGraphV2.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\LevelCompletion\Managers\LevelCompletionManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Configuration\DottedLineInherentData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\ILinePositioning.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LinePositioning\LineFollowTransformPositioning.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LineTypes\DottedLine.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Lib\LineTypes\DottedLineGameObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Managers\DottedLineManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Managers\DottedLineRendererManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PuzzleGameSingletonInstances.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfigurationContainer.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzleMaterialConfiguration\PuzzleMaterialConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzlePrefabConfiguration\PuzzlePrefabConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
@@ -91,26 +76,19 @@
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AITestDisarmLocalCutscene.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AbstractAIInteractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveInteractiveObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveObjectInitializerData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIMoveToDestinationSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystem.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AIPatrol\AIPatrolSystemDefinition.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystem.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystemDefinition.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\DisarmObject\DisarmobjectSystem.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\DisarmObject\DisarmSystemDefinition.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystem.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LevelCompletionZone\LevelCompletionZoneSystemDefinition.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\LineVisualFeedbackSystem.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystem.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Sight\SightObjectSystemDefinition.cs" />
      <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
-     <None Include="Assets\~RTPuzzleGame\__Features\VisualFeedBack\LineVisualFeedback\Shader\DottedLineShader.shader" />
  <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
  </Reference>
@@ -735,6 +713,14 @@
     <ProjectReference Include="Tutorial.csproj">
       <Project>{5E7C0353-8FB9-B0AD-BB52-3277A43DE61F}</Project>
       <Name>Tutorial</Name>
+    </ProjectReference>
+    <ProjectReference Include="AIObjects.csproj">
+      <Project>{4B5DEF64-4FDA-7B80-40DB-F36B792B3884}</Project>
+      <Name>AIObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="VisualFeedback.csproj">
+      <Project>{7CB22E21-2248-2D5F-191C-57E9A683E3D8}</Project>
+      <Name>VisualFeedback</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

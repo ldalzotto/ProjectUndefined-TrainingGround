@@ -9,6 +9,7 @@ using System.Linq;
 using LevelManagement;
 using RangeObjects;
 using Tutorial;
+using VisualFeedback;
 
 public class TypeHelper
 {
@@ -36,6 +37,7 @@ public class TypeHelper
                 .Union(typeof(RangeObjectV2).Assembly.GetTypes())
                 .Union(typeof(LevelManager).Assembly.GetTypes())
                 .Union(typeof(TutorialManager).Assembly.GetTypes())
+                .Union(typeof(DottedLineManager).Assembly.GetTypes())
                 .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface).ToArray();
     }
 

@@ -9,6 +9,7 @@ using RangeObjects;
 using SelectableObject;
 using Tutorial;
 using UnityEngine;
+using VisualFeedback;
 
 namespace RTPuzzle
 {
@@ -62,7 +63,7 @@ namespace RTPuzzle
 
             TutorialManager.Get().Tick(d);
             PuzzleTutorialEventSenderManager.Get().Tick(d);
-            
+
             BlockingCutscenePlayerManager.Get().Tick(d);
 
             PlayerActionEntryPoint.Get().Tick(d);

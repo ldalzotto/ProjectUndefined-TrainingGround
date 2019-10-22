@@ -20,7 +20,6 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
-        private DottedLineRendererManager DottedLineRendererManager = DottedLineRendererManager.Get();
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
 
         #endregion

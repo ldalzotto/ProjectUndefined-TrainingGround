@@ -1,6 +1,6 @@
 ﻿using System;
 using CoreGame;
-using RTPuzzle;
+using VisualFeedback;
 
 namespace Tests
 {

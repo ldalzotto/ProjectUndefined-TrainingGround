@@ -1,5 +1,6 @@
-﻿using GameConfigurationID;
+﻿using AIObjects;
 using InteractiveObjects_Interfaces;
+using VisualFeedback;
 
 namespace InteractiveObjects
 {
