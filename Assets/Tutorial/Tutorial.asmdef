@@ -6,7 +6,9 @@
 "InteractiveObjects",
 "InteractiveObjects_Interfaces",
 "PlayerActions_Interfaces",
-"GameConfigurationID"
+"GameConfigurationID",
+"OdinSerializer",
+"Editor_Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

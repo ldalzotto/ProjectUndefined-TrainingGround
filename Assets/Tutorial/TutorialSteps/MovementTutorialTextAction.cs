@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGame;
-using GameConfigurationID;
 using PlayerObject;
 using UnityEngine;
 
@@ -9,15 +8,16 @@ namespace Tutorial
 {
     public class MovementTutorialTextAction : AbstractTutorialTextAction
     {
-        private DiscussionPositionMarkerID DiscussionPositionMarkerID;
+        private MovementTutorialTextActionDefinition MovementTutorialTextActionDefinition;
 
         public override void AfterFinishedEventProcessed()
         {
         }
 
-        public MovementTutorialTextAction(DiscussionTextID DiscussionTextID, DiscussionPositionMarkerID DiscussionPositionMarkerID, List<SequencedAction> nextActions) : base(DiscussionTextID, nextActions)
+        public MovementTutorialTextAction(MovementTutorialTextActionDefinition MovementTutorialTextActionDefinition,
+            List<SequencedAction> nextActions) : base(nextActions)
         {
-            this.DiscussionPositionMarkerID = DiscussionPositionMarkerID;
+            this.MovementTutorialTextActionDefinition = MovementTutorialTextActionDefinition;
         }
 
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
@@ -29,24 +29,32 @@ namespace Tutorial
             #endregion
 
             base.FirstExecutionAction(ContextActionInput);
-            this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.DiscussionTextID],
-                DiscussionPositionManager.Get().GetDiscussionPosition(DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
+            this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.MovementTutorialTextActionDefinition.DiscussionTextID],
+                DiscussionPositionManager.Get().GetDiscussionPosition(this.MovementTutorialTextActionDefinition.DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
         }
 
         protected override ITutorialTextActionManager GetTutorialTextManager()
         {
-            return new MovementTutorialTextActionmanager();
+            return new MovementTutorialTextActionmanager(this.MovementTutorialTextActionDefinition);
         }
     }
 
     class MovementTutorialTextActionmanager : ITutorialTextActionManager
     {
+        private MovementTutorialTextActionDefinition MovementTutorialTextActionDefinition;
+
+        public MovementTutorialTextActionmanager(MovementTutorialTextActionDefinition MovementTutorialTextActionDefinition)
+        {
+            this.MovementTutorialTextActionDefinition = MovementTutorialTextActionDefinition;
+        }
+
         private float playerCrossedDistance = 0f;
         private Nullable<Vector3> lastFramePlayerPosition;
 
         private PlayerInteractiveObject PlayerInteractiveObject;
 
-        public void FirstExecutionAction(DiscussionTextID DiscussionTextID, DiscussionWindow discussionWindow)
+
+        public void FirstExecutionAction()
         {
             this.playerCrossedDistance = 0f;
             this.lastFramePlayerPosition = null;
@@ -65,7 +73,7 @@ namespace Tutorial
 
                 this.lastFramePlayerPosition = currentPlayerPosition;
 
-                if (this.playerCrossedDistance >= 20)
+                if (this.playerCrossedDistance >= this.MovementTutorialTextActionDefinition.PlayerCrossedDistance)
                 {
                     this.playerCrossedDistance = -1;
                     return true;

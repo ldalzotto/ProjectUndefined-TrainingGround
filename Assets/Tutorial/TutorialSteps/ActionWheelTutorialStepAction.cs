@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using CoreGame;
-using GameConfigurationID;
 using PlayerActions_Interfaces;
 
 namespace Tutorial
 {
     public class ActionWheelTutorialStepAction : AbstractTutorialTextAction
     {
-        private DiscussionPositionMarkerID DiscussionPositionMarkerID;
+        private ActionWheelTutorialStepActionDefinition ActionWheelTutorialStepActionDefinition;
         private PuzzlePlayerActionWheelOpenTutorialTextActionManager PuzzlePlayerActionWheelOpenTutorialTextActionManager;
 
-        public ActionWheelTutorialStepAction(DiscussionTextID DiscussionTextID, DiscussionPositionMarkerID DiscussionPositionMarkerID, List<SequencedAction> nextActions) : base(DiscussionTextID, nextActions)
+        public ActionWheelTutorialStepAction(ActionWheelTutorialStepActionDefinition ActionWheelTutorialStepActionDefinition, List<SequencedAction> nextActions) : base(nextActions)
         {
-            this.DiscussionPositionMarkerID = DiscussionPositionMarkerID;
+            this.ActionWheelTutorialStepActionDefinition = ActionWheelTutorialStepActionDefinition;
         }
 
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
@@ -24,8 +23,8 @@ namespace Tutorial
             #endregion
 
             base.FirstExecutionAction(ContextActionInput);
-            this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.DiscussionTextID],
-                DiscussionPositionManager.Get().GetDiscussionPosition(DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
+            this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.ActionWheelTutorialStepActionDefinition.DiscussionTextID],
+                DiscussionPositionManager.Get().GetDiscussionPosition(this.ActionWheelTutorialStepActionDefinition.DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
         }
 
         protected override ITutorialTextActionManager GetTutorialTextManager()
@@ -50,7 +49,7 @@ namespace Tutorial
     {
         private bool isPlayerActionWheelAwaken;
 
-        public void FirstExecutionAction(DiscussionTextID DiscussionTextID, DiscussionWindow discussionWindow)
+        public void FirstExecutionAction()
         {
             PlayerActionsEventListenerManager.Get().RegisterOnPlayerActionSelectionWheelAwakeEventListener(this.OnPlayerActionWheelAwake);
         }

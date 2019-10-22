@@ -10,7 +10,8 @@
     "InteractiveObjects",
     "InteractiveObjects_Interfaces",
     "RangeObjects",
-"LevelManagement"
+"LevelManagement",
+"Tutorial"
   ],
   "includePlatforms": [
     "Editor"

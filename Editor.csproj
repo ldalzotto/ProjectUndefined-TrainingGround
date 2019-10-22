@@ -797,6 +797,10 @@
       <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
       <Name>LevelManagement</Name>
     </ProjectReference>
+    <ProjectReference Include="Tutorial.csproj">
+      <Project>{5E7C0353-8FB9-B0AD-BB52-3277A43DE61F}</Project>
+      <Name>Tutorial</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

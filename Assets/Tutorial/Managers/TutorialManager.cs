@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
-using GameConfigurationID;
 
 namespace Tutorial
 {
@@ -58,15 +57,7 @@ namespace Tutorial
 
             if (!TutorialStatePersister.GetTutorialState(tutorialStepID))
             {
-                switch (tutorialStepID)
-                {
-                    case TutorialStepID.TUTORIAL_MOVEMENT:
-                        PlayingTutorialStepManager.Play(new MovementTutorialTextAction(DiscussionTextID.Tutorial_Movement, DiscussionPositionMarkerID.TOP_LEFT, null), tutorialStepID);
-                        break;
-                    case TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE:
-                        PlayingTutorialStepManager.Play(new ActionWheelTutorialStepAction(DiscussionTextID.Tutorial_PuzzleContextAactionAwake, DiscussionPositionMarkerID.TOP_LEFT, null), tutorialStepID);
-                        break;
-                }
+                PlayingTutorialStepManager.Play(TutorialConfigurationGameObject.Get().TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialStepActionDefinition.BuildTutorialAction(), tutorialStepID);
             }
         }
 

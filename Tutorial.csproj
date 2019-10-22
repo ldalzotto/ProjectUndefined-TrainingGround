@@ -56,12 +56,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Tutorial\Configuration\TutorialConfigurationGameObject.cs" />
+     <Compile Include="Assets\Tutorial\Configuration\TutorialStep\TutorialStepConfiguration.cs" />
+     <Compile Include="Assets\Tutorial\Configuration\TutorialStep\TutorialStepConfigurationInherentData.cs" />
      <Compile Include="Assets\Tutorial\Managers\TutorialManager.cs" />
      <Compile Include="Assets\Tutorial\Managers\TutorialStatePersister.cs" />
      <Compile Include="Assets\Tutorial\PuzzleTutorialEventSenderManager.cs" />
      <Compile Include="Assets\Tutorial\TutorialSteps\Abstract\AbstractTutorialTextAction.cs" />
+     <Compile Include="Assets\Tutorial\TutorialSteps\ActionWheelTutorialStepAction.cs" />
+     <Compile Include="Assets\Tutorial\TutorialSteps\ActionWheelTutorialStepActionDefinition.cs" />
      <Compile Include="Assets\Tutorial\TutorialSteps\MovementTutorialTextAction.cs" />
-     <Compile Include="Assets\Tutorial\TutorialSteps\PuzzleTutorialTextAction.cs" />
+     <Compile Include="Assets\Tutorial\TutorialSteps\MovementTutorialTextActionDefinition.cs" />
      <Compile Include="Assets\Tutorial\TutorialSteps\TutorialStepID.cs" />
      <None Include="Assets\Tutorial\Tutorial.asmdef" />
  <Reference Include="UnityEditor.UI">
@@ -641,6 +646,14 @@
     <ProjectReference Include="GameConfigurationID.csproj">
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>
+    </ProjectReference>
+    <ProjectReference Include="OdinSerializer.csproj">
+      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
+      <Name>OdinSerializer</Name>
+    </ProjectReference>
+    <ProjectReference Include="Editor_Common.csproj">
+      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
+      <Name>Editor_Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
