@@ -67,7 +67,6 @@
      <Compile Include="Assets\@GameConfigurationID\IDs\InputID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\ItemID.cs" />
      <Compile Include="Assets\@GameConfigurationID\IDs\TimelineID.cs" />
-     <Compile Include="Assets\@GameConfigurationID\IDs\TutorialStepID.cs" />
      <None Include="Assets\@GameConfigurationID\GameConfigurationID.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

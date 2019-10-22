@@ -1,0 +1,19 @@
+{
+    "name": "Tutorial",
+    "references": [
+        "CoreGame",
+        "PlayerObject",
+"InteractiveObjects",
+"InteractiveObjects_Interfaces",
+"PlayerActions_Interfaces",
+"GameConfigurationID"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

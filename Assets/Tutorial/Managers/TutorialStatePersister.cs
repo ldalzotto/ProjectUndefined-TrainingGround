@@ -1,10 +1,9 @@
-﻿using GameConfigurationID;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using CoreGame;
 using UnityEngine;
 
-namespace CoreGame
+namespace Tutorial
 {
     public class TutorialStatePersister : AbstractGamePersister<TutorialState>
     {
@@ -16,7 +15,11 @@ namespace CoreGame
 
         public bool GetTutorialState(TutorialStepID TutorialStepID)
         {
-            if (this.LoadedTutorialState == null) { this.LoadedTutorialState = this.Load(); }
+            if (this.LoadedTutorialState == null)
+            {
+                this.LoadedTutorialState = this.Load();
+            }
+
             if (this.LoadedTutorialState == null)
             {
                 this.InitTutorialState();
@@ -43,12 +46,11 @@ namespace CoreGame
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class TutorialState
     {
-        [SerializeField]
-        public Dictionary<TutorialStepID, bool> TutorialStepState;
-        
+        [SerializeField] public Dictionary<TutorialStepID, bool> TutorialStepState;
+
         public TutorialState()
         {
             this.TutorialStepState = new Dictionary<TutorialStepID, bool>();

@@ -124,8 +124,6 @@
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfigurationInherentData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TimelineConfiguration\TimelineConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepInherentData.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForNavAgentDestinationReached.cs" />
@@ -187,15 +185,6 @@
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
      <Compile Include="Assets\~CoreGame\Timelines\TimelinesEventManager.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\Abstract\AbstractTutorialTextAction.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialActionInput.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialTextAction.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Edges\TutorialTextEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Nodes\TutorialTextNode.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\TutorialGraph.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialGraphEvents.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
      <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
      <Compile Include="Assets\Test\PlayableAnimatorTest\AnimatorSetterTest.cs" />
      <Compile Include="Assets\Test\PlayableAnimatorTest\MyAnimatorBehavior.cs" />

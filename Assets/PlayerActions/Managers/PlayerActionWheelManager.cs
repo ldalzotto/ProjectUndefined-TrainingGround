@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
+using PlayerActions_Interfaces;
 using SelectionWheel;
 using UnityEngine;
 
@@ -29,6 +30,7 @@ namespace PlayerActions
         internal void PlayerActionWheelAwake(List<RTPPlayerAction> availablePlayerActions, Transform followingWorldTransform)
         {
             this.PlayerActionSelectionWheel.AwakeWheel(availablePlayerActions.ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData), followingWorldTransform);
+            PlayerActionsEventListenerManager.Get().OnPlayerActionSelectionWheelAwake();
         }
 
         internal void PlayerActionWheelSleep(bool detroyImmediate)

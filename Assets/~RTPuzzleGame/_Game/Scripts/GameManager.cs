@@ -7,6 +7,7 @@ using PlayerActions;
 using PlayerObject;
 using RangeObjects;
 using SelectableObject;
+using Tutorial;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -16,8 +17,6 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
 #endif
-
-        private TutorialManager TutorialManager;
 
         private void Awake()
         {
@@ -34,9 +33,6 @@ namespace RTPuzzle
         private void Start()
         {
             OnStart();
-
-            TutorialManager = CoreGameSingletonInstances.TutorialManager;
-
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
 
 
@@ -47,7 +43,7 @@ namespace RTPuzzle
             CameraMovementManager.Get().Init();
 
             CircleFillBarRendererManager.Get().Init();
-            TutorialManager.Init();
+            TutorialManager.Get().Init();
             SelectableObjectManagerV2.Get().Init(CoreGameSingletonInstances.GameInputManager);
 
             PlayerActionEntryPoint.Get().Init();
@@ -64,9 +60,9 @@ namespace RTPuzzle
             BeforeTick(d);
 
 
-            TutorialManager.Tick(d);
-
+            TutorialManager.Get().Tick(d);
             PuzzleTutorialEventSenderManager.Get().Tick(d);
+            
             BlockingCutscenePlayerManager.Get().Tick(d);
 
             PlayerActionEntryPoint.Get().Tick(d);

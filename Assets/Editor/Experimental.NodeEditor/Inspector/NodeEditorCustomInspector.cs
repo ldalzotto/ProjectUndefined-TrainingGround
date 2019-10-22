@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using Editor_LevelAvailabilityNodeEditor;
+﻿using Editor_LevelAvailabilityNodeEditor;
 using NodeGraph;
 using UnityEditor;
 using UnityEngine;
@@ -15,8 +14,6 @@ namespace Experimental.Editor_NodeEditor
             {
                 if (target.GetType() == typeof(LevelAvailabilityNodeEditorProfile))
                     LevelAvailabilityNodeEditor.Init((NodeEditorProfile) target, typeof(LevelAvailabilityNodeEditor));
-                else if (target.GetType() == typeof(TutorialGraph))
-                    TutorialNodeEditor.Init((NodeEditorProfile) target);
                 else
                     Debug.LogError("NodeEditor not defined.");
             }

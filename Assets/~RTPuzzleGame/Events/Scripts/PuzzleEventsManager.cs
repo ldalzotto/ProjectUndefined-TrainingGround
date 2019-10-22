@@ -12,7 +12,6 @@ namespace RTPuzzle
             PuzzleLevelTransitionManager = LevelTransitionManager.Get();
             TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             LevelManager = LevelManager.Get();
-            TutorialManager = CoreGameSingletonInstances.TutorialManager;
         }
 
 
@@ -23,8 +22,6 @@ namespace RTPuzzle
         private TimelinesEventManager TimelinesEventManager;
         private DottedLineRendererManager DottedLineRendererManager = DottedLineRendererManager.Get();
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
-
-        private TutorialManager TutorialManager;
 
         #endregion
 

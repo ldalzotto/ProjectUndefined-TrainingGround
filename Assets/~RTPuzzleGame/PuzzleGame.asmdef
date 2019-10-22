@@ -17,7 +17,8 @@
 "LevelManagement_Interfaces",
 "GameLoop",
 "LevelManagement",
-"PlayerObject"
+"PlayerObject",
+"Tutorial"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

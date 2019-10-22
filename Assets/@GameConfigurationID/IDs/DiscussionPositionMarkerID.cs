@@ -13,9 +13,6 @@ namespace GameConfigurationID {
   
   [System.Serializable()]
   public enum DiscussionPositionMarkerID {
-    
-    DISCUSSION_POSITION_1 = 0,
-    
     TOP_LEFT = 1,
   }
 }

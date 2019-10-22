@@ -130,7 +130,6 @@
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineNode\LevelAvailabilityNodeProfile.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineWorkflowActionNode\LevelAvailabilityLevelCompletedWorkflowActionEdge.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineWorkflowActionNode\LevelUnlockWorklowActionV2.cs" />
-     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TutorialNodeEditor.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
      <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
      <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
