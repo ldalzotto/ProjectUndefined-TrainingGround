@@ -1,8 +1,8 @@
-﻿using Persistence;
+﻿using CoreGame;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CoreGame
+namespace Persistence
 {
     public class AutoSaveIcon
     {

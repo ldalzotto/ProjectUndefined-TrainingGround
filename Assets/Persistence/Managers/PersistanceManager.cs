@@ -22,7 +22,7 @@ namespace Persistence
         public virtual void Init()
         {
             this.AutoSaveIcon = AutoSaveIcon.Get();
-            
+
             if (this.PersistanceManagerThreadObject == null)
             {
                 this.PersistanceManagerThreadObject = new PersistanceManagerThreadObject(OnNoMorePersistanceProcessingCallback: this.OnNoMorePersistanceProcessing);

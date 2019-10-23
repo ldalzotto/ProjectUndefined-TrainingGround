@@ -1,6 +1,6 @@
-﻿using CoreGame;
+﻿using System.Collections.Generic;
+using CoreGame;
 using InteractiveObjects;
-using System.Collections.Generic;
 using InteractiveObjects_Interfaces;
 
 namespace AIObjects
@@ -14,6 +14,7 @@ namespace AIObjects
 
         public AIMoveToActionV2(CoreInteractiveObject InteractiveObject, TransformStruct WorldPoint, AIMovementSpeedDefinition AIMovementSpeed, List<SequencedAction> nextActions) : base(nextActions)
         {
+            this.destinationReached = false;
             this.InteractiveObject = InteractiveObject;
             this.WorldPoint = WorldPoint;
             this.AIMovementSpeed = AIMovementSpeed;

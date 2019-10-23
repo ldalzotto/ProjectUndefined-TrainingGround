@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
-using Persistence;
 using UnityEngine;
 
-namespace CoreGame
+namespace Persistence
 {
     public abstract class AbstractGamePersister<T>
     {

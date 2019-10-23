@@ -56,14 +56,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Timelines\ATimeline.cs" />
-     <Compile Include="Assets\Timelines\ATimelinePersister.cs" />
-     <Compile Include="Assets\Timelines\ATimelinesManager.cs" />
      <Compile Include="Assets\Timelines\Configuration\TimelineConfiguration.cs" />
      <Compile Include="Assets\Timelines\Configuration\TimelineConfigurationGameObject.cs" />
      <Compile Include="Assets\Timelines\Configuration\TimelineID.cs" />
-     <Compile Include="Assets\Timelines\TimeLineAction.cs" />
-     <Compile Include="Assets\Timelines\TimelinesEventManager.cs" />
+     <Compile Include="Assets\Timelines\Events\TimelinesEventManager.cs" />
+     <Compile Include="Assets\Timelines\Managers\ATimelinesManager.cs" />
+     <Compile Include="Assets\Timelines\Persistance\ATimelinePersister.cs" />
+     <Compile Include="Assets\Timelines\Timelines\ATimeline.cs" />
+     <Compile Include="Assets\Timelines\Timelines\TimeLineAction.cs" />
      <None Include="Assets\Timelines\Timelines.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
