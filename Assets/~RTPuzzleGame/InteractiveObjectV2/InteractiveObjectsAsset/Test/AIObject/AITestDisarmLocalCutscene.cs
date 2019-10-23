@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using InteractiveObjects;
 using System.Collections.Generic;
+using SequencedAction;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -12,13 +13,16 @@ namespace RTPuzzle
         public BaseCutsceneAnimationActionInput BaseCutsceneAnimationActionInput;
         public float RepeatWaitForSeconds;
 
-        public override List<SequencedAction> GetSequencedActions(CoreInteractiveObject associatedInteractiveObject)
+        public override List<ASequencedAction> GetSequencedActions(CoreInteractiveObject associatedInteractiveObject)
         {
-            return new List<SequencedAction>() {
-                new BranchInfiniteLoopAction(new List<SequencedAction>(){
-                     new BaseCutsceneAnimationAction(this.BaseCutsceneAnimationActionInput, associatedInteractiveObject.CutsceneController, new List<SequencedAction>(){
-                         new CutsceneWorkflowWaitForSecondsAction(this.RepeatWaitForSeconds, null)
-                     })
+            return new List<ASequencedAction>()
+            {
+                new BranchInfiniteLoopAction(new List<ASequencedAction>()
+                {
+                    new BaseCutsceneAnimationAction(this.BaseCutsceneAnimationActionInput, associatedInteractiveObject.CutsceneController, () => new List<ASequencedAction>()
+                    {
+                        new CutsceneWorkflowWaitForSecondsAction(this.RepeatWaitForSeconds, null)
+                    })
                 })
             };
         }

@@ -1,23 +1,19 @@
-﻿using CoreGame;
+﻿using System;
 using System.Collections.Generic;
-using System;
 
-#if UNITY_EDITOR
-using NodeGraph_Editor;
-#endif
-
-namespace CoreGame
+namespace SequencedAction
 {
-    [System.Serializable]
-    public class CutsceneWorkflowAbortAction : SequencedAction
+    [Serializable]
+    public class CutsceneWorkflowAbortAction : ASequencedAction
     {
+        [NonSerialized] private List<ASequencedAction> sequencedActionsToInterrupt;
 
-        [NonSerialized]
-        private List<SequencedAction> sequencedActionsToInterrupt;
+        public List<ASequencedAction> SequencedActionsToInterrupt
+        {
+            set => sequencedActionsToInterrupt = value;
+        }
 
-        public List<SequencedAction> SequencedActionsToInterrupt { set => sequencedActionsToInterrupt = value; }
-
-        public CutsceneWorkflowAbortAction(List<SequencedAction> nextActions) : base(nextActions)
+        public CutsceneWorkflowAbortAction(Func<List<ASequencedAction>> nextActionsDeffered) : base(nextActionsDeffered)
         {
         }
 
@@ -30,7 +26,7 @@ namespace CoreGame
             return true;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             if (this.sequencedActionsToInterrupt != null)
             {
@@ -47,13 +43,5 @@ namespace CoreGame
         public override void Tick(float d)
         {
         }
-
-#if UNITY_EDITOR
-        public override void ActionGUI()
-        {
-            NodeEditorGUILayout.LabelField("");
-        }
-#endif
     }
-
 }

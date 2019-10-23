@@ -94,9 +94,6 @@
      <Compile Include="Assets\~CoreGame\_Helpers\TransformExtensions.cs" />
      <Compile Include="Assets\~CoreGame\_Interfaces\DataRetrieval\IMeshRendererRetrievable.cs" />
      <Compile Include="Assets\~CoreGame\_Interfaces\DataRetrieval\IRenderBoundRetrievable.cs" />
-     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedAction.cs" />
-     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedActionManager.cs" />
-     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedActionPlayer.cs" />
      <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
      <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
      <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
@@ -128,9 +125,6 @@
      <Compile Include="Assets\~CoreGame\Cutscene\AbstractCutscenePlayerManager.cs" />
      <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractRotateAction.cs" />
      <Compile Include="Assets\~CoreGame\Cutscene\Actions\BaseCutsceneAnimationAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\Branch\BranchInfiniteLoopAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowAbortAction.cs" />
-     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowWaitForSecondsAction.cs" />
      <Compile Include="Assets\~CoreGame\Cutscene\Actions\DummyCutsceneAction.cs" />
      <Compile Include="Assets\~CoreGame\Cutscene\Graph\AbstractCutsceneGraph.cs" />
      <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\Abstract\ACutsceneEdge.cs" />
@@ -771,6 +765,10 @@
     <ProjectReference Include="GameConfigurationID.csproj">
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>
+    </ProjectReference>
+    <ProjectReference Include="SequencedAction.csproj">
+      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
+      <Name>SequencedAction</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

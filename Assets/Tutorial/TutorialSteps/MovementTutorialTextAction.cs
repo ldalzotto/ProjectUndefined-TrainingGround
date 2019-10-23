@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CoreGame;
 using PlayerObject;
+using SequencedAction;
 using UnityEngine;
 
 namespace Tutorial
@@ -15,12 +16,12 @@ namespace Tutorial
         }
 
         public MovementTutorialTextAction(MovementTutorialTextActionDefinition MovementTutorialTextActionDefinition,
-            List<SequencedAction> nextActions) : base(nextActions)
+            Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
             this.MovementTutorialTextActionDefinition = MovementTutorialTextActionDefinition;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             #region External Dependencies
 
@@ -28,7 +29,7 @@ namespace Tutorial
 
             #endregion
 
-            base.FirstExecutionAction(ContextActionInput);
+            base.FirstExecutionAction();
             this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.MovementTutorialTextActionDefinition.DiscussionTextID],
                 DiscussionPositionManager.Get().GetDiscussionPosition(this.MovementTutorialTextActionDefinition.DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
         }

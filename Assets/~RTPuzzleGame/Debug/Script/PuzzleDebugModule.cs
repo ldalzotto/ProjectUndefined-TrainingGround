@@ -5,6 +5,19 @@ namespace RTPuzzle
     public class PuzzleDebugModule : MonoBehaviour
     {
 #if UNITY_EDITOR
+        private static PuzzleDebugModule Instance;
+
+        public static PuzzleDebugModule Get()
+        {
+            if (Instance == null)
+            {
+                Instance = GameObject.FindObjectOfType<PuzzleDebugModule>();
+            }
+
+            return Instance;
+        }
+
+
         public bool InstantProjectileHit;
         public bool TriggerLevelSuccessEvent;
 

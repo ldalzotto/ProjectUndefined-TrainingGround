@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CoreGame;
+using SequencedAction;
 
 namespace InteractiveObjects
 {
@@ -14,12 +14,12 @@ namespace InteractiveObjects
             if (CurrentPlayingCutscene != null) CurrentPlayingCutscene.Tick(d);
         }
 
-        public void PlayCutscene(List<SequencedAction> SequencedActions, Action OnCutsceneEnded = null, Action OnCutsceneKilled = null)
+        public void PlayCutscene(List<ASequencedAction> SequencedActions, Action OnCutsceneEnded = null, Action OnCutsceneKilled = null)
         {
             //A local cutscene is already playing
             if (CurrentPlayingCutscene != null) CurrentPlayingCutscene.Kill();
 
-            CurrentPlayingCutscene = new SequencedActionPlayer(SequencedActions, null,
+            CurrentPlayingCutscene = new SequencedActionPlayer(SequencedActions,
                 () =>
                 {
                     OnCutsceneEndedOrKilled();

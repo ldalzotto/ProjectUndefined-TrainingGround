@@ -5,6 +5,7 @@
         "Editor_Common",
         "OdinSerializer",
         "GameConfigurationID",
+"SequencedAction",
         "Unity.InputSystem",
         "Unity.RenderPipelines.Lightweight.Runtime"
     ],

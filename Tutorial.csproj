@@ -643,6 +643,10 @@
       <Project>{250DC794-4661-E9F3-0FB2-D25AF31B44EB}</Project>
       <Name>PlayerActions_Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="SequencedAction.csproj">
+      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
+      <Name>SequencedAction</Name>
+    </ProjectReference>
     <ProjectReference Include="GameConfigurationID.csproj">
       <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
       <Name>GameConfigurationID</Name>

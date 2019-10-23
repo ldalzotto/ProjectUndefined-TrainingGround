@@ -1,12 +1,13 @@
-﻿using CoreGame;
-using InteractiveObjects;
+﻿using System;
 using System.Collections.Generic;
 using AIObjects;
+using InteractiveObjects;
+using SequencedAction;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "AIPatrolGraphTest", menuName = "Test/AIPatrolGraphTest", order = 1)]
     public class AIPatrolGraphTest : AIPatrolGraphV2
     {
@@ -19,18 +20,18 @@ namespace RTPuzzle
         [GraphPatrolPointAttribute] [GraphPatrolLine(fieldTargetWorldPosition: nameof(AIPatrolGraphTest.P2))]
         public AIMoveToActionInputData P3;
 
-        public override List<SequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject)
+        public override List<ASequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject)
         {
-            return new List<SequencedAction>()
+            return new List<ASequencedAction>()
             {
-                new AIWarpActionV2(InvolvedInteractiveObject, this.TransformToWorldPosition(this.P1.WorldPoint), new List<SequencedAction>()
+                new AIWarpActionV2(InvolvedInteractiveObject, this.TransformToWorldPosition(this.P1.WorldPoint), () => new List<ASequencedAction>()
                 {
                     new BranchInfiniteLoopAction(
-                        new List<SequencedAction>()
+                        new List<ASequencedAction>()
                         {
-                            this.CreateAIMoveToActionV2(InvolvedInteractiveObject, this.P2, new List<SequencedAction>()
+                            this.CreateAIMoveToActionV2(InvolvedInteractiveObject, this.P2, () => new List<ASequencedAction>()
                             {
-                                this.CreateAIMoveToActionV2(InvolvedInteractiveObject, this.P1, new List<SequencedAction>()
+                                this.CreateAIMoveToActionV2(InvolvedInteractiveObject, this.P1, () => new List<ASequencedAction>()
                                 {
                                     this.CreateAIMoveToActionV2(InvolvedInteractiveObject, this.P3, null)
                                 })

@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
-using OdinSerializer;
+﻿using System;
 using System.Collections.Generic;
-using CoreGame;
 using InteractiveObjects;
+using OdinSerializer;
+using SequencedAction;
 
 namespace RTPuzzle
 {
-    [System.Serializable]
+    [Serializable]
     public abstract class LocalPuzzleCutsceneTemplate : SerializedScriptableObject
     {
-        public abstract List<SequencedAction> GetSequencedActions(CoreInteractiveObject associatedInteractiveObject);
+        public abstract List<ASequencedAction> GetSequencedActions(CoreInteractiveObject associatedInteractiveObject);
     }
-
 }

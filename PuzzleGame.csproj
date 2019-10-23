@@ -60,11 +60,6 @@
      <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectActionInherentData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\AbstractTemplates\LocalPuzzleCutsceneTemplate.cs" />
      <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PuzzleGameSingletonInstances.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfigurationContainer.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzleMaterialConfiguration\PuzzleMaterialConfiguration.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
      <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveAIObject.cs" />
@@ -724,6 +719,10 @@
     <ProjectReference Include="VisualFeedback.csproj">
       <Project>{7CB22E21-2248-2D5F-191C-57E9A683E3D8}</Project>
       <Name>VisualFeedback</Name>
+    </ProjectReference>
+    <ProjectReference Include="SequencedAction.csproj">
+      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
+      <Name>SequencedAction</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

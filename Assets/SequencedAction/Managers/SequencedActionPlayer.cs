@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoreGame
+namespace SequencedAction
 {
     public class SequencedActionPlayer
     {
         private SequencedActionManager SequencedActionManager;
-        private SequencedActionInput SequencedActionInput;
-        public List<SequencedAction> SequencedActions;
+        public List<ASequencedAction> SequencedActions;
 
         private Action OnCutsceneEnded;
         private Action OnCutsceneKilled;
 
-        public SequencedActionPlayer(List<SequencedAction> SequencedActions, SequencedActionInput SequencedActionInput, Action OnCutsceneEnded = null, Action OnCutsceneKilled = null)
+        public SequencedActionPlayer(List<ASequencedAction> SequencedActions, Action OnCutsceneEnded = null, Action OnCutsceneKilled = null)
         {
             this.OnCutsceneEnded = OnCutsceneEnded;
             this.OnCutsceneKilled = OnCutsceneKilled;
 
             this.SequencedActions = SequencedActions;
-            this.SequencedActionInput = SequencedActionInput;
-            this.SequencedActionManager = new SequencedActionManager((action) => this.SequencedActionManager.OnAddAction(action, this.SequencedActionInput), null, this.OnCutsceneEnded);
+            this.SequencedActionManager = new SequencedActionManager(this.OnCutsceneEnded);
         }
 
         public void Play()
         {
-            this.SequencedActionManager.OnAddActions(this.SequencedActions, this.SequencedActionInput);
+            this.SequencedActionManager.OnAddActions(this.SequencedActions);
         }
 
         public void Tick(float d)
@@ -39,7 +37,10 @@ namespace CoreGame
         {
             this.SequencedActionManager.InterruptAllActions();
             this.SequencedActionManager.CleatAllActions();
-            if (this.OnCutsceneKilled != null) { this.OnCutsceneKilled.Invoke(); }
+            if (this.OnCutsceneKilled != null)
+            {
+                this.OnCutsceneKilled.Invoke();
+            }
         }
 
         public bool IsPlaying()
@@ -47,7 +48,7 @@ namespace CoreGame
             return this.SequencedActionManager.IsPlaying();
         }
 
-        public List<SequencedAction> GetCurrentActions(bool includeWorkflowNested = false)
+        public List<ASequencedAction> GetCurrentActions(bool includeWorkflowNested = false)
         {
             return this.SequencedActionManager.GetCurrentActions(includeWorkflowNested);
         }

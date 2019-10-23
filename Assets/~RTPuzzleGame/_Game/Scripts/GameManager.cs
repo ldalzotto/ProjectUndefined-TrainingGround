@@ -135,17 +135,14 @@ namespace RTPuzzle
 #if UNITY_EDITOR
     public class EditorOnlyManagers
     {
-        private PuzzleDebugModule PuzzleDebugModule;
-
         public void Init()
         {
-            PuzzleDebugModule = PuzzleGameSingletonInstances.PuzzleDebugModule;
-            PuzzleDebugModule.Init();
+            PuzzleDebugModule.Get().Init();
         }
 
         public void Tick(float d)
         {
-            PuzzleDebugModule.Tick();
+            PuzzleDebugModule.Get().Tick();
         }
     }
 #endif

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CoreGame;
 using NodeGraph;
+using SequencedAction;
 
 namespace CoreGame
 {
@@ -11,11 +12,12 @@ namespace CoreGame
     {
         public override void AfterActionInitialized()
         {
-            List<SequencedAction> actionsToAbort = new List<SequencedAction>();
+            List<ASequencedAction> actionsToAbort = new List<ASequencedAction>();
             if (this.actionEdge.BackwardConnectedNodeEdges != null)
             {
-                actionsToAbort.AddRange(this.actionEdge.BackwardConnectedNodeEdges.ConvertAll(e => ((ICutsceneNode)e.NodeProfileRef).GetAction()));
+                actionsToAbort.AddRange(this.actionEdge.BackwardConnectedNodeEdges.ConvertAll(e => ((ICutsceneNode) e.NodeProfileRef).GetAction()));
             }
+
             this.actionEdge.associatedAction.SequencedActionsToInterrupt = actionsToAbort;
         }
 

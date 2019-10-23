@@ -644,6 +644,10 @@
       <Project>{7CB22E21-2248-2D5F-191C-57E9A683E3D8}</Project>
       <Name>VisualFeedback</Name>
     </ProjectReference>
+    <ProjectReference Include="SequencedAction.csproj">
+      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
+      <Name>SequencedAction</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

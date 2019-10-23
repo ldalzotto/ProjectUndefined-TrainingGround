@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</ProjectGuid>
+    <ProjectGuid>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>InteractiveObjects</AssemblyName>
+    <AssemblyName>SequencedAction</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,19 +56,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\InteractiveObjects\Configuration\AbstractInteractiveObjectV2Definition.cs" />
-     <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2Configuration.cs" />
-     <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2ConfigurationGameObject.cs" />
-     <Compile Include="Assets\InteractiveObjects\Configuration\InteractiveObjectV2DefinitionID.cs" />
-     <Compile Include="Assets\InteractiveObjects\Events\InteractiveObjectEventsManager.cs" />
-     <Compile Include="Assets\InteractiveObjects\InteractiveGameObject\InteractiveGameObject.cs" />
-     <Compile Include="Assets\InteractiveObjects\InteractiveObject.cs" />
-     <Compile Include="Assets\InteractiveObjects\InteractiveObjectInitializer.cs" />
-     <Compile Include="Assets\InteractiveObjects\Managers\InteractiveObjectV2Manager.cs" />
-     <Compile Include="Assets\InteractiveObjects\Systems\_Abstract\AInteractiveObjectSystem.cs" />
-     <Compile Include="Assets\InteractiveObjects\Systems\AnimationObjectSystem.cs" />
-     <Compile Include="Assets\InteractiveObjects\Systems\LocalCutscenePlayerSystem.cs" />
-     <None Include="Assets\InteractiveObjects\InteractiveObjects.asmdef" />
+     <Compile Include="Assets\SequencedAction\CommonActions\Branch\BranchInfiniteLoopAction.cs" />
+     <Compile Include="Assets\SequencedAction\CommonActions\CutsceneWorkflowAbortAction.cs" />
+     <Compile Include="Assets\SequencedAction\CommonActions\CutsceneWorkflowWaitForSecondsAction.cs" />
+     <Compile Include="Assets\SequencedAction\Managers\SequencedActionManager.cs" />
+     <Compile Include="Assets\SequencedAction\Managers\SequencedActionPlayer.cs" />
+     <Compile Include="Assets\SequencedAction\SequencedAction\ASequencedAction.cs" />
+     <None Include="Assets\SequencedAction\SequencedAction.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -623,25 +617,9 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="CoreGame.csproj">
-      <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
-      <Name>CoreGame</Name>
-    </ProjectReference>
     <ProjectReference Include="OdinSerializer.csproj">
       <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
       <Name>OdinSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="SequencedAction.csproj">
-      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
-      <Name>SequencedAction</Name>
-    </ProjectReference>
-    <ProjectReference Include="Editor_Common.csproj">
-      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
-      <Name>Editor_Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
-      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
-      <Name>InteractiveObjects_Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

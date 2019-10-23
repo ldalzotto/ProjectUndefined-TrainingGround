@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
+using SequencedAction;
 
 namespace Tutorial
 {
@@ -98,8 +99,8 @@ namespace Tutorial
                 this.Interrupt();
             }
 
-            this.tutorialPlayer = new SequencedActionManager((action) => tutorialPlayer.OnAddAction(action, null), null, this.OnTutorialStepFinished);
-            tutorialPlayer.OnAddActions(new List<SequencedAction>() {AbstractTutorialTextAction}, null);
+            this.tutorialPlayer = new SequencedActionManager(this.OnTutorialStepFinished);
+            tutorialPlayer.OnAddActions(new List<ASequencedAction>() {AbstractTutorialTextAction});
         }
 
         public void Tick(float d)

@@ -21,7 +21,8 @@
 "PlayerObject",
 "Tutorial",
 "AIObjects",
-"VisualFeedback"
+"VisualFeedback",
+"SequencedAction"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
-using CoreGame;
+﻿using System;
+using System.Collections.Generic;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
+using SequencedAction;
 
 namespace AIObjects
 {
-    public class AIMoveToActionV2 : SequencedAction, IActionAbortedOnDestinationReached
+    public class AIMoveToActionV2 : ASequencedAction, IActionAbortedOnDestinationReached
     {
         private bool destinationReached;
         private CoreInteractiveObject InteractiveObject;
         private TransformStruct WorldPoint;
         private AIMovementSpeedDefinition AIMovementSpeed;
 
-        public AIMoveToActionV2(CoreInteractiveObject InteractiveObject, TransformStruct WorldPoint, AIMovementSpeedDefinition AIMovementSpeed, List<SequencedAction> nextActions) : base(nextActions)
+        public AIMoveToActionV2(CoreInteractiveObject InteractiveObject, TransformStruct WorldPoint, AIMovementSpeedDefinition AIMovementSpeed, Func<List<ASequencedAction>> nextActionsDeffered) : base(nextActionsDeffered)
         {
             this.destinationReached = false;
             this.InteractiveObject = InteractiveObject;
@@ -29,7 +30,7 @@ namespace AIObjects
             return this.destinationReached;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             this.destinationReached = false;
         }

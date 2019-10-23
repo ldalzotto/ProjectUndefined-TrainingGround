@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
-using CoreGame;
+﻿using System;
+using System.Collections.Generic;
 using InteractiveObjects;
+using SequencedAction;
 
 namespace AIObjects
 {
-    public class AIWarpActionV2 : SequencedAction
+    public class AIWarpActionV2 : ASequencedAction
     {
         private CoreInteractiveObject InteractiveObject;
         private TransformStruct WorldPoint;
 
         public AIWarpActionV2(CoreInteractiveObject InteractiveObject, TransformStruct WorldPoint,
-            List<SequencedAction> nextActions) : base(nextActions)
+            Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
             this.InteractiveObject = InteractiveObject;
             this.WorldPoint = WorldPoint;
@@ -25,7 +26,7 @@ namespace AIObjects
             return true;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             this.InteractiveObject.InteractiveGameObject.Agent.Warp(this.WorldPoint.WorldPosition);
             this.InteractiveObject.InteractiveGameObject.Agent.transform.rotation = this.WorldPoint.WorldRotation;

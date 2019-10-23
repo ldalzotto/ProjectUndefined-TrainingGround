@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoreGame
+namespace SequencedAction
 {
     public class SequencedActionManager
     {
+        private List<ASequencedAction> ExecutedActions = new List<ASequencedAction>();
+        private List<ASequencedAction> FinishedActions = new List<ASequencedAction>();
+        private List<ASequencedAction> CurrentNextActions = new List<ASequencedAction>();
 
-        private List<SequencedAction> ExecutedActions = new List<SequencedAction>();
-        private List<SequencedAction> FinishedActions = new List<SequencedAction>();
-        private List<SequencedAction> CurrentNexActions = new List<SequencedAction>();
-
-        private Action<SequencedAction> OnActionAdd;
-        private Action<SequencedAction, SequencedActionInput> OnActionFinished;
         private Action OnNoMoreActionToPlay;
 
-        public SequencedActionManager(Action<SequencedAction> OnActionAdd, Action<SequencedAction, SequencedActionInput> OnActionFinished, Action OnNoMoreActionToPlay = null)
+        public SequencedActionManager(Action OnNoMoreActionToPlay = null)
         {
-            this.OnActionAdd = OnActionAdd;
-            this.OnActionFinished = OnActionFinished;
             this.OnNoMoreActionToPlay = OnNoMoreActionToPlay;
         }
 
@@ -34,26 +29,25 @@ namespace CoreGame
 
             foreach (var finishedAction in FinishedActions)
             {
-                if (finishedAction.NextActions != null)
+                if (finishedAction.GetNextActions() != null)
                 {
-                    CurrentNexActions.AddRange(finishedAction.NextActions);
+                    CurrentNextActions.AddRange(finishedAction.GetNextActions());
                 }
+
                 finishedAction.ResetState();
                 ExecutedActions.Remove(finishedAction);
             }
 
             FinishedActions.Clear();
 
-            if (CurrentNexActions.Count > 0)
+            if (CurrentNextActions.Count > 0)
             {
-                foreach (var nextContextAction in CurrentNexActions)
+                foreach (var nextContextAction in CurrentNextActions)
                 {
-                    if (OnActionAdd != null)
-                    {
-                        OnActionAdd.Invoke(nextContextAction);
-                    }
+                    this.OnAddAction(nextContextAction);
                 }
-                CurrentNexActions.Clear();
+
+                CurrentNextActions.Clear();
 
                 //first tick for removing at the same frame if necessary
                 this.Tick(0f, eventsTriggered: false);
@@ -71,60 +65,68 @@ namespace CoreGame
             }
         }
 
-        private void ProcessTick(float d, SequencedAction contextAction)
+        private void ProcessTick(float d, ASequencedAction contextAction)
         {
-            contextAction.OnTick(d, this.OnActionFinished);
+            contextAction.OnTick(d);
         }
 
 
         #region External Events
-        public void OnAddAction(SequencedAction action, SequencedActionInput actionInput)
+
+        public void OnAddAction(ASequencedAction action)
         {
             action.ResetState();
-            action.ActionInput = actionInput;
-            action.FirstExecutionAction(actionInput);
+            action.FirstExecutionAction();
             ExecutedActions.Add(action);
             //first tick for removing at the same frame if necessary
             ProcessTick(0f, action);
         }
-        public void OnAddActions(List<SequencedAction> actions, SequencedActionInput actionInput)
+
+        public void OnAddActions(List<ASequencedAction> actions)
         {
             foreach (var action in actions)
             {
-                this.OnAddAction(action, actionInput);
+                this.OnAddAction(action);
             }
         }
+
         public void InterruptAllActions()
         {
             foreach (var action in ExecutedActions)
             {
                 action.Interupt();
             }
+
             this.ExecutedActions.Clear();
         }
+
         public void CleatAllActions()
         {
             this.ExecutedActions.Clear();
             this.FinishedActions.Clear();
-            this.CurrentNexActions.Clear();
+            this.CurrentNextActions.Clear();
         }
+
         #endregion
 
         #region Data Retrieval
-        public List<SequencedAction> GetCurrentActions(bool includeWorkflowNested = false)
+
+        public List<ASequencedAction> GetCurrentActions(bool includeWorkflowNested = false)
         {
             if (includeWorkflowNested)
             {
-                var returnActions = new List<SequencedAction>();
+                var returnActions = new List<ASequencedAction>();
                 foreach (var executedAction in this.ExecutedActions)
                 {
                     if (executedAction.GetType() == typeof(BranchInfiniteLoopAction))
                     {
-                        var BranchInfiniteLoopAction = (BranchInfiniteLoopAction)executedAction;
+                        var BranchInfiniteLoopAction = (BranchInfiniteLoopAction) executedAction;
                         returnActions.AddRange(BranchInfiniteLoopAction.GetCurrentActions(includeWorkflowNested));
                     }
+
                     returnActions.Add(executedAction);
                 }
+
                 return returnActions;
             }
             else
@@ -132,10 +134,12 @@ namespace CoreGame
                 return this.ExecutedActions;
             }
         }
+
         public bool IsPlaying()
         {
             return this.GetCurrentActions().Count > 0;
         }
+
         #endregion
     }
 }

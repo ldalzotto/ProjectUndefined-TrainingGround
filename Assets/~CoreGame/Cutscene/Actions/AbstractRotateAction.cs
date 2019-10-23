@@ -1,25 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SequencedAction;
 using UnityEngine;
 
 namespace CoreGame
 {
-    [System.Serializable]
-    public abstract class AbstractRotateAction : SequencedAction
+    [Serializable]
+    public abstract class AbstractRotateAction : ASequencedAction
     {
-        [SerializeField]
-        public float RotationSpeed = 1f;
+        [SerializeField] public float RotationSpeed = 1f;
 
-        public AbstractRotateAction(List<SequencedAction> nextActions) : base(nextActions)
+        public AbstractRotateAction(Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
         }
 
         private bool finishedRotating;
         private RotateActionRequiredData RotateActionRequiredData;
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             this.finishedRotating = false;
-            this.RotateActionRequiredData = GetRotateActionRequiredData(ContextActionInput);
+            this.RotateActionRequiredData = GetRotateActionRequiredData();
             this.RotateActionRequiredData.AbstractCutsceneController.AskRotation(this.RotateActionRequiredData.TargetQuaternion, this.RotationSpeed);
         }
 
@@ -33,9 +34,8 @@ namespace CoreGame
             this.RotateActionRequiredData.AbstractCutsceneController.Tick(d);
             this.finishedRotating = !this.RotateActionRequiredData.AbstractCutsceneController.IsRotating();
         }
-        
-        protected abstract RotateActionRequiredData GetRotateActionRequiredData(SequencedActionInput ContextActionInput);
 
+        protected abstract RotateActionRequiredData GetRotateActionRequiredData();
     }
 
     public struct RotateActionRequiredData

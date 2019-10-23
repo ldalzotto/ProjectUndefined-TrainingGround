@@ -1,7 +1,8 @@
-﻿using GameConfigurationID;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameConfigurationID;
+using SequencedAction;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public class BaseCutsceneAnimationAction : SequencedAction
+    public class BaseCutsceneAnimationAction : ASequencedAction
     {
         public ParametrizedAnimationID AnimationIdV2;
 
@@ -32,19 +33,18 @@ namespace CoreGame
         /// </summary>
         public bool FramePerfectEndDetection = false;
 
-        [NonSerialized]
-        private AnimationID PlayedAnimationID;
-        [NonSerialized]
-        private bool animationEnded = false;
-        [NonSerialized]
-        private Coroutine animationCoroutine;
-        [NonSerialized]
-        private BaseCutsceneController pointOfInterestCutsceneController;
+        [NonSerialized] private AnimationID PlayedAnimationID;
+        [NonSerialized] private bool animationEnded = false;
+        [NonSerialized] private Coroutine animationCoroutine;
+        [NonSerialized] private BaseCutsceneController pointOfInterestCutsceneController;
 
-        protected virtual BaseCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput) { return default; }
+        protected virtual BaseCutsceneController GetAbstractCutsceneController()
+        {
+            return default;
+        }
 
-        public BaseCutsceneAnimationAction(BaseCutsceneAnimationActionInput BaseCutsceneAnimationActionInput, 
-            BaseCutsceneController cutsceneController, List<SequencedAction> nextActions) : base(nextActions)
+        public BaseCutsceneAnimationAction(BaseCutsceneAnimationActionInput BaseCutsceneAnimationActionInput,
+            BaseCutsceneController cutsceneController, Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
             PlayedAnimationID = BaseCutsceneAnimationActionInput.playedAnimationID;
             SkipToNextNode = BaseCutsceneAnimationActionInput.skipToNextNode;
@@ -55,7 +55,7 @@ namespace CoreGame
             this.pointOfInterestCutsceneController = cutsceneController;
         }
 
-        public BaseCutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
+        public BaseCutsceneAnimationAction(Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
         }
 
@@ -68,13 +68,13 @@ namespace CoreGame
             return this.animationEnded;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             this.animationEnded = false;
             if (this.pointOfInterestCutsceneController == null)
             {
-                this.pointOfInterestCutsceneController = this.GetAbstractCutsceneController(ContextActionInput);
-                this.PlayedAnimationID = this.AnimationIdV2.Resolve(ContextActionInput.graphParameters);
+                this.pointOfInterestCutsceneController = this.GetAbstractCutsceneController();
+                this.PlayedAnimationID = this.AnimationIdV2.Resolve(null);
             }
 
             if (this.SkipToNextNode)
@@ -86,7 +86,6 @@ namespace CoreGame
             {
                 Coroutiner.Instance.StartCoroutine(this.PlayAnimation(this.pointOfInterestCutsceneController));
             }
-
         }
 
         private IEnumerator PlayAnimation(BaseCutsceneController cutsceneController)
@@ -120,19 +119,16 @@ namespace CoreGame
                 this.pointOfInterestCutsceneController.StopAnimation(this.PlayedAnimationID);
             }
         }
-
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct BaseCutsceneAnimationActionInput
     {
-        [CustomEnum()]
-        public AnimationID playedAnimationID;
+        [CustomEnum()] public AnimationID playedAnimationID;
         public bool skipToNextNode;
         public bool infiniteLoop;
         public bool playImmediately;
         public float crossFade;
         public bool framePerfectEndDetection;
     }
-
 }

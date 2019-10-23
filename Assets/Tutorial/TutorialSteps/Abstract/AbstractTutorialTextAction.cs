@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGame;
+using SequencedAction;
 using UnityEngine;
 
 namespace Tutorial
 {
-    public abstract class AbstractTutorialTextAction : SequencedAction
+    public abstract class AbstractTutorialTextAction : ASequencedAction
     {
         [NonSerialized] protected DiscussionWindow DiscussionWindow;
         [NonSerialized] private bool discussionEnded = false;
         [NonSerialized] protected ITutorialTextActionManager TutorialTextActionManager;
 
-        public AbstractTutorialTextAction(List<SequencedAction> nextActions) : base(nextActions)
+        public AbstractTutorialTextAction(Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
         }
 
@@ -20,7 +21,7 @@ namespace Tutorial
             return this.discussionEnded;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             this.discussionEnded = false;
 

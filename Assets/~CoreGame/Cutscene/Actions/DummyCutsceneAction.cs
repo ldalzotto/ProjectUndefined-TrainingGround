@@ -1,17 +1,17 @@
-﻿using CoreGame;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using SequencedAction;
 
 #if UNITY_EDITOR
-using NodeGraph_Editor;
+
 #endif
 
 namespace CoreGame
 {
-    [System.Serializable]
-    public class DummyCutsceneAction : SequencedAction
+    [Serializable]
+    public class DummyCutsceneAction : ASequencedAction
     {
-        public DummyCutsceneAction(List<SequencedAction> nextActions) : base(nextActions)
+        public DummyCutsceneAction(Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
         }
 
@@ -24,20 +24,12 @@ namespace CoreGame
             return true;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
         }
 
         public override void Tick(float d)
         {
         }
-
-#if UNITY_EDITOR
-        public override void ActionGUI()
-        {
-            NodeEditorGUILayout.LabelField("");
-        }
-#endif
     }
-
 }

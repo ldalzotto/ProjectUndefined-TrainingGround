@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using CoreGame;
 using PlayerActions_Interfaces;
+using SequencedAction;
 
 namespace Tutorial
 {
@@ -9,12 +11,12 @@ namespace Tutorial
         private ActionWheelTutorialStepActionDefinition ActionWheelTutorialStepActionDefinition;
         private PuzzlePlayerActionWheelOpenTutorialTextActionManager PuzzlePlayerActionWheelOpenTutorialTextActionManager;
 
-        public ActionWheelTutorialStepAction(ActionWheelTutorialStepActionDefinition ActionWheelTutorialStepActionDefinition, List<SequencedAction> nextActions) : base(nextActions)
+        public ActionWheelTutorialStepAction(ActionWheelTutorialStepActionDefinition ActionWheelTutorialStepActionDefinition, Func<List<ASequencedAction>> nextActionsDeferred) : base(nextActionsDeferred)
         {
             this.ActionWheelTutorialStepActionDefinition = ActionWheelTutorialStepActionDefinition;
         }
 
-        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
+        public override void FirstExecutionAction()
         {
             #region External Dependencies
 
@@ -22,7 +24,7 @@ namespace Tutorial
 
             #endregion
 
-            base.FirstExecutionAction(ContextActionInput);
+            base.FirstExecutionAction();
             this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.ActionWheelTutorialStepActionDefinition.DiscussionTextID],
                 DiscussionPositionManager.Get().GetDiscussionPosition(this.ActionWheelTutorialStepActionDefinition.DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
         }

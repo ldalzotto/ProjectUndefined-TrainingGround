@@ -1,13 +1,7 @@
 {
-    "name": "AIObjects",
+    "name": "SequencedAction",
     "references": [
-"CoreGame",
-"OdinSerializer",
-"Editor_Common",
-"InteractiveObjects",
-"InteractiveObjects_Interfaces",
-"VisualFeedback",
-"SequencedAction"
+"OdinSerializer"
 ],
     "includePlatforms": [],
     "excludePlatforms": [],

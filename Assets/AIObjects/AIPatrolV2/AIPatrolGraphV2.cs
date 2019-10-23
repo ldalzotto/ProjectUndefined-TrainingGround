@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using CoreGame;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
 using OdinSerializer;
+using SequencedAction;
 using UnityEngine;
 
 namespace AIObjects
@@ -23,11 +23,11 @@ namespace AIObjects
             };
         }
 
-        public abstract List<SequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject);
+        public abstract List<ASequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject);
 
-        protected AIMoveToActionV2 CreateAIMoveToActionV2(CoreInteractiveObject InvolvedInteractiveObject, AIMoveToActionInputData AIMoveToActionInputData, List<SequencedAction> nextActions)
+        protected AIMoveToActionV2 CreateAIMoveToActionV2(CoreInteractiveObject InvolvedInteractiveObject, AIMoveToActionInputData AIMoveToActionInputData, Func<List<ASequencedAction>> nextActionsDeffered)
         {
-            return new AIMoveToActionV2(InvolvedInteractiveObject, this.TransformToWorldPosition(AIMoveToActionInputData.WorldPoint), AIMoveToActionInputData.AIMovementSpeed, nextActions);
+            return new AIMoveToActionV2(InvolvedInteractiveObject, this.TransformToWorldPosition(AIMoveToActionInputData.WorldPoint), AIMoveToActionInputData.AIMovementSpeed, nextActionsDeffered);
         }
     }
 

@@ -8,7 +8,8 @@
 "PlayerActions",
 "Editor_Common",
 "OdinSerializer",
-"Persistence"
+"Persistence",
+"SequencedAction"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

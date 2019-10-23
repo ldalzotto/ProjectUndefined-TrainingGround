@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using SequencedAction;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -19,5 +17,4 @@ namespace CoreGame
         }
 #endif
     }
-
 }

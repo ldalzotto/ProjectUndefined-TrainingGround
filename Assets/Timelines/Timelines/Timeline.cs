@@ -178,7 +178,6 @@ namespace Timelines
         [SerializeField] public Dictionary<NODE_KEY, TimelineNodeV2<NODE_KEY>> Nodes;
         [SerializeField] public List<NODE_KEY> InitialNodes;
 
-
         public TimelineNodeV2<NODE_KEY> GetNode(NODE_KEY key)
         {
             return Nodes[key];

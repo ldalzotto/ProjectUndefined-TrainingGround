@@ -1,34 +1,31 @@
-﻿using CoreGame;
-using NodeGraph;
+﻿using System;
 using System.Collections.Generic;
+using NodeGraph;
+using SequencedAction;
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor;
+
 #endif
 
 namespace CoreGame
 {
     public interface ICutsceneNode
     {
-        SequencedAction GetAction();
+        ASequencedAction GetAction();
         void BuildAction();
     }
 
-    [System.Serializable]
-    public abstract class ACutsceneNode<T, E> : NodeProfile, ICutsceneNode where T : SequencedAction where E : ACutsceneEdge<T>
+    [Serializable]
+    public abstract class ACutsceneNode<T, E> : NodeProfile, ICutsceneNode where T : ASequencedAction where E : ACutsceneEdge<T>
     {
-        [SerializeField]
-        public CutsceneActionConnectionEdge inputCutsceneConnectionEdge;
-        [SerializeField]
-        public CutsceneActionConnectionEdge outputCutsceneConnectionEdge;
-        [SerializeField]
-        public CutsceneWorkflowAbortEdge workflowNodeReferenceEdge;
+        [SerializeField] public CutsceneActionConnectionEdge inputCutsceneConnectionEdge;
+        [SerializeField] public CutsceneActionConnectionEdge outputCutsceneConnectionEdge;
+        [SerializeField] public CutsceneWorkflowAbortEdge workflowNodeReferenceEdge;
 
-        [SerializeField]
-        public E actionEdge;
+        [SerializeField] public E actionEdge;
 
-        public SequencedAction GetAction()
+        public ASequencedAction GetAction()
         {
             return actionEdge.associatedAction;
         }
@@ -42,17 +39,21 @@ namespace CoreGame
                 {
                     nexLevelnode.BuildAction();
                 }
+
                 this.GetAction().SetNextContextAction(nexLevelnodes.ConvertAll(n => n.GetAction()));
             }
+
             this.AfterActionInitialized();
         }
 
-        public virtual void AfterActionInitialized() { }
+        public virtual void AfterActionInitialized()
+        {
+        }
 
         private List<ICutsceneNode> GetNextNodes()
         {
             List<ICutsceneNode> nextNodes = new List<ICutsceneNode>();
-            foreach (var connectedNode in outputCutsceneConnectionEdge.ConnectedNodeEdges.ConvertAll(e => (CutsceneActionConnectionEdge)e))
+            foreach (var connectedNode in outputCutsceneConnectionEdge.ConnectedNodeEdges.ConvertAll(e => (CutsceneActionConnectionEdge) e))
             {
                 var ICutsceneNode = connectedNode.NodeProfileRef as ICutsceneNode;
                 if (ICutsceneNode != null)
@@ -60,6 +61,7 @@ namespace CoreGame
                     nextNodes.Add(ICutsceneNode);
                 }
             }
+
             return nextNodes;
         }
 
@@ -85,7 +87,7 @@ namespace CoreGame
             this.workflowNodeReferenceEdge = CutsceneActionConnectionEdge.CreateNodeEdge<CutsceneWorkflowAbortEdge>(this, NodeEdgeType.MULTIPLE_INPUT);
             return new List<NodeEdgeProfile>()
             {
-                 this.outputCutsceneConnectionEdge,  this.workflowNodeReferenceEdge
+                this.outputCutsceneConnectionEdge, this.workflowNodeReferenceEdge
             };
         }
 
@@ -102,8 +104,6 @@ namespace CoreGame
                 this.workflowNodeReferenceEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
                 EditorGUILayout.EndHorizontal();
             }
-
-
         }
 
 
@@ -118,5 +118,4 @@ namespace CoreGame
         }
 #endif
     }
-
 }
