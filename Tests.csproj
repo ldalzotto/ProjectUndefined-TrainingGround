@@ -56,19 +56,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\AbstractTimelineTest.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionEdgeProfile.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionNodeProfile.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineNodeProfile.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestWorkflowEdgeProfile.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestWorkflowNodeProfile.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TestTimelineEditorCustomInspector.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TestTimelineInitializer.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TestTimelineManager.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TestTimelineNodeEditor.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TestTimelineNodeEditorProfile.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TimelineActions\TestTimelineAction.cs" />
-     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\WorkflowActions\TestWorkflowAction.cs" />
      <Compile Include="Assets\Tests\~CoreGame\Intersection\IntersectionTests.cs" />
      <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestHelperMethods.cs" />
      <Compile Include="Assets\Tests\~RTPuzzleGame\Common\SceneMock.cs" />

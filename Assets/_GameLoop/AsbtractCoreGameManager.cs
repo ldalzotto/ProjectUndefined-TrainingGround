@@ -29,7 +29,7 @@ namespace GameLoop
             }
 
             LevelAvailabilityManager.Get().Init();
-            ATimelinesManager.Get().Init();
+            LevelAvailabilityTimelineManager.Get().Init();
             LevelManager.Get().Init(levelType);
 
             if (this.levelType != LevelType.STARTMENU)

@@ -1,37 +1,20 @@
-﻿using CoreGame;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using CoreGame;
 
 namespace Timelines
 {
     public class ATimelinesManager : GameSingleton<ATimelinesManager>
     {
-        private ITimelineNodeManager LevelAvailabilityTimeline;
+        public List<ITimelineNodeManager> TimelineManagers { get; private set; } = new List<ITimelineNodeManager>();
 
-        public void Init()
+        public void RegisterTimeline(ITimelineNodeManager ITimelineNodeManager)
         {
-            var aTimelinens = GameObject.FindObjectsOfType<ATimelineNodeManager>();
-            foreach (var timeline in aTimelinens)
-                switch (timeline.GetTimelineID())
-                {
-                    case TimelineID.LEVEL_AVAILABILITY_TIMELINE:
-                        LevelAvailabilityTimeline = (ITimelineNodeManager) timeline;
-                        break;
-                }
-
-            InitTimelinesOnStart();
+            this.TimelineManagers.Add(ITimelineNodeManager);
         }
 
-        public ITimelineNodeManager[] GetAllTimelines()
+        public void UnRegisterTimeline(ITimelineNodeManager ITimelineNodeManager)
         {
-            return new ITimelineNodeManager[1]
-            {
-                LevelAvailabilityTimeline
-            };
-        }
-
-        private void InitTimelinesOnStart()
-        {
-            LevelAvailabilityTimeline.Init();
+            this.TimelineManagers.Remove(ITimelineNodeManager);
         }
 
         public void InitTimelinesAtEndOfFrame()

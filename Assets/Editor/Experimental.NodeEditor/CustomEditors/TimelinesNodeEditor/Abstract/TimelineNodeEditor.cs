@@ -11,7 +11,7 @@ namespace Editor_LevelAvailabilityNodeEditor
 {
     public abstract class TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY> : NodeEditor
         where NODE_KEY : Enum
-        where TIMELINE_INITIALIZER : TimelineInitializerV2<TIMELINE_CONTEXT, NODE_KEY>
+        where TIMELINE_INITIALIZER : TimelineInitializerV2<NODE_KEY>
     {
         public static void Init(NodeEditorProfile nodeEditorProfile, Type timelineNodeEditorType)
         {
@@ -47,7 +47,7 @@ namespace Editor_LevelAvailabilityNodeEditor
         {
             var LevelAvailabilityTimelineInitializerV2 = (TIMELINE_INITIALIZER) CreateInstance(typeof(TIMELINE_INITIALIZER));
 
-            var nodes = new Dictionary<NODE_KEY, TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY>>();
+            var nodes = new Dictionary<NODE_KEY, TimelineNodeV2<NODE_KEY>>();
             var initialNodes = new List<NODE_KEY>();
 
             foreach (var node in this.nodeEditorProfile.Nodes.Values)
@@ -66,12 +66,12 @@ namespace Editor_LevelAvailabilityNodeEditor
 
                     var OnStartWorkflowAction =
                         timelineNode.OnStartWorkflowActionEdges
-                            .ConvertAll(e => (TimelineNodeWorkflowActionV2<TIMELINE_CONTEXT, NODE_KEY>) (e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
+                            .ConvertAll(e => (TimelineNodeWorkflowActionV2<NODE_KEY>) (e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
                     var OnExitWorkflowAction =
                         timelineNode.OnExitWorkflowActionEdges
-                            .ConvertAll(e => (TimelineNodeWorkflowActionV2<TIMELINE_CONTEXT, NODE_KEY>) (e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
+                            .ConvertAll(e => (TimelineNodeWorkflowActionV2<NODE_KEY>) (e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
 
-                    TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY> createdNode = new TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY>(Transitions,
+                    TimelineNodeV2<NODE_KEY> createdNode = new TimelineNodeV2<NODE_KEY>(Transitions,
                         OnStartWorkflowAction,
                         OnExitWorkflowAction);
 

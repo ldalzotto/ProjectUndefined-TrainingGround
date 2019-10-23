@@ -6,7 +6,7 @@ namespace Timelines
     {
         public void OnScenarioActionExecuted(TimeLineAction scenarioAction)
         {
-            foreach (var timeline in ATimelinesManager.Get().GetAllTimelines())
+            foreach (var timeline in ATimelinesManager.Get().TimelineManagers)
             {
                 timeline.IncrementGraph(scenarioAction);
             }

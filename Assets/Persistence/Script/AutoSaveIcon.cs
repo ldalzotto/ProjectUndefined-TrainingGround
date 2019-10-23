@@ -31,7 +31,6 @@ namespace CoreGame
             if (this.AutoSaveIconGameObject == null)
             {
                 this.AutoSaveIconGameObject = MonoBehaviour.Instantiate(PersistanceConfigurationGameObject.Get().PersistanceConfiguration.AutoSaveIconPrefab, CoreGameSingletonInstances.PersistantCanvas().transform);
-                GameObject.DontDestroyOnLoad(this.AutoSaveIconGameObject);
             }
 
             this.autoSaveIcon = this.AutoSaveIconGameObject.GetComponent<Image>();

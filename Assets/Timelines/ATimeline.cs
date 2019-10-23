@@ -12,28 +12,17 @@ namespace Timelines
         void IncrementGraph(TimeLineAction executedTimelineAction);
     }
 
-    public abstract class ATimelineNodeManager : MonoBehaviour
-    {
-        public abstract TimelineID GetTimelineID();
-    }
-
-    public abstract class TimelineNodeManagerV2<T, NODE_KEY> : ATimelineNodeManager, ITimelineNodeManager
+    public abstract class TimelineNodeManagerV2<NODE_KEY> : ITimelineNodeManager
     {
         #region External Dependencies
 
-        protected abstract T workflowActionPassedDataStruct { get; }
-        private TimelineInitializerV2<T, NODE_KEY> TimelineInitializer;
+        private TimelineInitializerV2<NODE_KEY> TimelineInitializer;
 
         #endregion
 
         #region Timeline ID
 
         protected abstract TimelineID TimelineID { get; }
-
-        public override TimelineID GetTimelineID()
-        {
-            return this.TimelineID;
-        }
 
         #endregion
 
@@ -57,13 +46,13 @@ namespace Timelines
             {
                 #region External Dependencies
 
-                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>) TimelineConfigurationGameObject.Get().TimelineConfiguration.ConfigurationInherentData[TimelineID];
+                this.TimelineInitializer = (TimelineInitializerV2<NODE_KEY>) TimelineConfigurationGameObject.Get().TimelineConfiguration.ConfigurationInherentData[TimelineID];
 
                 #endregion
             }
             else
             {
-                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>) providedTimelineInitializer;
+                this.TimelineInitializer = (TimelineInitializerV2<NODE_KEY>) providedTimelineInitializer;
             }
 
 
@@ -107,7 +96,7 @@ namespace Timelines
                 persistedNodes.Nodes.Remove(oldnodeKey);
                 foreach (var endAction in oldNode.OnExitNodeAction)
                 {
-                    endAction.Execute(workflowActionPassedDataStruct, oldNode);
+                    endAction.Execute(oldNode);
                 }
             }
 
@@ -137,7 +126,7 @@ namespace Timelines
                     var newNode = this.TimelineInitializer.GetNode(nodeToAdd);
                     foreach (var startAction in newNode.OnStartNodeAction)
                     {
-                        startAction.Execute(workflowActionPassedDataStruct, newNode);
+                        startAction.Execute(newNode);
                     }
                 }
             }
@@ -189,12 +178,12 @@ namespace Timelines
     }
 
     [Serializable]
-    public abstract class TimelineInitializerV2<T, NODE_KEY> : TimelineInitializerScriptableObject
+    public abstract class TimelineInitializerV2<NODE_KEY> : TimelineInitializerScriptableObject
     {
-        [SerializeField] public Dictionary<NODE_KEY, TimelineNodeV2<T, NODE_KEY>> Nodes;
+        [SerializeField] public Dictionary<NODE_KEY, TimelineNodeV2<NODE_KEY>> Nodes;
         [SerializeField] public List<NODE_KEY> InitialNodes;
 
-        public TimelineNodeV2<T, NODE_KEY> GetNode(NODE_KEY key)
+        public TimelineNodeV2<NODE_KEY> GetNode(NODE_KEY key)
         {
             return Nodes[key];
         }
@@ -206,15 +195,15 @@ namespace Timelines
     }
 
     [Serializable]
-    public class TimelineNodeV2<T, NODE_KEY>
+    public class TimelineNodeV2<NODE_KEY>
     {
         public Dictionary<TimeLineAction, List<NODE_KEY>> TransitionRequirements;
 
-        public List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> OnStartNodeAction;
+        public List<TimelineNodeWorkflowActionV2<NODE_KEY>> OnStartNodeAction;
 
-        public List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> OnExitNodeAction;
+        public List<TimelineNodeWorkflowActionV2<NODE_KEY>> OnExitNodeAction;
 
-        public TimelineNodeV2(Dictionary<TimeLineAction, List<NODE_KEY>> transitionRequirements, List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> onStartNodeAction, List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> onExitNodeAction)
+        public TimelineNodeV2(Dictionary<TimeLineAction, List<NODE_KEY>> transitionRequirements, List<TimelineNodeWorkflowActionV2<NODE_KEY>> onStartNodeAction, List<TimelineNodeWorkflowActionV2<NODE_KEY>> onExitNodeAction)
         {
             TransitionRequirements = transitionRequirements;
             OnStartNodeAction = onStartNodeAction;
@@ -250,9 +239,9 @@ namespace Timelines
     }
 
     [Serializable]
-    public abstract class TimelineNodeWorkflowActionV2<T, NODE_KEY> : TimelineNodeWorkflowActionV2Drawable
+    public abstract class TimelineNodeWorkflowActionV2<NODE_KEY> : TimelineNodeWorkflowActionV2Drawable
     {
-        public abstract void Execute(T workflowActionPassedDataStruct, TimelineNodeV2<T, NODE_KEY> timelineNodeRefence);
+        public abstract void Execute(TimelineNodeV2<NODE_KEY> timelineNodeRefence);
 
 #if UNITY_EDITOR
         public virtual void ActionGUI()

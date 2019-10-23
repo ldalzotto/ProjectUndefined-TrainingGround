@@ -71,7 +71,7 @@
      <Compile Include="Assets\LevelManagement\Events\LevelManagerEventManager.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailability\Manager\LevelAvailabilityManager.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV2.cs" />
-     <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineManagerV2.cs" />
+     <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineNodeManagerV2.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\TimelineAction\LevelCompletedTimelineAction.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
      <Compile Include="Assets\LevelManagement\LevelChunk\InteractiveObject\LevelChunkInteractiveObject.cs" />
