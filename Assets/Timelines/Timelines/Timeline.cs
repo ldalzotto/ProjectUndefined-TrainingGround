@@ -9,14 +9,14 @@ namespace Timelines
     public interface ITimelineNodeManager
     {
         void Init(TimelineInitializerScriptableObject providedTimelineInitializer = null);
-        void IncrementGraph(TimeLineAction executedTimelineAction);
+        void IncrementGraph(TimelineAction executedTimelineAction);
     }
 
     public abstract class TimelineNodeManagerV2<NODE_KEY> : ITimelineNodeManager
     {
         #region External Dependencies
 
-        private TimelineInitializerV2<NODE_KEY> TimelineInitializer;
+        private TimelineInitializerV3<NODE_KEY> TimelineInitializer;
 
         #endregion
 
@@ -33,12 +33,7 @@ namespace Timelines
 
         #endregion
 
-        private ATimelinePersistedNodes<NODE_KEY> persistedNodes = new ATimelinePersistedNodes<NODE_KEY>() {Nodes = new List<NODE_KEY>()};
-
-        public List<NODE_KEY> Nodes
-        {
-            get => persistedNodes.Nodes;
-        }
+        private ATimelinePersistedNodes<NODE_KEY> persistedNodes = ATimelinePersistedNodes<NODE_KEY>.Empty;
 
         public virtual void Init(TimelineInitializerScriptableObject providedTimelineInitializer = null)
         {
@@ -46,13 +41,13 @@ namespace Timelines
             {
                 #region External Dependencies
 
-                this.TimelineInitializer = (TimelineInitializerV2<NODE_KEY>) TimelineConfigurationGameObject.Get().TimelineConfiguration.ConfigurationInherentData[TimelineID];
+                this.TimelineInitializer = (TimelineInitializerV3<NODE_KEY>) TimelineConfigurationGameObject.Get().TimelineConfiguration.ConfigurationInherentData[TimelineID];
 
                 #endregion
             }
             else
             {
-                this.TimelineInitializer = (TimelineInitializerV2<NODE_KEY>) providedTimelineInitializer;
+                this.TimelineInitializer = (TimelineInitializerV3<NODE_KEY>) providedTimelineInitializer;
             }
 
 
@@ -85,15 +80,15 @@ namespace Timelines
             AddToNodes(TimelineInitializer.InitialNodes);
         }
 
-        public void IncrementGraph(TimeLineAction executedTimelineAction)
+        public void IncrementGraph(TimelineAction executedTimelineAction)
         {
             var scenarioNodesIncrementation = ComputeScenarioIncrementation(executedTimelineAction);
 
             //(0) -> Execution of exit first
+            persistedNodes.Nodes.ExceptWith(scenarioNodesIncrementation.oldNodes);
             foreach (var oldnodeKey in scenarioNodesIncrementation.oldNodes)
             {
                 var oldNode = this.TimelineInitializer.GetNode(oldnodeKey);
-                persistedNodes.Nodes.Remove(oldnodeKey);
                 foreach (var endAction in oldNode.OnExitNodeAction)
                 {
                     endAction.Execute(oldNode);
@@ -132,7 +127,7 @@ namespace Timelines
             }
         }
 
-        private NodesIncrementation ComputeScenarioIncrementation(TimeLineAction executedTimelineAction)
+        private NodesIncrementation ComputeScenarioIncrementation(TimelineAction executedTimelineAction)
         {
             List<NODE_KEY> nextTimelineNodes = new List<NODE_KEY>();
             List<NODE_KEY> oldTimelineNodes = new List<NODE_KEY>();
@@ -178,39 +173,54 @@ namespace Timelines
     }
 
     [Serializable]
-    public abstract class TimelineInitializerV2<NODE_KEY> : TimelineInitializerScriptableObject
+    public abstract class TimelineInitializerV3<NODE_KEY> : TimelineInitializerScriptableObject
     {
         [SerializeField] public Dictionary<NODE_KEY, TimelineNodeV2<NODE_KEY>> Nodes;
         [SerializeField] public List<NODE_KEY> InitialNodes;
+
 
         public TimelineNodeV2<NODE_KEY> GetNode(NODE_KEY key)
         {
             return Nodes[key];
         }
+
+#if UNITY_EDITOR
+        protected abstract Dictionary<NODE_KEY, TimelineNodeV2<NODE_KEY>> BuildTimeline();
+        protected abstract List<NODE_KEY> BuildInitialNodes();
+
+        public override void ReGenerate()
+        {
+            this.Nodes = BuildTimeline();
+            this.InitialNodes = BuildInitialNodes();
+        }
+#endif
     }
 
     [Serializable]
     public abstract class TimelineInitializerScriptableObject : SerializedScriptableObject
     {
+#if UNITY_EDITOR
+        public abstract void ReGenerate();
+#endif
     }
 
     [Serializable]
     public class TimelineNodeV2<NODE_KEY>
     {
-        public Dictionary<TimeLineAction, List<NODE_KEY>> TransitionRequirements;
+        public Dictionary<TimelineAction, List<NODE_KEY>> TransitionRequirements;
 
         public List<TimelineNodeWorkflowActionV2<NODE_KEY>> OnStartNodeAction;
 
         public List<TimelineNodeWorkflowActionV2<NODE_KEY>> OnExitNodeAction;
 
-        public TimelineNodeV2(Dictionary<TimeLineAction, List<NODE_KEY>> transitionRequirements, List<TimelineNodeWorkflowActionV2<NODE_KEY>> onStartNodeAction, List<TimelineNodeWorkflowActionV2<NODE_KEY>> onExitNodeAction)
+        public TimelineNodeV2(Dictionary<TimelineAction, List<NODE_KEY>> transitionRequirements, List<TimelineNodeWorkflowActionV2<NODE_KEY>> onStartNodeAction, List<TimelineNodeWorkflowActionV2<NODE_KEY>> onExitNodeAction)
         {
             TransitionRequirements = transitionRequirements;
             OnStartNodeAction = onStartNodeAction;
             OnExitNodeAction = onExitNodeAction;
         }
 
-        public List<NODE_KEY> ComputeTransitions(TimeLineAction executedTimelineAction)
+        public List<NODE_KEY> ComputeTransitions(TimelineAction executedTimelineAction)
         {
             if (TransitionRequirements == null)
             {
@@ -231,22 +241,8 @@ namespace Timelines
         }
     }
 
-    public interface TimelineNodeWorkflowActionV2Drawable
+    public interface TimelineNodeWorkflowActionV2<NODE_KEY>
     {
-#if UNITY_EDITOR
-        void ActionGUI();
-#endif
-    }
-
-    [Serializable]
-    public abstract class TimelineNodeWorkflowActionV2<NODE_KEY> : TimelineNodeWorkflowActionV2Drawable
-    {
-        public abstract void Execute(TimelineNodeV2<NODE_KEY> timelineNodeRefence);
-
-#if UNITY_EDITOR
-        public virtual void ActionGUI()
-        {
-        }
-#endif
+        void Execute(TimelineNodeV2<NODE_KEY> timelineNodeRefence);
     }
 }

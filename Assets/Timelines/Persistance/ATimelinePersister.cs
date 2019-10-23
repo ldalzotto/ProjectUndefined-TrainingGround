@@ -20,6 +20,7 @@ namespace Persistence
     [Serializable]
     public struct ATimelinePersistedNodes<NODE_KEY>
     {
-        public List<NODE_KEY> Nodes;
+        public HashSet<NODE_KEY> Nodes;
+        public static ATimelinePersistedNodes<NODE_KEY> Empty => new ATimelinePersistedNodes<NODE_KEY>() {Nodes = new HashSet<NODE_KEY>()};
     }
 }

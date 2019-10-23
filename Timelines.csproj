@@ -62,8 +62,8 @@
      <Compile Include="Assets\Timelines\Events\TimelinesEventManager.cs" />
      <Compile Include="Assets\Timelines\Managers\ATimelinesManager.cs" />
      <Compile Include="Assets\Timelines\Persistance\ATimelinePersister.cs" />
-     <Compile Include="Assets\Timelines\Timelines\ATimeline.cs" />
-     <Compile Include="Assets\Timelines\Timelines\TimeLineAction.cs" />
+     <Compile Include="Assets\Timelines\Timelines\Timeline.cs" />
+     <Compile Include="Assets\Timelines\Timelines\TimelineAction.cs" />
      <None Include="Assets\Timelines\Timelines.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

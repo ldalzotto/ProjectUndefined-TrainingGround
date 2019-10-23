@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LevelManagement
 {
     [Serializable]
-    public struct LevelCompletedTimelineAction : TimeLineAction
+    public struct LevelCompletedTimelineAction : TimelineAction
     {
         [SerializeField] private LevelZonesID completedLevelZone;
 
@@ -24,10 +24,5 @@ namespace LevelManagement
         {
             return -1721677994 + completedLevelZone.GetHashCode();
         }
-#if UNITY_EDITOR
-        public void NodeGUI()
-        {
-        }
-#endif
     }
 }

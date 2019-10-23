@@ -70,7 +70,7 @@
      <Compile Include="Assets\LevelManagement\Configuration\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
      <Compile Include="Assets\LevelManagement\Events\LevelManagerEventManager.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailability\Manager\LevelAvailabilityManager.cs" />
-     <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV2.cs" />
+     <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV3.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineNodeManagerV2.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\TimelineAction\LevelCompletedTimelineAction.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />

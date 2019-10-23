@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{2DD87826-BED4-3147-BE7B-C30240F79B63}</ProjectGuid>
+    <ProjectGuid>{B7BD2216-F0C9-03D9-EF37-5B367A553DB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Editor</AssemblyName>
+    <AssemblyName>Timelines_Editor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,129 +56,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Editor\ByEnumPropertyEditors\ByEnumPropertyEditors.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUIFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUIResultPagination.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\AbstractDictionaryEnumGUIFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\ExpressionFilterOperation.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\NativeTypeDictionaryEnumFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\ObjectTypeDictionaryEnumFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\RegexFilterOperation.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\StringTypeDictionaryEnumFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\UnityObjectTypeDictionaryEnumFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\ScriptableObjectListGUI.cs" />
-     <Compile Include="Assets\Editor\CreateScriptableObject\CreateScriptableObjectEditor.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditor.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditorProfile.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\CreateablePrefabComponent.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\CreateableSceneComponent.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\CreateableScriptableObjectComponent.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\CreationModuleComponent.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\GeneratedPrefabAssetManager.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\GeneratedScriptableObjectManager.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\Interfaces\ICreateable.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Components\ModificationComponent.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Constants\ErrorMessages.cs" />
-     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\EditorInformationsHelper.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\InstancePath.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizard.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizardEditorProfile.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelHierarchyCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelSceneConfigurationCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\Helper\LevelPathHelper.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\LevelChunkCreationWizard.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\LevelChunkCreationWizardEditorProfile.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\Modules\EditorInformations.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\Modules\LevelChunkConfigurationCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\Modules\LevelChunkPrefabCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\Modules\LevelChunkSceneCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\LevelChunkCreationWizard\Modules\LevelHierarchyModification.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\EditorInformations.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelConfigurationCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelHierarchyCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelSceneConfigurationCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelSceneCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\PuzzleLevelDynamicsCreation.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\PuzzleLevelCreationWizard.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\PuzzleLevelCreationWizardEditorProfile.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\GenericConfigurationCreationWizard.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\GenericConfigurationCreationWizardProfile.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\EditorInformations.cs" />
-     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\GenericConfiugrationCreation.cs" />
-     <Compile Include="Assets\Editor\DynamicEditorCreation\DynamicEditorCreation.cs" />
-     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
-     <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
-     <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
-     <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
-     <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\PatrollingGraph\AIPatrolGraphV2CustomEditor.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Helpers\GameDesignerHelper.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AddPrefabModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\BaseModuleWizardModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\ConfigurationModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\CreateInEditorModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditPrefabModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditScriptableObjectModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\ExploreModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\GenericCreateInEditorModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\SetModelModule.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
-     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />
-     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
-     <Compile Include="Assets\Editor\Helper\AssetHelper.cs" />
-     <Compile Include="Assets\Editor\Helper\EnumPicker.cs" />
-     <Compile Include="Assets\Editor\Helper\Fold\FoldableArea.cs" />
-     <Compile Include="Assets\Editor\Helper\HandlesHelper.cs" />
-     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />
-     <Compile Include="Assets\Editor\Helper\Header\TreeChoiceHeaderTab.cs" />
-     <Compile Include="Assets\Editor\Helper\Lists\FoldableReordableList.cs" />
-     <Compile Include="Assets\Editor\Helper\MyFileUtil.cs" />
-     <Compile Include="Assets\Editor\Helper\NamingConventionHelper.cs" />
-     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
-     <Compile Include="Assets\Editor\Helper\ReflectionHelper.cs" />
-     <Compile Include="Assets\Editor\Helper\Search\RegexTextFinder.cs" />
-     <Compile Include="Assets\Editor\Helper\SerializableObjectHelper.cs" />
-     <Compile Include="Assets\Editor\Helper\TreePicker\AbstractTreePickerGUI.cs" />
-     <Compile Include="Assets\Editor\Helper\TreePicker\ButtonTreePickerGUI.cs" />
-     <Compile Include="Assets\Editor\Helper\TreePicker\TreePicker.cs" />
-     <Compile Include="Assets\Editor\Helper\TreePicker\TreePickerPopup.cs" />
-     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
-     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
-     <Compile Include="Assets\Editor\Helper\Zoom\EditorZoomArea.cs" />
-     <Compile Include="Assets\Editor\InteractiveObjectEditorV2\InteractiveObjectDebugger.cs" />
-     <Compile Include="Assets\Editor\InteractiveObjectEditorV2\InteractiveObjectExplorer.cs" />
-     <Compile Include="Assets\Editor\InteractiveObjectEditorV2\VisualElementFromClass.cs" />
-     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
-     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
-     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
-     <Compile Include="Assets\Editor\MaterialProperties\ShowOnKeywordDrawer.cs" />
-     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
-     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
-     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\IncludeConfigurationPropertyDrawer.cs" />
-     <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
-     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\FoldablePropertyDrawer.cs" />
-     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
-     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
-     <Compile Include="Assets\Editor\SceneHandle\SceneHandlerDrawer.cs" />
-     <Compile Include="Assets\Editor\ShaderGUI\WaveNoiseV2ShaderGUI.cs" />
-     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
-     <None Include="Assets\Editor\Editor.asmdef" />
+     <Compile Include="Assets\Timelines\Timelines_Editor\TimelineInitializerScriptableObjectCustomEditor.cs" />
+     <None Include="Assets\Timelines\Timelines_Editor\Timelines_Editor.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -742,61 +621,13 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="CoreGame.csproj">
-      <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
-      <Name>CoreGame</Name>
-    </ProjectReference>
-    <ProjectReference Include="PuzzleGame.csproj">
-      <Project>{FC207E2F-E5F7-098C-D7ED-9E2B548A1914}</Project>
-      <Name>PuzzleGame</Name>
-    </ProjectReference>
-    <ProjectReference Include="Editor_Common.csproj">
-      <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
-      <Name>Editor_Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
-      <Name>OdinSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="GameConfigurationID.csproj">
-      <Project>{06A8FBB9-2865-52EF-46A1-DD70B419EDC5}</Project>
-      <Name>GameConfigurationID</Name>
-    </ProjectReference>
-    <ProjectReference Include="InteractiveObjects.csproj">
-      <Project>{741991FE-D211-F6D8-2B2A-0EB0F573E16F}</Project>
-      <Name>InteractiveObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
-      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
-      <Name>InteractiveObjects_Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="RangeObjects.csproj">
-      <Project>{B0B86AC7-E423-566C-6E55-58B5FDE37DF9}</Project>
-      <Name>RangeObjects</Name>
-    </ProjectReference>
     <ProjectReference Include="Timelines.csproj">
       <Project>{86D2DBA8-BC22-7FE3-44CC-06B764F94632}</Project>
       <Name>Timelines</Name>
     </ProjectReference>
-    <ProjectReference Include="LevelManagement.csproj">
-      <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
-      <Name>LevelManagement</Name>
-    </ProjectReference>
-    <ProjectReference Include="Tutorial.csproj">
-      <Project>{5E7C0353-8FB9-B0AD-BB52-3277A43DE61F}</Project>
-      <Name>Tutorial</Name>
-    </ProjectReference>
-    <ProjectReference Include="AIObjects.csproj">
-      <Project>{4B5DEF64-4FDA-7B80-40DB-F36B792B3884}</Project>
-      <Name>AIObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="VisualFeedback.csproj">
-      <Project>{7CB22E21-2248-2D5F-191C-57E9A683E3D8}</Project>
-      <Name>VisualFeedback</Name>
-    </ProjectReference>
-    <ProjectReference Include="Persistence.csproj">
-      <Project>{A4906D6E-AF6D-3124-2AC7-89DF2A42A701}</Project>
-      <Name>Persistence</Name>
+    <ProjectReference Include="OdinSerializer.csproj">
+      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
+      <Name>OdinSerializer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
