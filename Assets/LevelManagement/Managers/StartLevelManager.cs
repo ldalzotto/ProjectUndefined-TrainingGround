@@ -1,5 +1,7 @@
 ﻿using System;
 using CoreGame;
+using LevelManagement;
+using Persistence;
 
 namespace LevelManagement
 {
@@ -35,6 +37,21 @@ namespace LevelManagement
         }
     }
 
+
+    public class StartLevelPersistanceManager : AbstractGamePersister<StartLevel>
+    {
+        public const string FolderName = "StartLevel";
+        public const string FileExtension = ".lvl";
+        public const string FileName = "StartLevel";
+
+        public StartLevelPersistanceManager() : base(FolderName, FileExtension, FileName)
+        {
+        }
+    }
+}
+
+namespace Persistence
+{
     [Serializable]
     public class StartLevel
     {
@@ -47,17 +64,6 @@ namespace LevelManagement
         public StartLevel(LevelZonesID startLevelID)
         {
             StartLevelID = startLevelID;
-        }
-    }
-
-    public class StartLevelPersistanceManager : AbstractGamePersister<StartLevel>
-    {
-        public const string FolderName = "StartLevel";
-        public const string FileExtension = ".lvl";
-        public const string FileName = "StartLevel";
-
-        public StartLevelPersistanceManager() : base(FolderName, FileExtension, FileName)
-        {
         }
     }
 }

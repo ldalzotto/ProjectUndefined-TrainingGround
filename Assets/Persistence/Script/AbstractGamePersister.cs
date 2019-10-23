@@ -1,22 +1,28 @@
 ﻿using System.IO;
+using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
+using Persistence;
 using UnityEngine;
 
 namespace CoreGame
 {
     public abstract class AbstractGamePersister<T>
     {
-
         private string persisterFolderName;
         private string fileExtension;
         private string fileName;
 
-        private BinaryFormatter binaryFormatter = new BinaryFormatter();
+        private BinaryFormatter binaryFormatter;
 
         private string folderPath;
 
         protected AbstractGamePersister(string persisterFolderName, string fileExtension, string fileName)
         {
+            this.binaryFormatter = new BinaryFormatter()
+            {
+                AssemblyFormat = FormatterAssemblyStyle.Simple
+            };
+
             this.persisterFolderName = persisterFolderName;
             this.fileExtension = fileExtension;
             this.fileName = fileName;
@@ -27,15 +33,12 @@ namespace CoreGame
         public T Load()
         {
             var path = this.GetDataPath();
-            return CoreGameSingletonInstances.PersistanceManager.Load<T>(folderPath, path, this.fileName, this.fileExtension);
+            return PersistanceManager.Get().Load<T>(folderPath, path, this.fileName, this.fileExtension);
         }
 
         public void SaveAsync(T dataToSave)
         {
-            CoreGameSingletonInstances.PersistanceManager.OnPersistRequested(() =>
-            {
-                this.SaveSync(dataToSave);
-            });
+            PersistanceManager.Get().OnPersistRequested(() => { this.SaveSync(dataToSave); });
         }
 
         public bool SaveSync(T dataToSave)
@@ -61,5 +64,4 @@ namespace CoreGame
             return Path.Combine(folderPath, fileName + fileExtension);
         }
     }
-
 }

@@ -10,10 +10,12 @@
     "InteractiveObjects",
     "InteractiveObjects_Interfaces",
     "RangeObjects",
+"Timelines",
 "LevelManagement",
 "Tutorial",
 "AIObjects",
-"VisualFeedback"
+"VisualFeedback",
+"Persistence"
   ],
   "includePlatforms": [
     "Editor"

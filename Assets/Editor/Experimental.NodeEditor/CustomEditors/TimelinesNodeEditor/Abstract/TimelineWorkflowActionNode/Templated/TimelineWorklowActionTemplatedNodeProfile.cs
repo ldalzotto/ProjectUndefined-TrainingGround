@@ -1,6 +1,7 @@
-﻿using CoreGame;
-using NodeGraph;
+﻿using System;
 using System.Collections.Generic;
+using NodeGraph;
+using Timelines;
 using UnityEngine;
 
 namespace Editor_LevelAvailabilityNodeEditor
@@ -10,7 +11,7 @@ namespace Editor_LevelAvailabilityNodeEditor
         TimelineNodeWorkflowActionV2Drawable GetWorkflowAction();
     }
 
-    [System.Serializable]
+    [Serializable]
     public abstract class TimelineWorklowActionTemplatedNodeProfile<T, A> : NodeProfile, TimelineWorklowActionNodeProfileDataRetrieval where A : TimelineNodeWorkflowActionV2Drawable where T : TimelineWorklowActionEdgeV2<A>
     {
         public T WorkflowActionEdge;
@@ -24,13 +25,13 @@ namespace Editor_LevelAvailabilityNodeEditor
         public override List<NodeEdgeProfile> InitInputEdges()
         {
             this.WorkflowActionEdge = NodeEdgeProfile.CreateNodeEdge<T>(this, NodeEdgeType.SINGLE_INPUT);
-            return new List<NodeEdgeProfile>() { this.WorkflowActionEdge };
+            return new List<NodeEdgeProfile>() {this.WorkflowActionEdge};
         }
 
         public override List<NodeEdgeProfile> InitOutputEdges()
         {
             this.WorkflowActionToNodeEdge = NodeEdgeProfile.CreateNodeEdge<WorkflowActionToNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
-            return new List<NodeEdgeProfile>() { this.WorkflowActionToNodeEdge };
+            return new List<NodeEdgeProfile>() {this.WorkflowActionToNodeEdge};
         }
 
         protected override string NodeTitle()

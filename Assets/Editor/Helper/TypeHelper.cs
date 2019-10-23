@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using LevelManagement;
 using RangeObjects;
+using Timelines;
 using Tutorial;
 using VisualFeedback;
 
@@ -15,13 +16,16 @@ public class TypeHelper
 {
     public static Type[] GetAllTypeAssignableFrom(Type abstractType)
     {
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         if (abstractType.IsGenericType)
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
                 .Where(p => IsAssignableToGenericType(p, abstractType))
                 .Where(p => p.Name != abstractType.Name)
                 .ToArray();
         else
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetTypes())
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
                 .Where(p => abstractType.IsAssignableFrom(p))
                 .Where(p => p.Name != abstractType.Name)
                 .ToArray();
@@ -38,6 +42,7 @@ public class TypeHelper
                 .Union(typeof(LevelManager).Assembly.GetTypes())
                 .Union(typeof(TutorialManager).Assembly.GetTypes())
                 .Union(typeof(DottedLineManager).Assembly.GetTypes())
+                .Union(typeof(TimelineConfiguration).Assembly.GetTypes())
                 .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface).ToArray();
     }
 

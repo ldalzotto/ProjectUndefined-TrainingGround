@@ -1,27 +1,25 @@
-﻿using CoreGame;
-using Experimental.Editor_NodeEditor;
-using NodeGraph;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Experimental.Editor_NodeEditor;
+using NodeGraph;
+using Timelines;
 using UnityEditor;
 using UnityEngine;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
     public abstract class TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY> : NodeEditor
-                    where NODE_KEY : Enum
-                    where TIMELINE_INITIALIZER : TimelineInitializerV2<TIMELINE_CONTEXT, NODE_KEY>
+        where NODE_KEY : Enum
+        where TIMELINE_INITIALIZER : TimelineInitializerV2<TIMELINE_CONTEXT, NODE_KEY>
     {
-
         public static void Init(NodeEditorProfile nodeEditorProfile, Type timelineNodeEditorType)
         {
-            TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY> window = (TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY>)EditorWindow.GetWindow(timelineNodeEditorType);
+            TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY> window = (TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY>) GetWindow(timelineNodeEditorType);
             nodeEditorProfile.Init();
             window.NodeEditorProfile = nodeEditorProfile;
             window.Show();
         }
-
 
 
         protected override void OnEnable_Impl()
@@ -34,9 +32,11 @@ namespace Editor_LevelAvailabilityNodeEditor
             {
                 this.Generate();
             }
+
             if (GUILayout.Button("SEARCH", EditorStyles.miniButton, GUILayout.Width(75f)))
             {
-                new TimelineNodeSearchTreePicker().OnSearch(ref this.nodeEditorProfile, (int selectedNodeKey) => {
+                new TimelineNodeSearchTreePicker().OnSearch(ref this.nodeEditorProfile, (int selectedNodeKey) =>
+                {
                     this.OnManuallyNodeSelected(selectedNodeKey);
                     this.Repaint();
                 });
@@ -45,7 +45,7 @@ namespace Editor_LevelAvailabilityNodeEditor
 
         private void Generate()
         {
-            var LevelAvailabilityTimelineInitializerV2 = (TIMELINE_INITIALIZER)ScriptableObject.CreateInstance(typeof(TIMELINE_INITIALIZER));
+            var LevelAvailabilityTimelineInitializerV2 = (TIMELINE_INITIALIZER) CreateInstance(typeof(TIMELINE_INITIALIZER));
 
             var nodes = new Dictionary<NODE_KEY, TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY>>();
             var initialNodes = new List<NODE_KEY>();
@@ -65,16 +65,16 @@ namespace Editor_LevelAvailabilityNodeEditor
                     }
 
                     var OnStartWorkflowAction =
-                            timelineNode.OnStartWorkflowActionEdges
-                              .ConvertAll(e => (TimelineNodeWorkflowActionV2<TIMELINE_CONTEXT, NODE_KEY>)(e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
+                        timelineNode.OnStartWorkflowActionEdges
+                            .ConvertAll(e => (TimelineNodeWorkflowActionV2<TIMELINE_CONTEXT, NODE_KEY>) (e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
                     var OnExitWorkflowAction =
-                           timelineNode.OnExitWorkflowActionEdges
-                             .ConvertAll(e => (TimelineNodeWorkflowActionV2<TIMELINE_CONTEXT, NODE_KEY>)(e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
+                        timelineNode.OnExitWorkflowActionEdges
+                            .ConvertAll(e => (TimelineNodeWorkflowActionV2<TIMELINE_CONTEXT, NODE_KEY>) (e.BackwardConnectedNodeEdges[0].NodeProfileRef as TimelineWorklowActionNodeProfileDataRetrieval).GetWorkflowAction());
 
                     TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY> createdNode = new TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY>(Transitions,
-                       OnStartWorkflowAction,
+                        OnStartWorkflowAction,
                         OnExitWorkflowAction);
-                    
+
                     nodes.Add(timelineNode.TimelineNodeId, createdNode);
                 }
                 else
@@ -89,14 +89,14 @@ namespace Editor_LevelAvailabilityNodeEditor
 
             LevelAvailabilityTimelineInitializerV2.InitialNodes = initialNodes;
             LevelAvailabilityTimelineInitializerV2.Nodes = nodes;
-       //     Debug.Assert(LevelAvailabilityTimelineInitializerV2.InitialNodes.Count > 0);
+            //     Debug.Assert(LevelAvailabilityTimelineInitializerV2.InitialNodes.Count > 0);
 
             var generationPath = MyFileUtil.GetAssetDirectoryPath(this.nodeEditorProfile) + LevelAvailabilityTimelineInitializerV2.GetType().Name + ".asset";
             AssetDatabase.CreateAsset(LevelAvailabilityTimelineInitializerV2, generationPath);
             //update timeline game configuration
             var timelineConfiguration = AssetFinder.SafeSingleAssetFind<TimelineConfiguration>("t:" + typeof(TimelineConfiguration).Name);
-            timelineConfiguration.SetEntry(((TimelineNodeEditorProfile)this.nodeEditorProfile).TimelineID,
-                (TimelineInitializerScriptableObject)AssetDatabase.LoadAssetAtPath(generationPath, typeof(TimelineInitializerScriptableObject)));
+            timelineConfiguration.SetEntry(((TimelineNodeEditorProfile) this.nodeEditorProfile).TimelineID,
+                (TimelineInitializerScriptableObject) AssetDatabase.LoadAssetAtPath(generationPath, typeof(TimelineInitializerScriptableObject)));
         }
 
 
@@ -116,10 +116,8 @@ namespace Editor_LevelAvailabilityNodeEditor
                         this.temporaryNodeLookupTable.Add(timelineNode.TimelineNodeId, timelineNode.Id);
                     }
                 }
-                this.nodeSearchTreePicker = new TreePickerPopup(this.temporaryNodeLookupTable.Keys.ToList().ConvertAll(e => e.ToString()), () =>
-                {
-                    onSelectionChange.Invoke(this.temporaryNodeLookupTable[(NODE_KEY)Enum.Parse(typeof(NODE_KEY), this.nodeSearchTreePicker.SelectedKey)]);
-                }, string.Empty);
+
+                this.nodeSearchTreePicker = new TreePickerPopup(this.temporaryNodeLookupTable.Keys.ToList().ConvertAll(e => e.ToString()), () => { onSelectionChange.Invoke(this.temporaryNodeLookupTable[(NODE_KEY) Enum.Parse(typeof(NODE_KEY), this.nodeSearchTreePicker.SelectedKey)]); }, string.Empty);
 
                 var popupRect = new Rect(Event.current.mousePosition, Vector2.zero);
                 this.nodeSearchTreePicker.WindowDimensions = new Vector2(200, 450);
@@ -127,7 +125,5 @@ namespace Editor_LevelAvailabilityNodeEditor
                 PopupWindow.Show(popupRect, this.nodeSearchTreePicker);
             }
         }
-
     }
-
 }

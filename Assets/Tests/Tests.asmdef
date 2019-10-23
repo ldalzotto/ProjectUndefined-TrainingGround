@@ -8,6 +8,8 @@
         "OdinSerializer",
         "GameConfigurationID",
         "VisualFeedback",
+"Persistence",
+"Timelines",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Unity.InputSystem",

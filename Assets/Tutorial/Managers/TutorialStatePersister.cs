@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGame;
+using Persistence;
+using Tutorial;
 using UnityEngine;
 
 namespace Tutorial
@@ -45,7 +47,10 @@ namespace Tutorial
             this.SaveAsync(this.LoadedTutorialState);
         }
     }
+}
 
+namespace Persistence
+{
     [Serializable]
     public class TutorialState
     {

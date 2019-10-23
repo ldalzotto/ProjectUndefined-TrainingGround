@@ -1,6 +1,5 @@
 ﻿using InteractiveObjects_Interfaces;
 using RTPuzzle;
-using UnityEngine;
 
 namespace InteractiveObjects
 {
@@ -8,7 +7,7 @@ namespace InteractiveObjects
     {
         #region External Dependencies
 
-        private LevelCompletionManager LevelCompletionManager = LevelCompletionManager.Get();
+        private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
 
         #endregion
 
@@ -32,7 +31,7 @@ namespace InteractiveObjects
 
         private void OnLevelCompletionTriggerEnterPlayer(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            LevelCompletionManager.OnLevelCompleted();
+            PuzzleEventsManager.PZ_EVT_LevelCompleted();
         }
     }
 }

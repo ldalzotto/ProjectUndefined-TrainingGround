@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGame;
+using LevelManagement;
+using Persistence;
 
 namespace LevelManagement
 {
@@ -77,16 +79,6 @@ namespace LevelManagement
         #endregion
     }
 
-    [Serializable]
-    public class LevelAvailability
-    {
-        public Dictionary<LevelZoneChunkID, bool> LevelZoneChunkAvailability;
-
-        public LevelAvailability()
-        {
-            this.LevelZoneChunkAvailability = new Dictionary<LevelZoneChunkID, bool>();
-        }
-    }
 
     public class LevelAvailabilityPersistanceManager : AbstractGamePersister<LevelAvailability>
     {
@@ -96,6 +88,20 @@ namespace LevelManagement
 
         public LevelAvailabilityPersistanceManager() : base(FolderName, FileExtension, FileName)
         {
+        }
+    }
+}
+
+namespace Persistence
+{
+    [Serializable]
+    public class LevelAvailability
+    {
+        public Dictionary<LevelZoneChunkID, bool> LevelZoneChunkAvailability;
+
+        public LevelAvailability()
+        {
+            this.LevelZoneChunkAvailability = new Dictionary<LevelZoneChunkID, bool>();
         }
     }
 }

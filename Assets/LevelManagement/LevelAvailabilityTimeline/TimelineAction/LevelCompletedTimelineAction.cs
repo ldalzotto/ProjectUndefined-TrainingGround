@@ -1,23 +1,13 @@
 ﻿using System;
-using CoreGame;
+using Timelines;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-
-#endif
 
 namespace LevelManagement
 {
     [Serializable]
-    public class LevelCompletedTimelineAction : TimeLineAction
+    public struct LevelCompletedTimelineAction : TimeLineAction
     {
-        [SerializeField]
-        // [SearchableEnum]
-        private LevelZonesID completedLevelZone;
-
-        public LevelCompletedTimelineAction()
-        {
-        }
+        [SerializeField] private LevelZonesID completedLevelZone;
 
         public LevelCompletedTimelineAction(LevelZonesID completedLevelZone)
         {
@@ -37,8 +27,6 @@ namespace LevelManagement
 #if UNITY_EDITOR
         public void NodeGUI()
         {
-            EditorGUILayout.LabelField(this.GetType().Name);
-            this.completedLevelZone = (LevelZonesID) EditorGUILayout.EnumPopup(this.completedLevelZone);
         }
 #endif
     }

@@ -43,9 +43,9 @@ namespace PlayerObject
                 PlayerActionEntryPoint.Get());
 
             //Getting persisted position
-            PlayerPositionPersistanceManager.Get().Init(this);
-            this.InteractiveGameObject.InteractiveGameObjectParent.transform.position = PlayerPositionPersistanceManager.Get().PlayerPositionBeforeLevelLoad.GetPosition();
-            this.InteractiveGameObject.InteractiveGameObjectParent.transform.rotation = PlayerPositionPersistanceManager.Get().PlayerPositionBeforeLevelLoad.GetQuaternion();
+            PlayerPositionPersistenceManager.Get().Init(this);
+            this.InteractiveGameObject.InteractiveGameObjectParent.transform.position = PlayerPositionPersistenceManager.Get().PlayerPositionBeforeLevelLoad.GetPosition();
+            this.InteractiveGameObject.InteractiveGameObjectParent.transform.rotation = PlayerPositionPersistenceManager.Get().PlayerPositionBeforeLevelLoad.GetQuaternion();
 
             AfterConstructor();
         }

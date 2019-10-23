@@ -3,7 +3,9 @@
     "references": [
 "CoreGame",
 "LevelManagement",
-"PlayerObject"
+"PlayerObject",
+"Persistence",
+"Timelines"
 ],
     "includePlatforms": [],
     "excludePlatforms": [],

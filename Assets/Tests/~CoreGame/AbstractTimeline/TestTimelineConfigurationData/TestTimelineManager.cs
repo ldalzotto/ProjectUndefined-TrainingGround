@@ -1,7 +1,4 @@
-﻿using CoreGame;
-using GameConfigurationID;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Timelines;
 
 namespace Tests
 {
@@ -9,7 +6,10 @@ namespace Tests
     {
         private TestTimelineContext testTimelineContext = new TestTimelineContext();
 
-        public TestTimelineContext TestTimelineContext { get => testTimelineContext; }
+        public TestTimelineContext TestTimelineContext
+        {
+            get => testTimelineContext;
+        }
 
         protected override TestTimelineContext workflowActionPassedDataStruct => this.testTimelineContext;
 

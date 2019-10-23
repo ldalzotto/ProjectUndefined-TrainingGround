@@ -1,12 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using NodeGraph;
-using CoreGame;
-using GameConfigurationID;
+using Timelines;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
-    [System.Serializable]
+    [Serializable]
     public abstract class TimelineNodeEditorProfile : NodeEditorProfile
     {
         public abstract TimelineID TimelineID { get; }

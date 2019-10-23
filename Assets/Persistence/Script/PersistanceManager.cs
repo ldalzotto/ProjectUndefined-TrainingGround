@@ -3,54 +3,63 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using CoreGame;
 using UnityEngine;
 
-namespace CoreGame
+namespace Persistence
 {
-    public class PersistanceManager : MonoBehaviour
+    public class PersistanceManager : GameSingleton<PersistanceManager>
     {
-        
         private BinaryFormatter binaryFormatter = new BinaryFormatter();
+
         private PersistanceManagerThreadObject PersistanceManagerThreadObject;
+
+        private AutoSaveIcon AutoSaveIcon;
+
         // End of processing async event
         private bool NoMorePersistanceEvent;
 
         public virtual void Init()
         {
-            CoreGameSingletonInstances.AutoSaveIcon.Init();
+            this.AutoSaveIcon = AutoSaveIcon.Get();
+            
             if (this.PersistanceManagerThreadObject == null)
             {
                 this.PersistanceManagerThreadObject = new PersistanceManagerThreadObject(OnNoMorePersistanceProcessingCallback: this.OnNoMorePersistanceProcessing);
             }
         }
-        
+
         public virtual void Tick(float d)
         {
             if (this.NoMorePersistanceEvent)
             {
-                CoreGameSingletonInstances.AutoSaveIcon.OnSaveEnd();
+                this.AutoSaveIcon.OnSaveEnd();
                 this.NoMorePersistanceEvent = false;
             }
+
             if (this.PersistanceManagerThreadObject.IsInError)
             {
                 Debug.LogError(this.PersistanceManagerThreadObject.ErrorOccured);
             }
-
         }
 
         #region External Event
+
         public virtual void OnPersistRequested(Action persistAction)
         {
-            CoreGameSingletonInstances.AutoSaveIcon.OnSaveStart();
+            this.AutoSaveIcon.OnSaveStart();
             this.PersistanceManagerThreadObject.OnPersistRequested(persistAction);
         }
+
         public void OnNoMorePersistanceProcessing()
         {
             this.NoMorePersistanceEvent = true;
         }
+
         #endregion
 
         #region Loading
+
         public virtual T Load<T>(string folderPath, string dataPath, string filename, string fileExtension)
         {
             return LoadStatic<T>(folderPath, dataPath, filename, fileExtension, this.binaryFormatter);
@@ -65,16 +74,16 @@ namespace CoreGame
                 {
                     using (FileStream fileStream = File.Open(dataPath, FileMode.Open))
                     {
-                        UnityEngine.Debug.Log(MyLog.Format("Loaded : " + dataPath));
-                        return (T)binaryFormatter.Deserialize(fileStream);
+                        Debug.Log(MyLog.Format("Loaded : " + dataPath));
+                        return (T) binaryFormatter.Deserialize(fileStream);
                     }
                 }
             }
+
             return default(T);
         }
 
         #endregion
-
     }
 
     class PersistanceManagerThreadObject
@@ -83,12 +92,19 @@ namespace CoreGame
         private Queue<Action> persistQueueActions;
 
         private Action OnNoMorePersistanceProcessingCallback;
-        
+
         private bool isInError;
         private Exception errorOccured;
 
-        public bool IsInError { get => isInError; }
-        public Exception ErrorOccured { get => errorOccured; }
+        public bool IsInError
+        {
+            get => isInError;
+        }
+
+        public Exception ErrorOccured
+        {
+            get => errorOccured;
+        }
 
         public PersistanceManagerThreadObject(Action OnNoMorePersistanceProcessingCallback)
         {
@@ -117,6 +133,7 @@ namespace CoreGame
             {
                 nextAction = this.persistQueueActions.Dequeue();
             }
+
             Task.Factory.StartNew(() => this.DoTask(nextAction));
         }
 
@@ -148,11 +165,9 @@ namespace CoreGame
                     this.isInError = true;
                     this.errorOccured = e;
                 }
-                
+
                 this.executingActions = false;
             }
         }
-
     }
-
 }

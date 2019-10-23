@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using CoreGame;
+using Timelines;
 using UnityEditor;
 
 namespace Tests
@@ -28,10 +29,8 @@ namespace Tests
 
         public void NodeGUI()
         {
-            this.TestTimelineActionKey = (TestTimelineActionKey)EditorGUILayout.EnumPopup(this.TestTimelineActionKey);
+            this.TestTimelineActionKey = (TestTimelineActionKey) EditorGUILayout.EnumPopup(this.TestTimelineActionKey);
         }
-
-
     }
 
     public enum TestTimelineActionKey
@@ -40,5 +39,4 @@ namespace Tests
         TestTimelineActionKey2,
         TestTimelineActionKey3
     }
-
 }

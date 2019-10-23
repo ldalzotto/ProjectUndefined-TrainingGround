@@ -9,7 +9,9 @@
         "InteractiveObjects",
         "InteractiveObjects_Interfaces",
         "RangeObjects",
-        "GameConfigurationID"
+        "GameConfigurationID",
+"Persistence",
+"Timelines"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,13 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using NodeGraph;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using CoreGame;
+using NodeGraph;
+using Timelines;
+using UnityEngine;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
-    [System.Serializable]
+    [Serializable]
     public abstract class TimelineWorklowActionEdgeV2<T> : NodeEdgeProfile where T : TimelineNodeWorkflowActionV2Drawable
     {
         public T WorkflowAction;

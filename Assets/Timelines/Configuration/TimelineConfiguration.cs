@@ -1,14 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using ConfigurationEditor;
-using System;
-using GameConfigurationID;
+using UnityEngine;
 
-namespace CoreGame
+namespace Timelines
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "TimelineConfiguration", menuName = "Configuration/CoreGame/TimelineConfiguration/TimelineConfiguration", order = 1)]
-
     public class TimelineConfiguration : ConfigurationSerialization<TimelineID, TimelineInitializerScriptableObject>
     {
     }

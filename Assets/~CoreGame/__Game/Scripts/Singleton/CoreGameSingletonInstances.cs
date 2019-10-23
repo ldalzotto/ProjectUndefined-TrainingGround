@@ -5,30 +5,19 @@ namespace CoreGame
 {
     public static class CoreGameSingletonInstances
     {
-        private static PersistanceManager persistanceManager;
-        private static ATimelinesManager aTimelinesManager;
         private static GameInputManager gameInputManager;
         private static Coroutiner coroutiner;
-        private static TimelinesEventManager timelinesEventManager;
         private static CoreConfigurationManager coreConfigurationManager;
         private static CoreStaticConfigurationContainer coreStaticConfigurationContainer;
-        private static AutoSaveIcon autoSaveIcon;
         private static DiscussionPositionsType discussionPositionsType;
-
-        public static PersistanceManager PersistanceManager => FindAndSetInstanceIfNull(persistanceManager, obj => persistanceManager = obj);
-
-        public static ATimelinesManager ATimelinesManager => FindAndSetInstanceIfNull(aTimelinesManager, obj => aTimelinesManager = obj);
+        private static Canvas persistantCanvas;
 
         public static GameInputManager GameInputManager => FindAndSetInstanceIfNull(gameInputManager, obj => gameInputManager = obj);
 
         public static Coroutiner Coroutiner => FindAndSetInstanceIfNull(coroutiner, obj => coroutiner = obj);
-        public static TimelinesEventManager TimelinesEventManager => FindAndSetInstanceIfNull(timelinesEventManager, obj => timelinesEventManager = obj);
-
         public static CoreConfigurationManager CoreConfigurationManager => FindAndSetInstanceIfNull(coreConfigurationManager, obj => coreConfigurationManager = obj);
 
         public static CoreStaticConfigurationContainer CoreStaticConfigurationContainer => FindAndSetInstanceIfNull(coreStaticConfigurationContainer, obj => coreStaticConfigurationContainer = obj);
-
-        public static AutoSaveIcon AutoSaveIcon => FindAndSetInstanceIfNull(autoSaveIcon, obj => autoSaveIcon = obj);
 
         public static Canvas GameCanvas
         {
@@ -42,6 +31,16 @@ namespace CoreGame
 
                 return gameCanvas.GetComponent<Canvas>();
             }
+        }
+
+        public static Canvas PersistantCanvas()
+        {
+            if (persistantCanvas == null)
+            {
+                persistantCanvas = GameObject.FindGameObjectWithTag(TagConstants.PERSISTANT_CANVAS).GetComponent<Canvas>();
+            }
+
+            return persistantCanvas;
         }
 
         public static DiscussionPositionsType DiscussionPositionsType => FindAndSetInstanceIfNull(discussionPositionsType, obj => discussionPositionsType = obj);

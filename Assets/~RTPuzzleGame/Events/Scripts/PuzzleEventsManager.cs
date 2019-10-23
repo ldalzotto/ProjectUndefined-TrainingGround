@@ -1,6 +1,7 @@
 using CoreGame;
 using LevelManagement;
 using RangeObjects;
+using Timelines;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -10,7 +11,6 @@ namespace RTPuzzle
         public PuzzleEventsManager()
         {
             PuzzleLevelTransitionManager = LevelTransitionManager.Get();
-            TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             LevelManager = LevelManager.Get();
         }
 
@@ -19,7 +19,7 @@ namespace RTPuzzle
 
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
-        private TimelinesEventManager TimelinesEventManager;
+        private TimelinesEventManager TimelinesEventManager = TimelinesEventManager.Get();
         private GroundEffectsManagerV2 GroundEffectsManagerV2 = GroundEffectsManagerV2.Get();
 
         #endregion

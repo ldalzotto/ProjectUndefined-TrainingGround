@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 [CustomPropertyDrawer(typeof(Inline))]
 public class InlinePropertyDrawer : PropertyDrawer
@@ -15,7 +16,7 @@ public class InlinePropertyDrawer : PropertyDrawer
     {
         try
         {
-            Inline byEnumProperty = (Inline)attribute;
+            Inline byEnumProperty = (Inline) attribute;
 
             EditorGUI.BeginProperty(position, label, property);
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
@@ -33,6 +34,7 @@ public class InlinePropertyDrawer : PropertyDrawer
                     }
                 }
             }
+
             if (this.folded)
             {
                 EditorGUI.indentLevel += 1;
@@ -45,6 +47,7 @@ public class InlinePropertyDrawer : PropertyDrawer
                     {
                         inlineEditor = DynamicEditorCreation.Get().CreateEditor(property.objectReferenceValue);
                     }
+
                     if (this.inlineEditor != null)
                     {
                         EditorGUI.indentLevel += 1;
@@ -66,26 +69,28 @@ public class InlinePropertyDrawer : PropertyDrawer
                                     //Open popup to select implementation
                                     ClassSelectionEditorWindow.Show(Event.current.mousePosition, fieldType, (Type selectedType) =>
                                     {
-                                        var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject)property.serializedObject.targetObject, selectedType.Name, property.name);
-                                        property.objectReferenceValue = (UnityEngine.Object)createdAsset;
+                                        var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject) property.serializedObject.targetObject, selectedType.Name, property.name);
+                                        property.objectReferenceValue = (Object) createdAsset;
                                     });
                                 }
                                 else
                                 {
-                                    var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject)property.serializedObject.targetObject, property.type.Replace("PPtr<$", "").Replace(">", ""), property.name);
-                                    property.objectReferenceValue = (UnityEngine.Object)createdAsset;
+                                    var createdAsset = AssetHelper.CreateAssetAtSameDirectoryLevel((ScriptableObject) property.serializedObject.targetObject, property.type.Replace("PPtr<$", "").Replace(">", ""), property.name);
+                                    property.objectReferenceValue = (Object) createdAsset;
                                 }
                             }
                         }
-
                     }
                 }
             }
+
             EditorGUILayout.EndVertical();
             EditorGUI.EndProperty();
         }
-        catch (Exception e) { Debug.LogError(e); }
-
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
     }
 
     private void CreateByEnumSO(SerializedProperty property, Inline inlineAttribute)
@@ -109,6 +114,7 @@ public class InlinePropertyDrawer : PropertyDrawer
                 ObjectsByEnum.Add(field.GetValue(property.serializedObject.targetObject));
             }
         }
+
         var ActualAssets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(property.serializedObject.targetObject)).ToList();
 
         ActualAssets.Remove(property.serializedObject.targetObject);
@@ -123,7 +129,6 @@ public class InlinePropertyDrawer : PropertyDrawer
                 }
             }
         }
-
     }
 }
 
@@ -138,7 +143,13 @@ class ClassSelectionEditorWindow : EditorWindow
         Vector2 displayPosition,
         Type abstractType, Action<Type> OnSelectionCallback)
     {
-        AvailableTypes = TypeHelper.GetAllTypeAssignableFrom(abstractType).ToDictionary(t => t.Name);
+        var allTypes = TypeHelper.GetAllTypeAssignableFrom(abstractType);
+        AvailableTypes = new Dictionary<string, Type>();
+        foreach (var singleType in allTypes)
+        {
+            AvailableTypes[singleType.Name] = singleType;
+        }
+
         ClassSelectionEditorWindow.OnSelectionCallback = OnSelectionCallback;
         var window = CreateInstance<ClassSelectionEditorWindow>();
         window.position = new Rect(displayPosition, DefaultSize);
@@ -181,7 +192,7 @@ class ClassSelectionEditorWindow : EditorWindow
 
     private void OnTypeSelected(Type selectedType)
     {
-        ClassSelectionEditorWindow.OnSelectionCallback.Invoke(selectedType);
+        OnSelectionCallback.Invoke(selectedType);
         this.Close();
     }
 
@@ -189,6 +200,7 @@ class ClassSelectionEditorWindow : EditorWindow
     {
         private Action<Type> OnSelectionLineClicked;
         private Type associatedType;
+
         public SelectionLine(VisualElement parent, string label,
             Type associatedType, Action<Type> OnSelectionLineClicked) : base(label)
         {
@@ -203,5 +215,4 @@ class ClassSelectionEditorWindow : EditorWindow
             this.OnSelectionLineClicked.Invoke(this.associatedType);
         }
     }
-
 }

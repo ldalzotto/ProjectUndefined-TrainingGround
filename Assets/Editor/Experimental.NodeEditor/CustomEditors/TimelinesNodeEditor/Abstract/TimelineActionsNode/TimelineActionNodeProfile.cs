@@ -3,6 +3,7 @@ using System.Collections;
 using NodeGraph;
 using System.Collections.Generic;
 using CoreGame;
+using Timelines;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
@@ -10,6 +11,7 @@ namespace Editor_LevelAvailabilityNodeEditor
     {
         TimeLineAction GetTimelineAction();
     }
+
     public abstract class TimelineActionNodeProfile<T, A> : NodeProfile, TimelineActionNodeProfileDataRetrieval where A : TimeLineAction where T : TimelineActionEdgeProfile<A>
     {
         public T TimelineActionEdge;
@@ -25,7 +27,7 @@ namespace Editor_LevelAvailabilityNodeEditor
             this.TimelineActionEdge = NodeEdgeProfile.CreateNodeEdge<T>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>()
             {
-                 this.TimelineActionEdge
+                this.TimelineActionEdge
             };
         }
 
@@ -34,7 +36,7 @@ namespace Editor_LevelAvailabilityNodeEditor
             this.TimelineActionConnection = NodeEdgeProfile.CreateNodeEdge<TimelineActionToNodeEdgeV2>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>()
             {
-                 this.TimelineActionConnection
+                this.TimelineActionConnection
             };
         }
 

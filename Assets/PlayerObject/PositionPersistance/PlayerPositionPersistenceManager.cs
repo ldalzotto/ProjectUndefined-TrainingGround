@@ -1,10 +1,11 @@
 ﻿using System;
 using CoreGame;
+using Persistence;
 using UnityEngine;
 
 namespace PlayerObject
 {
-    public class PlayerPositionPersistanceManager : GameSingleton<PlayerPositionPersistanceManager>
+    public class PlayerPositionPersistenceManager : GameSingleton<PlayerPositionPersistenceManager>
     {
         private PlayerPositionPersister playerPositionPersister;
 
@@ -40,6 +41,18 @@ namespace PlayerObject
         #endregion
     }
 
+
+    class PlayerPositionPersister : AbstractGamePersister<PlayerPosition>
+    {
+        public PlayerPositionPersister() : base("PlayerPosition", ".pl", "PlayerPosition")
+        {
+        }
+    }
+}
+
+
+namespace Persistence
+{
     [Serializable]
     public struct PlayerPosition
     {
@@ -62,13 +75,6 @@ namespace PlayerObject
         public Quaternion GetQuaternion()
         {
             return new Quaternion(Quaternion.x, Quaternion.y, Quaternion.z, Quaternion.w);
-        }
-    }
-
-    class PlayerPositionPersister : AbstractGamePersister<PlayerPosition>
-    {
-        public PlayerPositionPersister() : base("PlayerPosition", ".pl", "PlayerPosition")
-        {
         }
     }
 }

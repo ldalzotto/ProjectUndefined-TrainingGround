@@ -1,17 +1,17 @@
-﻿using GameConfigurationID;
-using OdinSerializer;
+﻿using System;
 using System.Collections.Generic;
-
+using OdinSerializer;
+using Persistence;
 using UnityEngine;
 
-namespace CoreGame
+namespace Timelines
 {
     public interface ITimelineNodeManager
     {
         void Init(TimelineInitializerScriptableObject providedTimelineInitializer = null);
         void IncrementGraph(TimeLineAction executedTimelineAction);
-
     }
+
     public abstract class ATimelineNodeManager : MonoBehaviour
     {
         public abstract TimelineID GetTimelineID();
@@ -20,56 +20,68 @@ namespace CoreGame
     public abstract class TimelineNodeManagerV2<T, NODE_KEY> : ATimelineNodeManager, ITimelineNodeManager
     {
         #region External Dependencies
+
         protected abstract T workflowActionPassedDataStruct { get; }
         private TimelineInitializerV2<T, NODE_KEY> TimelineInitializer;
+
         #endregion
 
         #region Timeline ID
+
         protected abstract TimelineID TimelineID { get; }
+
         public override TimelineID GetTimelineID()
         {
             return this.TimelineID;
         }
+
         #endregion
 
         #region Perisistance
+
         protected abstract bool isPersisted { get; }
-        private ATimelinePersister<NODE_KEY> timelinePersister;
+        private ATimelinePersister<ATimelinePersistedNodes<NODE_KEY>> timelinePersister;
+
         #endregion
 
-        private List<NODE_KEY> nodes = new List<NODE_KEY>();
+        private ATimelinePersistedNodes<NODE_KEY> persistedNodes = new ATimelinePersistedNodes<NODE_KEY>() {Nodes = new List<NODE_KEY>()};
 
-        public List<NODE_KEY> Nodes { get => nodes; }
+        public List<NODE_KEY> Nodes
+        {
+            get => persistedNodes.Nodes;
+        }
 
         public virtual void Init(TimelineInitializerScriptableObject providedTimelineInitializer = null)
         {
             if (providedTimelineInitializer == null)
             {
                 #region External Dependencies
-                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)CoreGameSingletonInstances.CoreConfigurationManager.TimelineConfiguration().ConfigurationInherentData[TimelineID];
+
+                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>) TimelineConfigurationGameObject.Get().TimelineConfiguration.ConfigurationInherentData[TimelineID];
+
                 #endregion
             }
             else
             {
-                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)providedTimelineInitializer;
+                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>) providedTimelineInitializer;
             }
 
 
             if (this.isPersisted)
             {
-                this.timelinePersister = new ATimelinePersister<NODE_KEY>(this.GetType());
-                if (this.nodes.Count == 0)
+                this.timelinePersister = new ATimelinePersister<ATimelinePersistedNodes<NODE_KEY>>(this.GetType());
+                if (this.persistedNodes.Nodes.Count == 0)
                 {
                     var loadedNodes = this.timelinePersister.Load();
 
-                    if (loadedNodes == null)
+                    if (loadedNodes.Nodes == null)
                     {
                         InitFromConfig();
                         this.PersistAsync();
                     }
                     else
                     {
-                        this.nodes = loadedNodes;
+                        this.persistedNodes = loadedNodes;
                     }
                 }
             }
@@ -92,7 +104,7 @@ namespace CoreGame
             foreach (var oldnodeKey in scenarioNodesIncrementation.oldNodes)
             {
                 var oldNode = this.TimelineInitializer.GetNode(oldnodeKey);
-                nodes.Remove(oldnodeKey);
+                persistedNodes.Nodes.Remove(oldnodeKey);
                 foreach (var endAction in oldNode.OnExitNodeAction)
                 {
                     endAction.Execute(workflowActionPassedDataStruct, oldNode);
@@ -111,7 +123,7 @@ namespace CoreGame
         {
             if (this.timelinePersister != null)
             {
-                this.timelinePersister.SaveAsync(this.nodes);
+                this.timelinePersister.SaveAsync(this.persistedNodes);
             }
         }
 
@@ -119,9 +131,9 @@ namespace CoreGame
         {
             foreach (var nodeToAdd in nodesToAdd)
             {
-                if (!this.nodes.Contains(nodeToAdd))
+                if (!this.persistedNodes.Nodes.Contains(nodeToAdd))
                 {
-                    nodes.Add(nodeToAdd);
+                    persistedNodes.Nodes.Add(nodeToAdd);
                     var newNode = this.TimelineInitializer.GetNode(nodeToAdd);
                     foreach (var startAction in newNode.OnStartNodeAction)
                     {
@@ -135,7 +147,7 @@ namespace CoreGame
         {
             List<NODE_KEY> nextTimelineNodes = new List<NODE_KEY>();
             List<NODE_KEY> oldTimelineNodes = new List<NODE_KEY>();
-            foreach (var nodeId in nodes)
+            foreach (var nodeId in persistedNodes.Nodes)
             {
                 var node = this.TimelineInitializer.GetNode(nodeId);
                 var computedNodes = node.ComputeTransitions(executedTimelineAction);
@@ -150,6 +162,7 @@ namespace CoreGame
                                 nextTimelineNodes.Add(computedNode);
                             }
                         }
+
                         if (!oldTimelineNodes.Contains(nodeId))
                         {
                             oldTimelineNodes.Add(nodeId);
@@ -157,9 +170,9 @@ namespace CoreGame
                     }
                 }
             }
+
             return new NodesIncrementation(nextTimelineNodes, oldTimelineNodes);
         }
-
 
 
         private class NodesIncrementation
@@ -175,13 +188,11 @@ namespace CoreGame
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public abstract class TimelineInitializerV2<T, NODE_KEY> : TimelineInitializerScriptableObject
     {
-        [SerializeField]
-        public Dictionary<NODE_KEY, TimelineNodeV2<T, NODE_KEY>> Nodes;
-        [SerializeField]
-        public List<NODE_KEY> InitialNodes;
+        [SerializeField] public Dictionary<NODE_KEY, TimelineNodeV2<T, NODE_KEY>> Nodes;
+        [SerializeField] public List<NODE_KEY> InitialNodes;
 
         public TimelineNodeV2<T, NODE_KEY> GetNode(NODE_KEY key)
         {
@@ -189,10 +200,12 @@ namespace CoreGame
         }
     }
 
-    [System.Serializable]
-    public abstract class TimelineInitializerScriptableObject : SerializedScriptableObject { }
+    [Serializable]
+    public abstract class TimelineInitializerScriptableObject : SerializedScriptableObject
+    {
+    }
 
-    [System.Serializable]
+    [Serializable]
     public class TimelineNodeV2<T, NODE_KEY>
     {
         public Dictionary<TimeLineAction, List<NODE_KEY>> TransitionRequirements;
@@ -224,9 +237,9 @@ namespace CoreGame
                     nextNodes.AddRange(transitionRequirement.Value);
                 }
             }
+
             return nextNodes;
         }
-
     }
 
     public interface TimelineNodeWorkflowActionV2Drawable
@@ -236,13 +249,15 @@ namespace CoreGame
 #endif
     }
 
-    [System.Serializable]
+    [Serializable]
     public abstract class TimelineNodeWorkflowActionV2<T, NODE_KEY> : TimelineNodeWorkflowActionV2Drawable
     {
         public abstract void Execute(T workflowActionPassedDataStruct, TimelineNodeV2<T, NODE_KEY> timelineNodeRefence);
 
 #if UNITY_EDITOR
-        public abstract void ActionGUI();
+        public virtual void ActionGUI()
+        {
+        }
 #endif
     }
 }

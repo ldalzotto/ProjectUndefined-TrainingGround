@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using CoreGame;
 using LevelManagement;
+using Persistence;
+using Timelines;
 using UnityEngine;
 
 namespace GameLoop
@@ -15,7 +17,7 @@ namespace GameLoop
 
             this.levelType = levelType;
 
-            CoreGameSingletonInstances.PersistanceManager.Init();
+            PersistanceManager.Get().Init();
             StartLevelManager.Get().Init();
             if (levelType == LevelType.STARTMENU)
             {
@@ -27,7 +29,7 @@ namespace GameLoop
             }
 
             LevelAvailabilityManager.Get().Init();
-            CoreGameSingletonInstances.ATimelinesManager.Init();
+            ATimelinesManager.Get().Init();
             LevelManager.Get().Init(levelType);
 
             if (this.levelType != LevelType.STARTMENU)
@@ -44,14 +46,14 @@ namespace GameLoop
 
         protected void BeforeTick(float d)
         {
-            CoreGameSingletonInstances.PersistanceManager.Tick(d);
+            PersistanceManager.Get().Tick(d);
             if (levelType != LevelType.STARTMENU) LevelChunkFXTransitionManager.Get().Tick(d);
         }
 
         private IEnumerator InitializeTimelinesAtEndOfFrame()
         {
             yield return new WaitForEndOfFrame();
-            CoreGameSingletonInstances.ATimelinesManager.InitTimelinesAtEndOfFrame();
+            ATimelinesManager.Get().InitTimelinesAtEndOfFrame();
         }
     }
 }

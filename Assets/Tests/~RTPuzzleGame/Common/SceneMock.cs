@@ -1,5 +1,5 @@
 ﻿using System;
-using CoreGame;
+using Persistence;
 using VisualFeedback;
 
 namespace Tests

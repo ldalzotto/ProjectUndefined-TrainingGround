@@ -25,7 +25,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_2019_2_9;UNITY_2019_2;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_EVENT_QUEUE;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_2019_2_9;UNITY_2019_2;UNITY_2019;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;INCLUDE_DYNAMIC_GI;ENABLE_MONO_BDWGC;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_EVENT_QUEUE;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_INPUT_SYSTEM;UNITY_POST_PROCESSING_STACK_V2;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -124,8 +124,6 @@
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfigurationInherentData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TimelineConfiguration\TimelineConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepInherentData.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForNavAgentDestinationReached.cs" />
@@ -177,9 +175,6 @@
      <Compile Include="Assets\~CoreGame\Math\ShapeDefinitions.cs" />
      <Compile Include="Assets\~CoreGame\Math\Types\StartEndSlice.cs" />
      <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
-     <Compile Include="Assets\~CoreGame\Persistance\Script\AbstractGamePersister.cs" />
-     <Compile Include="Assets\~CoreGame\Persistance\Script\AutoSaveIcon.cs" />
-     <Compile Include="Assets\~CoreGame\Persistance\Script\PersistanceManager.cs" />
      <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV3.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\AnimationDataManager.cs" />
@@ -187,15 +182,6 @@
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
      <Compile Include="Assets\~CoreGame\Timelines\TimelinesEventManager.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\Abstract\AbstractTutorialTextAction.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialActionInput.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialTextAction.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Edges\TutorialTextEdge.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Nodes\TutorialTextNode.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\TutorialGraph.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialGraphEvents.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
-     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
      <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
      <Compile Include="Assets\Test\PlayableAnimatorTest\AnimatorSetterTest.cs" />
      <Compile Include="Assets\Test\PlayableAnimatorTest\MyAnimatorBehavior.cs" />
@@ -848,6 +834,10 @@
       <Project>{D2645906-D846-DC24-BADC-9B49DE344A34}</Project>
       <Name>Editor_Common</Name>
     </ProjectReference>
+    <ProjectReference Include="VisualFeedback.csproj">
+      <Project>{7CB22E21-2248-2D5F-191C-57E9A683E3D8}</Project>
+      <Name>VisualFeedback</Name>
+    </ProjectReference>
     <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
       <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
       <Name>InteractiveObjects_Interfaces</Name>
@@ -864,6 +854,10 @@
       <Project>{63AE0CB7-735A-D4CD-7DAE-B8ABD6F2883E}</Project>
       <Name>PlayerActions</Name>
     </ProjectReference>
+    <ProjectReference Include="AIObjects.csproj">
+      <Project>{4B5DEF64-4FDA-7B80-40DB-F36B792B3884}</Project>
+      <Name>AIObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="LevelManagement.csproj">
       <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
       <Name>LevelManagement</Name>
@@ -875,6 +869,10 @@
     <ProjectReference Include="GameLoop.csproj">
       <Project>{639B2A1B-495A-2DE9-D504-C31C8A831882}</Project>
       <Name>GameLoop</Name>
+    </ProjectReference>
+    <ProjectReference Include="PlayerActions_Interfaces.csproj">
+      <Project>{250DC794-4661-E9F3-0FB2-D25AF31B44EB}</Project>
+      <Name>PlayerActions_Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="Obstacle.csproj">
       <Project>{A56A5795-1CB9-EF28-85DE-67DC873B52CC}</Project>
@@ -908,6 +906,10 @@
       <Project>{2DD87826-BED4-3147-BE7B-C30240F79B63}</Project>
       <Name>Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Tutorial.csproj">
+      <Project>{5E7C0353-8FB9-B0AD-BB52-3277A43DE61F}</Project>
+      <Name>Tutorial</Name>
+    </ProjectReference>
     <ProjectReference Include="SelectableObjects_Interfaces.csproj">
       <Project>{1A25ED86-E332-816C-7EE6-8D768A3D8986}</Project>
       <Name>SelectableObjects_Interfaces</Name>
@@ -915,6 +917,10 @@
     <ProjectReference Include="PlayerObject_Interface.csproj">
       <Project>{42804222-6A23-CC02-C65B-A45131BAA9EB}</Project>
       <Name>PlayerObject_Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="Persistence.csproj">
+      <Project>{A4906D6E-AF6D-3124-2AC7-89DF2A42A701}</Project>
+      <Name>Persistence</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

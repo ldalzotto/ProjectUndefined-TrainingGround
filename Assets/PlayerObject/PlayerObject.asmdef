@@ -7,7 +7,8 @@
 "InteractiveObjects_Interfaces",
 "PlayerActions",
 "Editor_Common",
-"OdinSerializer"
+"OdinSerializer",
+"Persistence"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

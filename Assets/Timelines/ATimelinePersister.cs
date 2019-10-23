@@ -1,13 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System;
 using System.Collections.Generic;
-using System;
-using System.IO;
+using CoreGame;
 
-namespace CoreGame
+namespace Timelines
 {
-    public class ATimelinePersister<T> : AbstractGamePersister<List<T>>
+    public class ATimelinePersister<T> : AbstractGamePersister<T>
     {
         public const string TimelinePersisterFolderName = "Timelines";
         public const string TimelineFileExtension = ".tim";
@@ -15,7 +12,14 @@ namespace CoreGame
         public ATimelinePersister(Type timelineType) : base(TimelinePersisterFolderName, TimelineFileExtension, timelineType.Name)
         {
         }
-        
     }
+}
 
+namespace Persistence
+{
+    [Serializable]
+    public struct ATimelinePersistedNodes<NODE_KEY>
+    {
+        public List<NODE_KEY> Nodes;
+    }
 }

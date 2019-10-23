@@ -1,15 +1,15 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
 using UnityEngine;
 
-namespace CoreGame
+namespace Timelines
 {
-    public class ATimelinesManager : MonoBehaviour
+    public class ATimelinesManager : GameSingleton<ATimelinesManager>
     {
         private ITimelineNodeManager LevelAvailabilityTimeline;
 
         public void Init()
         {
-            var aTimelinens = FindObjectsOfType<ATimelineNodeManager>();
+            var aTimelinens = GameObject.FindObjectsOfType<ATimelineNodeManager>();
             foreach (var timeline in aTimelinens)
                 switch (timeline.GetTimelineID())
                 {

@@ -1,21 +1,15 @@
 ﻿using CoreGame;
-using UnityEngine;
 
-namespace CoreGame
+namespace Timelines
 {
-    public class TimelinesEventManager : MonoBehaviour
+    public class TimelinesEventManager : GameSingleton<TimelinesEventManager>
     {
-
         public void OnScenarioActionExecuted(TimeLineAction scenarioAction)
         {
-            foreach (var timeline in CoreGameSingletonInstances.ATimelinesManager.GetAllTimelines())
+            foreach (var timeline in ATimelinesManager.Get().GetAllTimelines())
             {
                 timeline.IncrementGraph(scenarioAction);
             }
         }
-
-
     }
-
-
 }
