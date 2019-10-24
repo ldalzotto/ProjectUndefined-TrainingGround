@@ -160,6 +160,7 @@ namespace AnimatorPlayable_Tests
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AnimationLayerMixerPlayable.GetInputCount() == 1);
             var SequencedAnimationLayer = AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[0] as SequencedAnimationLayer;
             Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 1f);
+            yield return null;
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AnimationLayerMixerPlayable.GetInputWeight(0) < 1f);
             yield return new WaitForSeconds(endTransitionTime);
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying.Count == 0);

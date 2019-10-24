@@ -17,19 +17,11 @@ namespace AnimatorPlayable
         #endregion
     }
 
-
-    /// <summary>
-    /// The LinearBlending works as following :
-    /// * If EndTransitionTime == 0 the animation clip weight transition between 0 and 1 is instant (AnimationWeightStartIncreasingTime == AnimationWeightEndIncreasingTime) and (AnimationWeightStartDecreasingTime == AnimationWeightEndDecreasingTime)
-    /// * If EndTransitionTime > 0 then the AnimationWeightStartDecreasingTime  
-    /// </summary>
     [Serializable]
     public struct LinearBlending
     {
         public float EndTransitionTime;
-
-        //   [FormerlySerializedAs("ArtificialBeginClipDelay")] public float BeginClipDelay;
-        //  [FormerlySerializedAs("ArtificialEndClipDelay")] public float EndClipDelay;
+        public float EndClipDelay;
 
         [MyReadOnly] public float AnimationWeightStartIncreasingTime;
         [MyReadOnly] public float AnimationWeightEndIncreasingTime;
@@ -37,12 +29,6 @@ namespace AnimatorPlayable
         [MyReadOnly] public float AnimationWeightStartDecreasingTime;
         [MyReadOnly] public float AnimationWeightEndDecreasingTime;
 
-        /*
-         public float GetAnimationEndTimeWithoutDelay()
-         {
-             return this.AnimationWeightEndDecreasingTime - this.EndClipDelay;
-         }
-         */
 
         public LinearBlending SetWeightTimePoints(float AnimationWeightStartIncreasingTime, float AnimationWeightEndIncreasingTime, float AnimationWeightStartDecreasingTime, float AnimationWeightEndDecreasingTime)
         {

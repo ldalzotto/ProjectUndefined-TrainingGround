@@ -61,39 +61,43 @@ namespace AnimatorPlayable
             {
                 if (i == 0)
                 {
+                    virtualClipElapsedTime = this.BeginTransitionTime;
                     this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.SetWeightTimePoints(
                         AnimationWeightStartIncreasingTime: virtualClipElapsedTime,
                         AnimationWeightEndIncreasingTime: virtualClipElapsedTime,
-                        AnimationWeightStartDecreasingTime: virtualClipElapsedTime + this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i].TransitionBlending.EndTransitionTime,
-                        AnimationWeightEndDecreasingTime: virtualClipElapsedTime + this.UniqueAnimationClips[i].AnimationClip.length
+                        AnimationWeightStartDecreasingTime: virtualClipElapsedTime + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay + this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i].TransitionBlending.EndTransitionTime,
+                        AnimationWeightEndDecreasingTime: virtualClipElapsedTime + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay + this.UniqueAnimationClips[i].AnimationClip.length
                     );
 
-                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length;
+                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay;
                 }
                 else if (i == this.UniqueAnimationClips.Count - 1)
                 {
                     this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.SetWeightTimePoints(
                         AnimationWeightStartIncreasingTime: virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime,
                         AnimationWeightEndIncreasingTime: virtualClipElapsedTime,
-                        AnimationWeightStartDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length,
-                        AnimationWeightEndDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length
+                        AnimationWeightStartDecreasingTime: (virtualClipElapsedTime + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length,
+                        AnimationWeightEndDecreasingTime: (virtualClipElapsedTime + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length
                     );
 
-                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime;
+                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime;
                 }
                 else
                 {
                     this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.SetWeightTimePoints(
                         AnimationWeightStartIncreasingTime: virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime,
                         AnimationWeightEndIncreasingTime: virtualClipElapsedTime,
-                        AnimationWeightStartDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i].TransitionBlending.EndTransitionTime,
-                        AnimationWeightEndDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length
+                        AnimationWeightStartDecreasingTime: (virtualClipElapsedTime + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length -
+                                                            this.UniqueAnimationClips[i].TransitionBlending.EndTransitionTime,
+                        AnimationWeightEndDecreasingTime: (virtualClipElapsedTime + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length
                     );
 
-                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime;
+                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length + this.UniqueAnimationClips[i].TransitionBlending.EndClipDelay - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime;
                 }
             }
 
+            //  this.AssociatedAnimationClipsPlayable[0].Play();
+            // this.AnimationMixerPlayable.SetInputWeight(this.UniqueAnimationClips[0].InputHandler, 1f);
             PlayableExtensions.SetTime(this.AnimationMixerPlayable, 0);
         }
 
