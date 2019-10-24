@@ -72,7 +72,7 @@ public class InteractiveObjectDebugger : EditorWindow
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void OnAfterSceneLoaded()
     {
-        Debug.Break();
+        //  Debug.Break();
     }
 
     private void OnPlayModeStateChanged(PlayModeStateChange state)

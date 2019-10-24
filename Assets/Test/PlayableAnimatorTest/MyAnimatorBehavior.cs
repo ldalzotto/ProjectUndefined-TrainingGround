@@ -63,7 +63,7 @@ class MyAnimator
             BlendedAnimationClips.Add(new BlendedAnimationClip(BlendedAnimationInput.BlendedClips[i], BlendedAnimationInput.NormalizedWeightDistributions[i]));
         }
 
-        BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, BlendedAnimationInput.layerID, BlendedAnimationClips);
+        BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, BlendedAnimationInput.layerID, BlendedAnimationClips);
         BlendedAnimationLayer.Inputhandler = PlayableExtensions.AddInput(this.AnimationLayerMixerPlayable, BlendedAnimationLayer.AnimationMixerPlayable, 0);
 
         this.AllAnimationLayersCurrentlyPlaying[BlendedAnimationInput.layerID] = BlendedAnimationLayer;
@@ -78,7 +78,8 @@ class MyAnimator
             this.DestroyLayer(SequencedAnimationInput.layerID);
         }
 
-        var SequencedAnimationLayer = new SequencedAnimationLayer(this.GlobalPlayableGraph, SequencedAnimationInput.layerID, SequencedAnimationInput.UniqueAnimationClips, SequencedAnimationInput.isInfinite, SequencedAnimationInput.BeginTransitionTime);
+        var SequencedAnimationLayer = new SequencedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, SequencedAnimationInput.layerID, SequencedAnimationInput.UniqueAnimationClips,
+            SequencedAnimationInput.isInfinite, SequencedAnimationInput.BeginTransitionTime, SequencedAnimationInput.EndTransitionTime);
         SequencedAnimationLayer.Inputhandler = PlayableExtensions.AddInput(this.AnimationLayerMixerPlayable, SequencedAnimationLayer.AnimationMixerPlayable, 0);
         this.AllAnimationLayersCurrentlyPlaying[SequencedAnimationInput.layerID] = SequencedAnimationLayer;
         PlayableExtensions.SetInputWeight(this.AnimationLayerMixerPlayable, SequencedAnimationLayer.Inputhandler, 1f);
@@ -123,6 +124,13 @@ abstract class MyAnimationLayer
     public abstract void Tick(float d, float weightEvaluation);
     public abstract bool AskedToBeDestoyed();
 
+    protected AnimationLayerMixerPlayable ParentAnimationLayerMixerPlayable;
+
+    protected MyAnimationLayer(AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable)
+    {
+        ParentAnimationLayerMixerPlayable = parentAnimationLayerMixerPlayable;
+    }
+
     public void Destroy(AnimationLayerMixerPlayable AnimationLayerMixerPlayable)
     {
         PlayableExtensions.DisconnectInput(AnimationLayerMixerPlayable, this.Inputhandler);
@@ -135,17 +143,23 @@ class SequencedAnimationLayer : MyAnimationLayer
     public List<UniqueAnimationClip> UniqueAnimationClips;
 
     public AnimationMixerPlayable AnimationMixerPlayable { get; private set; }
+
     private bool isInfinite;
     private float BeginTransitionTime;
+    private float EndTransitionTime;
 
+    private bool IsTransitioningOut;
+    private float TransitioningOutStartTime;
     private bool HasEnded;
 
-    public SequencedAnimationLayer(PlayableGraph playableGraph, int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime)
+    public SequencedAnimationLayer(PlayableGraph playableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
+        int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime) : base(parentAnimationLayerMixerPlayable)
     {
         this.isInfinite = isInfinite;
         this.UniqueAnimationClips = uniqueAnimationClips;
         this.LayerID = layerId;
         this.BeginTransitionTime = BeginTransitionTime;
+        this.EndTransitionTime = EndTransitionTime;
 
         this.AnimationMixerPlayable = AnimationMixerPlayable.Create(playableGraph, uniqueAnimationClips.Count, normalizeWeights: true);
 
@@ -165,50 +179,114 @@ class SequencedAnimationLayer : MyAnimationLayer
         if (!this.HasEnded)
         {
             var elapsedTime = PlayableExtensions.GetTime(this.AnimationMixerPlayable);
-            bool atLeastOneClipIsPlaying = false;
-            float dynamicallyCalculatedElapsedTime = 0f;
-            for (var i = 0; i < this.UniqueAnimationClips.Count; i++)
+            if (!this.IsTransitioningOut)
             {
-                var clipNormalizedElapsedTime = elapsedTime - dynamicallyCalculatedElapsedTime;
-
-                //Begin calculating weight
-                float weightSetted = 0f;
-                if (clipNormalizedElapsedTime >= 0 && clipNormalizedElapsedTime < this.UniqueAnimationClips[i].AnimationClip.length)
+                if (this.BeginTransitionTime == 0f)
                 {
-                    if (i == 0)
+                    PlayableExtensions.SetInputWeight(this.ParentAnimationLayerMixerPlayable, this.Inputhandler, 1f);
+                }
+                else
+                {
+                    float weightSetted = Mathf.Clamp01((float) elapsedTime / this.BeginTransitionTime);
+                    PlayableExtensions.SetInputWeight(this.ParentAnimationLayerMixerPlayable, this.Inputhandler, weightSetted);
+                }
+
+
+                bool atLeastOneClipIsPlaying = false;
+                float dynamicallyCalculatedElapsedTime = 0f;
+                for (var i = 0; i < this.UniqueAnimationClips.Count; i++)
+                {
+                    //Blend has already been calculated -> we set 0f weight
+                    if (atLeastOneClipIsPlaying)
                     {
-                        if (this.BeginTransitionTime == 0f)
+                        PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[i].InputHandler, 0f);
+                        continue;
+                    }
+
+                    this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.CalculateAnimationWeightTime(this.UniqueAnimationClips[i].AnimationClip);
+
+                    var clipNormalizedElapsedTime = elapsedTime - dynamicallyCalculatedElapsedTime;
+
+                    //Begin calculating weight
+
+                    //No blending
+                    if (clipNormalizedElapsedTime >= 0 && clipNormalizedElapsedTime < this.UniqueAnimationClips[i].TransitionBlending.AnimationWeightStartDecreasingTime)
+                    {
+                        PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[i].InputHandler, 1f);
+                        atLeastOneClipIsPlaying = true;
+                    }
+                    //Blending
+                    else if (clipNormalizedElapsedTime >= 0 && clipNormalizedElapsedTime < this.UniqueAnimationClips[i].TransitionBlending.AnimationWeightEndDecreasingTime)
+                    {
+                        if (i == this.UniqueAnimationClips.Count - 1)
                         {
-                            weightSetted = 1f;
+                            PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[i].InputHandler, 1f);
+                            atLeastOneClipIsPlaying = true;
                         }
                         else
                         {
-                            //TODO -> Begin must be applied to layer instead
-                            weightSetted = Mathf.Clamp01((float) clipNormalizedElapsedTime / this.BeginTransitionTime);
+                            LinearBlending(clipNormalizedElapsedTime, this.UniqueAnimationClips[i].TransitionBlending, out float w1, out float w2);
+                            PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[i].InputHandler, w1);
+                            PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[i + 1].InputHandler, w2);
+
+                            atLeastOneClipIsPlaying = true;
+
+                            if (clipNormalizedElapsedTime <= this.UniqueAnimationClips[i].TransitionBlending.AnimationWeightStartDecreasingTime)
+                            {
+                                //We skip the next clip because we already updated it
+                                i += 1;
+                            }
                         }
                     }
                     else
                     {
-                        weightSetted = 1f;
+                        PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[i].InputHandler, 0f);
+                    }
+                    //End calculating weight
+
+                    dynamicallyCalculatedElapsedTime += this.UniqueAnimationClips[i].TransitionBlending.AnimationWeightEndDecreasingTime;
+                }
+
+                if (!atLeastOneClipIsPlaying)
+                {
+                    if (this.EndTransitionTime > 0f && !this.isInfinite)
+                    {
+                        this.IsTransitioningOut = true;
+                        this.TransitioningOutStartTime = (float) elapsedTime;
+                    }
+                    else
+                    {
+                        this.HasEnded = true;
                     }
 
-                    atLeastOneClipIsPlaying = true;
-                }
-                //End calculating weight
-
-                PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[i].InputHandler, weightSetted);
-                dynamicallyCalculatedElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length;
-            }
-
-            if (!atLeastOneClipIsPlaying)
-            {
-                this.HasEnded = true;
-
-                if (this.isInfinite)
-                {
                     PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, this.UniqueAnimationClips[this.UniqueAnimationClips.Count - 1].InputHandler, 1f);
                 }
             }
+            else
+            {
+                float weightSetted = Mathf.Clamp01(((this.EndTransitionTime - ((float) elapsedTime - this.TransitioningOutStartTime)) / this.EndTransitionTime));
+                PlayableExtensions.SetInputWeight(this.ParentAnimationLayerMixerPlayable, this.Inputhandler, weightSetted);
+                if (weightSetted == 0f)
+                {
+                    this.HasEnded = true;
+                    this.IsTransitioningOut = false;
+                }
+            }
+        }
+    }
+
+    private static void LinearBlending(double sampledTime, LinearBlending TransitionBlending, out float w1, out float w2)
+    {
+        if (sampledTime <= TransitionBlending.AnimationWeightStartDecreasingTime)
+        {
+            w1 = 1f;
+            w2 = 0f;
+        }
+        else
+        {
+            float weightFactor = (TransitionBlending.AnimationWeightEndDecreasingTime - (float) sampledTime) / (TransitionBlending.AnimationWeightEndDecreasingTime - TransitionBlending.AnimationWeightStartDecreasingTime);
+            w1 = weightFactor;
+            w2 = 1 - w1;
         }
     }
 
@@ -224,6 +302,7 @@ struct SequencedAnimationInput
     public int layerID;
     public bool isInfinite;
     public float BeginTransitionTime;
+    public float EndTransitionTime;
     public List<UniqueAnimationClip> UniqueAnimationClips;
 }
 
@@ -231,7 +310,7 @@ struct SequencedAnimationInput
 class UniqueAnimationClip
 {
     public AnimationClip AnimationClip;
-    public float EndTransitionTime;
+    public LinearBlending TransitionBlending;
 
     #region Dynamically Setted
 
@@ -247,7 +326,8 @@ class BlendedAnimationLayer : MyAnimationLayer
 
     public AnimationMixerPlayable AnimationMixerPlayable { get; private set; }
 
-    public BlendedAnimationLayer(PlayableGraph PlayableGraph, int layerId, List<BlendedAnimationClip> blendedAnimationClips)
+    public BlendedAnimationLayer(PlayableGraph PlayableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
+        int layerId, List<BlendedAnimationClip> blendedAnimationClips) : base(parentAnimationLayerMixerPlayable)
     {
         LayerID = layerId;
         BlendedAnimationClips = blendedAnimationClips;
@@ -313,5 +393,22 @@ struct BlendedAnimationInput
         BlendedClips = blendedClips;
         NormalizedWeightDistributions = normalizedWeightDistributions;
         IsInfinite = isInfinite;
+    }
+}
+
+[Serializable]
+struct LinearBlending
+{
+    public float EndTransitionTime;
+    public float EndTransitionOffset;
+
+    public float AnimationWeightStartDecreasingTime;
+    public float AnimationWeightEndDecreasingTime;
+
+    public LinearBlending CalculateAnimationWeightTime(AnimationClip involvedAnimationClip)
+    {
+        this.AnimationWeightStartDecreasingTime = involvedAnimationClip.length + this.EndTransitionOffset;
+        this.AnimationWeightEndDecreasingTime = this.AnimationWeightStartDecreasingTime + this.EndTransitionTime;
+        return this;
     }
 }
