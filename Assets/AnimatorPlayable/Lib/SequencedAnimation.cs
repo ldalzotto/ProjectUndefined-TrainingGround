@@ -53,6 +53,47 @@ namespace AnimatorPlayable
                 this.IsTransitioningIn = true;
             }
 
+            //Calculate linear blendings times
+            float virtualClipElapsedTime = 0f;
+
+
+            for (var i = 0; i < uniqueAnimationClips.Count; i++)
+            {
+                if (i == 0)
+                {
+                    this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.SetWeightTimePoints(
+                        AnimationWeightStartIncreasingTime: virtualClipElapsedTime,
+                        AnimationWeightEndIncreasingTime: virtualClipElapsedTime,
+                        AnimationWeightStartDecreasingTime: virtualClipElapsedTime + this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i].TransitionBlending.EndTransitionTime,
+                        AnimationWeightEndDecreasingTime: virtualClipElapsedTime + this.UniqueAnimationClips[i].AnimationClip.length
+                    );
+
+                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length;
+                }
+                else if (i == this.UniqueAnimationClips.Count - 1)
+                {
+                    this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.SetWeightTimePoints(
+                        AnimationWeightStartIncreasingTime: virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime,
+                        AnimationWeightEndIncreasingTime: virtualClipElapsedTime,
+                        AnimationWeightStartDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length,
+                        AnimationWeightEndDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length
+                    );
+
+                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime;
+                }
+                else
+                {
+                    this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.SetWeightTimePoints(
+                        AnimationWeightStartIncreasingTime: virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime,
+                        AnimationWeightEndIncreasingTime: virtualClipElapsedTime,
+                        AnimationWeightStartDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i].TransitionBlending.EndTransitionTime,
+                        AnimationWeightEndDecreasingTime: (virtualClipElapsedTime - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime) + this.UniqueAnimationClips[i].AnimationClip.length
+                    );
+
+                    virtualClipElapsedTime += this.UniqueAnimationClips[i].AnimationClip.length - this.UniqueAnimationClips[i - 1].TransitionBlending.EndTransitionTime;
+                }
+            }
+
             PlayableExtensions.SetTime(this.AnimationMixerPlayable, 0);
         }
 
@@ -88,76 +129,22 @@ namespace AnimatorPlayable
                 else
                 {
                     bool atLeastOneClipIsPlaying = false;
-                    float dynamicallyCalculatedElapsedTime = 0f;
                     for (var i = 0; i < this.UniqueAnimationClips.Count; i++)
                     {
-                        //Blend has already been calculated -> we set 0f weight
-                        if (atLeastOneClipIsPlaying)
-                        {
-                            SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i], this.UniqueAnimationClips[i].InputHandler, 0f);
-                            continue;
-                        }
-
-                        this.UniqueAnimationClips[i].TransitionBlending = this.UniqueAnimationClips[i].TransitionBlending.CalculateAnimationWeightTime(this.UniqueAnimationClips[i].AnimationClip);
-
-                        var clipNormalizedElapsedTime = elapsedTime - this.BeginTransitionTime - dynamicallyCalculatedElapsedTime;
-
-                        //Begin calculating weight
-
-                        //No blending
-                        if (clipNormalizedElapsedTime >= 0 && clipNormalizedElapsedTime < this.UniqueAnimationClips[i].TransitionBlending.AnimationWeightStartDecreasingTime)
+                        if (i == this.UniqueAnimationClips.Count - 1 && elapsedTime >= this.UniqueAnimationClips[i].TransitionBlending.AnimationWeightEndDecreasingTime)
                         {
                             SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i], this.UniqueAnimationClips[i].InputHandler, 1f);
-                            atLeastOneClipIsPlaying = true;
-                        }
-                        //Blending
-                        else if (clipNormalizedElapsedTime >= 0 && clipNormalizedElapsedTime < this.UniqueAnimationClips[i].TransitionBlending.AnimationWeightEndDecreasingTime)
-                        {
-                            if (i == this.UniqueAnimationClips.Count - 1)
-                            {
-                                SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i], this.UniqueAnimationClips[i].InputHandler, 1f);
-                                atLeastOneClipIsPlaying = true;
-                            }
-                            else
-                            {
-                                LinearBlending(clipNormalizedElapsedTime, this.UniqueAnimationClips[i].TransitionBlending, out float w1, out float w2);
-                                SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i], this.UniqueAnimationClips[i].InputHandler, w1);
-                                SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i + 1], this.UniqueAnimationClips[i + 1].InputHandler, w2);
-
-                                /*
-                                DoesTransitionClipAnimationsPlaying(clipNormalizedElapsedTime, this.UniqueAnimationClips[i].TransitionBlending, this.UniqueAnimationClips[i + 1].TransitionBlending, out bool clipLeftPlaying, out bool clipRightPlaying);
-                                if (clipLeftPlaying)
-                                {
-                                    this.AssociatedAnimationClipsPlayable[i].Play();
-                                }
-                                else
-                                {
-                                    this.AssociatedAnimationClipsPlayable[i].Pause();
-                                }
-
-                                if (clipRightPlaying)
-                                {
-                                    this.AssociatedAnimationClipsPlayable[i + 1].Play();
-                                }
-                                else
-                                {
-                                    this.AssociatedAnimationClipsPlayable[i + 1].Pause();
-                                }
-*/
-                                atLeastOneClipIsPlaying = true;
-
-                                //We skip the next clip because we already updated it
-                                dynamicallyCalculatedElapsedTime += this.UniqueAnimationClips[i].TransitionBlending.GetClipLength(this.UniqueAnimationClips[i].AnimationClip);
-                                i += 1;
-                            }
+                            atLeastOneClipIsPlaying = false;
                         }
                         else
                         {
-                            SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i], this.UniqueAnimationClips[i].InputHandler, 0f);
+                            float weightSetted = this.UniqueAnimationClips[i].TransitionBlending.GetInterpolatedWeight((float) elapsedTime);
+                            SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i], this.UniqueAnimationClips[i].InputHandler, weightSetted);
+                            if (weightSetted > 0)
+                            {
+                                atLeastOneClipIsPlaying = true;
+                            }
                         }
-                        //End calculating weight
-
-                        dynamicallyCalculatedElapsedTime += this.UniqueAnimationClips[i].TransitionBlending.GetClipLength(this.UniqueAnimationClips[i].AnimationClip);
                     }
 
                     if (!atLeastOneClipIsPlaying)
@@ -179,20 +166,6 @@ namespace AnimatorPlayable
             }
         }
 
-        private static void LinearBlending(double sampledTime, LinearBlending TransitionBlending, out float w1, out float w2)
-        {
-            if (sampledTime <= TransitionBlending.AnimationWeightStartDecreasingTime)
-            {
-                w1 = 1f;
-                w2 = 0f;
-            }
-            else
-            {
-                float weightFactor = (TransitionBlending.AnimationWeightEndDecreasingTime - (float) sampledTime) / (TransitionBlending.AnimationWeightEndDecreasingTime - TransitionBlending.AnimationWeightStartDecreasingTime);
-                w1 = weightFactor;
-                w2 = 1 - w1;
-            }
-        }
 
         /*
         private static void DoesTransitionClipAnimationsPlaying(double sampledTime, LinearBlending clipLeftBlending, LinearBlending clipRightBlending, out bool clipLeftPlaying, out bool clipRightPlaying)
@@ -206,6 +179,7 @@ namespace AnimatorPlayable
         {
             if (PlayableExtensions.GetInputWeight(AnimationMixerPlayable, inputHandler) == 0f && weight > 0f)
             {
+                AnimationClipPlayable.SetTime(0f);
                 AnimationClipPlayable.Play();
             }
             else if (weight == 0f)

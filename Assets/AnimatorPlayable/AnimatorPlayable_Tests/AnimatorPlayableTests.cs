@@ -160,8 +160,6 @@ namespace AnimatorPlayable_Tests
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AnimationLayerMixerPlayable.GetInputCount() == 1);
             var SequencedAnimationLayer = AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[0] as SequencedAnimationLayer;
             Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 1f);
-            Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AnimationLayerMixerPlayable.GetInputWeight(0) == 1f);
-            yield return null;
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AnimationLayerMixerPlayable.GetInputWeight(0) < 1f);
             yield return new WaitForSeconds(endTransitionTime);
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying.Count == 0);
@@ -311,7 +309,7 @@ namespace AnimatorPlayable_Tests
             Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0f);
             Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Paused);
 
-            yield return new WaitForSeconds(clipTime - transitionTime);
+            yield return new WaitForSeconds(clipTime - transitionTime - transitionTime);
 
             Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
             Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[0].GetPlayState() == PlayState.Paused);

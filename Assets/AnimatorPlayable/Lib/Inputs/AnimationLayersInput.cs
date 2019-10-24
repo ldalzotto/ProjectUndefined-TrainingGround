@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace AnimatorPlayable
 {
@@ -19,6 +18,11 @@ namespace AnimatorPlayable
     }
 
 
+    /// <summary>
+    /// The LinearBlending works as following :
+    /// * If EndTransitionTime == 0 the animation clip weight transition between 0 and 1 is instant (AnimationWeightStartIncreasingTime == AnimationWeightEndIncreasingTime) and (AnimationWeightStartDecreasingTime == AnimationWeightEndDecreasingTime)
+    /// * If EndTransitionTime > 0 then the AnimationWeightStartDecreasingTime  
+    /// </summary>
     [Serializable]
     public struct LinearBlending
     {
@@ -26,6 +30,9 @@ namespace AnimatorPlayable
 
         //   [FormerlySerializedAs("ArtificialBeginClipDelay")] public float BeginClipDelay;
         //  [FormerlySerializedAs("ArtificialEndClipDelay")] public float EndClipDelay;
+
+        [MyReadOnly] public float AnimationWeightStartIncreasingTime;
+        [MyReadOnly] public float AnimationWeightEndIncreasingTime;
 
         [MyReadOnly] public float AnimationWeightStartDecreasingTime;
         [MyReadOnly] public float AnimationWeightEndDecreasingTime;
@@ -37,16 +44,43 @@ namespace AnimatorPlayable
          }
          */
 
-        public float GetClipLength(AnimationClip involvedAnimationClip)
+        public LinearBlending SetWeightTimePoints(float AnimationWeightStartIncreasingTime, float AnimationWeightEndIncreasingTime, float AnimationWeightStartDecreasingTime, float AnimationWeightEndDecreasingTime)
         {
-            return involvedAnimationClip.length; // + BeginClipDelay + EndClipDelay;
+            this.AnimationWeightStartIncreasingTime = AnimationWeightStartIncreasingTime;
+            this.AnimationWeightEndIncreasingTime = AnimationWeightEndIncreasingTime;
+            this.AnimationWeightStartDecreasingTime = AnimationWeightStartDecreasingTime;
+            this.AnimationWeightEndDecreasingTime = AnimationWeightEndDecreasingTime;
+            return this;
         }
 
-        public LinearBlending CalculateAnimationWeightTime(AnimationClip involvedAnimationClip)
+        public float GetInterpolatedWeight(float sampledTime)
         {
-            this.AnimationWeightStartDecreasingTime = this.GetClipLength(involvedAnimationClip) - this.EndTransitionTime;
-            this.AnimationWeightEndDecreasingTime = this.AnimationWeightStartDecreasingTime + this.EndTransitionTime;
-            return this;
+            if (sampledTime >= this.AnimationWeightStartIncreasingTime && sampledTime <= this.AnimationWeightEndIncreasingTime)
+            {
+                if ((this.AnimationWeightEndIncreasingTime - this.AnimationWeightStartIncreasingTime) == 0f)
+                {
+                    return 1f;
+                }
+
+                return (sampledTime - this.AnimationWeightStartIncreasingTime) / (this.AnimationWeightEndIncreasingTime - this.AnimationWeightStartIncreasingTime);
+            }
+            else if (sampledTime >= this.AnimationWeightEndIncreasingTime && sampledTime <= this.AnimationWeightStartDecreasingTime)
+            {
+                return 1f;
+            }
+            else if (sampledTime >= this.AnimationWeightStartDecreasingTime && sampledTime <= this.AnimationWeightEndDecreasingTime)
+            {
+                if ((this.AnimationWeightEndDecreasingTime - this.AnimationWeightStartDecreasingTime) == 0f)
+                {
+                    return 0f;
+                }
+
+                return 1 - ((sampledTime - this.AnimationWeightStartDecreasingTime) / (this.AnimationWeightEndDecreasingTime - this.AnimationWeightStartDecreasingTime));
+            }
+            else
+            {
+                return 0f;
+            }
         }
     }
 
