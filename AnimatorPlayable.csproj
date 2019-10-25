@@ -63,6 +63,7 @@
      <Compile Include="Assets\AnimatorPlayable\Lib\Inputs\AnimationLayersInput.cs" />
      <Compile Include="Assets\AnimatorPlayable\Lib\Layers\BlendedAnimation.cs" />
      <Compile Include="Assets\AnimatorPlayable\Lib\Layers\SequencedAnimation.cs" />
+     <Compile Include="Assets\AnimatorPlayable\Lib\SequencerLoop2.cs" />
      <None Include="Assets\AnimatorPlayable\AnimatorPlayable.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

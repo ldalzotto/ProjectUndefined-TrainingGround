@@ -34,7 +34,7 @@ namespace InteractiveObjectsAnimatorPlayable
             if (OnAnimationFinished != null)
             {
                 this.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID]
-                    .ReigsterOnAnimationEnd(OnAnimationFinished);
+                    .ReigsterOnSequencedAnimationEnd(OnAnimationFinished);
             }
         }
 

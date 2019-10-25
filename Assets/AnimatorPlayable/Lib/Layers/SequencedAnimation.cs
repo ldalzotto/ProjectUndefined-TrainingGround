@@ -20,7 +20,9 @@ namespace AnimatorPlayable
         private bool IsTransitioningIn;
         private bool IsTransitioningOut;
         private float TransitioningOutStartTime;
-        private BoolVariable HasEnded;
+        private bool HasEnded;
+
+        private Action OnSequencedAnimationEnd;
 
         public SequencedAnimationLayer(PlayableGraph playableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
             int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime) : base(layerId, parentAnimationLayerMixerPlayable)
@@ -31,7 +33,7 @@ namespace AnimatorPlayable
             this.EndTransitionTime = EndTransitionTime;
             this.IsTransitioningIn = false;
             this.IsTransitioningOut = false;
-            this.HasEnded = new BoolVariable(false);
+            this.HasEnded = false;
 
             this.AnimationMixerPlayable = AnimationMixerPlayable.Create(playableGraph);
             this.AssociatedAnimationClipsPlayable = new AnimationClipPlayable[uniqueAnimationClips.Count];
@@ -46,11 +48,15 @@ namespace AnimatorPlayable
                 uniqueAnimationClips[i].InputHandler = PlayableExtensions.AddInput(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[i], 0);
             }
 
-
             if (this.BeginTransitionTime > 0f)
             {
                 this.IsTransitioningIn = true;
             }
+            else
+            {
+                SetAnimationMixerPlayableWeight(this.AnimationMixerPlayable, this.AssociatedAnimationClipsPlayable[0], this.UniqueAnimationClips[0].InputHandler, 1f);
+            }
+
 
             //Calculate linear blendings times
             float virtualClipElapsedTime = 0f;
@@ -95,19 +101,17 @@ namespace AnimatorPlayable
                 }
             }
 
-            //  this.AssociatedAnimationClipsPlayable[0].Play();
-            // this.AnimationMixerPlayable.SetInputWeight(this.UniqueAnimationClips[0].InputHandler, 1f);
             PlayableExtensions.SetTime(this.AnimationMixerPlayable, 0);
         }
 
-        public override void ReigsterOnAnimationEnd(Action OnAnimationEnd)
+        public override void ReigsterOnSequencedAnimationEnd(Action OnSequencedAnimationEnd)
         {
-            this.HasEnded.ReplaceOnJustSetToTrueAction(OnAnimationEnd);
+            this.OnSequencedAnimationEnd = OnSequencedAnimationEnd;
         }
 
         public override void Tick(float d)
         {
-            if (!this.HasEnded.GetValue())
+            if (!this.HasEnded)
             {
                 var elapsedTime = PlayableExtensions.GetTime(this.AnimationMixerPlayable);
                 if (this.IsTransitioningIn)
@@ -130,7 +134,7 @@ namespace AnimatorPlayable
                     PlayableExtensions.SetInputWeight(this.ParentAnimationLayerMixerPlayable, this.Inputhandler, weightSetted);
                     if (weightSetted == 0f)
                     {
-                        this.HasEnded.SetValue(true);
+                        this.HasEnded = true;
                         this.IsTransitioningOut = false;
                     }
                 }
@@ -165,7 +169,7 @@ namespace AnimatorPlayable
                         }
                         else
                         {
-                            this.HasEnded.SetValue(true);
+                            this.HasEnded = true;
                         }
 
                         PlayableExtensions.SetInputWeight(AnimationMixerPlayable, this.UniqueAnimationClips[this.UniqueAnimationClips.Count - 1].InputHandler, 1f);
@@ -192,7 +196,7 @@ namespace AnimatorPlayable
 
         public override bool AskedToBeDestoyed()
         {
-            return this.HasEnded.GetValue() && !this.isInfinite;
+            return this.HasEnded && !this.isInfinite;
         }
 
         public override AnimationMixerPlayable GetEntryPointMixerPlayable()
@@ -204,6 +208,10 @@ namespace AnimatorPlayable
         {
             base.Destroy(AnimationLayerMixerPlayable);
             this.AnimationMixerPlayable.Destroy();
+            if (this.OnSequencedAnimationEnd != null)
+            {
+                this.OnSequencedAnimationEnd.Invoke();
+            }
         }
     }
 }
