@@ -57,9 +57,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\AnimatorPlayable\Lib\AnimatorPlayable.cs" />
-     <Compile Include="Assets\AnimatorPlayable\Lib\BlendedAnimation.cs" />
      <Compile Include="Assets\AnimatorPlayable\Lib\Inputs\AnimationLayersInput.cs" />
-     <Compile Include="Assets\AnimatorPlayable\Lib\SequencedAnimation.cs" />
+     <Compile Include="Assets\AnimatorPlayable\Lib\Layers\BlendedAnimation.cs" />
+     <Compile Include="Assets\AnimatorPlayable\Lib\Layers\SequencedAnimation.cs" />
      <Compile Include="Assets\AnimatorPlayable\MyAnimatorBehavior.cs" />
      <None Include="Assets\AnimatorPlayable\AnimatorPlayable.asmdef" />
  <Reference Include="UnityEditor.UI">

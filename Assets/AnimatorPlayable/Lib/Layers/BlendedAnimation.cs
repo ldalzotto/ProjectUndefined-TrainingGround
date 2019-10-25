@@ -7,7 +7,6 @@ namespace AnimatorPlayable
 {
     public class BlendedAnimationLayer : MyAnimationLayer
     {
-        public int LayerID;
         public List<BlendedAnimationClip> BlendedAnimationClips;
         private BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
         public AnimationMixerPlayable AnimationMixerPlayable { get; private set; }
@@ -15,14 +14,13 @@ namespace AnimatorPlayable
         private Func<float> inputWeightProvider;
 
         public BlendedAnimationLayer(PlayableGraph PlayableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
-            int layerId, List<BlendedAnimationClip> blendedAnimationClips, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve, Func<float> inputWeightProvider) : base(parentAnimationLayerMixerPlayable)
+            int layerId, List<BlendedAnimationClip> blendedAnimationClips, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve, Func<float> inputWeightProvider) : base(layerId, parentAnimationLayerMixerPlayable)
         {
-            LayerID = layerId;
             BlendedAnimationClips = blendedAnimationClips;
             this.BlendedAnimationSpeedCurve = BlendedAnimationSpeedCurve;
             this.inputWeightProvider = inputWeightProvider;
             //create a playable mixer
-            this.AnimationMixerPlayable = AnimationMixerPlayable.Create(PlayableGraph, 0, normalizeWeights: true);
+            this.AnimationMixerPlayable = AnimationMixerPlayable.Create(PlayableGraph);
 
             foreach (var blendedAnimationClip in blendedAnimationClips)
             {
@@ -94,6 +92,11 @@ namespace AnimatorPlayable
         public override bool AskedToBeDestoyed()
         {
             return false;
+        }
+
+        public override AnimationMixerPlayable GetEntryPointMixerPlayable()
+        {
+            return this.AnimationMixerPlayable;
         }
     }
 }

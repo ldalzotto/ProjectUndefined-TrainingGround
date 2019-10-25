@@ -497,6 +497,57 @@ namespace AnimatorPlayable_Tests
             Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 1f);
         }
 
+        [UnityTest]
+        public IEnumerator LayersSorted()
+        {
+            var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
+
+            yield return null;
+            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            {
+                layerID = 4, isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClip>()
+                {
+                    new UniqueAnimationClip()
+                    {
+                        AnimationClip = CreateClip(1f)
+                    }
+                }
+            });
+            yield return null;
+            Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[4].Inputhandler == 0);
+
+            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            {
+                layerID = 1, isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClip>()
+                {
+                    new UniqueAnimationClip()
+                    {
+                        AnimationClip = CreateClip(1f)
+                    }
+                }
+            });
+            yield return null;
+
+            Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[1].Inputhandler == 0);
+            Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[4].Inputhandler == 1);
+
+            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            {
+                layerID = 2, isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClip>()
+                {
+                    new UniqueAnimationClip()
+                    {
+                        AnimationClip = CreateClip(1f)
+                    }
+                }
+            });
+            yield return null;
+
+            Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[1].Inputhandler == 0);
+            Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[2].Inputhandler == 1);
+            Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[4].Inputhandler == 2);
+        }
+
         public static AnimationClip CreateClip(float duration)
         {
             var clip1 = new AnimationClip();

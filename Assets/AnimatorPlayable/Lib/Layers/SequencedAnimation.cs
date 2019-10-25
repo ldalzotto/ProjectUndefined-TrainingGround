@@ -8,7 +8,6 @@ namespace AnimatorPlayable
 {
     public class SequencedAnimationLayer : MyAnimationLayer
     {
-        public int LayerID;
         public List<UniqueAnimationClip> UniqueAnimationClips;
         public AnimationClipPlayable[] AssociatedAnimationClipsPlayable { get; private set; }
 
@@ -24,18 +23,17 @@ namespace AnimatorPlayable
         private BoolVariable HasEnded;
 
         public SequencedAnimationLayer(PlayableGraph playableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
-            int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime, Action OnSequencedAnimationFinished = null) : base(parentAnimationLayerMixerPlayable)
+            int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime, Action OnSequencedAnimationFinished = null) : base(layerId, parentAnimationLayerMixerPlayable)
         {
             this.isInfinite = isInfinite;
             this.UniqueAnimationClips = uniqueAnimationClips;
-            this.LayerID = layerId;
             this.BeginTransitionTime = BeginTransitionTime;
             this.EndTransitionTime = EndTransitionTime;
             this.IsTransitioningIn = false;
             this.IsTransitioningOut = false;
             this.HasEnded = new BoolVariable(false, OnSequencedAnimationFinished);
 
-            this.AnimationMixerPlayable = AnimationMixerPlayable.Create(playableGraph, 0, normalizeWeights: true);
+            this.AnimationMixerPlayable = AnimationMixerPlayable.Create(playableGraph);
             this.AssociatedAnimationClipsPlayable = new AnimationClipPlayable[uniqueAnimationClips.Count];
 
             for (var i = 0; i < uniqueAnimationClips.Count; i++)
@@ -190,6 +188,11 @@ namespace AnimatorPlayable
         public override bool AskedToBeDestoyed()
         {
             return this.HasEnded.GetValue() && !this.isInfinite;
+        }
+
+        public override AnimationMixerPlayable GetEntryPointMixerPlayable()
+        {
+            return this.AnimationMixerPlayable;
         }
 
         public override void Destroy(AnimationLayerMixerPlayable AnimationLayerMixerPlayable)
