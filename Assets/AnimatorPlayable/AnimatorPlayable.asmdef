@@ -1,7 +1,8 @@
 {
     "name": "AnimatorPlayable",
     "references": [
-"Editor_Common"
+"Editor_Common",
+"CoreGame"
 ],
     "includePlatforms": [],
     "excludePlatforms": [],

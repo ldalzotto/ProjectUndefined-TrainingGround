@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Playables;
+﻿using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace AnimatorPlayable
@@ -11,6 +7,7 @@ namespace AnimatorPlayable
     {
         [Range(0f, 1f)] public float WeightValue;
         private AnimatorPlayableObject _animatorPlayableObject;
+        public bool PlayBlended;
 
         [SerializeField] private BlendedAnimationInput BlendedAnimationInput;
         [SerializeField] private SequencedAnimationInput SequencedAnimationInput;
@@ -19,11 +16,16 @@ namespace AnimatorPlayable
         private void Start()
         {
             this._animatorPlayableObject = new AnimatorPlayableObject("TEst", this.GetComponent<Animator>());
-            this._animatorPlayableObject.PlayBlendedAnimation(this.BlendedAnimationInput);
         }
 
         private void Update()
         {
+            if (this.PlayBlended)
+            {
+                this._animatorPlayableObject.PlayBlendedAnimation(this.BlendedAnimationInput, () => this.WeightValue);
+                this.PlayBlended = false;
+            }
+
             if (this.PlaySequence)
             {
                 this._animatorPlayableObject.PlaySequencedAnimation(this.SequencedAnimationInput);
@@ -31,7 +33,7 @@ namespace AnimatorPlayable
             }
 
             Profiler.BeginSample("MyAnimatorBehavior");
-            this._animatorPlayableObject.Tick(Time.deltaTime, this.WeightValue);
+            this._animatorPlayableObject.Tick(Time.deltaTime);
             Profiler.EndSample();
         }
     }

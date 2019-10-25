@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AnimatorPlayable;
 using CoreGame;
@@ -433,6 +434,69 @@ namespace AnimatorPlayable_Tests
             Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Playing);
         }
 
+        [UnityTest]
+        public IEnumerator Blended_ThreeClip()
+        {
+            var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
+
+            float weightSetted = 0f;
+            float clipTime = 0.25f;
+
+            AnimatorPlayableGameObject.PlayBlendedAnimation(new BlendedAnimationInput()
+            {
+                layerID = 0,
+                BlendedAnimationClips = new List<BlendedAnimationClip>()
+                {
+                    new BlendedAnimationClip()
+                    {
+                        AnimationClip = CreateClip(clipTime),
+                        WeightTime = 0f
+                    },
+                    new BlendedAnimationClip()
+                    {
+                        AnimationClip = CreateClip(clipTime),
+                        WeightTime = 0.5f
+                    },
+                    new BlendedAnimationClip()
+                    {
+                        AnimationClip = CreateClip(clipTime),
+                        WeightTime = 1f
+                    }
+                }
+            }, () => weightSetted);
+
+            yield return null;
+            var BlendedAnimationLayer = AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[0] as BlendedAnimationLayer;
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputCount() == 3);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 1f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 0f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0f);
+
+            weightSetted = 0.25f;
+            yield return null;
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0.5f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 0.5f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0f);
+
+            weightSetted = 0.5f;
+            yield return null;
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 1f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0f);
+
+            weightSetted = 0.75f;
+            yield return null;
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 0.5f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0.5f);
+
+            weightSetted = 1f;
+            yield return null;
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 0f);
+            Assert.IsTrue(BlendedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 1f);
+        }
+
         public static AnimationClip CreateClip(float duration)
         {
             var clip1 = new AnimationClip();
@@ -468,6 +532,11 @@ namespace AnimatorPlayable_Tests
             this.AnimatorPlayableObject.PlaySequencedAnimation(SequencedAnimationInput);
         }
 
+        public void PlayBlendedAnimation(BlendedAnimationInput BlendedAnimationInput, Func<float> InputWeightProvider)
+        {
+            this.AnimatorPlayableObject.PlayBlendedAnimation(BlendedAnimationInput, InputWeightProvider);
+        }
+
         class AnimatorPlayableBehavior : MonoBehaviour
         {
             private AnimatorPlayableObject AnimatorPlayableObject;
@@ -479,7 +548,7 @@ namespace AnimatorPlayable_Tests
 
             private void Update()
             {
-                this.AnimatorPlayableObject.Tick(Time.deltaTime, 0f);
+                this.AnimatorPlayableObject.Tick(Time.deltaTime);
             }
 
             private void OnDestroy()

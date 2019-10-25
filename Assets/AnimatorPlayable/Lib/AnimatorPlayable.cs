@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -22,20 +23,15 @@ namespace AnimatorPlayable
             this.GlobalPlayableGraph.Play();
         }
 
-        public void PlayBlendedAnimation(BlendedAnimationInput BlendedAnimationInput)
+        public void PlayBlendedAnimation(BlendedAnimationInput BlendedAnimationInput, Func<float> InputWeightProvider)
         {
             if (this.AllAnimationLayersCurrentlyPlaying.ContainsKey(BlendedAnimationInput.layerID))
             {
                 this.DestroyLayer(BlendedAnimationInput.layerID);
             }
 
-            List<BlendedAnimationClip> BlendedAnimationClips = new List<BlendedAnimationClip>();
-            for (var i = 0; i < BlendedAnimationInput.BlendedClips.Count; i++)
-            {
-                BlendedAnimationClips.Add(new BlendedAnimationClip(BlendedAnimationInput.BlendedClips[i], BlendedAnimationInput.NormalizedWeightDistributions[i]));
-            }
-
-            BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, BlendedAnimationInput.layerID, BlendedAnimationClips, BlendedAnimationInput.BlendedAnimationSpeedCurve);
+            BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, BlendedAnimationInput.layerID,
+                BlendedAnimationInput.BlendedAnimationClips, BlendedAnimationInput.BlendedAnimationSpeedCurve, InputWeightProvider);
             BlendedAnimationLayer.Inputhandler = PlayableExtensions.AddInput(this.AnimationLayerMixerPlayable, BlendedAnimationLayer.AnimationMixerPlayable, 0);
 
             this.AllAnimationLayersCurrentlyPlaying[BlendedAnimationInput.layerID] = BlendedAnimationLayer;
@@ -57,12 +53,12 @@ namespace AnimatorPlayable
             PlayableExtensions.SetInputWeight(this.AnimationLayerMixerPlayable, SequencedAnimationLayer.Inputhandler, 1f);
         }
 
-        public void Tick(float d, float weightValue)
+        public void Tick(float d)
         {
             List<int> animationLayersToDestroy = null;
             foreach (var blendedAnimationLayer in AllAnimationLayersCurrentlyPlaying)
             {
-                blendedAnimationLayer.Value.Tick(d, weightValue);
+                blendedAnimationLayer.Value.Tick(d);
                 if (blendedAnimationLayer.Value.AskedToBeDestoyed())
                 {
                     if (animationLayersToDestroy == null)
@@ -98,7 +94,7 @@ namespace AnimatorPlayable
     public abstract class MyAnimationLayer
     {
         public int Inputhandler;
-        public abstract void Tick(float d, float weightEvaluation);
+        public abstract void Tick(float d);
         public abstract bool AskedToBeDestoyed();
 
         protected AnimationLayerMixerPlayable ParentAnimationLayerMixerPlayable;
@@ -112,64 +108,6 @@ namespace AnimatorPlayable
         {
             PlayableExtensions.DisconnectInput(AnimationLayerMixerPlayable, this.Inputhandler);
             AnimationLayerMixerPlayable.SetInputCount(AnimationLayerMixerPlayable.GetInputCount() - 1);
-        }
-    }
-
-    class BlendedAnimationLayer : MyAnimationLayer
-    {
-        public int LayerID;
-        public List<BlendedAnimationClip> BlendedAnimationClips;
-        private BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
-        public AnimationMixerPlayable AnimationMixerPlayable { get; private set; }
-
-        public BlendedAnimationLayer(PlayableGraph PlayableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
-            int layerId, List<BlendedAnimationClip> blendedAnimationClips, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve) : base(parentAnimationLayerMixerPlayable)
-        {
-            LayerID = layerId;
-            BlendedAnimationClips = blendedAnimationClips;
-            this.BlendedAnimationSpeedCurve = BlendedAnimationSpeedCurve;
-
-            //create a playable mixer
-            this.AnimationMixerPlayable = AnimationMixerPlayable.Create(PlayableGraph, blendedAnimationClips.Count, normalizeWeights: true);
-
-            foreach (var blendedAnimationClip in blendedAnimationClips)
-            {
-                var animationClipPlayable = AnimationClipPlayable.Create(PlayableGraph, blendedAnimationClip.AnimationClip);
-                animationClipPlayable.SetApplyFootIK(false);
-                animationClipPlayable.SetApplyPlayableIK(false);
-                blendedAnimationClip.InputHandler = PlayableExtensions.AddInput(this.AnimationMixerPlayable, animationClipPlayable, 0);
-                PlayableExtensions.Play(animationClipPlayable);
-                blendedAnimationClip.AnimationClipPlayable = animationClipPlayable;
-            }
-        }
-
-        private float oldWeightEvaluation = -1f;
-
-        public override void Tick(float d, float weightEvaluation)
-        {
-            if (this.oldWeightEvaluation != weightEvaluation)
-            {
-                if (this.BlendedAnimationSpeedCurve.BlendedSpeedCurveEnabled)
-                {
-                    float sampledSpeed = this.BlendedAnimationSpeedCurve.SpeedCurve.Evaluate(weightEvaluation);
-                    foreach (var blendedAnimationClip in BlendedAnimationClips)
-                    {
-                        blendedAnimationClip.SetSpeed(sampledSpeed);
-                    }
-                }
-
-                foreach (var blendedAnimationClip in BlendedAnimationClips)
-                {
-                    PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, blendedAnimationClip.InputHandler, blendedAnimationClip.NormalizedWeightDistribution.Evaluate(weightEvaluation));
-                }
-            }
-
-            this.oldWeightEvaluation = weightEvaluation;
-        }
-
-        public override bool AskedToBeDestoyed()
-        {
-            return false;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace AnimatorPlayable
     public class UniqueAnimationClip
     {
         public AnimationClip AnimationClip;
+
         public LinearBlending TransitionBlending;
 
         #region Dynamically Setted
@@ -83,22 +84,16 @@ namespace AnimatorPlayable
         public List<UniqueAnimationClip> UniqueAnimationClips;
     }
 
-
+    [Serializable]
     public class BlendedAnimationClip
     {
-        public AnimationClipPlayable AnimationClipPlayable { private get; set; }
+        public AnimationClip AnimationClip;
+        [Range(0f, 1f)] public float WeightTime;
+        public float Speed = 1f;
+        [MyReadOnly] public LinearBlending Blending;
+        [MyReadOnly] public int InputHandler;
+        [NonSerialized] public AnimationClipPlayable AnimationClipPlayable;
 
-        public BlendedAnimationClip(AnimationClip animationClip, AnimationCurve normalizedWeightDistribution)
-        {
-            AnimationClip = animationClip;
-            NormalizedWeightDistribution = normalizedWeightDistribution;
-        }
-
-
-        public AnimationClip AnimationClip { get; private set; }
-        public AnimationCurve NormalizedWeightDistribution { get; private set; }
-
-        public int InputHandler;
 
         public void SetSpeed(float speed)
         {
@@ -110,19 +105,8 @@ namespace AnimatorPlayable
     public struct BlendedAnimationInput
     {
         public int layerID;
-        public List<AnimationClip> BlendedClips;
-        public List<AnimationCurve> NormalizedWeightDistributions;
+        public List<BlendedAnimationClip> BlendedAnimationClips;
         public BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
-        public bool IsInfinite;
-
-        public BlendedAnimationInput(int layerId, List<AnimationClip> blendedClips, List<AnimationCurve> normalizedWeightDistributions, bool isInfinite, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve)
-        {
-            layerID = layerId;
-            BlendedClips = blendedClips;
-            NormalizedWeightDistributions = normalizedWeightDistributions;
-            IsInfinite = isInfinite;
-            this.BlendedAnimationSpeedCurve = BlendedAnimationSpeedCurve;
-        }
     }
 
     [Serializable]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
@@ -20,10 +21,10 @@ namespace AnimatorPlayable
         private bool IsTransitioningIn;
         private bool IsTransitioningOut;
         private float TransitioningOutStartTime;
-        private bool HasEnded;
+        private BoolVariable HasEnded;
 
         public SequencedAnimationLayer(PlayableGraph playableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
-            int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime) : base(parentAnimationLayerMixerPlayable)
+            int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime, Action OnSequencedAnimationFinished = null) : base(parentAnimationLayerMixerPlayable)
         {
             this.isInfinite = isInfinite;
             this.UniqueAnimationClips = uniqueAnimationClips;
@@ -32,7 +33,7 @@ namespace AnimatorPlayable
             this.EndTransitionTime = EndTransitionTime;
             this.IsTransitioningIn = false;
             this.IsTransitioningOut = false;
-
+            this.HasEnded = new BoolVariable(false, OnSequencedAnimationFinished);
 
             this.AnimationMixerPlayable = AnimationMixerPlayable.Create(playableGraph, 0, normalizeWeights: true);
             this.AssociatedAnimationClipsPlayable = new AnimationClipPlayable[uniqueAnimationClips.Count];
@@ -101,9 +102,9 @@ namespace AnimatorPlayable
             PlayableExtensions.SetTime(this.AnimationMixerPlayable, 0);
         }
 
-        public override void Tick(float d, float weightEvaluation)
+        public override void Tick(float d)
         {
-            if (!this.HasEnded)
+            if (!this.HasEnded.GetValue())
             {
                 var elapsedTime = PlayableExtensions.GetTime(this.AnimationMixerPlayable);
                 if (this.IsTransitioningIn)
@@ -126,7 +127,7 @@ namespace AnimatorPlayable
                     PlayableExtensions.SetInputWeight(this.ParentAnimationLayerMixerPlayable, this.Inputhandler, weightSetted);
                     if (weightSetted == 0f)
                     {
-                        this.HasEnded = true;
+                        this.HasEnded.SetValue(true);
                         this.IsTransitioningOut = false;
                     }
                 }
@@ -161,7 +162,7 @@ namespace AnimatorPlayable
                         }
                         else
                         {
-                            this.HasEnded = true;
+                            this.HasEnded.SetValue(true);
                         }
 
                         PlayableExtensions.SetInputWeight(AnimationMixerPlayable, this.UniqueAnimationClips[this.UniqueAnimationClips.Count - 1].InputHandler, 1f);
@@ -170,14 +171,6 @@ namespace AnimatorPlayable
             }
         }
 
-
-        /*
-        private static void DoesTransitionClipAnimationsPlaying(double sampledTime, LinearBlending clipLeftBlending, LinearBlending clipRightBlending, out bool clipLeftPlaying, out bool clipRightPlaying)
-        {
-            clipLeftPlaying = (sampledTime <= clipLeftBlending.AnimationWeightEndDecreasingTime);
-            clipRightPlaying = (sampledTime >= clipLeftBlending.GetAnimationEndTimeWithoutDelay() + clipRightBlending.BeginClipDelay);
-        }
-        */
 
         private static void SetAnimationMixerPlayableWeight(AnimationMixerPlayable AnimationMixerPlayable, AnimationClipPlayable AnimationClipPlayable, int inputHandler, float weight)
         {
@@ -196,7 +189,7 @@ namespace AnimatorPlayable
 
         public override bool AskedToBeDestoyed()
         {
-            return this.HasEnded && !this.isInfinite;
+            return this.HasEnded.GetValue() && !this.isInfinite;
         }
 
         public override void Destroy(AnimationLayerMixerPlayable AnimationLayerMixerPlayable)
