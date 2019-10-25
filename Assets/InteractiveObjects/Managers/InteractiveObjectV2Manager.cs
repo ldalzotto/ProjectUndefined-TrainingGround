@@ -38,11 +38,11 @@ namespace InteractiveObjects
                     InteractiveObjects[InteractiveObjectIndex].Tick(d);
         }
 
-        public void AfterTicks()
+        public void AfterTicks(float d)
         {
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < InteractiveObjects.Count; InteractiveObjectIndex++)
                 if (InteractiveObjects[InteractiveObjectIndex].IsUpdatedInMainManager)
-                    InteractiveObjects[InteractiveObjectIndex].AfterTicks();
+                    InteractiveObjects[InteractiveObjectIndex].AfterTicks(d);
 
             List<CoreInteractiveObject> InteractiveObjectsToDelete = null;
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < InteractiveObjects.Count; InteractiveObjectIndex++)

@@ -1,21 +1,17 @@
 ﻿using System;
 using AnimatorPlayable;
 using InteractiveObjects_Interfaces;
-using UnityEngine;
 
 namespace InteractiveObjectsAnimatorPlayable
 {
     public class MovingObjectAnimatorPlayableSystem : AInteractiveObjectSystem
     {
-        [VE_Ignore] private AnimatorPlayableObject AnimatorPlayableObject;
-
         private float normalizedObjectSpeed;
 
-        public MovingObjectAnimatorPlayableSystem(string graphName, Animator animator, A_AnimationPlayableDefinition LocomotionAnimationDefinition)
+        public MovingObjectAnimatorPlayableSystem(AnimatorPlayableObject AnimatorPlayableObject, A_AnimationPlayableDefinition LocomotionAnimationDefinition)
         {
-            this.AnimatorPlayableObject = new AnimatorPlayableObject(graphName, animator);
-            LocomotionAnimationDefinition.Play(AnimationLayerStatic.AnimationLayers[AnimationLayerID.LocomotionLayer].ID, this.AnimatorPlayableObject);
-            this.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[AnimationLayerStatic.AnimationLayers[AnimationLayerID.LocomotionLayer].ID].RegisterInputWeightProvider(() => this.normalizedObjectSpeed);
+            LocomotionAnimationDefinition.Play(AnimationLayerStatic.AnimationLayers[AnimationLayerID.LocomotionLayer].ID, AnimatorPlayableObject);
+            AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[AnimationLayerStatic.AnimationLayers[AnimationLayerID.LocomotionLayer].ID].RegisterInputWeightProvider(() => this.normalizedObjectSpeed);
         }
 
         public void SetUnscaledObjectSpeed(float normalizedObjectSpeed)
@@ -23,24 +19,14 @@ namespace InteractiveObjectsAnimatorPlayable
             this.normalizedObjectSpeed = normalizedObjectSpeed;
         }
 
-        public override void Tick(float d)
+        public void PlayContextAction(AnimatorPlayableObject AnimatorPlayableObject, SequencedAnimationInput ContextActionAnimation, Action OnAnimationFinished = null)
         {
-            this.AnimatorPlayableObject.Tick(d);
-        }
-
-        public void PlayContextAction(SequencedAnimationInput ContextActionAnimation, Action OnAnimationFinished = null)
-        {
-            this.AnimatorPlayableObject.PlaySequencedAnimation(AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID, ContextActionAnimation);
+            AnimatorPlayableObject.PlaySequencedAnimation(AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID, ContextActionAnimation);
             if (OnAnimationFinished != null)
             {
-                this.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID]
+                AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID]
                     .ReigsterOnSequencedAnimationEnd(OnAnimationFinished);
             }
-        }
-
-        public override void OnDestroy()
-        {
-            this.AnimatorPlayableObject.Destroy();
         }
     }
 }

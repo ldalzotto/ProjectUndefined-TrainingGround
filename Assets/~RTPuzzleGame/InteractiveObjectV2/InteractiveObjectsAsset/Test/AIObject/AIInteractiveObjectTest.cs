@@ -37,9 +37,9 @@ namespace InteractiveObjects
             AIMoveToDestinationSystem.Tick(d);
         }
 
-        public override void AfterTicks()
+        public override void AfterTicks(float d)
         {
-            base.AfterTicks();
+            base.AfterTicks(d);
         }
 
         public override void Destroy()

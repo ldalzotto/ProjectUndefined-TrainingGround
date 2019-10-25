@@ -6,7 +6,8 @@
         "OdinSerializer",
 "SequencedAction",
         "Editor_Common",
-        "InteractiveObjects_Interfaces"
+        "InteractiveObjects_Interfaces",
+"AnimatorPlayable"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

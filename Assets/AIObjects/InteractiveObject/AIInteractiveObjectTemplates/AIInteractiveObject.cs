@@ -18,7 +18,7 @@ namespace AIObjects
             interactiveGameObject.CreateAgent(AIInteractiveObjectInitializerData.AIAgentDefinition);
             interactiveGameObject.CreateLogicCollider(AIInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
-            this.MovingObjectAnimatorPlayableSystem = new MovingObjectAnimatorPlayableSystem(interactiveGameObject.InteractiveGameObjectParent.name, interactiveGameObject.Animator, AIInteractiveObjectInitializerData.LocomotionAnimation);
+            this.MovingObjectAnimatorPlayableSystem = new MovingObjectAnimatorPlayableSystem(this.AnimatorPlayable, AIInteractiveObjectInitializerData.LocomotionAnimation);
             AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, OnAIDestinationReached);
             LineVisualFeedbackSystem = new LineVisualFeedbackSystem(InteractiveGameObject);
         }
@@ -44,9 +44,10 @@ namespace AIObjects
             this.MovingObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(unscaledSpeedMagnitude);
         }
 
-        public override void AfterTicks()
+        public override void AfterTicks(float d)
         {
             AIMoveToDestinationSystem.AfterTicks();
+            base.AfterTicks(d);
         }
 
         public override void Destroy()

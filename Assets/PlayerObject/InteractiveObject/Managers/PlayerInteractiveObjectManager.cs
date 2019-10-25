@@ -22,6 +22,11 @@ namespace PlayerObject
             PlayerInteractiveObject.Tick(d);
         }
 
+        public void AfterTicks(float d)
+        {
+            this.PlayerInteractiveObject.AfterTicks(d);
+        }
+
         public void LateTick(float d)
         {
             PlayerInteractiveObject.LateTick(d);

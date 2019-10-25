@@ -1,4 +1,5 @@
 ﻿using System;
+using AnimatorPlayable;
 using CoreGame;
 using InteractiveObjects_Interfaces;
 using Object = UnityEngine.Object;
@@ -24,6 +25,11 @@ namespace InteractiveObjects
             isAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
+            if (interactiveGameObject.Animator != null)
+            {
+                this.AnimatorPlayable = new AnimatorPlayableObject(interactiveGameObject.InteractiveGameObjectParent.name, interactiveGameObject.Animator);
+            }
+
             CutsceneController = new BaseCutsceneController(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
         }
 
@@ -31,6 +37,7 @@ namespace InteractiveObjects
 
         public InteractiveObjectTag InteractiveObjectTag => interactiveObjectTag;
 
+        public AnimatorPlayableObject AnimatorPlayable { get; private set; }
         public BaseCutsceneController CutsceneController { get; private set; }
 
         public bool IsAskingToBeDestroyed => isAskingToBeDestroyed;
@@ -48,8 +55,12 @@ namespace InteractiveObjects
         {
         }
 
-        public virtual void AfterTicks()
+        public virtual void AfterTicks(float d)
         {
+            if (this.AnimatorPlayable != null)
+            {
+                this.AnimatorPlayable.Tick(d);
+            }
         }
 
         public virtual void LateTick(float d)
@@ -59,6 +70,11 @@ namespace InteractiveObjects
         public virtual void Destroy()
         {
             InteractiveObjectEventsManager.OnInteractiveObjectDestroyed(this);
+            if (this.AnimatorPlayable != null)
+            {
+                this.AnimatorPlayable.Destroy();
+            }
+
             Object.Destroy(InteractiveGameObject.InteractiveGameObjectParent);
         }
 

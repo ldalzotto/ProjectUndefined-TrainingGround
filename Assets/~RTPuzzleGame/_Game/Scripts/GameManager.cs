@@ -69,6 +69,7 @@ namespace RTPuzzle
             PlayerActionEntryPoint.Get().Tick(d);
 
             PlayerInteractiveObjectManager.Get().Tick(d);
+            PlayerInteractiveObjectManager.Get().AfterTicks(d);
 
             CameraMovementManager.Get().Tick(d);
 
@@ -79,7 +80,7 @@ namespace RTPuzzle
 
             InteractiveObjectV2Manager.Get().Tick(d);
 
-            InteractiveObjectV2Manager.Get().AfterTicks();
+            InteractiveObjectV2Manager.Get().AfterTicks(d);
 
             GroundEffectsManagerV2.Get().Tick(d);
             DottedLineRendererManager.Get().Tick();

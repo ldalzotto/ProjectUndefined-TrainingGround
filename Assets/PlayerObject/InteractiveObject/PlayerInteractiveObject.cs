@@ -14,7 +14,6 @@ namespace PlayerObject
         #region Systems
 
         [VE_Nested] private MovingObjectAnimatorPlayableSystem MovingObjectAnimatorPlayableSystem;
-        // [VE_Nested] private AnimationObjectSystem AnimationObjectSystem;
 
         #endregion
 
@@ -37,8 +36,7 @@ namespace PlayerObject
 
             #endregion
 
-            this.MovingObjectAnimatorPlayableSystem = new MovingObjectAnimatorPlayableSystem(this.GetType().Name, interactiveGameObject.Animator, LocomotionAnimationDefinition);
-            //  AnimationObjectSystem = new AnimationObjectSystem(this);
+            this.MovingObjectAnimatorPlayableSystem = new MovingObjectAnimatorPlayableSystem(this.AnimatorPlayable, LocomotionAnimationDefinition);
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
@@ -59,6 +57,7 @@ namespace PlayerObject
 
         public override void Tick(float d)
         {
+            base.Tick(d);
             if (!this.PlayerActionEntryPoint.IsActionExecuting() && !BlockingCutscenePlayer.Playing)
             {
                 if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
@@ -80,20 +79,17 @@ namespace PlayerObject
             }
 
             this.MovingObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(GetNormalizedSpeed());
-            this.MovingObjectAnimatorPlayableSystem.Tick(d);
-            //   AnimationObjectSystem.SetUnscaledSpeedMagnitude(GetNormalizedSpeed());
-            //  AnimationObjectSystem.Tick(d);
         }
 
         public override void FixedTick(float d)
         {
+            base.FixedTick(d);
             PlayerInputMoveManager.FixedTick(d);
             PlayerBodyPhysicsEnvironment.FixedTick(d);
         }
 
         public override void Destroy()
         {
-            this.MovingObjectAnimatorPlayableSystem.OnDestroy();
             base.Destroy();
         }
 
