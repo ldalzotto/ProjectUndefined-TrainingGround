@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using InteractiveObjects_Interfaces;
 using SequencedAction;
 
 namespace InteractiveObjects

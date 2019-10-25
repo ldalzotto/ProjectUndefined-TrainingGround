@@ -22,13 +22,28 @@ public class BoolVariable
         {
             if (value)
             {
-                if (this.OnJustSetToTrue != null) { this.OnJustSetToTrue.Invoke(); };
+                if (this.OnJustSetToTrue != null)
+                {
+                    this.OnJustSetToTrue.Invoke();
+                }
             }
             else
             {
-                if (this.OnJustSetToFalse != null) { this.OnJustSetToFalse.Invoke(); };
+                if (this.OnJustSetToFalse != null)
+                {
+                    this.OnJustSetToFalse.Invoke();
+                }
             }
         }
     }
-    public bool GetValue() { return this.Value; }
+
+    public bool GetValue()
+    {
+        return this.Value;
+    }
+
+    public void ReplaceOnJustSetToTrueAction(Action onJustSetToTrue)
+    {
+        this.OnJustSetToTrue = onJustSetToTrue;
+    }
 }

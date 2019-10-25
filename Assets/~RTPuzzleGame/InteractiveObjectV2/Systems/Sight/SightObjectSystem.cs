@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameConfigurationID;
+using InteractiveObjects_Interfaces;
 using RangeObjects;
 
 namespace InteractiveObjects

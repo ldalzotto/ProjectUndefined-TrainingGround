@@ -798,6 +798,10 @@
       <Project>{A4906D6E-AF6D-3124-2AC7-89DF2A42A701}</Project>
       <Name>Persistence</Name>
     </ProjectReference>
+    <ProjectReference Include="AnimatorPlayable.csproj">
+      <Project>{00DCCEBF-15A4-1F84-23B7-1B0D3901D4D1}</Project>
+      <Name>AnimatorPlayable</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

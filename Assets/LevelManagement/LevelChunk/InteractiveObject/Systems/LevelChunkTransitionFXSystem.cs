@@ -1,4 +1,5 @@
 ﻿using InteractiveObjects;
+using InteractiveObjects_Interfaces;
 
 namespace LevelManagement
 {

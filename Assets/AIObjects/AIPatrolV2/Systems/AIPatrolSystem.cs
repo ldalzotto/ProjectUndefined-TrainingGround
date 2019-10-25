@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using InteractiveObjects;
+using InteractiveObjects_Interfaces;
 using SequencedAction;
 
 namespace AIObjects

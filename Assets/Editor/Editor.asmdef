@@ -15,7 +15,8 @@
 "Tutorial",
 "AIObjects",
 "VisualFeedback",
-"Persistence"
+"Persistence",
+"AnimatorPlayable"
   ],
   "includePlatforms": [
     "Editor"

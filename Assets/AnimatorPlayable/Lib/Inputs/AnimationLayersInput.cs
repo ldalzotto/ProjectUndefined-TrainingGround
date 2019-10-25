@@ -21,6 +21,23 @@ namespace AnimatorPlayable
     }
 
     [Serializable]
+    public class UniqueAnimationClipInput
+    {
+        public AnimationClip AnimationClip;
+
+        public LinearBlending TransitionBlending;
+
+        public UniqueAnimationClip ToUniqueAnimationClip()
+        {
+            return new UniqueAnimationClip()
+            {
+                AnimationClip = AnimationClip,
+                TransitionBlending = TransitionBlending
+            };
+        }
+    }
+
+    [Serializable]
     public struct LinearBlending
     {
         public float EndTransitionTime;
@@ -73,15 +90,13 @@ namespace AnimatorPlayable
         }
     }
 
-
     [Serializable]
-    public struct SequencedAnimationInput
+    public class SequencedAnimationInput
     {
-        public int layerID;
         public bool isInfinite;
         public float BeginTransitionTime;
         public float EndTransitionTime;
-        public List<UniqueAnimationClip> UniqueAnimationClips;
+        public List<UniqueAnimationClipInput> UniqueAnimationClips;
     }
 
     [Serializable]
@@ -101,11 +116,28 @@ namespace AnimatorPlayable
         }
     }
 
+
     [Serializable]
-    public struct BlendedAnimationInput
+    public class BlendedAnimationClipInput
     {
-        public int layerID;
-        public List<BlendedAnimationClip> BlendedAnimationClips;
+        public AnimationClip AnimationClip;
+        [Range(0f, 1f)] public float WeightTime;
+        public float Speed = 1f;
+
+        public BlendedAnimationClip ToBlendedAnimationClip()
+        {
+            return new BlendedAnimationClip()
+            {
+                AnimationClip = AnimationClip, WeightTime = WeightTime, Speed = Speed
+            };
+        }
+    }
+
+
+    [Serializable]
+    public class BlendedAnimationInput
+    {
+        public List<BlendedAnimationClipInput> BlendedAnimationClips;
         public BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
     }
 

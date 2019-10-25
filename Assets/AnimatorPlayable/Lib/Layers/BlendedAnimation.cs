@@ -14,11 +14,10 @@ namespace AnimatorPlayable
         private Func<float> inputWeightProvider;
 
         public BlendedAnimationLayer(PlayableGraph PlayableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
-            int layerId, List<BlendedAnimationClip> blendedAnimationClips, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve, Func<float> inputWeightProvider) : base(layerId, parentAnimationLayerMixerPlayable)
+            int layerId, List<BlendedAnimationClip> blendedAnimationClips, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve) : base(layerId, parentAnimationLayerMixerPlayable)
         {
             BlendedAnimationClips = blendedAnimationClips;
             this.BlendedAnimationSpeedCurve = BlendedAnimationSpeedCurve;
-            this.inputWeightProvider = inputWeightProvider;
             //create a playable mixer
             this.AnimationMixerPlayable = AnimationMixerPlayable.Create(PlayableGraph);
 
@@ -66,6 +65,11 @@ namespace AnimatorPlayable
         }
 
         private float oldWeightEvaluation = -1f;
+
+        public override void RegisterInputWeightProvider(Func<float> InputWeightProvider)
+        {
+            this.inputWeightProvider = InputWeightProvider;
+        }
 
         public override void Tick(float d)
         {

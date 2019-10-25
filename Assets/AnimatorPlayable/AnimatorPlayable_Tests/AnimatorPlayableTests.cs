@@ -32,15 +32,14 @@ namespace AnimatorPlayable_Tests
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
             float clipTime = 0.25f;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(0, new SequencedAnimationInput()
             {
                 isInfinite = false,
                 BeginTransitionTime = 0f,
-                layerID = 0,
                 EndTransitionTime = 0f,
-                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime)
                     }
@@ -66,15 +65,14 @@ namespace AnimatorPlayable_Tests
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
             float clipTime = 0.25f;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(0, new SequencedAnimationInput()
             {
                 isInfinite = true,
                 BeginTransitionTime = 0f,
-                layerID = 0,
                 EndTransitionTime = 0f,
-                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime)
                     }
@@ -96,15 +94,14 @@ namespace AnimatorPlayable_Tests
 
             float beginTransitionTime = 0.0625f;
             float clipTime = 0.25f;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(0, new SequencedAnimationInput()
             {
                 isInfinite = false,
                 BeginTransitionTime = beginTransitionTime,
-                layerID = 0,
                 EndTransitionTime = 0f,
-                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime)
                     }
@@ -140,15 +137,14 @@ namespace AnimatorPlayable_Tests
 
             float endTransitionTime = 0.0625f;
             float clipTime = 0.25f;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(0, new SequencedAnimationInput()
             {
                 isInfinite = false,
                 BeginTransitionTime = 0f,
-                layerID = 0,
                 EndTransitionTime = endTransitionTime,
-                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime)
                     }
@@ -174,23 +170,22 @@ namespace AnimatorPlayable_Tests
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
             float clipTime = 0.25f;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(0, new SequencedAnimationInput()
             {
                 isInfinite = false,
                 BeginTransitionTime = 0f,
-                layerID = 0,
                 EndTransitionTime = 0f,
-                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime)
                     },
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime)
                     },
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime)
                     }
@@ -243,15 +238,14 @@ namespace AnimatorPlayable_Tests
 
             float transitionTime = 0.0625f;
             float clipTime = 0.25f;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(0, new SequencedAnimationInput()
             {
                 isInfinite = false,
                 BeginTransitionTime = 0f,
-                layerID = 0,
                 EndTransitionTime = 0f,
-                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         TransitionBlending = new LinearBlending()
@@ -259,7 +253,7 @@ namespace AnimatorPlayable_Tests
                             EndTransitionTime = transitionTime
                         }
                     },
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         TransitionBlending = new LinearBlending()
@@ -267,7 +261,7 @@ namespace AnimatorPlayable_Tests
                             EndTransitionTime = transitionTime
                         }
                     },
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         TransitionBlending = new LinearBlending()
@@ -341,15 +335,14 @@ namespace AnimatorPlayable_Tests
 
             float transitionTime = 0.0625f;
             float clipTime = 0.25f;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(0, new SequencedAnimationInput()
             {
                 isInfinite = false,
                 BeginTransitionTime = 0f,
-                layerID = 0,
                 EndTransitionTime = 0f,
-                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         TransitionBlending = new LinearBlending()
@@ -357,7 +350,7 @@ namespace AnimatorPlayable_Tests
                             EndTransitionTime = transitionTime
                         }
                     },
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         TransitionBlending = new LinearBlending()
@@ -366,7 +359,7 @@ namespace AnimatorPlayable_Tests
                             EndClipDelay = transitionTime
                         }
                     },
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         TransitionBlending = new LinearBlending()
@@ -442,22 +435,21 @@ namespace AnimatorPlayable_Tests
             float weightSetted = 0f;
             float clipTime = 0.25f;
 
-            AnimatorPlayableGameObject.PlayBlendedAnimation(new BlendedAnimationInput()
+            AnimatorPlayableGameObject.PlayBlendedAnimation(0, new BlendedAnimationInput()
             {
-                layerID = 0,
-                BlendedAnimationClips = new List<BlendedAnimationClip>()
+                BlendedAnimationClips = new List<BlendedAnimationClipInput>()
                 {
-                    new BlendedAnimationClip()
+                    new BlendedAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         WeightTime = 0f
                     },
-                    new BlendedAnimationClip()
+                    new BlendedAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         WeightTime = 0.5f
                     },
-                    new BlendedAnimationClip()
+                    new BlendedAnimationClipInput()
                     {
                         AnimationClip = CreateClip(clipTime),
                         WeightTime = 1f
@@ -503,11 +495,11 @@ namespace AnimatorPlayable_Tests
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
             yield return null;
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(4, new SequencedAnimationInput()
             {
-                layerID = 4, isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClip>()
+                isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(1f)
                     }
@@ -516,11 +508,11 @@ namespace AnimatorPlayable_Tests
             yield return null;
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[4].Inputhandler == 0);
 
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(1, new SequencedAnimationInput()
             {
-                layerID = 1, isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClip>()
+                isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(1f)
                     }
@@ -531,11 +523,11 @@ namespace AnimatorPlayable_Tests
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[1].Inputhandler == 0);
             Assert.IsTrue(AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[4].Inputhandler == 1);
 
-            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            AnimatorPlayableGameObject.PlaySequencedAnimation(2, new SequencedAnimationInput()
             {
-                layerID = 2, isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClip>()
+                isInfinite = true, UniqueAnimationClips = new List<UniqueAnimationClipInput>()
                 {
-                    new UniqueAnimationClip()
+                    new UniqueAnimationClipInput()
                     {
                         AnimationClip = CreateClip(1f)
                     }
@@ -578,14 +570,15 @@ namespace AnimatorPlayable_Tests
             this.animatorPlayableBehavior.Init(this.AnimatorPlayableObject);
         }
 
-        public void PlaySequencedAnimation(SequencedAnimationInput SequencedAnimationInput)
+        public void PlaySequencedAnimation(int layerID, SequencedAnimationInput SequencedAnimationInput)
         {
-            this.AnimatorPlayableObject.PlaySequencedAnimation(SequencedAnimationInput);
+            this.AnimatorPlayableObject.PlaySequencedAnimation(layerID, SequencedAnimationInput);
         }
 
-        public void PlayBlendedAnimation(BlendedAnimationInput BlendedAnimationInput, Func<float> InputWeightProvider)
+        public void PlayBlendedAnimation(int layerID, BlendedAnimationInput BlendedAnimationInput, Func<float> InputWeightProvider)
         {
-            this.AnimatorPlayableObject.PlayBlendedAnimation(BlendedAnimationInput, InputWeightProvider);
+            this.AnimatorPlayableObject.PlayBlendedAnimation(layerID, BlendedAnimationInput);
+            this.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[layerID].RegisterInputWeightProvider(InputWeightProvider);
         }
 
         class AnimatorPlayableBehavior : MonoBehaviour

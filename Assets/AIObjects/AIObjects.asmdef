@@ -6,6 +6,8 @@
 "Editor_Common",
 "InteractiveObjects",
 "InteractiveObjects_Interfaces",
+"InteractiveObjectsAnimatorPlayable",
+"AnimatorPlayable",
 "VisualFeedback",
 "SequencedAction"
 ],

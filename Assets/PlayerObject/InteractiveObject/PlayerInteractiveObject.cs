@@ -1,6 +1,8 @@
-﻿using CoreGame;
+﻿using AnimatorPlayable;
+using CoreGame;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
+using InteractiveObjectsAnimatorPlayable;
 using PlayerActions;
 using PlayerObject_Interfaces;
 using UnityEngine;
@@ -11,7 +13,8 @@ namespace PlayerObject
     {
         #region Systems
 
-        [VE_Nested] private AnimationObjectSystem AnimationObjectSystem;
+        [VE_Nested] private MovingObjectAnimatorPlayableSystem MovingObjectAnimatorPlayableSystem;
+        // [VE_Nested] private AnimationObjectSystem AnimationObjectSystem;
 
         #endregion
 
@@ -20,7 +23,8 @@ namespace PlayerObject
         [VE_Ignore] private PlayerInputMoveManager PlayerInputMoveManager;
         [VE_Ignore] private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
-        public PlayerInteractiveObject(IInteractiveGameObject interactiveGameObject, InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider) : base(interactiveGameObject, false)
+        public PlayerInteractiveObject(IInteractiveGameObject interactiveGameObject, InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider,
+            A_AnimationPlayableDefinition LocomotionAnimationDefinition) : base(interactiveGameObject, false)
         {
             interactiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
             interactiveObjectTag = new InteractiveObjectTag {IsPlayer = true};
@@ -33,7 +37,8 @@ namespace PlayerObject
 
             #endregion
 
-            AnimationObjectSystem = new AnimationObjectSystem(this);
+            this.MovingObjectAnimatorPlayableSystem = new MovingObjectAnimatorPlayableSystem(this.GetType().Name, interactiveGameObject.Animator, LocomotionAnimationDefinition);
+            //  AnimationObjectSystem = new AnimationObjectSystem(this);
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
@@ -74,14 +79,22 @@ namespace PlayerObject
                 PlayerInputMoveManager.ResetSpeed();
             }
 
-            AnimationObjectSystem.SetUnscaledSpeedMagnitude(GetNormalizedSpeed());
-            AnimationObjectSystem.Tick(d);
+            this.MovingObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(GetNormalizedSpeed());
+            this.MovingObjectAnimatorPlayableSystem.Tick(d);
+            //   AnimationObjectSystem.SetUnscaledSpeedMagnitude(GetNormalizedSpeed());
+            //  AnimationObjectSystem.Tick(d);
         }
 
         public override void FixedTick(float d)
         {
             PlayerInputMoveManager.FixedTick(d);
             PlayerBodyPhysicsEnvironment.FixedTick(d);
+        }
+
+        public override void Destroy()
+        {
+            this.MovingObjectAnimatorPlayableSystem.OnDestroy();
+            base.Destroy();
         }
 
         #region External Dependencies

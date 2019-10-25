@@ -24,36 +24,37 @@ namespace AnimatorPlayable
             this.GlobalPlayableGraph.Play();
         }
 
-        public void PlayBlendedAnimation(BlendedAnimationInput BlendedAnimationInput, Func<float> InputWeightProvider)
+        public void PlayBlendedAnimation(int layerID, BlendedAnimationInput BlendedAnimationInput)
         {
-            if (this.AllAnimationLayersCurrentlyPlaying.ContainsKey(BlendedAnimationInput.layerID))
+            if (this.AllAnimationLayersCurrentlyPlaying.ContainsKey(layerID))
             {
-                this.DestroyLayer(BlendedAnimationInput.layerID);
+                this.DestroyLayer(layerID);
             }
 
-            BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, BlendedAnimationInput.layerID,
-                BlendedAnimationInput.BlendedAnimationClips, BlendedAnimationInput.BlendedAnimationSpeedCurve, InputWeightProvider);
+            BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, layerID,
+                BlendedAnimationInput.BlendedAnimationClips.ConvertAll(i => i.ToBlendedAnimationClip()), BlendedAnimationInput.BlendedAnimationSpeedCurve);
             BlendedAnimationLayer.Inputhandler = PlayableExtensions.AddInput(this.AnimationLayerMixerPlayable, BlendedAnimationLayer.AnimationMixerPlayable, 0);
 
-            this.AllAnimationLayersCurrentlyPlaying[BlendedAnimationInput.layerID] = BlendedAnimationLayer;
+            this.AllAnimationLayersCurrentlyPlaying[layerID] = BlendedAnimationLayer;
             this.OrderedByInputHandlerAnimationLayers.Add(BlendedAnimationLayer);
 
             this.SortLayers();
 
-            PlayableExtensions.SetInputWeight(this.AnimationLayerMixerPlayable, this.AllAnimationLayersCurrentlyPlaying[BlendedAnimationInput.layerID].Inputhandler, 1f);
+            PlayableExtensions.SetInputWeight(this.AnimationLayerMixerPlayable, this.AllAnimationLayersCurrentlyPlaying[layerID].Inputhandler, 1f);
         }
 
-        public void PlaySequencedAnimation(SequencedAnimationInput SequencedAnimationInput)
+        public void PlaySequencedAnimation(int layerID, SequencedAnimationInput SequencedAnimationInput)
         {
-            if (this.AllAnimationLayersCurrentlyPlaying.ContainsKey(SequencedAnimationInput.layerID))
+            if (this.AllAnimationLayersCurrentlyPlaying.ContainsKey(layerID))
             {
-                this.DestroyLayer(SequencedAnimationInput.layerID);
+                this.DestroyLayer(layerID);
             }
 
-            var SequencedAnimationLayer = new SequencedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, SequencedAnimationInput.layerID, SequencedAnimationInput.UniqueAnimationClips,
+            var SequencedAnimationLayer = new SequencedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, layerID,
+                SequencedAnimationInput.UniqueAnimationClips.ConvertAll(clip => clip.ToUniqueAnimationClip()),
                 SequencedAnimationInput.isInfinite, SequencedAnimationInput.BeginTransitionTime, SequencedAnimationInput.EndTransitionTime);
             SequencedAnimationLayer.Inputhandler = PlayableExtensions.AddInput(this.AnimationLayerMixerPlayable, SequencedAnimationLayer.AnimationMixerPlayable, 0);
-            this.AllAnimationLayersCurrentlyPlaying[SequencedAnimationInput.layerID] = SequencedAnimationLayer;
+            this.AllAnimationLayersCurrentlyPlaying[layerID] = SequencedAnimationLayer;
             this.OrderedByInputHandlerAnimationLayers.Add(SequencedAnimationLayer);
 
             this.SortLayers();
@@ -92,7 +93,7 @@ namespace AnimatorPlayable
             this.AnimationLayerMixerPlayable.SetSpeed(speed);
         }
 
-        private void DestroyLayer(int layerID)
+        public void DestroyLayer(int layerID)
         {
             this.OrderedByInputHandlerAnimationLayers.Remove(this.AllAnimationLayersCurrentlyPlaying[layerID]);
             this.AllAnimationLayersCurrentlyPlaying[layerID].Destroy(this.AnimationLayerMixerPlayable);
@@ -169,6 +170,14 @@ namespace AnimatorPlayable
         public int LayerID;
         public abstract void Tick(float d);
         public abstract bool AskedToBeDestoyed();
+
+        public virtual void RegisterInputWeightProvider(Func<float> InputWeightProvider)
+        {
+        }
+
+        public virtual void ReigsterOnAnimationEnd(Action OnAnimationEnd)
+        {
+        }
 
         protected AnimationLayerMixerPlayable ParentAnimationLayerMixerPlayable;
 

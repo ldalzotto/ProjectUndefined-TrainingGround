@@ -1,4 +1,5 @@
 ﻿using System;
+using InteractiveObjects_Interfaces;
 using RangeObjects;
 
 namespace InteractiveObjects

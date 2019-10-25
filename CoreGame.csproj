@@ -79,7 +79,6 @@
      <Compile Include="Assets\~CoreGame\_Helpers\DynamicComputeBufferManager.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\FunctionalExtensions.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\GameInputHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\GenericAnimatorHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\GizmoHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\MultiValueDictionary.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\MyEditorStyles.cs" />

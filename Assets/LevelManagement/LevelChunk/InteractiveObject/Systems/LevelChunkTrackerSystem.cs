@@ -1,5 +1,6 @@
 ﻿using System;
 using InteractiveObjects;
+using InteractiveObjects_Interfaces;
 using RangeObjects;
 
 namespace LevelManagement

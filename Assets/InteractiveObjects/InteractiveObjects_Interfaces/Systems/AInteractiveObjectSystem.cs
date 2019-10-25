@@ -1,4 +1,4 @@
-﻿namespace InteractiveObjects
+﻿namespace InteractiveObjects_Interfaces
 {
     public abstract class AInteractiveObjectSystem
     {

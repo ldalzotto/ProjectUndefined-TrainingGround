@@ -23,7 +23,7 @@ namespace AnimatorPlayable
         private BoolVariable HasEnded;
 
         public SequencedAnimationLayer(PlayableGraph playableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
-            int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime, Action OnSequencedAnimationFinished = null) : base(layerId, parentAnimationLayerMixerPlayable)
+            int layerId, List<UniqueAnimationClip> uniqueAnimationClips, bool isInfinite, float BeginTransitionTime, float EndTransitionTime) : base(layerId, parentAnimationLayerMixerPlayable)
         {
             this.isInfinite = isInfinite;
             this.UniqueAnimationClips = uniqueAnimationClips;
@@ -31,7 +31,7 @@ namespace AnimatorPlayable
             this.EndTransitionTime = EndTransitionTime;
             this.IsTransitioningIn = false;
             this.IsTransitioningOut = false;
-            this.HasEnded = new BoolVariable(false, OnSequencedAnimationFinished);
+            this.HasEnded = new BoolVariable(false);
 
             this.AnimationMixerPlayable = AnimationMixerPlayable.Create(playableGraph);
             this.AssociatedAnimationClipsPlayable = new AnimationClipPlayable[uniqueAnimationClips.Count];
@@ -98,6 +98,11 @@ namespace AnimatorPlayable
             //  this.AssociatedAnimationClipsPlayable[0].Play();
             // this.AnimationMixerPlayable.SetInputWeight(this.UniqueAnimationClips[0].InputHandler, 1f);
             PlayableExtensions.SetTime(this.AnimationMixerPlayable, 0);
+        }
+
+        public override void ReigsterOnAnimationEnd(Action OnAnimationEnd)
+        {
+            this.HasEnded.ReplaceOnJustSetToTrueAction(OnAnimationEnd);
         }
 
         public override void Tick(float d)

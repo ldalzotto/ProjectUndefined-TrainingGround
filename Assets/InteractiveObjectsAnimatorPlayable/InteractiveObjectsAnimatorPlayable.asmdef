@@ -1,10 +1,11 @@
 {
-    "name": "AnimatorPlayable",
+    "name": "InteractiveObjectsAnimatorPlayable",
     "references": [
-"Editor_Common",
-"CoreGame",
-"OdinSerializer"
-],
+        "AnimatorPlayable",
+        "InteractiveObjects_Interfaces",
+"OdinSerializer",
+"Editor_Common"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

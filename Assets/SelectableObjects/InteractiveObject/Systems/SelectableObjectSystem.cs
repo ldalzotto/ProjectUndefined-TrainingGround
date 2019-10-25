@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using InteractiveObjects;
+using InteractiveObjects_Interfaces;
 using RangeObjects;
 using SelectableObjects_Interfaces;
 using UnityEngine;

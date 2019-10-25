@@ -1,4 +1,5 @@
-﻿using InteractiveObjects;
+﻿using AnimatorPlayable;
+using InteractiveObjects;
 using InteractiveObjects_Interfaces;
 
 namespace PlayerObject
@@ -8,9 +9,11 @@ namespace PlayerObject
     {
         [DrawNested] public InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider;
 
+        public A_AnimationPlayableDefinition LocomotionAnimation;
+
         public override void Init()
         {
-            var PlayerInteractiveObject = new PlayerInteractiveObject(InteractiveGameObjectFactory.Build(gameObject), InteractiveObjectLogicCollider);
+            var PlayerInteractiveObject = new PlayerInteractiveObject(InteractiveGameObjectFactory.Build(gameObject), InteractiveObjectLogicCollider, LocomotionAnimation);
             PlayerInteractiveObjectManager.Get().Init(PlayerInteractiveObject);
         }
     }

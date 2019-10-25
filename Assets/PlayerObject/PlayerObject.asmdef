@@ -9,7 +9,9 @@
 "Editor_Common",
 "OdinSerializer",
 "Persistence",
-"SequencedAction"
+"SequencedAction",
+"AnimatorPlayable",
+"InteractiveObjectsAnimatorPlayable"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
