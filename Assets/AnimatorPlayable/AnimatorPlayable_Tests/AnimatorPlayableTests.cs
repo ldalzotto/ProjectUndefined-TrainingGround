@@ -30,7 +30,7 @@ namespace AnimatorPlayable_Tests
         {
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
-            float clipTime = 1f;
+            float clipTime = 0.25f;
             AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
             {
                 isInfinite = false,
@@ -64,7 +64,7 @@ namespace AnimatorPlayable_Tests
         {
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
-            float clipTime = 1f;
+            float clipTime = 0.25f;
             AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
             {
                 isInfinite = true,
@@ -93,8 +93,8 @@ namespace AnimatorPlayable_Tests
         {
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
-            float beginTransitionTime = 0.25f;
-            float clipTime = 1f;
+            float beginTransitionTime = 0.0625f;
+            float clipTime = 0.25f;
             AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
             {
                 isInfinite = false,
@@ -137,8 +137,8 @@ namespace AnimatorPlayable_Tests
         {
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
-            float endTransitionTime = 0.25f;
-            float clipTime = 1f;
+            float endTransitionTime = 0.0625f;
+            float clipTime = 0.25f;
             AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
             {
                 isInfinite = false,
@@ -172,7 +172,7 @@ namespace AnimatorPlayable_Tests
         {
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
-            float clipTime = 1f;
+            float clipTime = 0.25f;
             AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
             {
                 isInfinite = false,
@@ -240,8 +240,8 @@ namespace AnimatorPlayable_Tests
         {
             var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
 
-            float transitionTime = 0.25f;
-            float clipTime = 1f;
+            float transitionTime = 0.0625f;
+            float clipTime = 0.25f;
             AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
             {
                 isInfinite = false,
@@ -311,6 +311,106 @@ namespace AnimatorPlayable_Tests
             Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Paused);
 
             yield return new WaitForSeconds(clipTime - transitionTime - transitionTime);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[0].GetPlayState() == PlayState.Paused);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) < 1f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[1].GetPlayState() == PlayState.Playing);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) > 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Playing);
+
+            yield return new WaitForSeconds(transitionTime);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[0].GetPlayState() == PlayState.Paused);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[1].GetPlayState() == PlayState.Paused);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 1f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Playing);
+        }
+
+        [UnityTest]
+        public IEnumerator ThreeClip_InnterBlending_InnerDelay()
+        {
+            var AnimatorPlayableGameObject = new AnimatorPlayableGameObject();
+
+            float transitionTime = 0.0625f;
+            float clipTime = 0.25f;
+            AnimatorPlayableGameObject.PlaySequencedAnimation(new SequencedAnimationInput()
+            {
+                isInfinite = false,
+                BeginTransitionTime = 0f,
+                layerID = 0,
+                EndTransitionTime = 0f,
+                UniqueAnimationClips = new List<UniqueAnimationClip>()
+                {
+                    new UniqueAnimationClip()
+                    {
+                        AnimationClip = CreateClip(clipTime),
+                        TransitionBlending = new LinearBlending()
+                        {
+                            EndTransitionTime = transitionTime
+                        }
+                    },
+                    new UniqueAnimationClip()
+                    {
+                        AnimationClip = CreateClip(clipTime),
+                        TransitionBlending = new LinearBlending()
+                        {
+                            EndTransitionTime = transitionTime,
+                            EndClipDelay = transitionTime
+                        }
+                    },
+                    new UniqueAnimationClip()
+                    {
+                        AnimationClip = CreateClip(clipTime),
+                        TransitionBlending = new LinearBlending()
+                        {
+                            EndTransitionTime = transitionTime
+                        }
+                    }
+                }
+            });
+            yield return null;
+
+            var SequencedAnimationLayer = AnimatorPlayableGameObject.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[0] as SequencedAnimationLayer;
+            //Only the first clip has weight
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 1f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[0].GetPlayState() == PlayState.Playing);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[1].GetPlayState() == PlayState.Paused);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Paused);
+
+            yield return new WaitForSeconds(clipTime - transitionTime);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) < 1f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[0].GetPlayState() == PlayState.Playing);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) > 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[1].GetPlayState() == PlayState.Playing);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Paused);
+
+            yield return new WaitForSeconds(transitionTime);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[0].GetPlayState() == PlayState.Paused);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(1) == 1f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[1].GetPlayState() == PlayState.Playing);
+
+            Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(2) == 0f);
+            Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[2].GetPlayState() == PlayState.Paused);
+
+            yield return new WaitForSeconds(clipTime - transitionTime);
 
             Assert.IsTrue(SequencedAnimationLayer.AnimationMixerPlayable.GetInputWeight(0) == 0f);
             Assert.IsTrue(SequencedAnimationLayer.AssociatedAnimationClipsPlayable[0].GetPlayState() == PlayState.Paused);

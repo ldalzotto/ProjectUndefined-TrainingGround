@@ -35,7 +35,7 @@ namespace AnimatorPlayable
                 BlendedAnimationClips.Add(new BlendedAnimationClip(BlendedAnimationInput.BlendedClips[i], BlendedAnimationInput.NormalizedWeightDistributions[i]));
             }
 
-            BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, BlendedAnimationInput.layerID, BlendedAnimationClips);
+            BlendedAnimationLayer BlendedAnimationLayer = new BlendedAnimationLayer(this.GlobalPlayableGraph, this.AnimationLayerMixerPlayable, BlendedAnimationInput.layerID, BlendedAnimationClips, BlendedAnimationInput.BlendedAnimationSpeedCurve);
             BlendedAnimationLayer.Inputhandler = PlayableExtensions.AddInput(this.AnimationLayerMixerPlayable, BlendedAnimationLayer.AnimationMixerPlayable, 0);
 
             this.AllAnimationLayersCurrentlyPlaying[BlendedAnimationInput.layerID] = BlendedAnimationLayer;
@@ -119,14 +119,15 @@ namespace AnimatorPlayable
     {
         public int LayerID;
         public List<BlendedAnimationClip> BlendedAnimationClips;
-
+        private BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
         public AnimationMixerPlayable AnimationMixerPlayable { get; private set; }
 
         public BlendedAnimationLayer(PlayableGraph PlayableGraph, AnimationLayerMixerPlayable parentAnimationLayerMixerPlayable,
-            int layerId, List<BlendedAnimationClip> blendedAnimationClips) : base(parentAnimationLayerMixerPlayable)
+            int layerId, List<BlendedAnimationClip> blendedAnimationClips, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve) : base(parentAnimationLayerMixerPlayable)
         {
             LayerID = layerId;
             BlendedAnimationClips = blendedAnimationClips;
+            this.BlendedAnimationSpeedCurve = BlendedAnimationSpeedCurve;
 
             //create a playable mixer
             this.AnimationMixerPlayable = AnimationMixerPlayable.Create(PlayableGraph, blendedAnimationClips.Count, normalizeWeights: true);
@@ -138,7 +139,7 @@ namespace AnimatorPlayable
                 animationClipPlayable.SetApplyPlayableIK(false);
                 blendedAnimationClip.InputHandler = PlayableExtensions.AddInput(this.AnimationMixerPlayable, animationClipPlayable, 0);
                 PlayableExtensions.Play(animationClipPlayable);
-                animationClipPlayable.SetApplyFootIK(false);
+                blendedAnimationClip.AnimationClipPlayable = animationClipPlayable;
             }
         }
 
@@ -148,6 +149,15 @@ namespace AnimatorPlayable
         {
             if (this.oldWeightEvaluation != weightEvaluation)
             {
+                if (this.BlendedAnimationSpeedCurve.BlendedSpeedCurveEnabled)
+                {
+                    float sampledSpeed = this.BlendedAnimationSpeedCurve.SpeedCurve.Evaluate(weightEvaluation);
+                    foreach (var blendedAnimationClip in BlendedAnimationClips)
+                    {
+                        blendedAnimationClip.SetSpeed(sampledSpeed);
+                    }
+                }
+
                 foreach (var blendedAnimationClip in BlendedAnimationClips)
                 {
                     PlayableExtensions.SetInputWeight(this.AnimationMixerPlayable, blendedAnimationClip.InputHandler, blendedAnimationClip.NormalizedWeightDistribution.Evaluate(weightEvaluation));

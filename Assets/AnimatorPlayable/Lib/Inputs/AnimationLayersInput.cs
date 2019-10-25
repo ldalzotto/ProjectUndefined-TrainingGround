@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 namespace AnimatorPlayable
 {
@@ -84,16 +86,24 @@ namespace AnimatorPlayable
 
     public class BlendedAnimationClip
     {
+        public AnimationClipPlayable AnimationClipPlayable { private get; set; }
+
         public BlendedAnimationClip(AnimationClip animationClip, AnimationCurve normalizedWeightDistribution)
         {
             AnimationClip = animationClip;
             NormalizedWeightDistribution = normalizedWeightDistribution;
         }
 
+
         public AnimationClip AnimationClip { get; private set; }
         public AnimationCurve NormalizedWeightDistribution { get; private set; }
 
         public int InputHandler;
+
+        public void SetSpeed(float speed)
+        {
+            this.AnimationClipPlayable.SetSpeed(speed);
+        }
     }
 
     [Serializable]
@@ -102,14 +112,23 @@ namespace AnimatorPlayable
         public int layerID;
         public List<AnimationClip> BlendedClips;
         public List<AnimationCurve> NormalizedWeightDistributions;
+        public BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
         public bool IsInfinite;
 
-        public BlendedAnimationInput(int layerId, List<AnimationClip> blendedClips, List<AnimationCurve> normalizedWeightDistributions, bool isInfinite)
+        public BlendedAnimationInput(int layerId, List<AnimationClip> blendedClips, List<AnimationCurve> normalizedWeightDistributions, bool isInfinite, BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve)
         {
             layerID = layerId;
             BlendedClips = blendedClips;
             NormalizedWeightDistributions = normalizedWeightDistributions;
             IsInfinite = isInfinite;
+            this.BlendedAnimationSpeedCurve = BlendedAnimationSpeedCurve;
         }
+    }
+
+    [Serializable]
+    public struct BlendedAnimationSpeedCurve
+    {
+        public bool BlendedSpeedCurveEnabled;
+        public AnimationCurve SpeedCurve;
     }
 }
