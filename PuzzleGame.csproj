@@ -64,6 +64,7 @@
      <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveAIObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveObjectInitializerData.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\CommonFunctions\InteractiveObjectCommonFunctions.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\RootAnimationTest\RootAnimationAITestObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\RootAnimationTest\RootAnimationAITestObjectInitializerData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\RootAnimationTest\RootAnimationCutsceneTemplate.cs" />
@@ -73,8 +74,6 @@
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AITestDisarmLocalCutscene.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AttractiveObject\TestAttractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveInteractiveObject.cs" />
-     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AbstractAttractiveObjectInitializerData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\LevelCompletionZoneInteractiveObject\LevelCompletionInteractiveObjectInitializerData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\AttractiveObject\AttractiveObjectSystem.cs" />

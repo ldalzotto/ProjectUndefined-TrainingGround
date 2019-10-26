@@ -1,25 +1,37 @@
 ﻿using AIObjects;
+using InteractiveObject_Animation;
 using InteractiveObjects_Interfaces;
 
 namespace InteractiveObjects
 {
     [SceneHandleDraw]
-    public class AggressiveAIObject : A_AIInteractiveObject<AggressiveObjectInitializerData>
+    public class AggressiveAIObject : CoreInteractiveObject
     {
         [VE_Nested] private AIPatrollingState AIPatrollingState;
 
         private AIPatrolSystem AIPatrolSystem;
 
+        [VE_Nested] private AIMoveToDestinationSystem AIMoveToDestinationSystem;
         [DrawNested] private SightObjectSystem SightObjectSystem;
+        private AggressiveObjectInitializerData AggressiveObjectInitializerData;
+        private BaseObjectAnimatorPlayableSystem BaseObjectAnimatorPlayableSystem;
 
-        public AggressiveAIObject(IInteractiveGameObject interactiveGameObject, AggressiveObjectInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
+        public AggressiveAIObject(IInteractiveGameObject interactiveGameObject, AggressiveObjectInitializerData AIInteractiveObjectInitializerData)
+        {
+            this.AggressiveObjectInitializerData = AIInteractiveObjectInitializerData;
+            base.BaseInit(interactiveGameObject, true);
+        }
+
+        public override void Init()
         {
             interactiveObjectTag = new InteractiveObjectTag {IsAi = true};
             AIPatrollingState = new AIPatrollingState();
             AIPatrollingState.isPatrolling = true;
-            AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
-            SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsPlayer = 1},
+            AIPatrolSystem = new AIPatrolSystem(this, this.AggressiveObjectInitializerData.AIPatrolSystemDefinition);
+            SightObjectSystem = new SightObjectSystem(this, this.AggressiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsPlayer = 1},
                 OnSightObjectSystemJustIntersected, OnSightObjectSystemIntersectedNothing, OnSightObjectSystemNoMoreIntersected);
+            this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, this.AggressiveObjectInitializerData, this.OnAIDestinationReached);
+            this.BaseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, this.AggressiveObjectInitializerData.LocomotionAnimation);
         }
 
         public override void Tick(float d)
@@ -58,5 +70,21 @@ namespace InteractiveObjects
         }
 
         #endregion
+
+
+        public override void SetAIDestination(AIDestination AIDestination)
+        {
+            AIMoveToDestinationSystem.SetDestination(AIDestination);
+        }
+
+        public override void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        {
+            AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
+        }
+
+        public override void OnAnimationObjectSetUnscaledSpeedMagnitude(float unscaledSpeedMagnitude)
+        {
+            this.BaseObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(unscaledSpeedMagnitude);
+        }
     }
 }

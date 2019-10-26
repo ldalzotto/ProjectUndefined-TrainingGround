@@ -20,11 +20,20 @@ namespace InteractiveObjects
 
         [VE_Ignore] public bool IsUpdatedInMainManager;
 
-        public CoreInteractiveObject(IInteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
+        protected void BaseInit(IInteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
         {
             isAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
+            if (InteractiveGameObject.Animator != null)
+            {
+                this.AnimatorPlayable = new AnimatorPlayableObject(InteractiveGameObject.InteractiveGameObjectParent.name, InteractiveGameObject.Animator);
+            }
+
+            this.AnimationController = new AnimationController(InteractiveGameObject.Agent, this.AnimatorPlayable, InteractiveGameObject.PhysicsRigidbody, this.OnRootMotionEnabled, this.OnRootMotionDisabled);
+
+            this.Init();
+            this.InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
         }
 
         public IInteractiveGameObject InteractiveGameObject { get; protected set; }
@@ -35,16 +44,7 @@ namespace InteractiveObjects
         public AnimationController AnimationController { get; protected set; }
         public bool IsAskingToBeDestroyed => isAskingToBeDestroyed;
 
-        protected void AfterConstructor()
-        {
-            if (InteractiveGameObject.Animator != null)
-            {
-                this.AnimatorPlayable = new AnimatorPlayableObject(InteractiveGameObject.InteractiveGameObjectParent.name, InteractiveGameObject.Animator);
-            }
-
-            this.AnimationController = new AnimationController(InteractiveGameObject.Agent, this.AnimatorPlayable, InteractiveGameObject.PhysicsRigidbody);
-            InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
-        }
+        public abstract void Init();
 
         public virtual void FixedTick(float d)
         {
@@ -52,15 +52,12 @@ namespace InteractiveObjects
 
         public virtual void Tick(float d)
         {
+            this.AnimatorPlayable?.Tick(d);
+            this.AnimationController.Tick(d);
         }
 
         public virtual void AfterTicks(float d)
         {
-            if (this.AnimatorPlayable != null)
-            {
-                this.AnimatorPlayable.Tick(d);
-                this.AnimationController.Tick(d);
-            }
         }
 
         public virtual void LateTick(float d)
@@ -69,16 +66,20 @@ namespace InteractiveObjects
 
         public virtual void Destroy()
         {
+            this.AnimatorPlayable?.Destroy();
             InteractiveObjectEventsManager.OnInteractiveObjectDestroyed(this);
-            if (this.AnimatorPlayable != null)
-            {
-                this.AnimatorPlayable.Destroy();
-            }
-
             Object.Destroy(InteractiveGameObject.InteractiveGameObjectParent);
         }
 
         #region Animation Object Events
+
+        protected virtual void OnRootMotionEnabled()
+        {
+        }
+
+        protected virtual void OnRootMotionDisabled()
+        {
+        }
 
         public virtual void OnAnimationObjectSetUnscaledSpeedMagnitude(float UnscaledSpeedMagnitude)
         {

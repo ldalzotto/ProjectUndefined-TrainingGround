@@ -62,7 +62,6 @@
      <Compile Include="Assets\AIObjects\AIPatrolV2\Systems\AIPatrolSystem.cs" />
      <Compile Include="Assets\AIObjects\AIPatrolV2\Systems\AIPatrolSystemDefinition.cs" />
      <Compile Include="Assets\AIObjects\InteractiveObject\AIInteractiveObjectTemplates\AbstractAIInteractiveObjectInitializerData.cs" />
-     <Compile Include="Assets\AIObjects\InteractiveObject\AIInteractiveObjectTemplates\AIInteractiveObject.cs" />
      <Compile Include="Assets\AIObjects\Systems\AIMoveToDestinationSystem.cs" />
      <None Include="Assets\AIObjects\AIObjects.asmdef" />
  <Reference Include="UnityEditor.UI">

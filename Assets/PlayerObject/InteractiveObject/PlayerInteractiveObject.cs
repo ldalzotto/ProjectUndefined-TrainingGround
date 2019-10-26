@@ -11,6 +11,9 @@ namespace PlayerObject
 {
     public class PlayerInteractiveObject : CoreInteractiveObject, IPlayerInteractiveObject
     {
+        private InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider;
+        private A_AnimationPlayableDefinition LocomotionAnimationDefinition;
+
         #region Systems
 
         [VE_Nested] private BaseObjectAnimatorPlayableSystem _baseObjectAnimatorPlayableSystem;
@@ -23,9 +26,16 @@ namespace PlayerObject
         [VE_Ignore] private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
         public PlayerInteractiveObject(IInteractiveGameObject interactiveGameObject, InteractiveObjectLogicColliderDefinition InteractiveObjectLogicCollider,
-            A_AnimationPlayableDefinition LocomotionAnimationDefinition) : base(interactiveGameObject, false)
+            A_AnimationPlayableDefinition LocomotionAnimationDefinition)
         {
-            interactiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
+            this.InteractiveObjectLogicCollider = InteractiveObjectLogicCollider;
+            this.LocomotionAnimationDefinition = LocomotionAnimationDefinition;
+            base.BaseInit(interactiveGameObject, false);
+        }
+
+        public override void Init()
+        {
+            this.InteractiveGameObject.CreateLogicCollider(InteractiveObjectLogicCollider);
             interactiveObjectTag = new InteractiveObjectTag {IsPlayer = true};
 
             PlayerInteractiveObjectInitializerData = PlayerConfigurationGameObject.Get().PlayerGlobalConfiguration.PlayerInteractiveObjectInitializerData;
@@ -39,8 +49,8 @@ namespace PlayerObject
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
-            PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, interactiveGameObject.PhysicsRigidbody);
-            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.PhysicsCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
+            PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, this.InteractiveGameObject.PhysicsRigidbody);
+            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.InteractiveGameObject.PhysicsRigidbody, this.InteractiveGameObject.PhysicsCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(this, GameInputManager,
                 PlayerActionEntryPoint.Get());
 
@@ -48,8 +58,6 @@ namespace PlayerObject
             PlayerPositionPersistenceManager.Get().Init(this);
             this.InteractiveGameObject.InteractiveGameObjectParent.transform.position = PlayerPositionPersistenceManager.Get().PlayerPositionBeforeLevelLoad.GetPosition();
             this.InteractiveGameObject.InteractiveGameObjectParent.transform.rotation = PlayerPositionPersistenceManager.Get().PlayerPositionBeforeLevelLoad.GetQuaternion();
-
-            AfterConstructor();
 
             this._baseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, LocomotionAnimationDefinition);
         }

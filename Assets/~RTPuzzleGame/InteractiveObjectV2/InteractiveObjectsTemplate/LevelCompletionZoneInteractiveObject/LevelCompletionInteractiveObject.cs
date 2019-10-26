@@ -11,16 +11,23 @@ namespace InteractiveObjects
 
         #endregion
 
+        private LevelCompletionInteractiveObjectInitializerData LevelCompletionInitializerData;
+
         private LevelCompletionZoneSystem LevelCompletionZoneSystem;
 
         public LevelCompletionInteractiveObject(LevelCompletionInteractiveObjectInitializerData LevelCompletionInitializerData,
-            IInteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true) : base(interactiveGameObject, IsUpdatedInMainManager)
+            IInteractiveGameObject interactiveGameObject, bool IsUpdatedInMainManager = true)
         {
-            this.LevelCompletionZoneSystem = new LevelCompletionZoneSystem(this, LevelCompletionInitializerData.LevelCompletionZoneSystemDefinition, new InteractiveObjectTagStruct {IsPlayer = 1},
+            this.LevelCompletionInitializerData = LevelCompletionInitializerData;
+            base.BaseInit(interactiveGameObject, IsUpdatedInMainManager);
+        }
+
+        public override void Init()
+        {
+            this.LevelCompletionZoneSystem = new LevelCompletionZoneSystem(this, this.LevelCompletionInitializerData.LevelCompletionZoneSystemDefinition,
+                new InteractiveObjectTagStruct {IsPlayer = 1},
                 this.OnLevelCompletionTriggerEnterPlayer);
             this.interactiveObjectTag = new InteractiveObjectTag {IsLevelCompletionZone = true};
-
-            this.AfterConstructor();
         }
 
         public override void Destroy()

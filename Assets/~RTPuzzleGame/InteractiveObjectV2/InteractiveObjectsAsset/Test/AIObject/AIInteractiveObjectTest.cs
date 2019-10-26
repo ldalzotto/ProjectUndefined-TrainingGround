@@ -5,40 +5,63 @@ using VisualFeedback;
 
 namespace InteractiveObjects
 {
-    public class AIInteractiveObjectTest : A_AIInteractiveObject<AIInteractiveObjectTestInitializerData>
+    public class AIInteractiveObjectTest : CoreInteractiveObject
     {
+        #region State
+
+        [VE_Nested] private AIPatrollingState AIPatrollingState;
+        [VE_Nested] private AIAttractiveObjectState AIAttractiveObjectState;
+        [VE_Nested] private AIDisarmObjectState AIDisarmObjectState;
+
+        #endregion
+
+        private AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData;
+
         private AIPatrolSystem AIPatrolSystem;
+        private AIMoveToDestinationSystem AIMoveToDestinationSystem;
         private LocalCutscenePlayerSystem LocalCutscenePlayerSystem;
         [VE_Nested] private SightObjectSystem SightObjectSystem;
+        private LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
-        public AIInteractiveObjectTest(IInteractiveGameObject interactiveGameObject, AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject, AIInteractiveObjectInitializerData)
+        public AIInteractiveObjectTest(IInteractiveGameObject interactiveGameObject, AIInteractiveObjectTestInitializerData AIInteractiveObjectInitializerData)
         {
-            AIPatrollingState = new AIPatrollingState();
-            AIAttractiveObjectState = new AIAttractiveObjectState(new BoolVariable(false, OnAIIsJustAttractedByAttractiveObject, OnAIIsNoMoreAttractedByAttractiveObject));
-            AIDisarmObjectState = new AIDisarmObjectState(new BoolVariable(false, OnAIIsJustDisarmingObject, OnAIIsNoMoreJustDisarmingObject));
-            interactiveObjectTag = new InteractiveObjectTag {IsAi = true};
+            this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
+            base.BaseInit(interactiveGameObject);
+        }
 
-            AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
+        public override void Init()
+        {
+            this.AIPatrollingState = new AIPatrollingState();
+            this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, this.OnAIDestinationReached);
+            this.AIAttractiveObjectState = new AIAttractiveObjectState(new BoolVariable(false, OnAIIsJustAttractedByAttractiveObject, OnAIIsNoMoreAttractedByAttractiveObject));
+            this.AIDisarmObjectState = new AIDisarmObjectState(new BoolVariable(false, OnAIIsJustDisarmingObject, OnAIIsNoMoreJustDisarmingObject));
+            this.interactiveObjectTag = new InteractiveObjectTag {IsAi = true};
 
-            SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsAttractiveObject = 1},
+            this.AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
+
+            this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsAttractiveObject = 1},
                 OnSightObjectSystemJustIntersected, OnSightObjectSystemIntersectedNothing, OnSightObjectSystemNoMoreIntersected);
-            LocalCutscenePlayerSystem = new LocalCutscenePlayerSystem();
+            this.LocalCutscenePlayerSystem = new LocalCutscenePlayerSystem();
+            this.LineVisualFeedbackSystem = new LineVisualFeedbackSystem(this.InteractiveGameObject);
         }
 
         public override void Tick(float d)
         {
-            base.Tick(d);
             LocalCutscenePlayerSystem.Tick(d);
             if (!AIDisarmObjectState.IsDisarming.GetValue() && !AIAttractiveObjectState.IsAttractedByAttractiveObject.GetValue()) AIPatrollingState.isPatrolling = true;
 
             if (AIPatrollingState.isPatrolling) AIPatrolSystem.Tick(d);
 
             AIMoveToDestinationSystem.Tick(d);
+            LineVisualFeedbackSystem.Tick(d);
+            base.Tick(d);
         }
 
-        public override void Destroy()
+        public override void AfterTicks(float d)
         {
-            base.Destroy();
+            this.AIPatrolSystem.AfterTicks();
+            this.AIMoveToDestinationSystem.AfterTicks();
+            base.AfterTicks(d);
         }
 
         public override void OnAIDestinationReached()
@@ -86,14 +109,6 @@ namespace InteractiveObjects
         private void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
         }
-
-        #region State
-
-        [VE_Nested] private AIPatrollingState AIPatrollingState;
-        [VE_Nested] private AIAttractiveObjectState AIAttractiveObjectState;
-        [VE_Nested] private AIDisarmObjectState AIDisarmObjectState;
-
-        #endregion
 
         #region Attractive Object
 

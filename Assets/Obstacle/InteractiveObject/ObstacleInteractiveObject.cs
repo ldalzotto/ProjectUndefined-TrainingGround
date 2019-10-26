@@ -8,16 +8,22 @@ namespace Obstacle
 {
     public class ObstacleInteractiveObject : CoreInteractiveObject
     {
+        private ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData;
         [VE_Nested] private SquareObstacleOcclusionFrustumsDefinition squareObstacleOcclusionFrustumsDefinition;
 
-        public ObstacleInteractiveObject(IInteractiveGameObject interactiveGameObject, ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData) : base(interactiveGameObject)
+        public ObstacleInteractiveObject(IInteractiveGameObject interactiveGameObject, ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData)
         {
-            interactiveGameObject.CreateLogicCollider(ObstacleInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
-            ObstacleCollider = interactiveGameObject.GetLogicColliderAsBox();
+            this.ObstacleInteractiveObjectInitializerData = ObstacleInteractiveObjectInitializerData;
+            base.BaseInit(interactiveGameObject);
+        }
+
+        public override void Init()
+        {
+            this.InteractiveGameObject.CreateLogicCollider(ObstacleInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
+            ObstacleCollider = this.InteractiveGameObject.GetLogicColliderAsBox();
             SquareObstacleSystemInitializationData = ObstacleInteractiveObjectInitializerData.SquareObstacleSystemInitializationData;
             interactiveObjectTag = new InteractiveObjectTag {IsObstacle = true};
             squareObstacleOcclusionFrustumsDefinition = new SquareObstacleOcclusionFrustumsDefinition();
-            AfterConstructor();
 
             ObstacleInteractiveObjectUniqueID = ObstacleInteractiveObjectManager.Get().OnSquareObstacleSystemCreated(this);
         }

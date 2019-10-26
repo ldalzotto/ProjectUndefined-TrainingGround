@@ -2,41 +2,79 @@
 using PlayerActions;
 using PlayerObject;
 using SelectableObject;
+using UnityEngine;
 
 namespace InteractiveObjects
 {
     [SceneHandleDraw]
-    public class TestAttractiveObject : AbstractAttractiveInteractiveObject<TestAttractiveObjectInitializerData>
+    public class TestAttractiveObject : CoreInteractiveObject
     {
+        private TestAttractiveObjectInitializerData TestAttractiveObjectInitializerData;
+
         [VE_Ignore] private RTPPlayerAction AssociatedPlayerAction;
+
+        [VE_Nested] private AttractiveObjectSystem AttractiveObjectSystem;
         [VE_Nested] [DrawNested] private DisarmObjectSystem DisarmObjectSystem;
 
         [VE_Nested] private SelectableObjectSystem SelectableObjectSystem;
 
-        public TestAttractiveObject(IInteractiveGameObject interactiveGameObject, TestAttractiveObjectInitializerData InteractiveObjectInitializerData) : base(interactiveGameObject, InteractiveObjectInitializerData)
+        public TestAttractiveObject(IInteractiveGameObject interactiveGameObject, TestAttractiveObjectInitializerData InteractiveObjectInitializerData)
         {
-            DisarmObjectSystem = new DisarmObjectSystem(this, InteractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct {IsAi = 1}, OnAssociatedDisarmObjectTriggerEnter, OnAssciatedDisarmObjectTriggerExit);
-            SelectableObjectSystem = new SelectableObjectSystem(this, InteractiveObjectInitializerData.SelectableObjectSystemDefinition,
-                AttractiveObjectInitializerData.SelectableGrabActionDefinition.BuildPlayerAction(PlayerInteractiveObjectManager.Get().PlayerInteractiveObject));
-            AfterConstructor();
+            this.TestAttractiveObjectInitializerData = InteractiveObjectInitializerData;
+            interactiveGameObject.CreateLogicCollider(this.TestAttractiveObjectInitializerData.InteractiveObjectLogicCollider);
+            base.BaseInit(interactiveGameObject, true);
+        }
+
+        public override void Init()
+        {
+            interactiveObjectTag = new InteractiveObjectTag {IsAttractiveObject = true};
+
+            var physicsInteractionSelectionGuard = new InteractiveObjectTagStruct(isAi: 1);
+            AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, this.TestAttractiveObjectInitializerData.AttractiveObjectSystemDefinition,
+                OnAssociatedAttractiveSystemJustIntersected, OnAssociatedAttractiveSystemNoMoreIntersected, OnAssociatedAttractiveSystemInterestedNothing);
+
+            DisarmObjectSystem = new DisarmObjectSystem(this, this.TestAttractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct {IsAi = 1}, OnAssociatedDisarmObjectTriggerEnter, OnAssciatedDisarmObjectTriggerExit);
+            SelectableObjectSystem = new SelectableObjectSystem(this, this.TestAttractiveObjectInitializerData.SelectableObjectSystemDefinition,
+                this.TestAttractiveObjectInitializerData.SelectableGrabActionDefinition.BuildPlayerAction(PlayerInteractiveObjectManager.Get().PlayerInteractiveObject));
         }
 
         public override void Tick(float d)
         {
             if (DisarmObjectSystem != null) DisarmObjectSystem.Tick(d);
-
-            base.Tick(d);
-
+            AttractiveObjectSystem.Tick(d);
             DisarmObjectSystem.Tick(d);
-            isAskingToBeDestroyed = isAskingToBeDestroyed || DisarmObjectSystem != null && DisarmObjectSystem.IsTimeElasped();
+            isAskingToBeDestroyed = AttractiveObjectSystem != null && AttractiveObjectSystem.IsAskingTobedestroyed || DisarmObjectSystem != null && DisarmObjectSystem.IsTimeElasped();
         }
 
         public override void Destroy()
         {
+            AttractiveObjectSystem.OnDestroy();
             DisarmObjectSystem.OnDestroy();
             SelectableObjectSystem.OnDestroy();
             base.Destroy();
         }
+
+        #region Attractive Object Events
+
+        private void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            Debug.Log("OnAssociatedAttractiveSystemJustIntersected");
+            IntersectedInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
+        }
+
+        private void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            //  Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
+            IntersectedInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
+        }
+
+        private void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            Debug.Log("OnAssociatedAttractiveSystemNoMoreIntersected");
+            IntersectedInteractiveObject.OnOtherAttractiveObjectNoMoreIntersected(this);
+        }
+
+        #endregion
 
         #region Disarm Object Events
 
