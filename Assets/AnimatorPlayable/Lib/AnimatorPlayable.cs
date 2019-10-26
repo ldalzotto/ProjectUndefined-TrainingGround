@@ -10,12 +10,13 @@ namespace AnimatorPlayable
     {
         public PlayableGraph GlobalPlayableGraph { get; private set; }
         public AnimationLayerMixerPlayable AnimationLayerMixerPlayable { get; private set; }
-
+        public Animator Animator { get; private set; }
         public Dictionary<int, MyAnimationLayer> AllAnimationLayersCurrentlyPlaying { get; private set; } = new Dictionary<int, MyAnimationLayer>();
         private List<MyAnimationLayer> OrderedByInputHandlerAnimationLayers = new List<MyAnimationLayer>();
 
         public AnimatorPlayableObject(string graphName, Animator animator)
         {
+            this.Animator = animator;
             this.GlobalPlayableGraph = PlayableGraph.Create(graphName);
             this.GlobalPlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
             var playableOutput = AnimationPlayableOutput.Create(this.GlobalPlayableGraph, "Animation", animator);

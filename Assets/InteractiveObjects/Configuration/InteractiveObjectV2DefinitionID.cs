@@ -9,6 +9,7 @@ namespace InteractiveObjects
         AI_Test = 1,
         AttractiveObject_Test = 2,
         LevelCompletionZone_Test = 3,
-        AI_Aggressive = 4
+        AI_Aggressive = 4,
+        AI_RootTest = 5
     }
 }

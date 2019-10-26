@@ -11,21 +11,68 @@ namespace InteractiveObject_Animation
         private AnimatorPlayableObject AnimatorPlayableObject;
         private Rigidbody Rigidbody;
 
-        public AnimationController(NavMeshAgent agent, AnimatorPlayableObject animatorPlayableObject, Rigidbody rigidbody)
+        private BoolVariable RootMotionEnabled;
+
+
+        public AnimationController(NavMeshAgent agent, AnimatorPlayableObject animatorPlayableObject, Rigidbody rigidbody,
+            Action OnRootMotionEnabled = null, Action OnRootMotionDisabled = null)
         {
             Agent = agent;
             AnimatorPlayableObject = animatorPlayableObject;
             Rigidbody = rigidbody;
+
+            this.RootMotionEnabled = new BoolVariable(false,
+                () =>
+                {
+                    this.OnRootMotionEnabled();
+                    if (OnRootMotionEnabled != null)
+                    {
+                        OnRootMotionEnabled.Invoke();
+                    }
+                },
+                () =>
+                {
+                    this.OnRootMotionDisabled();
+                    if (OnRootMotionDisabled != null)
+                    {
+                        OnRootMotionDisabled.Invoke();
+                    }
+                });
         }
 
-        public void PlayContextAction(SequencedAnimationInput ContextActionAnimation, Action OnAnimationFinished = null)
+        public void Tick(float d)
         {
-            this.AnimatorPlayableObject.PlayAnimation(AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID, ContextActionAnimation, OnAnimationFinished);
+            if (this.RootMotionEnabled.GetValue())
+            {
+                this.Agent.nextPosition = this.AnimatorPlayableObject.Animator.transform.position;
+            }
+        }
+
+        public void PlayContextAction(SequencedAnimationInput ContextActionAnimation, bool rootMotion, Action OnAnimationFinished = null)
+        {
+            this.RootMotionEnabled.SetValue(rootMotion);
+            this.AnimatorPlayableObject.PlayAnimation(AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID, ContextActionAnimation, () => { this.OnAnimationFinished(OnAnimationFinished); });
         }
 
         public void KillContextAction(SequencedAnimationInput ContextActionAnimation)
         {
             this.AnimatorPlayableObject.DestroyLayer(AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID);
+        }
+
+        private void OnAnimationFinished(Action parentCallback)
+        {
+            this.RootMotionEnabled.SetValue(false);
+            parentCallback.Invoke();
+        }
+
+        private void OnRootMotionEnabled()
+        {
+            this.AnimatorPlayableObject.Animator.applyRootMotion = true;
+        }
+
+        private void OnRootMotionDisabled()
+        {
+            this.AnimatorPlayableObject.Animator.applyRootMotion = false;
         }
     }
 }

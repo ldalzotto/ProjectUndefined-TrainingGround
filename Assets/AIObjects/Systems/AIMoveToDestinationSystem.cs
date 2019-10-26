@@ -13,26 +13,35 @@ namespace AIObjects
 
     public class AIMoveToDestinationSystem : AInteractiveObjectSystem
     {
-        private AIDestinationMoveManager AIDestinationMoveManager;
+        [VE_Nested] private AIDestinationMoveManager AIDestinationMoveManager;
         private AISpeedEventDispatcher AISpeedEventDispatcher;
+
+        public bool IsEnabled;
 
         public AIMoveToDestinationSystem(CoreInteractiveObject CoreInteractiveObject, AbstractAIInteractiveObjectInitializerData AIInteractiveObjectInitializerData,
             OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached)
         {
+            this.IsEnabled = true;
             AIDestinationMoveManager = new AIDestinationMoveManager(CoreInteractiveObject.InteractiveGameObject.Agent, AIInteractiveObjectInitializerData, OnAIInteractiveObjectDestinationReached);
             AISpeedEventDispatcher = new AISpeedEventDispatcher(CoreInteractiveObject, AIInteractiveObjectInitializerData);
         }
 
         public override void Tick(float d)
         {
-            AIDestinationMoveManager.TickDestinationReached();
-            AIDestinationMoveManager.EnableAgent();
-            AIDestinationMoveManager.Tick(d);
+            if (IsEnabled)
+            {
+                AIDestinationMoveManager.TickDestinationReached();
+                AIDestinationMoveManager.EnableAgent();
+                AIDestinationMoveManager.Tick(d);
+            }
         }
 
         public override void AfterTicks()
         {
-            AISpeedEventDispatcher.AfterTicks(AIDestinationMoveManager.CurrentDestination.HasValue);
+            if (IsEnabled)
+            {
+                AISpeedEventDispatcher.AfterTicks(AIDestinationMoveManager.CurrentDestination.HasValue);
+            }
         }
 
         public void SetDestination(AIDestination AIDestination)
@@ -84,8 +93,10 @@ namespace AIObjects
             if (CurrentDestination.HasValue)
                 if (!objectAgent.pathPending && objectAgent.remainingDistance <= objectAgent.stoppingDistance && (!objectAgent.hasPath || objectAgent.velocity.sqrMagnitude == 0f))
                 {
-                    CurrentDestination = null;
+                    this.currentDestination = null;
                     FrameWereOccuredTheLastDestinationReached = Time.frameCount;
+                    objectAgent.isStopped = true;
+                    objectAgent.ResetPath();
                     Debug.Log(MyLog.Format("Destination reached !"));
                     OnAIInteractiveObjectDestinationReached.Invoke();
                 }
@@ -160,7 +171,9 @@ namespace AIObjects
 
         private float DeltaTime;
 
-        public AIDestination? CurrentDestination { get; private set; }
+        [VE_Nested] private AIDestination? currentDestination;
+
+        public AIDestination? CurrentDestination => this.currentDestination;
 
         //Used to change the agent speed
         private AIMovementSpeedDefinition currentSpeedAttenuationFactor;
@@ -177,7 +190,7 @@ namespace AIObjects
             if (lastSuccessfulWorldDestination != AIDestination.WorldPosition)
             {
                 //   Debug.Log(MyLog.Format("Set destination : " + AIDestination.WorldPosition));
-                CurrentDestination = AIDestination;
+                this.currentDestination = AIDestination;
                 objectAgent.ResetPath();
                 var path = CreateValidNavMeshPathWithFallback(objectAgent, AIDestination.WorldPosition, 50);
 
@@ -207,7 +220,7 @@ namespace AIObjects
 
         public void ClearPath()
         {
-            CurrentDestination = null;
+            this.currentDestination = null;
             lastSuccessfulWorldDestination = new Vector3(9999999, -9999999, 999999);
             objectAgent.ResetPath();
         }

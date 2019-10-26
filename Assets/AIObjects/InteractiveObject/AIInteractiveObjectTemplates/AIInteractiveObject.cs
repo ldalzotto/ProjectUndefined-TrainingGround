@@ -1,4 +1,5 @@
-﻿using InteractiveObject_Animation;
+﻿using AnimatorPlayable;
+using InteractiveObject_Animation;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
 using VisualFeedback;
@@ -18,13 +19,23 @@ namespace AIObjects
             interactiveGameObject.CreateAgent(AIInteractiveObjectInitializerData.AIAgentDefinition);
             interactiveGameObject.CreateLogicCollider(AIInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
-            this.BaseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, AIInteractiveObjectInitializerData.LocomotionAnimation);
             AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, OnAIDestinationReached);
             LineVisualFeedbackSystem = new LineVisualFeedbackSystem(InteractiveGameObject);
+          
+            if (InteractiveGameObject.Animator != null)
+            {
+                this.AnimatorPlayable = new AnimatorPlayableObject(InteractiveGameObject.InteractiveGameObjectParent.name, InteractiveGameObject.Animator);
+            }
+
+            this.AnimationController = new AnimationController(InteractiveGameObject.Agent, this.AnimatorPlayable, InteractiveGameObject.PhysicsRigidbody);
+            InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
+            
+            this.BaseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, AIInteractiveObjectInitializerData.LocomotionAnimation);
         }
 
         public override void Tick(float d)
         {
+            base.Tick(d);
             this.BaseObjectAnimatorPlayableSystem.Tick(d);
             LineVisualFeedbackSystem.Tick(d);
         }

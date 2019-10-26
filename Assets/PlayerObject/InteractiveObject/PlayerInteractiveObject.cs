@@ -36,7 +36,6 @@ namespace PlayerObject
 
             #endregion
 
-            this._baseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, LocomotionAnimationDefinition);
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
@@ -51,6 +50,8 @@ namespace PlayerObject
             this.InteractiveGameObject.InteractiveGameObjectParent.transform.rotation = PlayerPositionPersistenceManager.Get().PlayerPositionBeforeLevelLoad.GetQuaternion();
 
             AfterConstructor();
+
+            this._baseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, LocomotionAnimationDefinition);
         }
 
         public PlayerInteractiveObjectInitializerData PlayerInteractiveObjectInitializerData { get; private set; }

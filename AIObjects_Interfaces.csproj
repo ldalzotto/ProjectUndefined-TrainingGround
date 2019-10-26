@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{0E88EFEB-BC03-DBFA-6206-66F073959B55}</ProjectGuid>
+    <ProjectGuid>{CF735CB0-C5CB-A323-C268-DF03C71F31A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>InteractiveObject_Animation</AssemblyName>
+    <AssemblyName>AIObjects_Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,12 +56,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\InteractiveObjects_Animation\AnimationController\Actions\PlayContextAnimationAction.cs" />
-     <Compile Include="Assets\InteractiveObjects_Animation\AnimationController\AnimationController.cs" />
-     <Compile Include="Assets\InteractiveObjects_Animation\AnimationLayer.cs" />
-     <Compile Include="Assets\InteractiveObjects_Animation\Systems\BaseObjectAnimatorPlayableSystem.cs" />
-     <Compile Include="Assets\InteractiveObjects_Animation\Systems\LocalCutscenePlayerSystem.cs" />
-     <None Include="Assets\InteractiveObjects_Animation\InteractiveObject_Animation.asmdef" />
+     <Compile Include="Assets\AIObjects\AIObjects_Interfaces\IActionAbortedOnDestinationReached.cs" />
+     <None Include="Assets\AIObjects\AIObjects_Interfaces\AIObjects_Interfaces.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -614,32 +610,6 @@
  <Reference Include="Boo.Lang">
  <HintPath>G:/Programs/Unity/2019.2.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="CoreGame.csproj">
-      <Project>{948A25C1-0736-7139-A2ED-866DC90C0DB2}</Project>
-      <Name>CoreGame</Name>
-    </ProjectReference>
-    <ProjectReference Include="SequencedAction.csproj">
-      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
-      <Name>SequencedAction</Name>
-    </ProjectReference>
-    <ProjectReference Include="AnimatorPlayable.csproj">
-      <Project>{00DCCEBF-15A4-1F84-23B7-1B0D3901D4D1}</Project>
-      <Name>AnimatorPlayable</Name>
-    </ProjectReference>
-    <ProjectReference Include="InteractiveObjects_Interfaces.csproj">
-      <Project>{AE57611A-DD84-95F8-F8D2-666EC87D1249}</Project>
-      <Name>InteractiveObjects_Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{4E4DA0A8-F293-7282-F2A8-CC4E9AF71BE7}</Project>
-      <Name>OdinSerializer</Name>
-    </ProjectReference>
-    <ProjectReference Include="AIObjects_Interfaces.csproj">
-      <Project>{CF735CB0-C5CB-A323-C268-DF03C71F31A0}</Project>
-      <Name>AIObjects_Interfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

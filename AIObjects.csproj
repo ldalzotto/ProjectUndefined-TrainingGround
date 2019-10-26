@@ -58,7 +58,6 @@
   <ItemGroup>
      <Compile Include="Assets\AIObjects\AIPatrolV2\AIPatrolActionsV2\AIMoveToActionV2.cs" />
      <Compile Include="Assets\AIObjects\AIPatrolV2\AIPatrolActionsV2\AIWarpActionV2.cs" />
-     <Compile Include="Assets\AIObjects\AIPatrolV2\AIPatrolActionsV2\Interfaces\IActionAbortedOnDestinationReached.cs" />
      <Compile Include="Assets\AIObjects\AIPatrolV2\AIPatrolGraphV2.cs" />
      <Compile Include="Assets\AIObjects\AIPatrolV2\Systems\AIPatrolSystem.cs" />
      <Compile Include="Assets\AIObjects\AIPatrolV2\Systems\AIPatrolSystemDefinition.cs" />
@@ -655,6 +654,10 @@
     <ProjectReference Include="InteractiveObject_Animation.csproj">
       <Project>{0E88EFEB-BC03-DBFA-6206-66F073959B55}</Project>
       <Name>InteractiveObject_Animation</Name>
+    </ProjectReference>
+    <ProjectReference Include="AIObjects_Interfaces.csproj">
+      <Project>{CF735CB0-C5CB-A323-C268-DF03C71F31A0}</Project>
+      <Name>AIObjects_Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

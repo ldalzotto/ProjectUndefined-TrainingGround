@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AIObjects;
 using InteractiveObjects_Interfaces;
 using SequencedAction;
 
@@ -36,12 +37,27 @@ namespace InteractiveObject_Animation
 
         public void KillCurrentCutscene()
         {
-            CurrentPlayingCutscene.Kill();
+            if (this.CurrentPlayingCutscene != null)
+            {
+                CurrentPlayingCutscene.Kill();
+            }
         }
 
         private void OnCutsceneEndedOrKilled()
         {
             CurrentPlayingCutscene = null;
+        }
+
+        public void OnAIDestinationReached()
+        {
+            if (this.CurrentPlayingCutscene != null)
+            {
+                foreach (var currentAction in this.CurrentPlayingCutscene.GetCurrentActions(true))
+                {
+                    var destinationReachedListeningNode = currentAction as IActionAbortedOnDestinationReached;
+                    if (destinationReachedListeningNode != null) destinationReachedListeningNode.OnDestinationReached();
+                }
+            }
         }
     }
 }

@@ -23,8 +23,6 @@ namespace InteractiveObjects
             SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsAttractiveObject = 1},
                 OnSightObjectSystemJustIntersected, OnSightObjectSystemIntersectedNothing, OnSightObjectSystemNoMoreIntersected);
             LocalCutscenePlayerSystem = new LocalCutscenePlayerSystem();
-
-            AfterConstructor();
         }
 
         public override void Tick(float d)
@@ -36,11 +34,6 @@ namespace InteractiveObjects
             if (AIPatrollingState.isPatrolling) AIPatrolSystem.Tick(d);
 
             AIMoveToDestinationSystem.Tick(d);
-        }
-
-        public override void AfterTicks(float d)
-        {
-            base.AfterTicks(d);
         }
 
         public override void Destroy()

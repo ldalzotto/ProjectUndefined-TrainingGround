@@ -19,7 +19,7 @@ namespace InteractiveObjects
         }
     }
 
-    internal class InteractiveObjectEventsManager : GameSingleton<InteractiveObjectEventsManager>, IInteractiveObjectEventsManager
+    public class InteractiveObjectEventsManager : GameSingleton<InteractiveObjectEventsManager>, IInteractiveObjectEventsManager
     {
         public void RegisterOnInteractiveObjectCreatedEventListener(Action<CoreInteractiveObject> action)
         {

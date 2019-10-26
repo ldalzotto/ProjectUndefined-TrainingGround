@@ -47,6 +47,7 @@ namespace InteractiveObjects
             {
                 Agent = InteractiveGameObjectParent.AddComponent<NavMeshAgent>();
                 Agent.stoppingDistance = AIAgentDefinition.AgentStoppingDistance;
+                Agent.radius = AIAgentDefinition.AgentRadius;
                 Agent.height = AIAgentDefinition.AgentHeight;
                 Agent.acceleration = 99999999f;
                 Agent.angularSpeed = 99999999f;

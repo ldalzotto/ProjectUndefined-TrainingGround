@@ -20,8 +20,6 @@ namespace InteractiveObjects
             AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
             SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct {IsPlayer = 1},
                 OnSightObjectSystemJustIntersected, OnSightObjectSystemIntersectedNothing, OnSightObjectSystemNoMoreIntersected);
-
-            AfterConstructor();
         }
 
         public override void Tick(float d)

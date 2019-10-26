@@ -64,6 +64,9 @@
      <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveAIObject.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\AggressiveAI\AggressiveObjectInitializerData.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\RootAnimationTest\RootAnimationAITestObject.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\RootAnimationTest\RootAnimationAITestObjectInitializerData.cs" />
+     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\RootAnimationTest\RootAnimationCutsceneTemplate.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTest.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIInteractiveObjectTestInitializerData.cs" />
      <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIObject\AIPatrolGraphTest.cs" />

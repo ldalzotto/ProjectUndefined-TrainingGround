@@ -57,7 +57,7 @@ namespace RangeObjects
 
             var rigidbody = this.RangeGameObject.AddComponent<Rigidbody>();
             rigidbody.useGravity = false;
-            rigidbody.isKinematic = false;
+            rigidbody.isKinematic = true;
 
             this.RangeObjectV2PhysicsEventListenerComponent = this.RangeGameObject.AddComponent<RangeObjectV2PhysicsEventListenerComponent>();
             this.RangeObjectV2PhysicsEventListenerComponent.Init(AssociatedInteractiveObject);

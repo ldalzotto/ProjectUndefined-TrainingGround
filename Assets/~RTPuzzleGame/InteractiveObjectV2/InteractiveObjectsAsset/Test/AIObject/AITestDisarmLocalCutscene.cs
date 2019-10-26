@@ -12,7 +12,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AITestDisarmLocalCutscene", menuName = "Test/AITestDisarmLocalCutscene")]
     public class AITestDisarmLocalCutscene : LocalPuzzleCutsceneTemplate
     {
-        public SequencedAnimationInput BaseAnimationInput;
+        public PlayContextAnimationActionInput BaseAnimationInput;
         public float RepeatWaitForSeconds;
 
         public override List<ASequencedAction> GetSequencedActions(CoreInteractiveObject associatedInteractiveObject)
@@ -21,7 +21,7 @@ namespace RTPuzzle
             {
                 new BranchInfiniteLoopAction(new List<ASequencedAction>()
                 {
-                    new PlayContextAction(associatedInteractiveObject.AnimationController, this.BaseAnimationInput, () => new List<ASequencedAction>()
+                    new PlayContextAnimationAction(associatedInteractiveObject.AnimationController, this.BaseAnimationInput, () => new List<ASequencedAction>()
                     {
                         new CutsceneWorkflowWaitForSecondsAction(this.RepeatWaitForSeconds, null)
                     })

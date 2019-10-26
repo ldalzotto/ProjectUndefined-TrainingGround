@@ -10,7 +10,7 @@ namespace InteractiveObjects
     {
         #region External Dependencies
 
-        private InteractiveObjectEventsManager InteractiveObjectEventsManager = InteractiveObjectEventsManager.Get();
+        protected InteractiveObjectEventsManager InteractiveObjectEventsManager = InteractiveObjectEventsManager.Get();
 
         #endregion
 
@@ -25,24 +25,24 @@ namespace InteractiveObjects
             isAskingToBeDestroyed = false;
             this.IsUpdatedInMainManager = IsUpdatedInMainManager;
             InteractiveGameObject = interactiveGameObject;
-            if (interactiveGameObject.Animator != null)
-            {
-                this.AnimatorPlayable = new AnimatorPlayableObject(interactiveGameObject.InteractiveGameObjectParent.name, interactiveGameObject.Animator);
-            }
-
-            this.AnimationController = new AnimationController(interactiveGameObject.Agent, this.AnimatorPlayable, interactiveGameObject.PhysicsRigidbody);
         }
 
         public IInteractiveGameObject InteractiveGameObject { get; protected set; }
 
         public InteractiveObjectTag InteractiveObjectTag => interactiveObjectTag;
 
-        public AnimatorPlayableObject AnimatorPlayable { get; private set; }
-        public AnimationController AnimationController { get; private set; }
+        public AnimatorPlayableObject AnimatorPlayable { get; protected set; }
+        public AnimationController AnimationController { get; protected set; }
         public bool IsAskingToBeDestroyed => isAskingToBeDestroyed;
 
         protected void AfterConstructor()
         {
+            if (InteractiveGameObject.Animator != null)
+            {
+                this.AnimatorPlayable = new AnimatorPlayableObject(InteractiveGameObject.InteractiveGameObjectParent.name, InteractiveGameObject.Animator);
+            }
+
+            this.AnimationController = new AnimationController(InteractiveGameObject.Agent, this.AnimatorPlayable, InteractiveGameObject.PhysicsRigidbody);
             InteractiveObjectEventsManager.OnInteractiveObjectCreated(this);
         }
 
@@ -59,6 +59,7 @@ namespace InteractiveObjects
             if (this.AnimatorPlayable != null)
             {
                 this.AnimatorPlayable.Tick(d);
+                this.AnimationController.Tick(d);
             }
         }
 

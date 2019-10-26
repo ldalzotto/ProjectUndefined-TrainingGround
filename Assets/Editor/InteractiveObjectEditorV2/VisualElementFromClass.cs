@@ -13,38 +13,41 @@ public static class VisualElementFromClass
     public static VisualElement BuildVisualElement(object obj, ref List<IListenableVisualElement> CreatedIListenableVisualElements)
     {
         var root = new VisualElement();
-
-        foreach (var field in ReflectionHelper.GetAllFields(obj.GetType()))
+        if (obj != null)
         {
-            var continueLoop = false;
-            foreach (var customAttribute in field.GetCustomAttributes<A_VEAttribute>())
+            foreach (var field in ReflectionHelper.GetAllFields(obj.GetType()))
             {
-                switch (customAttribute)
+                var continueLoop = false;
+                foreach (var customAttribute in field.GetCustomAttributes<A_VEAttribute>())
                 {
-                    case VE_Nested vE_Nested:
-                        var childElement = BuildVisualElement(field.GetValue(obj), ref CreatedIListenableVisualElements);
-                        var element = new FoldableElement(childElement, root);
-                        element.text = field.Name;
-                        root.Add(element);
-                        break;
-                    case VE_Ignore vE_Ignore:
-                        continueLoop = true;
-                        break;
+                    switch (customAttribute)
+                    {
+                        case VE_Nested vE_Nested:
+                            var childElement = BuildVisualElement(field.GetValue(obj), ref CreatedIListenableVisualElements);
+                            var element = new FoldableElement(childElement, root);
+                            element.text = field.Name;
+                            root.Add(element);
+                            break;
+                        case VE_Ignore vE_Ignore:
+                            continueLoop = true;
+                            break;
+                    }
+
+                    if (continueLoop) break;
                 }
 
-                if (continueLoop) break;
-            }
+                if (continueLoop) continue;
 
-            if (continueLoop) continue;
+                var IListenableVisualElement = BuildIListenableVisualElementFromMember(obj, field);
 
-            var IListenableVisualElement = BuildIListenableVisualElementFromMember(obj, field);
-
-            if (IListenableVisualElement != null)
-            {
-                CreatedIListenableVisualElements.Add(IListenableVisualElement);
-                root.Add((VisualElement) IListenableVisualElement);
+                if (IListenableVisualElement != null)
+                {
+                    CreatedIListenableVisualElements.Add(IListenableVisualElement);
+                    root.Add((VisualElement) IListenableVisualElement);
+                }
             }
         }
+
 
         return root;
     }
