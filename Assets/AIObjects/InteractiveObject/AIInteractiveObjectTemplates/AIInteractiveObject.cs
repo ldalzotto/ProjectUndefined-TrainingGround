@@ -1,6 +1,6 @@
-﻿using InteractiveObjects;
+﻿using InteractiveObject_Animation;
+using InteractiveObjects;
 using InteractiveObjects_Interfaces;
-using InteractiveObjectsAnimatorPlayable;
 using VisualFeedback;
 
 namespace AIObjects
@@ -10,7 +10,7 @@ namespace AIObjects
         protected INIT AIInteractiveObjectInitializerData;
         protected AIMoveToDestinationSystem AIMoveToDestinationSystem;
 
-        [VE_Nested] protected MovingObjectAnimatorPlayableSystem MovingObjectAnimatorPlayableSystem;
+        [VE_Nested] protected BaseObjectAnimatorPlayableSystem BaseObjectAnimatorPlayableSystem;
         protected LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
         public A_AIInteractiveObject(IInteractiveGameObject interactiveGameObject, INIT AIInteractiveObjectInitializerData) : base(interactiveGameObject)
@@ -18,14 +18,14 @@ namespace AIObjects
             interactiveGameObject.CreateAgent(AIInteractiveObjectInitializerData.AIAgentDefinition);
             interactiveGameObject.CreateLogicCollider(AIInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
             this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
-            this.MovingObjectAnimatorPlayableSystem = new MovingObjectAnimatorPlayableSystem(this.AnimatorPlayable, AIInteractiveObjectInitializerData.LocomotionAnimation);
+            this.BaseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, AIInteractiveObjectInitializerData.LocomotionAnimation);
             AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, OnAIDestinationReached);
             LineVisualFeedbackSystem = new LineVisualFeedbackSystem(InteractiveGameObject);
         }
 
         public override void Tick(float d)
         {
-            this.MovingObjectAnimatorPlayableSystem.Tick(d);
+            this.BaseObjectAnimatorPlayableSystem.Tick(d);
             LineVisualFeedbackSystem.Tick(d);
         }
 
@@ -41,7 +41,7 @@ namespace AIObjects
 
         public override void OnAnimationObjectSetUnscaledSpeedMagnitude(float unscaledSpeedMagnitude)
         {
-            this.MovingObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(unscaledSpeedMagnitude);
+            this.BaseObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(unscaledSpeedMagnitude);
         }
 
         public override void AfterTicks(float d)

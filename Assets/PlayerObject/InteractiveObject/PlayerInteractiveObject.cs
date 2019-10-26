@@ -1,8 +1,8 @@
 ﻿using AnimatorPlayable;
 using CoreGame;
+using InteractiveObject_Animation;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
-using InteractiveObjectsAnimatorPlayable;
 using PlayerActions;
 using PlayerObject_Interfaces;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace PlayerObject
     {
         #region Systems
 
-        [VE_Nested] private MovingObjectAnimatorPlayableSystem MovingObjectAnimatorPlayableSystem;
+        [VE_Nested] private BaseObjectAnimatorPlayableSystem _baseObjectAnimatorPlayableSystem;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace PlayerObject
 
             #endregion
 
-            this.MovingObjectAnimatorPlayableSystem = new MovingObjectAnimatorPlayableSystem(this.AnimatorPlayable, LocomotionAnimationDefinition);
+            this._baseObjectAnimatorPlayableSystem = new BaseObjectAnimatorPlayableSystem(this.AnimatorPlayable, LocomotionAnimationDefinition);
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
@@ -78,7 +78,7 @@ namespace PlayerObject
                 PlayerInputMoveManager.ResetSpeed();
             }
 
-            this.MovingObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(GetNormalizedSpeed());
+            this._baseObjectAnimatorPlayableSystem.SetUnscaledObjectSpeed(GetNormalizedSpeed());
         }
 
         public override void FixedTick(float d)

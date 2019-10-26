@@ -652,6 +652,10 @@
       <Project>{F9A056B6-F4BF-D32F-5783-F99516EBF2DD}</Project>
       <Name>LevelManagement</Name>
     </ProjectReference>
+    <ProjectReference Include="InteractiveObject_Animation.csproj">
+      <Project>{0E88EFEB-BC03-DBFA-6206-66F073959B55}</Project>
+      <Name>InteractiveObject_Animation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

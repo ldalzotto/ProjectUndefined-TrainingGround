@@ -56,9 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\InteractiveObjects\InteractiveObjectsAnimatorPlayable\AnimationLayer.cs" />
-     <Compile Include="Assets\InteractiveObjects\InteractiveObjectsAnimatorPlayable\InteractiveObjects\Systems\MovingObjectAnimatorPlayableSystem.cs" />
-     <None Include="Assets\InteractiveObjects\InteractiveObjectsAnimatorPlayable\InteractiveObjectsAnimatorPlayable.asmdef" />
+     <Compile Include="Assets\InteractiveObjects_Animation\InteractiveObjectsAnimatorPlayable\AnimationLayer.cs" />
+     <Compile Include="Assets\InteractiveObjects_Animation\InteractiveObjectsAnimatorPlayable\InteractiveObjects\Systems\BaseObjectAnimatorPlayableSystem.cs" />
+     <None Include="Assets\InteractiveObjects_Animation\InteractiveObjectsAnimatorPlayable\InteractiveObjectsAnimatorPlayable.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>

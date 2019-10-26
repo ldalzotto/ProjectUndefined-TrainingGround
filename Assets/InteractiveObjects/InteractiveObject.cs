@@ -1,6 +1,6 @@
 ﻿using System;
 using AnimatorPlayable;
-using InteractiveObjects_AnimationController;
+using InteractiveObject_Animation;
 using InteractiveObjects_Interfaces;
 using Object = UnityEngine.Object;
 

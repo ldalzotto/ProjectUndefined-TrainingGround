@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InteractiveObjectsAnimatorPlayable
+namespace InteractiveObject_Animation
 {
     public struct AnimationLayer
     {

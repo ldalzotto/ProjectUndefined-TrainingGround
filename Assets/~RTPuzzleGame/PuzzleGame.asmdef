@@ -23,7 +23,7 @@
 "AIObjects",
 "VisualFeedback",
 "SequencedAction",
-"InteractiveObjects_AnimationController",
+"InteractiveObject_Animation",
 "AnimatorPlayable"
     ],
     "includePlatforms": [],

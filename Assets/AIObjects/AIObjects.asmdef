@@ -6,10 +6,10 @@
 "Editor_Common",
 "InteractiveObjects",
 "InteractiveObjects_Interfaces",
-"InteractiveObjectsAnimatorPlayable",
 "AnimatorPlayable",
 "VisualFeedback",
-"SequencedAction"
+"SequencedAction",
+"InteractiveObject_Animation"
 ],
     "includePlatforms": [],
     "excludePlatforms": [],

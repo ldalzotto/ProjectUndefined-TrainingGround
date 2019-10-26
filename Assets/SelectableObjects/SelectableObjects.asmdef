@@ -9,7 +9,8 @@
         "InteractiveObjects",
         "InteractiveObjects_Interfaces",
         "RangeObjects",
-"LevelManagement"
+"LevelManagement",
+"InteractiveObject_Animation"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -56,9 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\InteractiveObjects\InteractiveObjects_AnimationController\Actions\PlayContextAction.cs" />
-     <Compile Include="Assets\InteractiveObjects\InteractiveObjects_AnimationController\AnimationController.cs" />
-     <None Include="Assets\InteractiveObjects\InteractiveObjects_AnimationController\InteractiveObjects_AnimationController.asmdef" />
+     <Compile Include="Assets\InteractiveObjects_Animation\InteractiveObjects_AnimationController\Actions\PlayContextAction.cs" />
+     <Compile Include="Assets\InteractiveObjects_Animation\InteractiveObjects_AnimationController\AnimationController.cs" />
+     <None Include="Assets\InteractiveObjects_Animation\InteractiveObjects_AnimationController\InteractiveObjects_AnimationController.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>

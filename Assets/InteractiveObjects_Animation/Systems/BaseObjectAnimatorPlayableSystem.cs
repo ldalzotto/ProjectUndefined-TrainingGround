@@ -1,13 +1,13 @@
 ﻿using AnimatorPlayable;
 using InteractiveObjects_Interfaces;
 
-namespace InteractiveObjectsAnimatorPlayable
+namespace InteractiveObject_Animation
 {
-    public class MovingObjectAnimatorPlayableSystem : AInteractiveObjectSystem
+    public class BaseObjectAnimatorPlayableSystem : AInteractiveObjectSystem
     {
         private float normalizedObjectSpeed;
 
-        public MovingObjectAnimatorPlayableSystem(AnimatorPlayableObject AnimatorPlayableObject, A_AnimationPlayableDefinition LocomotionAnimationDefinition)
+        public BaseObjectAnimatorPlayableSystem(AnimatorPlayableObject AnimatorPlayableObject, A_AnimationPlayableDefinition LocomotionAnimationDefinition)
         {
             AnimatorPlayableObject.PlayAnimation(AnimationLayerStatic.AnimationLayers[AnimationLayerID.LocomotionLayer].ID, LocomotionAnimationDefinition.GetAnimationInput(),
                 InputWeightProvider: () => this.normalizedObjectSpeed);

@@ -1,10 +1,9 @@
 ﻿using System;
 using AnimatorPlayable;
-using InteractiveObjectsAnimatorPlayable;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace InteractiveObjects_AnimationController
+namespace InteractiveObject_Animation
 {
     public class AnimationController
     {

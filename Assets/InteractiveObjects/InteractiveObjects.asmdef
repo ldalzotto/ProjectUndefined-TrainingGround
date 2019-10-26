@@ -4,11 +4,10 @@
         "GUID:bf33ead00b68e7843b03838c3c92d67b",
         "CoreGame",
         "OdinSerializer",
-"SequencedAction",
         "Editor_Common",
         "InteractiveObjects_Interfaces",
 "AnimatorPlayable",
-"InteractiveObjects_AnimationController"
+"InteractiveObject_Animation"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AnimatorPlayable;
 using SequencedAction;
 
-namespace InteractiveObjects_AnimationController
+namespace InteractiveObject_Animation
 {
     public class PlayContextAction : ASequencedAction
     {
