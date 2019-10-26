@@ -24,7 +24,19 @@ namespace AnimatorPlayable
             this.GlobalPlayableGraph.Play();
         }
 
-        public void PlayBlendedAnimation(int layerID, BlendedAnimationInput BlendedAnimationInput)
+        public void PlayAnimation(int layerID, IAnimationInput animationInput, Action OnAnimationEnd = null, Func<float> InputWeightProvider = null)
+        {
+            if (animationInput.AnimationInputType == AnimationInputType.SEQUENCED)
+            {
+                this.PlaySequencedAnimation(layerID, animationInput as SequencedAnimationInput, OnAnimationEnd);
+            }
+            else if (animationInput.AnimationInputType == AnimationInputType.BLENDED)
+            {
+                this.PlayBlendedAnimation(layerID, animationInput as BlendedAnimationInput, InputWeightProvider);
+            }
+        }
+
+        private void PlayBlendedAnimation(int layerID, BlendedAnimationInput BlendedAnimationInput, Func<float> InputWeightProvider)
         {
             if (this.AllAnimationLayersCurrentlyPlaying.ContainsKey(layerID))
             {
@@ -41,9 +53,14 @@ namespace AnimatorPlayable
             this.SortLayers();
 
             PlayableExtensions.SetInputWeight(this.AnimationLayerMixerPlayable, this.AllAnimationLayersCurrentlyPlaying[layerID].Inputhandler, 1f);
+
+            if (InputWeightProvider != null)
+            {
+                BlendedAnimationLayer.RegisterInputWeightProvider(InputWeightProvider);
+            }
         }
 
-        public void PlaySequencedAnimation(int layerID, SequencedAnimationInput SequencedAnimationInput)
+        private void PlaySequencedAnimation(int layerID, SequencedAnimationInput SequencedAnimationInput, Action OnAnimationEnd)
         {
             if (this.AllAnimationLayersCurrentlyPlaying.ContainsKey(layerID))
             {
@@ -60,6 +77,11 @@ namespace AnimatorPlayable
             this.SortLayers();
 
             PlayableExtensions.SetInputWeight(this.AnimationLayerMixerPlayable, SequencedAnimationLayer.Inputhandler, 1f);
+
+            if (OnAnimationEnd != null)
+            {
+                SequencedAnimationLayer.ReigsterOnSequencedAnimationEnd(OnAnimationEnd);
+            }
         }
 
         public void Tick(float d)

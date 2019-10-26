@@ -7,9 +7,9 @@ namespace AnimatorPlayable
     {
         public BlendedAnimationInput BlendedAnimationInput;
 
-        public override void Play(int layerID, AnimatorPlayableObject AnimatorPlayableObject)
+        public override IAnimationInput GetAnimationInput()
         {
-            AnimatorPlayableObject.PlayBlendedAnimation(layerID, this.BlendedAnimationInput);
+            return this.BlendedAnimationInput;
         }
     }
 }

@@ -6,6 +6,35 @@ using UnityEngine.Playables;
 
 namespace AnimatorPlayable
 {
+    public enum AnimationInputType
+    {
+        BLENDED,
+        SEQUENCED
+    }
+
+    public interface IAnimationInput
+    {
+        AnimationInputType AnimationInputType { get; }
+    }
+
+    [Serializable]
+    public class BlendedAnimationInput : IAnimationInput
+    {
+        public AnimationInputType AnimationInputType { get; private set; } = AnimationInputType.BLENDED;
+        public List<BlendedAnimationClipInput> BlendedAnimationClips;
+        public BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
+    }
+
+    [Serializable]
+    public class SequencedAnimationInput : IAnimationInput
+    {
+        public AnimationInputType AnimationInputType { get; private set; } = AnimationInputType.SEQUENCED;
+        public bool isInfinite;
+        public float BeginTransitionTime;
+        public float EndTransitionTime;
+        public List<UniqueAnimationClipInput> UniqueAnimationClips;
+    }
+
     [Serializable]
     public class UniqueAnimationClip
     {
@@ -90,14 +119,6 @@ namespace AnimatorPlayable
         }
     }
 
-    [Serializable]
-    public class SequencedAnimationInput
-    {
-        public bool isInfinite;
-        public float BeginTransitionTime;
-        public float EndTransitionTime;
-        public List<UniqueAnimationClipInput> UniqueAnimationClips;
-    }
 
     [Serializable]
     public class BlendedAnimationClip
@@ -131,14 +152,6 @@ namespace AnimatorPlayable
                 AnimationClip = AnimationClip, WeightTime = WeightTime, Speed = Speed
             };
         }
-    }
-
-
-    [Serializable]
-    public class BlendedAnimationInput
-    {
-        public List<BlendedAnimationClipInput> BlendedAnimationClips;
-        public BlendedAnimationSpeedCurve BlendedAnimationSpeedCurve;
     }
 
     [Serializable]

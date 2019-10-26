@@ -1,6 +1,6 @@
 ﻿using System;
 using AnimatorPlayable;
-using CoreGame;
+using InteractiveObjects_AnimationController;
 using InteractiveObjects_Interfaces;
 using Object = UnityEngine.Object;
 
@@ -30,7 +30,7 @@ namespace InteractiveObjects
                 this.AnimatorPlayable = new AnimatorPlayableObject(interactiveGameObject.InteractiveGameObjectParent.name, interactiveGameObject.Animator);
             }
 
-            CutsceneController = new BaseCutsceneController(interactiveGameObject.PhysicsRigidbody, interactiveGameObject.Agent, interactiveGameObject.Animator);
+            this.AnimationController = new AnimationController(interactiveGameObject.Agent, this.AnimatorPlayable, interactiveGameObject.PhysicsRigidbody);
         }
 
         public IInteractiveGameObject InteractiveGameObject { get; protected set; }
@@ -38,8 +38,7 @@ namespace InteractiveObjects
         public InteractiveObjectTag InteractiveObjectTag => interactiveObjectTag;
 
         public AnimatorPlayableObject AnimatorPlayable { get; private set; }
-        public BaseCutsceneController CutsceneController { get; private set; }
-
+        public AnimationController AnimationController { get; private set; }
         public bool IsAskingToBeDestroyed => isAskingToBeDestroyed;
 
         protected void AfterConstructor()

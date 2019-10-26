@@ -572,13 +572,12 @@ namespace AnimatorPlayable_Tests
 
         public void PlaySequencedAnimation(int layerID, SequencedAnimationInput SequencedAnimationInput)
         {
-            this.AnimatorPlayableObject.PlaySequencedAnimation(layerID, SequencedAnimationInput);
+            this.AnimatorPlayableObject.PlayAnimation(layerID, SequencedAnimationInput);
         }
 
         public void PlayBlendedAnimation(int layerID, BlendedAnimationInput BlendedAnimationInput, Func<float> InputWeightProvider)
         {
-            this.AnimatorPlayableObject.PlayBlendedAnimation(layerID, BlendedAnimationInput);
-            this.AnimatorPlayableObject.AllAnimationLayersCurrentlyPlaying[layerID].RegisterInputWeightProvider(InputWeightProvider);
+            this.AnimatorPlayableObject.PlayAnimation(layerID, BlendedAnimationInput, InputWeightProvider: InputWeightProvider);
         }
 
         class AnimatorPlayableBehavior : MonoBehaviour

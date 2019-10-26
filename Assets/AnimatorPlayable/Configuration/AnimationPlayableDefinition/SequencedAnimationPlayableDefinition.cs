@@ -7,9 +7,9 @@ namespace AnimatorPlayable
     {
         public SequencedAnimationInput SequencedAnimationInput;
 
-        public override void Play(int layerID, AnimatorPlayableObject AnimatorPlayableObject)
+        public override IAnimationInput GetAnimationInput()
         {
-            AnimatorPlayableObject.PlaySequencedAnimation(layerID, this.SequencedAnimationInput);
+            return this.SequencedAnimationInput;
         }
     }
 }

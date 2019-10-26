@@ -1,14 +1,10 @@
 {
-    "name": "InteractiveObjects",
+    "name": "InteractiveObjects_AnimationController",
     "references": [
-        "GUID:bf33ead00b68e7843b03838c3c92d67b",
-        "CoreGame",
-        "OdinSerializer",
+        "AnimatorPlayable",
+"InteractiveObjectsAnimatorPlayable",
 "SequencedAction",
-        "Editor_Common",
-        "InteractiveObjects_Interfaces",
-"AnimatorPlayable",
-"InteractiveObjects_AnimationController"
+"InteractiveObjects_Interfaces"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

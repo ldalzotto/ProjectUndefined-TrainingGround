@@ -2,7 +2,7 @@
 
 namespace InteractiveObjectsAnimatorPlayable
 {
-    internal struct AnimationLayer
+    public struct AnimationLayer
     {
         public int ID;
 
@@ -12,15 +12,15 @@ namespace InteractiveObjectsAnimatorPlayable
         }
     }
 
-    internal enum AnimationLayerID
+    public enum AnimationLayerID
     {
         LocomotionLayer,
         ContextActionLayer
     }
 
-    internal static class AnimationLayerStatic
+    public static class AnimationLayerStatic
     {
-        internal static Dictionary<AnimationLayerID, AnimationLayer> AnimationLayers = new Dictionary<AnimationLayerID, AnimationLayer>()
+        public static Dictionary<AnimationLayerID, AnimationLayer> AnimationLayers = new Dictionary<AnimationLayerID, AnimationLayer>()
         {
             {AnimationLayerID.LocomotionLayer, new AnimationLayer(0)},
             {AnimationLayerID.ContextActionLayer, new AnimationLayer(10)}

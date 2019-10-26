@@ -1,4 +1,38 @@
 ﻿using System;
+using AnimatorPlayable;
+using InteractiveObjectsAnimatorPlayable;
+using UnityEngine;
+using UnityEngine.AI;
+
+namespace InteractiveObjects_AnimationController
+{
+    public class AnimationController
+    {
+        private NavMeshAgent Agent;
+        private AnimatorPlayableObject AnimatorPlayableObject;
+        private Rigidbody Rigidbody;
+
+        public AnimationController(NavMeshAgent agent, AnimatorPlayableObject animatorPlayableObject, Rigidbody rigidbody)
+        {
+            Agent = agent;
+            AnimatorPlayableObject = animatorPlayableObject;
+            Rigidbody = rigidbody;
+        }
+
+        public void PlayContextAction(SequencedAnimationInput ContextActionAnimation, Action OnAnimationFinished = null)
+        {
+            this.AnimatorPlayableObject.PlayAnimation(AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID, ContextActionAnimation, OnAnimationFinished);
+        }
+
+        public void KillContextAction(SequencedAnimationInput ContextActionAnimation)
+        {
+            this.AnimatorPlayableObject.DestroyLayer(AnimationLayerStatic.AnimationLayers[AnimationLayerID.ContextActionLayer].ID);
+        }
+    }
+}
+
+/*
+ * using System;
 using System.Collections;
 using GameConfigurationID;
 using UnityEngine;
@@ -258,3 +292,4 @@ namespace CoreGame
         }
     }
 }
+*/

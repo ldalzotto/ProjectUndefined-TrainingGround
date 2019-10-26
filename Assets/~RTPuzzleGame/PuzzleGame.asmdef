@@ -22,7 +22,9 @@
 "Tutorial",
 "AIObjects",
 "VisualFeedback",
-"SequencedAction"
+"SequencedAction",
+"InteractiveObjects_AnimationController",
+"AnimatorPlayable"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
