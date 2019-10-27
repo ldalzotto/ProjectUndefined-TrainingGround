@@ -37,8 +37,8 @@ namespace RangeObjects
         {
             var TrackedInteractiveGameObjectTransform = this.TrackedInteractiveObject.InteractiveGameObject.GetTransform();
             this.sightModuleMovementChangeTracker.Tick(this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.position,
-                this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.rotation);
-            this.inRangeCollidersMovementChangeTracker.Tick(TrackedInteractiveGameObjectTransform.WorldPosition, TrackedInteractiveGameObjectTransform.WorldRotation);
+                this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.eulerAngles);
+            this.inRangeCollidersMovementChangeTracker.Tick(TrackedInteractiveGameObjectTransform.WorldPosition, TrackedInteractiveGameObjectTransform.WorldRotationEuler);
             return this.inRangeCollidersMovementChangeTracker.TransformChangedThatFrame() ||
                    this.sightModuleMovementChangeTracker.TransformChangedThatFrame();
         }

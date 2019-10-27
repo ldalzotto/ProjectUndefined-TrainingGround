@@ -1,14 +1,13 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
-    [System.Serializable]
+    [Serializable]
     [CreateAssetMenu(fileName = "CoreStaticConfiguration", menuName = "Configuration/CoreGame/StaticConfiguration/CoreStaticConfiguration", order = 1)]
     public class CoreStaticConfiguration : ScriptableObject
     {
         public CoreInputConfiguration CoreInputConfiguration;
-        public CoreMaterialConfiguration CoreMaterialConfiguration;
         public CorePrefabConfiguration CorePrefabConfiguration;
         public GlobalGameConfiguration GlobalGameConfiguration;
     }

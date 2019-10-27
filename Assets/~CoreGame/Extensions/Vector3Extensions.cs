@@ -36,14 +36,5 @@ namespace CoreGame
             vector.z = z;
             return vector;
         }
-
-        public static Vector3 Round(this Vector3 vector, int decimalNb)
-        {
-            vector.x = (float)(System.Math.Round((double)vector.x, decimalNb));
-            vector.y = (float)(System.Math.Round((double)vector.y, decimalNb));
-            vector.z = (float)(System.Math.Round((double)vector.z, decimalNb));
-            return vector;
-        }
     }
-
 }

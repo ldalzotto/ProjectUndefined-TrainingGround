@@ -4,6 +4,7 @@ using CoreGame;
 using InteractiveObjects_Interfaces;
 using RangeObjects;
 using UnityEngine;
+using VisualFeedback;
 
 namespace InteractiveObjects
 {

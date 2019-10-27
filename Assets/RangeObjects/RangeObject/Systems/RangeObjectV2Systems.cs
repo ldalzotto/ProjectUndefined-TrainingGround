@@ -146,7 +146,7 @@ namespace RangeObjects
 
         public FrustumRangeObjectPositioningSystem(FrustumV2 Frustum, RangeObjectV2 RoundedFrustumRangeObjectV2) : base(RoundedFrustumRangeObjectV2)
         {
-            Frustum.CalculateFrustumWorldPositionyFace(out FrustumPointsPositions LocalFrustumPointPositions, new TransformStruct {WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one});
+            Frustum.CalculateFrustumWorldPositionyFace(out FrustumPointsPositions LocalFrustumPointPositions, new TransformStruct {WorldPosition = Vector3.zero, WorldRotationEuler = Vector3.zero, LossyScale = Vector3.one});
             this.RangeFrustumWorldPositioning = new RangeFrustumWorldPositioning
             {
                 LocalFrustumPositions = LocalFrustumPointPositions

@@ -25,12 +25,11 @@ namespace SelectableObject
         {
             #region Exnternal Dependencies
 
-            var CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
             this.GameInputManager = GameInputManager;
 
             #endregion
 
-            SelectableObjectRendererManager = new SelectableObjectRendererManager(CoreMaterialConfiguration);
+            SelectableObjectRendererManager = new SelectableObjectRendererManager();
             interactableObjects = new List<ISelectableObjectSystem>();
         }
 

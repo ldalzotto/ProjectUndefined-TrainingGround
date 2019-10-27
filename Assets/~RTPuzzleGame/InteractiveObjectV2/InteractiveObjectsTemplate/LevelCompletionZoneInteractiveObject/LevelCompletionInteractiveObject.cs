@@ -1,16 +1,11 @@
 ﻿using InteractiveObjects_Interfaces;
+using LevelManagement;
 using RTPuzzle;
 
 namespace InteractiveObjects
 {
     public class LevelCompletionInteractiveObject : CoreInteractiveObject
     {
-        #region External Dependencies
-
-        private PuzzleEventsManager PuzzleEventsManager = PuzzleEventsManager.Get();
-
-        #endregion
-
         private LevelCompletionInteractiveObjectInitializerData LevelCompletionInitializerData;
 
         private LevelCompletionZoneSystem LevelCompletionZoneSystem;
@@ -38,7 +33,7 @@ namespace InteractiveObjects
 
         private void OnLevelCompletionTriggerEnterPlayer(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            PuzzleEventsManager.PZ_EVT_LevelCompleted();
+            LevelAvailabilityTimelineEventManager.Get().OnLevelCompleted();
         }
     }
 }

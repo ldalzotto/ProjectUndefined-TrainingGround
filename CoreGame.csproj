@@ -56,7 +56,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
      <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
      <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
      <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
@@ -97,20 +96,16 @@
      <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
      <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
      <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
-     <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarRendererManager.cs" />
-     <Compile Include="Assets\~CoreGame\CircleFillBar\CircleFillBarType.cs" />
+     <Compile Include="Assets\~CoreGame\Configuration\ConfigurationGameObjectManager.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CoreMaterialConfiguration\CoreMaterialConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CorePrefabConfiguration\CorePrefabConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionTextConfiguration\DiscussionTextConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\GlobalGameConfiguration\GlobalGameConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\Input\CoreInputConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfigurationData.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTree.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfiguration.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfigurationInherentData.cs" />
@@ -148,9 +143,7 @@
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
-     <Compile Include="Assets\RenderPipeline\RenderFeatures\CircleFillBarRenderPassFeature.cs" />
      <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
-     <None Include="Assets\~CoreGame\CircleFillBar\CircleBar.shader" />
      <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
      <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2Include.cginc" />
      <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />

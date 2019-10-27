@@ -10,7 +10,7 @@ namespace CoreGame
         private TransformChangeListener TransformChangeListener;
 
         private Nullable<Vector3> lastFramePosition;
-        private Nullable<Quaternion> lastFrameRotation;
+        private Nullable<Vector3> lastFrameRotation;
 
         private bool positionChangedThatFrame;
         private bool rotationChangedThatFrame;
@@ -25,10 +25,15 @@ namespace CoreGame
         }
 
         #region Logical Conditions
-        public bool TransformChangedThatFrame() { return this.positionChangedThatFrame || this.rotationChangedThatFrame; }
+
+        public bool TransformChangedThatFrame()
+        {
+            return this.positionChangedThatFrame || this.rotationChangedThatFrame;
+        }
+
         #endregion
 
-        public void Tick(Vector3 worldPosition, Quaternion worldRotation)
+        public void Tick(Vector3 worldPosition, Vector3 worldRotationEuler)
         {
             this.positionChangedThatFrame = false;
             this.rotationChangedThatFrame = false;
@@ -46,6 +51,7 @@ namespace CoreGame
                         this.PositionChanged();
                     }
                 }
+
                 this.lastFramePosition = worldPosition;
             }
 
@@ -57,24 +63,33 @@ namespace CoreGame
                 }
                 else
                 {
-                    if (this.lastFrameRotation.Value != worldRotation)
+                    if (this.lastFrameRotation.Value != worldRotationEuler)
                     {
                         this.RotationChanged();
                     }
                 }
-                this.lastFrameRotation = worldRotation;
+
+                this.lastFrameRotation = worldRotationEuler;
             }
         }
 
         private void PositionChanged()
         {
-            if (this.TransformChangeListener != null) { this.TransformChangeListener.onPositionChange(); }
+            if (this.TransformChangeListener != null)
+            {
+                this.TransformChangeListener.onPositionChange();
+            }
+
             this.positionChangedThatFrame = true;
         }
 
         private void RotationChanged()
         {
-            if (this.TransformChangeListener != null) { this.TransformChangeListener.onRotationChange(); }
+            if (this.TransformChangeListener != null)
+            {
+                this.TransformChangeListener.onRotationChange();
+            }
+
             this.rotationChangedThatFrame = true;
         }
     }
@@ -84,6 +99,4 @@ namespace CoreGame
         void onPositionChange();
         void onRotationChange();
     }
-
 }
-

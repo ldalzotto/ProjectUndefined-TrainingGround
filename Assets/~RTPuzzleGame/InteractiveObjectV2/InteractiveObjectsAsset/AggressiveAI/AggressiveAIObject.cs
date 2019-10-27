@@ -14,11 +14,13 @@ namespace InteractiveObjects
         [VE_Nested] private AIMoveToDestinationSystem AIMoveToDestinationSystem;
         [DrawNested] private SightObjectSystem SightObjectSystem;
         private AggressiveObjectInitializerData AggressiveObjectInitializerData;
-        private BaseObjectAnimatorPlayableSystem BaseObjectAnimatorPlayableSystem;
+        [VE_Nested] private BaseObjectAnimatorPlayableSystem BaseObjectAnimatorPlayableSystem;
 
         public AggressiveAIObject(IInteractiveGameObject interactiveGameObject, AggressiveObjectInitializerData AIInteractiveObjectInitializerData)
         {
             this.AggressiveObjectInitializerData = AIInteractiveObjectInitializerData;
+            interactiveGameObject.CreateLogicCollider(AIInteractiveObjectInitializerData.InteractiveObjectLogicCollider);
+            interactiveGameObject.CreateAgent(AIInteractiveObjectInitializerData.AIAgentDefinition);
             base.BaseInit(interactiveGameObject, true);
         }
 
@@ -40,6 +42,12 @@ namespace InteractiveObjects
             if (AIPatrollingState.isPatrolling) AIPatrolSystem.Tick(d);
 
             AIMoveToDestinationSystem.Tick(d);
+        }
+
+        public override void AfterTicks(float d)
+        {
+            base.AfterTicks(d);
+            this.AIMoveToDestinationSystem.AfterTicks();
         }
 
         public override void OnAIDestinationReached()

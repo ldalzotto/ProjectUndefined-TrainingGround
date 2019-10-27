@@ -28,7 +28,7 @@ namespace CoreGame
 
         private Vector3 LocalToWorld(TransformStruct FrustumTransform, Vector3 localPoint)
         {
-            return (FrustumTransform.WorldPosition + FrustumTransform.WorldRotation * ((Quaternion.Euler(this.DeltaRotation) * localPoint) + this.Center).Mul(FrustumTransform.LossyScale));
+            return (FrustumTransform.WorldPosition + Quaternion.Euler(FrustumTransform.WorldRotationEuler) * ((Quaternion.Euler(this.DeltaRotation) * localPoint) + this.Center).Mul(FrustumTransform.LossyScale));
         }
 
         public void CalculateFrustumPointsWorldPosByProjection(out FrustumPointsPositions FrustumPointsPositions, out bool IsFacing, TransformStruct FrustumTransform, Vector3 WorldStartAngleProjection)

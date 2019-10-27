@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using InteractiveObjects;
 using SequencedAction;
+using UnityEngine;
 
 namespace AIObjects
 {
@@ -29,7 +30,7 @@ namespace AIObjects
         public override void FirstExecutionAction()
         {
             this.InteractiveObject.InteractiveGameObject.Agent.Warp(this.WorldPoint.WorldPosition);
-            this.InteractiveObject.InteractiveGameObject.Agent.transform.rotation = this.WorldPoint.WorldRotation;
+            this.InteractiveObject.InteractiveGameObject.Agent.transform.rotation = Quaternion.Euler(this.WorldPoint.WorldRotationEuler);
         }
 
         public override void Tick(float d)

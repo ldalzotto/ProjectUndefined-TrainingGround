@@ -1,5 +1,4 @@
 ﻿using System;
-using CoreGame;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,7 +52,7 @@ namespace SelectionWheel
 
         public static SelectionWheelNode Instantiate(SelectionWheelNodeData wheelNodeData)
         {
-            var obj = Instantiate(CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration.ActionWheelNodePrefab);
+            var obj = Instantiate(SelectionWheelGlobalConfigurationGameObject.Get().SelectionWheelGlobalConfiguration.ActionWheelNodePrefab);
             var wheelActionNode = obj.GetComponent<SelectionWheelNode>();
             wheelActionNode.imageComponent = obj.GetComponent<Image>();
             wheelActionNode.descriptionText = obj.gameObject.FindChildObjectRecursively(DESCRIPTIOn_TEXT_OBJECT_NAME).GetComponent<Text>();

@@ -56,6 +56,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\VisualFeedback\CircleFillBar\CircleFillBarRendererManager.cs" />
+     <Compile Include="Assets\VisualFeedback\CircleFillBar\CircleFillBarType.cs" />
+     <Compile Include="Assets\VisualFeedback\CircleFillBar\Configuration\CircleFillBarConfiguration.cs" />
+     <Compile Include="Assets\VisualFeedback\CircleFillBar\Configuration\CircleFillBarConfigurationGameObject.cs" />
+     <Compile Include="Assets\VisualFeedback\CircleFillBar\RenderPipelineFeature\CircleFillBarRenderPassFeature.cs" />
      <Compile Include="Assets\VisualFeedback\Configuration\VisualFeedbackConfigurationGameObject.cs" />
      <Compile Include="Assets\VisualFeedback\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
      <Compile Include="Assets\VisualFeedback\LineVisualFeedback\Configuration\DottedLineID.cs" />
@@ -70,6 +75,9 @@
      <Compile Include="Assets\VisualFeedback\LineVisualFeedback\Systems\LineVisualFeedbackSystem.cs" />
      <None Include="Assets\VisualFeedback\VisualFeedback.asmdef" />
      <None Include="Assets\VisualFeedback\LineVisualFeedback\Shader\DottedLineShader.shader" />
+ <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
+ <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>

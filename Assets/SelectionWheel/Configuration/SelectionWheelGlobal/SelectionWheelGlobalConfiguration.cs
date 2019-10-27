@@ -8,6 +8,7 @@ namespace SelectionWheel
     [CreateAssetMenu(fileName = "SelectionWheelGlobalConfiguration", menuName = "Configuration/CoreGame/SelectionWheelGlobalConfiguration/SelectionWheelGlobalConfiguration", order = 1)]
     public class SelectionWheelGlobalConfiguration : SerializedScriptableObject
     {
+        public GameObject ActionWheelNodePrefab;
         public ActionWheelNodePositionManagerComponent ActionWheelNodePositionManagerComponent;
         public Material NonSelectedMaterial;
         public Material SelectedMaterial;

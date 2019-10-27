@@ -14,7 +14,7 @@ namespace Obstacle
         public ObstacleInteractiveObject(IInteractiveGameObject interactiveGameObject, ObstacleInteractiveObjectInitializerData ObstacleInteractiveObjectInitializerData)
         {
             this.ObstacleInteractiveObjectInitializerData = ObstacleInteractiveObjectInitializerData;
-            base.BaseInit(interactiveGameObject);
+            base.BaseInit(interactiveGameObject, false);
         }
 
         public override void Init()

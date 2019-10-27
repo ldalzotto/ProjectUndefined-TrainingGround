@@ -10,14 +10,11 @@ namespace CoreGame
     {
         public GameObject ActionWheelNodePrefab;
 
-        [Header("Discussion UI Prefabs")]
-        public DiscussionWindow DiscussionUIPrefab;
+        [Header("Discussion UI Prefabs")] public DiscussionWindow DiscussionUIPrefab;
         public ChoicePopup ChoicePopupPrefab;
         public ChoicePopupText ChoicePopupTextPrefab;
         public InputImageType InputBaseImage;
         public InputImageType LeftMouseBaseImage;
         public InputImageType RightMouseBaseImage;
-
-        public Mesh ForwardQuadMesh;
     }
 }

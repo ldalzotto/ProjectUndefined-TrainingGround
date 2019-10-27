@@ -68,6 +68,7 @@
      <Compile Include="Assets\LevelManagement\Configuration\LevelZonesID.cs" />
      <Compile Include="Assets\LevelManagement\Configuration\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
      <Compile Include="Assets\LevelManagement\Configuration\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
+     <Compile Include="Assets\LevelManagement\Events\LevelAvailabilityTimelineEventManager.cs" />
      <Compile Include="Assets\LevelManagement\Events\LevelManagerEventManager.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailability\Manager\LevelAvailabilityManager.cs" />
      <Compile Include="Assets\LevelManagement\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV3.cs" />

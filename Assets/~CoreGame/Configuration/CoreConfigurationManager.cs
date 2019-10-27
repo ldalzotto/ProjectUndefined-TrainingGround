@@ -8,11 +8,6 @@ namespace CoreGame
     {
         public CoreConfiguration CoreConfiguration;
 
-        public AnimationConfiguration AnimationConfiguration()
-        {
-            return CoreConfiguration.AnimationConfiguration;
-        }
-
         public InputConfiguration InputConfiguration()
         {
             return CoreConfiguration.InputConfiguration;

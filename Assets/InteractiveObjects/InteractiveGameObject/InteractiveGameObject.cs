@@ -92,7 +92,7 @@ namespace InteractiveObjects
                 switch (LogicCollider)
                 {
                     case BoxCollider logicBoxCollider:
-                        returnTransform = new TransformStruct() {WorldPosition = returnTransform.WorldPosition + logicBoxCollider.center, WorldRotation = returnTransform.WorldRotation, LossyScale = returnTransform.LossyScale};
+                        returnTransform = new TransformStruct() {WorldPosition = returnTransform.WorldPosition + logicBoxCollider.center, WorldRotationEuler = returnTransform.WorldRotationEuler, LossyScale = returnTransform.LossyScale};
                         break;
                     default:
                         break;

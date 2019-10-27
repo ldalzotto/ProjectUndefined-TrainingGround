@@ -127,7 +127,7 @@ public static class SceneHandlerDrawer
 
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
-        frustum.CalculateFrustumWorldPositionyFace(out var LocalFrustumPointPositions, new TransformStruct {WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one});
+        frustum.CalculateFrustumWorldPositionyFace(out var LocalFrustumPointPositions, new TransformStruct {WorldPosition = Vector3.zero, WorldRotationEuler = Vector3.zero, LossyScale = Vector3.one});
         var frustumWorldPositions = new RangeFrustumWorldPositioning {LocalFrustumPositions = LocalFrustumPointPositions}.GetWorldFrustumPositions(transform.localToWorldMatrix);
         DrawFace(frustumWorldPositions.FC1, frustumWorldPositions.FC2, frustumWorldPositions.FC3, frustumWorldPositions.FC4);
         DrawFace(frustumWorldPositions.FC1, frustumWorldPositions.FC5, frustumWorldPositions.FC6, frustumWorldPositions.FC2);

@@ -1,5 +1,4 @@
-﻿using RTPuzzle;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using AIObjects;
 using UnityEditor;
@@ -22,12 +21,6 @@ public class AIPatrolGraphV2CustomEditor : Editor
         SceneView.duringSceneGui -= this.SceneTick;
     }
 
-    private void OnDestroy()
-    {
-        Debug.Log("AIPatrolGraphV2CustomEditor : OnDestroy");
-        SceneView.duringSceneGui -= this.SceneTick;
-    }
-
     private void SceneTick(SceneView sceneView)
     {
         foreach (var targetField in this.targetFields)
@@ -42,13 +35,12 @@ public class AIPatrolGraphV2CustomEditor : Editor
                     switch (CustomAttribute)
                     {
                         case GraphPatrolLineAttribute WireTargetLineDrawAttribute:
-
-                            var sourcePosition = this.AddRootToPosition(((AIMoveToActionInputData) targetField.GetValue(target)).GetWorldPosition());
-                            var targetPosition = this.AddRootToPosition(((AIMoveToActionInputData) target.GetType().GetField(WireTargetLineDrawAttribute.FieldTargetWorldPosition).GetValue(target)).GetWorldPosition());
+                            var sourcePosition = ((AIMoveToActionInputData) targetField.GetValue(target)).GetWorldPosition();
+                            var targetPosition = ((AIMoveToActionInputData) target.GetType().GetField(WireTargetLineDrawAttribute.FieldTargetWorldPosition).GetValue(target)).GetWorldPosition();
                             HandlesHelper.DrawArrow(sourcePosition, targetPosition, Color.white);
                             break;
                         case GraphPatrolPointAttribute WireCircleAttributePositionned:
-                            var position = this.AddRootToPosition(((AIMoveToActionInputData) targetField.GetValue(target)).GetWorldPosition());
+                            var position = ((AIMoveToActionInputData) targetField.GetValue(target)).GetWorldPosition();
                             var oldC = Handles.color;
                             Handles.color = WireCircleAttributePositionned.GetColor();
                             Handles.DrawWireDisc(position, Vector3.up, 1f);
@@ -61,10 +53,5 @@ public class AIPatrolGraphV2CustomEditor : Editor
 
             Handles.color = oldColor;
         }
-    }
-
-    private Vector3 AddRootToPosition(Vector3 position)
-    {
-        return position + (target as AIPatrolGraphV2).RootWorldPosition;
     }
 }

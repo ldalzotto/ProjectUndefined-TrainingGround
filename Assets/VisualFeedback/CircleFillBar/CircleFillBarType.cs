@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 
-namespace CoreGame
+namespace VisualFeedback
 {
     public class CircleFillBarType : MonoBehaviour
     {
         #region External Dependencies
+
         private CircleFillBarRendererManager CircleFillBarRendererManager = CircleFillBarRendererManager.Get();
+
         #endregion
 
         private Camera cam;
         private float currentProgression;
-        
-        public float CurrentProgression { get => currentProgression; }
+
+        public float CurrentProgression
+        {
+            get => currentProgression;
+        }
 
         public void Init(Camera camera)
         {
@@ -43,6 +48,5 @@ namespace CoreGame
             CircleFillBarTypeRef.gameObject.SetActive(true);
             CircleFillBarTypeRef.OnCircleFillBarTypeEnabled();
         }
-
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.LWRP;
 
-namespace CoreGame
+namespace VisualFeedback
 {
     [CreateAssetMenu(fileName = "CircleFillBarRenderPassFeature", menuName = "Rendering/CircleFillBarRenderPassFeature")]
     public class CircleFillBarRenderPassFeature : ScriptableRendererFeature

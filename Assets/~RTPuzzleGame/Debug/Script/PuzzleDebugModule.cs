@@ -1,3 +1,4 @@
+using LevelManagement;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -11,7 +12,7 @@ namespace RTPuzzle
         {
             if (Instance == null)
             {
-                Instance = GameObject.FindObjectOfType<PuzzleDebugModule>();
+                Instance = FindObjectOfType<PuzzleDebugModule>();
             }
 
             return Instance;
@@ -21,15 +22,9 @@ namespace RTPuzzle
         public bool InstantProjectileHit;
         public bool TriggerLevelSuccessEvent;
 
-        #region External Dependencies
-
-        private PuzzleEventsManager PuzzleEventsManager;
-
-        #endregion
 
         public void Init()
         {
-            PuzzleEventsManager = PuzzleEventsManager.Get();
             if (InstantProjectileHit)
             {
             }
@@ -39,7 +34,7 @@ namespace RTPuzzle
         {
             if (TriggerLevelSuccessEvent)
             {
-                PuzzleEventsManager.PZ_EVT_LevelCompleted();
+                LevelAvailabilityTimelineEventManager.Get().OnLevelCompleted();
                 TriggerLevelSuccessEvent = false;
             }
         }

@@ -24,7 +24,7 @@ namespace RTPuzzle
         {
             return new List<ASequencedAction>()
             {
-                new AIWarpActionV2(InvolvedInteractiveObject, this.TransformToWorldPosition(this.P1.WorldPoint), () => new List<ASequencedAction>()
+                new AIWarpActionV2(InvolvedInteractiveObject, this.P1.WorldPoint, () => new List<ASequencedAction>()
                 {
                     new BranchInfiniteLoopAction(
                         new List<ASequencedAction>()

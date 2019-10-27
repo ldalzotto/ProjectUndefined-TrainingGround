@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using SelectableObjects_Interfaces;
+﻿using SelectableObjects_Interfaces;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -7,14 +6,14 @@ namespace SelectableObject
 {
     internal class SelectableObjectRendererManager
     {
-        private CoreMaterialConfiguration CoreMaterialConfiguration;
+        private SelectableObjectsConfiguration SelectableObjectsConfiguration;
         private SelectableObjectIconAnimation SelectableObjectIconAnimation;
 
         private MaterialPropertyBlock SelectionDoticonMaterialProperty;
 
-        public SelectableObjectRendererManager(CoreMaterialConfiguration CoreMaterialConfiguration)
+        public SelectableObjectRendererManager()
         {
-            this.CoreMaterialConfiguration = CoreMaterialConfiguration;
+            this.SelectableObjectsConfiguration = SelectableObjectsConfigurationGameObject.Get().SelectableObjectsConfiguration;
             CommandBufer = new CommandBuffer();
             CommandBufer.name = GetType().Name;
 
@@ -39,17 +38,17 @@ namespace SelectableObject
                 if (!averageBoundsLocalSpace.IsNull())
                 {
                     if (hasMultipleAvailableSelectionObjects)
-                        SelectionDoticonMaterialProperty.SetTexture("_MainTex", CoreMaterialConfiguration.SelectionDotSwitchIconTexture);
+                        SelectionDoticonMaterialProperty.SetTexture("_MainTex", SelectableObjectsConfiguration.SelectionDotSwitchIconTexture);
                     else
-                        SelectionDoticonMaterialProperty.SetTexture("_MainTex", CoreMaterialConfiguration.SelectionDotIconTexture);
+                        SelectionDoticonMaterialProperty.SetTexture("_MainTex", SelectableObjectsConfiguration.SelectionDotIconTexture);
 
                     var targetTransform = currentSelectedObject.GetTransform();
 
                     //icon
-                    CommandBufer.DrawMesh(CoreMaterialConfiguration.ForwardPlane,
+                    CommandBufer.DrawMesh(SelectableObjectsConfiguration.ForwardPlane,
                         Matrix4x4.TRS(targetTransform.position + Vector3.Project(new Vector3(0, averageBoundsLocalSpace.SideDistances.y * 0.5f, 0), targetTransform.up),
                             Quaternion.LookRotation(Camera.main.transform.position - targetTransform.position) * Quaternion.Euler(0, 0, SelectableObjectIconAnimation.GetRotationAngleDeg()), Vector3.one * SelectableObjectIconAnimation.GetIconScale()),
-                        CoreMaterialConfiguration.SelectionDoticonMaterial,
+                        SelectableObjectsConfiguration.SelectionDoticonMaterial,
                         0, 0, SelectionDoticonMaterialProperty);
                 }
             }

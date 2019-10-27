@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
 using SequencedAction;
+using UnityEngine;
 
 namespace AIObjects
 {
@@ -42,7 +43,7 @@ namespace AIObjects
                 this.InteractiveObject.SetAIDestination(new AIDestination
                 {
                     WorldPosition = this.WorldPoint.WorldPosition,
-                    Rotation = this.WorldPoint.WorldRotation
+                    Rotation = Quaternion.Euler(this.WorldPoint.WorldRotationEuler)
                 });
                 this.InteractiveObject.SetAISpeedAttenuationFactor(this.AIMovementSpeed);
             }

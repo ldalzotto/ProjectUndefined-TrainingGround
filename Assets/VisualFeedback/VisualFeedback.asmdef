@@ -5,7 +5,8 @@
 "OdinSerializer",
 "CoreGame",
 "InteractiveObjects",
-"InteractiveObjects_Interfaces"
+"InteractiveObjects_Interfaces",
+"Unity.RenderPipelines.Lightweight.Runtime"
 ],
     "includePlatforms": [],
     "excludePlatforms": [],

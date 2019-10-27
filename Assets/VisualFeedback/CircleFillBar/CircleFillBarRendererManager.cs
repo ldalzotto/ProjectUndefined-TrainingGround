@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using CoreGame;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace CoreGame
+namespace VisualFeedback
 {
     public class CircleFillBarRendererManager : GameSingleton<CircleFillBarRendererManager>
     {
         #region External Dependencies
-        private CoreMaterialConfiguration CoreMaterialConfiguration;
-        private CorePrefabConfiguration CorePrefabConfiguration;
+
+        private CircleFillBarConfiguration CircleFillBarConfiguration;
+
         #endregion
 
         private List<CircleFillBarType> CircleFillBarTypeToRender = new List<CircleFillBarType>();
@@ -20,11 +22,10 @@ namespace CoreGame
         {
             this.CommandBuffer = new CommandBuffer();
             this.CommandBuffer.name = this.GetType().Name;
-            
+
             this.materialProperty = new MaterialPropertyBlock();
 
-            this.CorePrefabConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration;
-            this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
+            this.CircleFillBarConfiguration = CircleFillBarConfigurationGameObject.Get().CircleFillBarConfiguration;
         }
 
 
@@ -37,12 +38,13 @@ namespace CoreGame
                 if (circleFillBarType.CurrentProgression != 0f)
                 {
                     this.materialProperty.SetFloat(Shader.PropertyToID("_Progression"), circleFillBarType.CurrentProgression);
-                    this.CommandBuffer.DrawMesh(this.CorePrefabConfiguration.ForwardQuadMesh, circleFillBarType.transform.localToWorldMatrix, this.CoreMaterialConfiguration.CircleProgressionMaterial, 0, 0, materialProperty);
+                    this.CommandBuffer.DrawMesh(this.CircleFillBarConfiguration.ForwardQuadMesh, circleFillBarType.transform.localToWorldMatrix, this.CircleFillBarConfiguration.CircleProgressionMaterial, 0, 0, materialProperty);
                 }
             }
         }
 
         #region External Event
+
         public void OnCircleFillBarTypeCreated(CircleFillBarType CircleFillBarTypeRef)
         {
             this.CircleFillBarTypeToRender.Add(CircleFillBarTypeRef);
@@ -52,6 +54,7 @@ namespace CoreGame
         {
             this.CircleFillBarTypeToRender.Remove(CircleFillBarTypeRef);
         }
+
         #endregion
     }
 }
