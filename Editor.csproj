@@ -118,7 +118,7 @@
      <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\PatrollingGraph\AIPatrolGraphV2CustomEditor.cs" />
+     <Compile Include="Assets\Editor\GameCustomEditors\PatrollingGraph\ASequencedActionCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
@@ -801,6 +801,10 @@
     <ProjectReference Include="AnimatorPlayable.csproj">
       <Project>{00DCCEBF-15A4-1F84-23B7-1B0D3901D4D1}</Project>
       <Name>AnimatorPlayable</Name>
+    </ProjectReference>
+    <ProjectReference Include="SequencedAction.csproj">
+      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
+      <Name>SequencedAction</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

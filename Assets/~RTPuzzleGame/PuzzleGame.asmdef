@@ -24,7 +24,8 @@
 "VisualFeedback",
 "SequencedAction",
 "InteractiveObject_Animation",
-"AnimatorPlayable"
+"AnimatorPlayable",
+"SequencedAction_Editor_Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

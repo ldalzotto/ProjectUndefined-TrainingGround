@@ -62,6 +62,8 @@
      <Compile Include="Assets\SequencedAction\Managers\SequencedActionManager.cs" />
      <Compile Include="Assets\SequencedAction\Managers\SequencedActionPlayer.cs" />
      <Compile Include="Assets\SequencedAction\SequencedAction\ASequencedAction.cs" />
+     <Compile Include="Assets\SequencedAction\SequencedAction\SequencedActionTags.cs" />
+     <Compile Include="Assets\SequencedAction\SequencedGraph\ASequencedActionGraph.cs" />
      <None Include="Assets\SequencedAction\SequencedAction.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

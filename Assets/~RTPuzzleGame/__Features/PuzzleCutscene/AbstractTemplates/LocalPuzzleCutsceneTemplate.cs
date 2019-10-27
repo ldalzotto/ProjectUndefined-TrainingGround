@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using InteractiveObjects;
-using OdinSerializer;
 using SequencedAction;
 
 namespace RTPuzzle
 {
     [Serializable]
-    public abstract class LocalPuzzleCutsceneTemplate : SerializedScriptableObject
+    public abstract class LocalPuzzleCutsceneTemplate : ASequencedActionGraph
     {
         public abstract List<ASequencedAction> GetSequencedActions(CoreInteractiveObject associatedInteractiveObject);
     }

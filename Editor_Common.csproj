@@ -70,7 +70,6 @@
      <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\NodeProfile.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\CustomEnum.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\IncludeConfiguration.cs" />
-     <Compile Include="Assets\Editor_Common\PropertyAttributes\GraphPatrol\GraphPatrolCustomAttributes.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\List\ReorderableListAttribute.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\ModuleMetadata\ModuleMetadata.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\Object\Foldable.cs" />
@@ -83,6 +82,7 @@
      <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\DrawNestedAttribute.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\SceneHandleDrawAttribute.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireArcAttribute.cs" />
+     <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireArrowAttribute.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireBoxAttribute.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireCircleAttribute.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireDirectionalLineAttribute.cs" />

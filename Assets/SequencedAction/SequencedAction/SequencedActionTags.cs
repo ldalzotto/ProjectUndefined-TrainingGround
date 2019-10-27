@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace AIObjects
+﻿namespace SequencedAction
 {
     public interface IActionAbortedOnDestinationReached
     {

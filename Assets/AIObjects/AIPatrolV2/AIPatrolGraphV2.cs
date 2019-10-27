@@ -4,13 +4,13 @@ using InteractiveObjects;
 using InteractiveObjects_Interfaces;
 using OdinSerializer;
 using SequencedAction;
+using SequencedAction_Editor_Common;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace AIObjects
 {
     [Serializable]
-    public abstract class AIPatrolGraphV2 : SerializedScriptableObject
+    public abstract class AIPatrolGraphV2 : ASequencedActionGraph
     {
         public abstract List<ASequencedAction> AIPatrolGraphActions(CoreInteractiveObject InvolvedInteractiveObject);
 
@@ -23,7 +23,7 @@ namespace AIObjects
     [Serializable]
     public class AIMoveToActionInputData
     {
-        public TransformStruct WorldPoint;
+        [MultiplePointMovementAware] public TransformStruct WorldPoint;
         public AIMovementSpeedDefinition AIMovementSpeed;
 
         public Vector3 GetWorldPosition()

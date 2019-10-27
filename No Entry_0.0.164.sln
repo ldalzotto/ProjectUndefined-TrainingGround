@@ -39,8 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualFeedback", "VisualFee
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests.csproj", "{2E0DF170-5586-5B9F-1D17-9336702E6605}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AIObjects_Interfaces", "AIObjects_Interfaces.csproj", "{CF735CB0-C5CB-A323-C268-DF03C71F31A0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Obstacle", "Obstacle.csproj", "{A56A5795-1CB9-EF28-85DE-67DC873B52CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence.csproj", "{A4906D6E-AF6D-3124-2AC7-89DF2A42A701}"
@@ -63,9 +61,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerActions_Interfaces", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LevelManagement_Interfaces", "LevelManagement_Interfaces.csproj", "{A57781E4-D853-FCD5-B604-158EA14A06F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequencedAction_Editor_Common", "SequencedAction_Editor_Common.csproj", "{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor.csproj", "{2DD87826-BED4-3147-BE7B-C30240F79B63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timelines_Editor", "Timelines_Editor.csproj", "{B7BD2216-F0C9-03D9-EF37-5B367A553DB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequencedAction_Editor", "SequencedAction_Editor.csproj", "{C92031C8-8EB9-945A-7B11-502A70CB1BF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,10 +151,6 @@ Global
 		{2E0DF170-5586-5B9F-1D17-9336702E6605}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E0DF170-5586-5B9F-1D17-9336702E6605}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E0DF170-5586-5B9F-1D17-9336702E6605}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF735CB0-C5CB-A323-C268-DF03C71F31A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF735CB0-C5CB-A323-C268-DF03C71F31A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF735CB0-C5CB-A323-C268-DF03C71F31A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF735CB0-C5CB-A323-C268-DF03C71F31A0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A56A5795-1CB9-EF28-85DE-67DC873B52CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A56A5795-1CB9-EF28-85DE-67DC873B52CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A56A5795-1CB9-EF28-85DE-67DC873B52CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -197,6 +195,10 @@ Global
 		{A57781E4-D853-FCD5-B604-158EA14A06F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A57781E4-D853-FCD5-B604-158EA14A06F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A57781E4-D853-FCD5-B604-158EA14A06F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DD87826-BED4-3147-BE7B-C30240F79B63}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -205,6 +207,10 @@ Global
 		{B7BD2216-F0C9-03D9-EF37-5B367A553DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7BD2216-F0C9-03D9-EF37-5B367A553DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7BD2216-F0C9-03D9-EF37-5B367A553DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C92031C8-8EB9-945A-7B11-502A70CB1BF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C92031C8-8EB9-945A-7B11-502A70CB1BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C92031C8-8EB9-945A-7B11-502A70CB1BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C92031C8-8EB9-945A-7B11-502A70CB1BF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

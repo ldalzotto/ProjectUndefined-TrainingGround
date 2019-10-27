@@ -10,7 +10,8 @@
         "VisualFeedback",
         "SequencedAction",
         "InteractiveObject_Animation",
-        "AIObjects_Interfaces"
+        "AIObjects_Interfaces",
+"SequencedAction_Editor_Common"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,6 +1,10 @@
 {
     "name": "SequencedAction_Editor",
-    "references": [],
+    "references": [
+        "CoreGame",
+        "Editor",
+"SequencedAction_Editor_Common"
+    ],
     "includePlatforms": [
         "Editor"
     ],

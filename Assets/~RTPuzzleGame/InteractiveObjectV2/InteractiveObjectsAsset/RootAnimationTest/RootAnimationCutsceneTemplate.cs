@@ -11,7 +11,7 @@ namespace InteractiveObjects
     [SceneHandleDraw]
     public class RootAnimationCutsceneTemplate : LocalPuzzleCutsceneTemplate
     {
-        [GraphPatrolPointAttribute(R = 0f, G = 1f, B = 0f)] [GraphPatrolLine(fieldTargetWorldPosition: nameof(RootAnimationCutsceneTemplate.MovePoint))]
+        [WireCircleWorld(R = 0f, G = 1f, B = 0f, UseTransform = false, PositionFieldName = nameof(RootAnimationCutsceneTemplate.StartPoint))] [WireArrow(SourceFieldName = nameof(RootAnimationCutsceneTemplate.StartPoint), TargetFieldName = nameof(RootAnimationCutsceneTemplate.MovePoint))]
         public AIMoveToActionInputData StartPoint;
 
         public AIMoveToActionInputData MovePoint;

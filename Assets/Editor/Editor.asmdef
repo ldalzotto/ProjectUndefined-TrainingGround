@@ -16,7 +16,8 @@
 "AIObjects",
 "VisualFeedback",
 "Persistence",
-"AnimatorPlayable"
+"AnimatorPlayable",
+"SequencedAction"
   ],
   "includePlatforms": [
     "Editor"

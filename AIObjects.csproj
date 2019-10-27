@@ -654,9 +654,9 @@
       <Project>{0E88EFEB-BC03-DBFA-6206-66F073959B55}</Project>
       <Name>InteractiveObject_Animation</Name>
     </ProjectReference>
-    <ProjectReference Include="AIObjects_Interfaces.csproj">
-      <Project>{CF735CB0-C5CB-A323-C268-DF03C71F31A0}</Project>
-      <Name>AIObjects_Interfaces</Name>
+    <ProjectReference Include="SequencedAction_Editor_Common.csproj">
+      <Project>{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}</Project>
+      <Name>SequencedAction_Editor_Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
