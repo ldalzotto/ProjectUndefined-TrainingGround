@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\SequencedAction\SequencedAction_Editor\ASequencedActionCustomEditor.cs" />
      <Compile Include="Assets\SequencedAction\SequencedAction_Editor\MultiplePointMovementEditor.cs" />
      <None Include="Assets\SequencedAction\SequencedAction_Editor\SequencedAction_Editor.asmdef" />
  <Reference Include="UnityEditor.UI">
@@ -628,6 +629,10 @@
     <ProjectReference Include="Editor.csproj">
       <Project>{2DD87826-BED4-3147-BE7B-C30240F79B63}</Project>
       <Name>Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="SequencedAction.csproj">
+      <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
+      <Name>SequencedAction</Name>
     </ProjectReference>
     <ProjectReference Include="SequencedAction_Editor_Common.csproj">
       <Project>{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}</Project>

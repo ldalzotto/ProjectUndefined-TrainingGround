@@ -118,7 +118,6 @@
      <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\PatrollingGraph\ASequencedActionCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />

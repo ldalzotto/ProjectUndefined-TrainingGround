@@ -3,6 +3,7 @@
     "references": [
         "CoreGame",
         "Editor",
+"SequencedAction",
 "SequencedAction_Editor_Common"
     ],
     "includePlatforms": [
