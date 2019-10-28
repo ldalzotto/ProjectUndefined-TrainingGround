@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace CoreGame
 {
-    public class DiscussionWindow : MonoBehaviour, DiscussionWindowOnTextFinishedWritingListener, DiscussionHeightChangeListener
+    public class DiscussionWindow : MonoBehaviour, DiscussionWindowOnTextFinishedWritingListener
     {
         public Material TestMaterial;
         public Texture2D DebugTexture;
@@ -122,7 +122,7 @@ namespace CoreGame
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
             this.currentDiscussionText = new ProceduralText(text /*, new GeneratedTextParameter(InputParameters, CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration())*/, GeneratedTextDimensionsComponent,
-                this, this.textAreaText);
+                this.textAreaText);
             this.currentDiscussionText.CalculateCurrentPage();
             this.OnDiscussionStartWriting();
         }

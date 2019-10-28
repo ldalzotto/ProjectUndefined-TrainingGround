@@ -52,7 +52,7 @@ namespace RTPuzzle
             if (ShowDiscussionWindow)
             {
                 ShowDiscussionWindow = false;
-                this.ProceduralText = new ProceduralText(this.TextDisplayed, this.GeneratedTextDimensionsComponent, null, this.TextObject);
+                this.ProceduralText = new ProceduralText(this.TextDisplayed, this.GeneratedTextDimensionsComponent, this.TextObject);
                 this.ProceduralText.CalculateCurrentPage();
             }
 

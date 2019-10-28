@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using Test.ProceduralTextTest;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,32 +10,42 @@ public class RectTransformSize : MonoBehaviour
     public bool Generate;
     public bool MoveToNext;
     public RectTransform ParentTransform;
-    public Image ParentImage;
     public Text TextUI;
     public string TextToDisplay;
     public GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
     private ProceduralText ProceduralText;
+    public ProceduralTextWindowDefinition ProceduralTextWindowDefinition;
+
+
+    private ProceduralTextWindow ProceduralTextWindow;
+
+    private void Start()
+    {
+        this.ProceduralTextWindow = new ProceduralTextWindow(FindObjectOfType<Canvas>().gameObject, this.ProceduralTextWindowDefinition);
+        this.ProceduralTextWindow.SetTransformPosition(new Vector2(Screen.width / 2f, Screen.height / 2f));
+        this.ProceduralTextWindow.CalculateCurrentPage();
+    }
 
     void Update()
     {
         if (Generate)
         {
             Generate = false;
-            this.ProceduralText = new ProceduralText(this.TextToDisplay, this.GeneratedTextDimensionsComponent, null, this.TextUI);
+            this.ProceduralText = new ProceduralText(this.TextToDisplay, this.GeneratedTextDimensionsComponent, this.TextUI);
             this.ProceduralText.CalculateCurrentPage();
         }
 
         if (MoveToNext)
         {
             MoveToNext = false;
-            this.ProceduralText.MoveToNextPage();
+            this.ProceduralTextWindow.MoveToNextPage();
         }
+
+        this.ProceduralTextWindow.Increment();
 
         if (this.ProceduralText != null)
         {
             this.ProceduralText.Increment();
-            var sd = (this.ParentImage.transform as RectTransform).sizeDelta;
-            (this.ParentImage.transform as RectTransform).sizeDelta = new Vector2(this.ProceduralText.GetWindowWidth(), this.ProceduralText.GetWindowHeight());
             (this.TextUI.transform as RectTransform).sizeDelta = new Vector2(this.ProceduralText.GetWindowWidth(), this.ProceduralText.GetWindowHeight());
 
             var oldAnchorMax = ParentTransform.anchorMax;

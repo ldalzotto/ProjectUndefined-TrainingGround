@@ -34,8 +34,7 @@ namespace CoreGame
 
         #endregion
 
-        public ProceduralText(string initialRawText /*,  GeneratedTextParameter GeneratedTextParameter*/, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent,
-            DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText)
+        public ProceduralText(string initialRawText /*,  GeneratedTextParameter GeneratedTextParameter*/, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent, Text textAreaText)
         {
             this.initialRawText = initialRawText;
             this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
@@ -48,7 +47,7 @@ namespace CoreGame
             #endregion
 
             this.textDimensions = new GeneratedTextDimensions(GeneratedTextDimensionsComponent);
-            this.TextPlayerEngine = new TextPlayerEngine(GeneratedTextDimensionsComponent, this.textDimensions, DiscussionHeightChangeListener);
+            this.TextPlayerEngine = new TextPlayerEngine(GeneratedTextDimensionsComponent, this.textDimensions);
 
             this.TextMesh = new TextMesh(textAreaText);
         }
@@ -168,14 +167,12 @@ namespace CoreGame
 
         private GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
         private GeneratedTextDimensions GeneratedTextDimensions;
-        private DiscussionHeightChangeListener DiscussionHeightChangeListener;
 
         public TextPlayerEngine(GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent,
-            GeneratedTextDimensions GeneratedTextDimensions, DiscussionHeightChangeListener DiscussionHeightChangeListener)
+            GeneratedTextDimensions GeneratedTextDimensions)
         {
             this.GeneratedTextDimensionsComponent = GeneratedTextDimensionsComponent;
             this.GeneratedTextDimensions = GeneratedTextDimensions;
-            this.DiscussionHeightChangeListener = DiscussionHeightChangeListener;
             // this.TransformedParameterCounterTracker = new TransformedParameterCounterTracker();
         }
 
@@ -221,11 +218,6 @@ namespace CoreGame
         {
             return currentDisplayedTextUnModified.Length != targetText.Length;
         }
-    }
-
-    public interface DiscussionHeightChangeListener
-    {
-        void OnHeightChange(float newHeight);
     }
 
     public class TextMesh

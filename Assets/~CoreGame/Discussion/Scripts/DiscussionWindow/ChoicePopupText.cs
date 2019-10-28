@@ -19,7 +19,7 @@ namespace CoreGame
             discussionChoice = choice;
             var DiscussionTextInherentData = DiscussionTextConfiguration.ConfigurationInherentData[choice.Text];
             this._proceduralText = new ProceduralText(DiscussionTextInherentData.Text /*, new GeneratedTextParameter(DiscussionTextInherentData.InputParameters.AsReadOnly(), null)*/,
-                GeneratedTextDimensionsComponent, null, text);
+                GeneratedTextDimensionsComponent, text);
             this._proceduralText.GenerateAndDisplayAllText();
         }
 
