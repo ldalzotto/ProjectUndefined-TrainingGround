@@ -25,7 +25,8 @@
 "SequencedAction",
 "InteractiveObject_Animation",
 "AnimatorPlayable",
-"SequencedAction_Editor_Common"
+"SequencedAction_Editor_Common",
+"TextMesh"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

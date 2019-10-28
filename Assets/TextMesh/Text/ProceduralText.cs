@@ -7,84 +7,121 @@ using UnityEngine.UI;
 
 namespace CoreGame
 {
-    public class GeneratedText
+    public class ProceduralText
     {
-        private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
+        private char[] TrimmedCharForSanitaze = new char[] {' ', '\n'};
 
         #region State
+
         private string initialRawText;
         private string transformedInitialRawText;
         private string overlappedText;
         private List<string> linedTruncatedText;
+
         #endregion
 
         #region Internal Managers
+
         #region Parameters management
-        private GeneratedTextParameter DiscussionTextParameter;
+
+        //  private GeneratedTextParameter DiscussionTextParameter;
+
         #endregion
+
         private TextMesh TextMesh;
         private GeneratedTextDimensions textDimensions;
         private TextPlayerEngine TextPlayerEngine;
+
         #endregion
 
-        public GeneratedText(string initialRawText, GeneratedTextParameter GeneratedTextParameter, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent,
-                DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText)
+        public ProceduralText(string initialRawText /*,  GeneratedTextParameter GeneratedTextParameter*/, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent,
+            DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText)
         {
             this.initialRawText = initialRawText;
             this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
 
             #region Special Character Image mapping
-            this.DiscussionTextParameter = GeneratedTextParameter;
-            this.transformedInitialRawText = this.DiscussionTextParameter.ParseParameters(this.transformedInitialRawText);
+
+            //  this.DiscussionTextParameter = GeneratedTextParameter;
+            //   this.transformedInitialRawText = this.DiscussionTextParameter.ParseParameters(this.transformedInitialRawText);
+
             #endregion
 
             this.textDimensions = new GeneratedTextDimensions(GeneratedTextDimensionsComponent);
             this.TextPlayerEngine = new TextPlayerEngine(GeneratedTextDimensionsComponent, this.textDimensions, DiscussionHeightChangeListener);
 
-            this.TextMesh = new TextMesh(textAreaText, GeneratedTextDimensionsComponent);
+            this.TextMesh = new TextMesh(textAreaText);
         }
 
         #region Data Retrieval
-        public List<string> LinedTruncatedText { get => linedTruncatedText; }
-        public string OverlappedText { get => overlappedText; }
 
-        public float GetWindowHeight(int lineNb) { return this.textDimensions.GetWindowHeight(lineNb, this.TextMesh); }
-        public int GetDisplayedLineNb() { return this.TextPlayerEngine.DisplayedLineNb; }
-        public float GetWindowWidth() { return this.textDimensions.GetMaxWindowWidth(); }
+        public List<string> LinedTruncatedText
+        {
+            get => linedTruncatedText;
+        }
+
+        public string OverlappedText
+        {
+            get => overlappedText;
+        }
+
+        public float GetWindowHeight(int lineNb)
+        {
+            return this.textDimensions.GetWindowHeight(this.TextMesh);
+        }
+
+        public float GetWindowHeight()
+        {
+            return this.textDimensions.GetWindowHeight(this.TextMesh);
+        }
+
+        public float GetWindowWidth()
+        {
+            return this.textDimensions.GetWindowWidth(this.TextMesh);
+        }
+
         #endregion
 
         #region Writing
+
         public void Increment()
         {
-            this.TextPlayerEngine.Increment(this.TextMesh, this.DiscussionTextParameter);
+            this.TextPlayerEngine.Increment(this.TextMesh /*, this.DiscussionTextParameter*/);
         }
+
         #endregion
 
         #region Logical Conditions
-        public bool IsAllowedToIncrementEngine()
+
+        public bool IsDisplayEngineFinished()
         {
-            return this.TextPlayerEngine.IsAllowedToIncrementEngine();
+            return this.TextPlayerEngine.IsDisplayEngineFinished();
         }
+
         #endregion
 
         #region External Events
-        public void OnDiscussionContinue()
+
+        public void MoveToNextPage()
         {
-            this.DiscussionTextParameter.OnDiscussionContinue();
+            //   this.DiscussionTextParameter.OnDiscussionContinue();
             this.transformedInitialRawText = this.overlappedText;
             this.overlappedText = string.Empty;
             this.linedTruncatedText.Clear();
             this.TextMesh.Clear();
+            this.CalculateCurrentPage();
         }
 
         public void OnDiscussionTerminated()
         {
-            this.DiscussionTextParameter.OnDiscussionTerminated();
+            // this.DiscussionTextParameter.OnDiscussionTerminated();
         }
+
         #endregion
 
         #region Entry points
-        public void ComputeTruncatedText()
+
+        public void CalculateCurrentPage()
         {
             var generatedText = this.TextMesh.ForceRefreshInternalGeneration(this.transformedInitialRawText, new Vector2(this.textDimensions.GetMaxWindowWidth(), this.textDimensions.GetMaxWindowHeight(this.TextMesh)));
 
@@ -99,7 +136,8 @@ namespace CoreGame
             for (int i = 0; i < generatedText.lines.Count; i++)
             {
                 int startIndex = generatedText.lines[i].startCharIdx;
-                int endIndex = (i == generatedText.lines.Count - 1) ? truncatedText.Length
+                int endIndex = (i == generatedText.lines.Count - 1)
+                    ? truncatedText.Length
                     : generatedText.lines[i + 1].startCharIdx;
                 int length = endIndex - startIndex;
 
@@ -113,16 +151,19 @@ namespace CoreGame
 
         public void GenerateAndDisplayAllText()
         {
-            this.ComputeTruncatedText();
-            this.TextPlayerEngine.RenderEverything(this.TextMesh, this.DiscussionTextParameter);
+            this.CalculateCurrentPage();
+            this.TextPlayerEngine.RenderEverything(this.TextMesh /*, this.DiscussionTextParameter*/);
         }
+
         #endregion
     }
 
     public class TextPlayerEngine
     {
         #region Trackers
-        private TransformedParameterCounterTracker TransformedParameterCounterTracker;
+
+        //   private TransformedParameterCounterTracker TransformedParameterCounterTracker;
+
         #endregion
 
         private GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
@@ -135,28 +176,26 @@ namespace CoreGame
             this.GeneratedTextDimensionsComponent = GeneratedTextDimensionsComponent;
             this.GeneratedTextDimensions = GeneratedTextDimensions;
             this.DiscussionHeightChangeListener = DiscussionHeightChangeListener;
-            this.TransformedParameterCounterTracker = new TransformedParameterCounterTracker();
+            // this.TransformedParameterCounterTracker = new TransformedParameterCounterTracker();
         }
 
         private string targetText;
         private string currentDisplayedTextUnModified;
-        private int displayedLineNb;
 
-        public int DisplayedLineNb { get => displayedLineNb; }
 
-        public void StartWriting(GeneratedText discussionText)
+        public void StartWriting(ProceduralText discussionText)
         {
             this.targetText = String.Join("\n", discussionText.LinedTruncatedText.ToArray());
             this.currentDisplayedTextUnModified = String.Empty;
-            this.displayedLineNb = 1;
         }
 
-        public void Increment(TextMesh TextMesh, GeneratedTextParameter DiscussionTextParameter)
+        public void Increment(TextMesh TextMesh /*, GeneratedTextParameter DiscussionTextParameter*/)
         {
             var parameterNbInThisIncrement = 0;
             if (currentDisplayedTextUnModified.Length < targetText.Length)
             {
-                var stringToAdd = DiscussionTextParameter.GetFullTransformedParameterTemplate(targetText[currentDisplayedTextUnModified.Length]);
+                var stringToAdd = targetText[currentDisplayedTextUnModified.Length].ToString();
+                // var stringToAdd = DiscussionTextParameter.GetFullTransformedParameterTemplate(targetText[currentDisplayedTextUnModified.Length]);
 
                 for (var i = 0; i < stringToAdd.Length; i++)
                 {
@@ -164,35 +203,24 @@ namespace CoreGame
                     currentDisplayedTextUnModified += stringToAdd[i];
                 }
 
-                parameterNbInThisIncrement = Math.Max(parameterNbInThisIncrement, DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh, this.TransformedParameterCounterTracker));
+                //   parameterNbInThisIncrement = Math.Max(parameterNbInThisIncrement, DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh, this.TransformedParameterCounterTracker));
 
-                var newDisplayedLineNb = Mathf.Min(this.currentDisplayedTextUnModified.Split('\n').Length, this.GeneratedTextDimensionsComponent.MaxLineDisplayed);
-                if (newDisplayedLineNb != this.displayedLineNb)
-                {
-                    if (this.DiscussionHeightChangeListener != null)
-                    {
-                        this.DiscussionHeightChangeListener.OnHeightChange(this.GeneratedTextDimensions.GetWindowHeight(newDisplayedLineNb, TextMesh));
-                    }
-                }
-                this.displayedLineNb = newDisplayedLineNb;
-
-                this.TransformedParameterCounterTracker.OnDiscussionEngineIncremented(this, parameterNbInThisIncrement);
+                //       this.TransformedParameterCounterTracker.OnDiscussionEngineIncremented(this, parameterNbInThisIncrement);
             }
         }
 
-        public void RenderEverything(TextMesh TextMesh, GeneratedTextParameter DiscussionTextParameter)
+        public void RenderEverything(TextMesh TextMesh /*, GeneratedTextParameter DiscussionTextParameter*/)
         {
-            while(currentDisplayedTextUnModified.Length != targetText.Length)
+            while (currentDisplayedTextUnModified.Length != targetText.Length)
             {
-                this.Increment(TextMesh, DiscussionTextParameter);
+                this.Increment(TextMesh /*, DiscussionTextParameter*/);
             }
         }
 
-        public bool IsAllowedToIncrementEngine()
+        public bool IsDisplayEngineFinished()
         {
             return currentDisplayedTextUnModified.Length != targetText.Length;
         }
-
     }
 
     public interface DiscussionHeightChangeListener
@@ -202,8 +230,6 @@ namespace CoreGame
 
     public class TextMesh
     {
-        private GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
-
         private CanvasRenderer canvasRenderer;
         private TextGenerationSettings textGenerationSettings;
         private TextGenerator textGenerator;
@@ -213,21 +239,20 @@ namespace CoreGame
         private string lastMeshedText;
 
         private Mesh mesh;
+        private MeshDimensions MeshDimensions;
 
-        public TextMesh(Text text, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent)
+        public TextMesh(Text text)
         {
             this.canvasRenderer = text.canvasRenderer;
-            this.GeneratedTextDimensionsComponent = GeneratedTextDimensionsComponent;
-
             this.textGenerationSettings = text.GetGenerationSettings(Vector2.zero);
             this.textGenerator = new TextGenerator();
             this.textGenerator.Invalidate();
             this.mesh = new Mesh();
+            this.MeshDimensions = new MeshDimensions();
             this.textColor = text.color;
 
             text.enabled = false;
             this.canvasRenderer.SetMaterial(text.font.material, null);
-
         }
 
         public TextGenerator ForceRefreshInternalGeneration(string text, Nullable<Vector2> unmargedExtends = null)
@@ -235,9 +260,7 @@ namespace CoreGame
             this.textGenerator.Invalidate();
             if (unmargedExtends.HasValue)
             {
-                this.textGenerationSettings.generationExtents = unmargedExtends.Value
-                    + new Vector2(-GeneratedTextDimensionsComponent.MarginLeft - GeneratedTextDimensionsComponent.MarginRight,
-                                               -GeneratedTextDimensionsComponent.MarginUp - GeneratedTextDimensionsComponent.MarginDown);
+                this.textGenerationSettings.generationExtents = unmargedExtends.Value;
             }
 
             this.textGenerator.Populate(text, this.TextGenerationSettings);
@@ -264,6 +287,11 @@ namespace CoreGame
                 newColors[((this.lastMeshedText.Length - 1) * 4) + 2] = this.textColor;
                 newColors[((this.lastMeshedText.Length - 1) * 4) + 3] = this.textColor;
 
+                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4)]);
+                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4) + 1]);
+                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4) + 2]);
+                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4) + 3]);
+
                 this.mesh.colors = newColors;
 
                 this.canvasRenderer.SetMesh(this.mesh);
@@ -288,6 +316,7 @@ namespace CoreGame
                     });
                 }
             }
+
             return foundVertices;
         }
 
@@ -309,24 +338,39 @@ namespace CoreGame
                 triangles[startTriangleIndex++] = startVerticeIndex + 2;
                 triangles[startTriangleIndex] = startVerticeIndex + 3;
             }
+
             mesh.triangles = triangles;
-            mesh.RecalculateBounds();
         }
 
         public Transform Transform
         {
-            get
-            {
-                return this.canvasRenderer.transform;
-            }
+            get { return this.canvasRenderer.transform; }
         }
 
-        public TextGenerationSettings TextGenerationSettings { get => textGenerationSettings; }
-        public CanvasRenderer CanvasRenderer { get => canvasRenderer; }
+        public TextGenerationSettings TextGenerationSettings
+        {
+            get => textGenerationSettings;
+        }
+
+        public CanvasRenderer CanvasRenderer
+        {
+            get => canvasRenderer;
+        }
+
+        public float GetMeshWidth()
+        {
+            return this.MeshDimensions.Width;
+        }
+
+        public float GetMeshHeight()
+        {
+            return this.MeshDimensions.Height;
+        }
 
         public void Clear()
         {
             this.mesh.Clear();
+            this.MeshDimensions.Clear();
         }
     }
 
@@ -345,6 +389,41 @@ namespace CoreGame
         public float Width()
         {
             return Mathf.Abs(this.TopRight.x - this.TopLeft.x);
+        }
+    }
+
+    class MeshDimensions
+    {
+        private float MinY;
+        private float MaxY;
+
+        private float MinX;
+        private float MaxX;
+
+        public float Height { get; private set; }
+        public float Width { get; private set; }
+
+        public void OnLetterVerticesShowed(Vector2 verticePosition)
+        {
+            this.MinX = Mathf.Min(this.MinX, verticePosition.x);
+            this.MaxX = Mathf.Max(this.MaxX, verticePosition.x);
+
+            this.Width = Mathf.Abs(MaxX - MinX);
+
+            this.MinY = Mathf.Min(this.MinY, verticePosition.y);
+            this.MaxY = Mathf.Max(this.MaxY, verticePosition.y);
+
+            this.Height = Mathf.Abs(MaxY - MinY);
+        }
+
+        public void Clear()
+        {
+            this.Width = 0f;
+            this.MinX = 0f;
+            this.MaxX = 0f;
+            this.Height = 0f;
+            this.MinY = 0f;
+            this.MaxY = 0f;
         }
     }
 }

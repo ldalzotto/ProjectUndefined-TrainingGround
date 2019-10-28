@@ -736,6 +736,10 @@
       <Project>{0D0A264B-1D3D-7B14-5E92-5228B7ECB71D}</Project>
       <Name>SequencedAction_Editor_Common</Name>
     </ProjectReference>
+    <ProjectReference Include="TextMesh.csproj">
+      <Project>{A8C85C7F-A9C4-1162-A549-6BC528F2F0F2}</Project>
+      <Name>TextMesh</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

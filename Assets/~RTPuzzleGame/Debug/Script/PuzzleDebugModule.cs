@@ -1,5 +1,7 @@
+using CoreGame;
 using LevelManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RTPuzzle
 {
@@ -19,15 +21,24 @@ namespace RTPuzzle
         }
 
 
-        public bool InstantProjectileHit;
         public bool TriggerLevelSuccessEvent;
 
 
+        /*
+         *        public ProceduralText(string initialRawText ,  GeneratedTextParameter GeneratedTextParameter, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent,
+            //DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText)
+         * 
+         */
+
+        public bool ShowDiscussionWindow;
+        public string TextDisplayed;
+        public GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
+        public Text TextObject;
+        public DiscussionTextInherentData DiscussionTextInherentData;
+        private ProceduralText ProceduralText;
+
         public void Init()
         {
-            if (InstantProjectileHit)
-            {
-            }
         }
 
         public void Tick()
@@ -36,6 +47,18 @@ namespace RTPuzzle
             {
                 LevelAvailabilityTimelineEventManager.Get().OnLevelCompleted();
                 TriggerLevelSuccessEvent = false;
+            }
+
+            if (ShowDiscussionWindow)
+            {
+                ShowDiscussionWindow = false;
+                this.ProceduralText = new ProceduralText(this.TextDisplayed, this.GeneratedTextDimensionsComponent, null, this.TextObject);
+                this.ProceduralText.CalculateCurrentPage();
+            }
+
+            if (this.ProceduralText != null)
+            {
+                this.ProceduralText.Increment();
             }
         }
 #endif

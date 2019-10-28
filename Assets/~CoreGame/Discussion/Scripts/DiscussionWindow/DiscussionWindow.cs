@@ -1,35 +1,40 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CoreGame
 {
-
     public class DiscussionWindow : MonoBehaviour, DiscussionWindowOnTextFinishedWritingListener, DiscussionHeightChangeListener
     {
         public Material TestMaterial;
         public Texture2D DebugTexture;
 
         #region Constants
+
         private const string TEXT_AREA_OBJECT_NAME = "TextArea";
         private const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
         private const string WORKFLOW_ICON_IMAGE_CONTAINER_NAME = "WorkflowIconImageContainer";
+
         #endregion
-        
+
         public DiscussionWriterComponent DiscussionWriterComponent;
         public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
         public GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
-        
+
         #region Instance
+
         public static DiscussionWindow Instanciate(Canvas canvas)
         {
-            return MonoBehaviour.Instantiate(CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration.DiscussionUIPrefab, canvas.transform, false);
+            return Instantiate(CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration.DiscussionUIPrefab, canvas.transform, false);
         }
+
         #endregion
 
         #region Internal Dependencies
+
         private DiscussionWriterManager DiscussionWriterManager;
         private DiscussionWorkflowManager DiscussionWorkflowManager;
 
@@ -37,8 +42,9 @@ namespace CoreGame
         private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
         private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
 
-        private GeneratedText currentDiscussionText;
+        private ProceduralText currentDiscussionText;
         private Text textAreaText;
+
         #endregion
 
         private DiscussionTextInherentData currentWindowDiscussionTextInherentData;
@@ -53,19 +59,19 @@ namespace CoreGame
             var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
 
             var discussionAnimator = GetComponent<Animator>();
-            var discussionWindowObjectTransform = (RectTransform)discussionWindowObject.transform;
+            var discussionWindowObjectTransform = (RectTransform) discussionWindowObject.transform;
 
             this.OnExitAnimationFinished = OnExitAnimationFinished;
 
-            ((RectTransform)(textAreaObject.transform)).offsetMin = new Vector2(GeneratedTextDimensionsComponent.MarginLeft, GeneratedTextDimensionsComponent.MarginDown);
-            ((RectTransform)(textAreaObject.transform)).offsetMax = new Vector2(-GeneratedTextDimensionsComponent.MarginRight, -GeneratedTextDimensionsComponent.MarginUp);
+            //    ((RectTransform) (textAreaObject.transform)).offsetMin = new Vector2(GeneratedTextDimensionsComponent.MarginLeft, GeneratedTextDimensionsComponent.MarginDown);
+            //  ((RectTransform) (textAreaObject.transform)).offsetMax = new Vector2(-GeneratedTextDimensionsComponent.MarginRight, -GeneratedTextDimensionsComponent.MarginUp);
 
             DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
             DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, discussionWindowObjectTransform);
             DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
 
             DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, this.textAreaText);
-            DiscussionWorkflowManager = new DiscussionWorkflowManager(CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), (RectTransform)gameObject.FindChildObjectRecursively(WORKFLOW_ICON_IMAGE_CONTAINER_NAME).transform, displayWorkflowIcon);
+            DiscussionWorkflowManager = new DiscussionWorkflowManager(CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), (RectTransform) gameObject.FindChildObjectRecursively(WORKFLOW_ICON_IMAGE_CONTAINER_NAME).transform, displayWorkflowIcon);
         }
 
         public void Tick(float d)
@@ -90,13 +96,14 @@ namespace CoreGame
             {
                 this.textAreaText.cachedTextGenerator.GetCharactersArray().ToList().ForEach((c) =>
                 {
-                    var p3 = ((RectTransform)this.textAreaText.transform).position;
+                    var p3 = ((RectTransform) this.textAreaText.transform).position;
                     Gizmos.DrawGUITexture(new Rect(new Vector2(p3.x + c.cursorPos.x, p3.y + c.cursorPos.y), new Vector2(3, 3)), this.DebugTexture);
                 });
             }
         }
 
         #region External Events
+
         public void OnDiscussionWindowAwakeV2(DiscussionTextInherentData discussionText, Vector3 worldPosition, WindowPositionType WindowPositionType)
         {
             this.currentWindowDiscussionTextInherentData = discussionText;
@@ -114,14 +121,15 @@ namespace CoreGame
         private void InitializeDiscussionWindow(string text, ReadOnlyCollection<InputParameter> InputParameters)
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
-            this.currentDiscussionText = new GeneratedText(text, new GeneratedTextParameter(InputParameters, CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration()), GeneratedTextDimensionsComponent,
+            this.currentDiscussionText = new ProceduralText(text /*, new GeneratedTextParameter(InputParameters, CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration())*/, GeneratedTextDimensionsComponent,
                 this, this.textAreaText);
+            this.currentDiscussionText.CalculateCurrentPage();
             this.OnDiscussionStartWriting();
         }
 
         public void ProcessDiscussionContinue()
         {
-            this.currentDiscussionText.OnDiscussionContinue();
+            this.currentDiscussionText.MoveToNextPage();
             this.OnDiscussionStartWriting();
         }
 
@@ -139,9 +147,11 @@ namespace CoreGame
         {
             DiscussionWindowDimensionsTransitionManager.OnWidthChange(newWidth);
         }
+
         #endregion
 
         #region Internal Events
+
         public void OnTextFinishedWriting()
         {
             DiscussionWorkflowManager.OnTextFinishedWriting(this.currentDiscussionText.OverlappedText);
@@ -149,8 +159,7 @@ namespace CoreGame
 
         private void OnDiscussionStartWriting()
         {
-            this.currentDiscussionText.ComputeTruncatedText();
-            this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
+            //    this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
             this.OnWidthChange(this.GeneratedTextDimensionsComponent.MaxWindowWidth);
             DiscussionWriterManager.OnDiscussionTextStartWriting();
         }
@@ -158,32 +167,41 @@ namespace CoreGame
         #endregion
 
         #region Functional Counditions
+
         public bool IsWaitingForCloseInput()
         {
             return DiscussionWorkflowManager.IsWaitningForEnd;
         }
+
         public bool IsWaitingForContinueInput()
         {
             return DiscussionWorkflowManager.IsWaitingForContinue;
         }
+
         public bool IsWriting()
         {
             return DiscussionWriterManager.IsTextWriting;
         }
+
         public bool IsExitAnimationPlaying()
         {
             return DiscussionWindowAnimationManager.IsAnimationExitingPlaying;
         }
+
         #endregion
     }
-    
+
     #region Discussion Window Text Writer
-    [System.Serializable]
+
+    [Serializable]
     public class DiscussionWriterComponent
     {
         private float letterDisplayIntervalTime = 0.01f;
 
-        public float LetterDisplayIntervalTime { get => letterDisplayIntervalTime; }
+        public float LetterDisplayIntervalTime
+        {
+            get => letterDisplayIntervalTime;
+        }
     }
 
     public interface DiscussionWindowOnTextFinishedWritingListener
@@ -209,15 +227,18 @@ namespace CoreGame
             this.textAreaText = textAreaText;
         }
 
-        public bool IsTextWriting { get => isTextWriting; }
+        public bool IsTextWriting
+        {
+            get => isTextWriting;
+        }
 
-        public void Tick(float d, GeneratedText discussionText)
+        public void Tick(float d, ProceduralText discussionText)
         {
             if (isTextWriting)
             {
                 timeElapsed += d;
 
-                if (discussionText.IsAllowedToIncrementEngine())
+                if (discussionText.IsDisplayEngineFinished())
                 {
                     while (timeElapsed >= DiscussionWriterComponent.LetterDisplayIntervalTime)
                     {
@@ -231,7 +252,6 @@ namespace CoreGame
                     this.DiscussionWindowOnTextFinishedWritingListener.OnTextFinishedWriting();
                 }
             }
-
         }
 
         public void OnDiscussionTextStartWriting()
@@ -244,27 +264,35 @@ namespace CoreGame
     #endregion
 
     #region Discussion Window Workflow
+
     class DiscussionWorkflowManager
     {
-
         private InputImageType InputImageType;
 
         public DiscussionWorkflowManager(InputConfiguration InputConfiguration, RectTransform imageIconContainer, bool displayWorkflowIcon)
         {
             if (displayWorkflowIcon)
             {
-                this.InputImageType = InputImageType.Instantiate(InputConfiguration.ConfigurationInherentData[GameConfigurationID.InputID.ACTION_DOWN], imageIconContainer, true);
+                this.InputImageType = InputImageType.Instantiate(InputConfiguration.ConfigurationInherentData[InputID.ACTION_DOWN], imageIconContainer, true);
                 this.InputImageType.transform.localPosition = Vector3.zero;
                 this.InputImageType.gameObject.SetActive(false);
             }
+
             OnDiscussionWindowAwake();
         }
 
         private bool isWaitingForContinue;
         private bool isWaitningForEnd;
 
-        public bool IsWaitingForContinue { get => isWaitingForContinue; }
-        public bool IsWaitningForEnd { get => isWaitningForEnd; }
+        public bool IsWaitingForContinue
+        {
+            get => isWaitingForContinue;
+        }
+
+        public bool IsWaitningForEnd
+        {
+            get => isWaitningForEnd;
+        }
 
         public void OnTextFinishedWriting(string overlappedOnlyText)
         {
@@ -285,7 +313,6 @@ namespace CoreGame
                 {
                     this.InputImageType.gameObject.SetActive(true);
                 }
-
             }
         }
 
@@ -300,6 +327,7 @@ namespace CoreGame
             {
                 this.InputImageType.gameObject.SetActive(false);
             }
+
             isWaitingForContinue = false;
             isWaitningForEnd = false;
         }
@@ -309,10 +337,12 @@ namespace CoreGame
             ResetState();
         }
     }
+
     #endregion
 
 
     #region Discussion Window Position
+
     class DiscussionWindowPositioner
     {
         private Camera camera;
@@ -351,10 +381,12 @@ namespace CoreGame
         WORLD = 0,
         SCREEN = 1
     }
+
     #endregion
-    
+
     #region Dimensions Transitions
-    [System.Serializable]
+
+    [Serializable]
     public class DiscussionWindowDimensionsTransitionComponent
     {
         public float HeightTransitionsSpeed;
@@ -362,7 +394,6 @@ namespace CoreGame
 
     class DiscussionWindowDimensionsTransitionManager
     {
-
         private DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
         private RectTransform discussionWindowTransform;
 
@@ -399,9 +430,11 @@ namespace CoreGame
             discussionWindowTransform.sizeDelta = new Vector2(newWidth, discussionWindowTransform.sizeDelta.y);
         }
     }
+
     #endregion
 
     #region Discussion Window Animation
+
     class DiscussionWindowAnimationManager
     {
         private const string ENTER_ANIMATION_NAME = "DiscussionWindowEnterAnimation";
@@ -416,7 +449,10 @@ namespace CoreGame
             DiscussionAnimator = discussionAnimator;
         }
 
-        public bool IsAnimationExitingPlaying { get => isAnimationExitingPlaying; }
+        public bool IsAnimationExitingPlaying
+        {
+            get => isAnimationExitingPlaying;
+        }
 
         public void PlayEnterAnimation()
         {
@@ -433,6 +469,7 @@ namespace CoreGame
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -443,5 +480,6 @@ namespace CoreGame
             isAnimationExitingPlaying = true;
         }
     }
+
     #endregion
 }

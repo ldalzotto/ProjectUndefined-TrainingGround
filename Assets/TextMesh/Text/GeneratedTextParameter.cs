@@ -1,37 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
-using UnityEngine;
-
-namespace CoreGame
+﻿namespace CoreGame
 {
+    /*
     public class GeneratedTextParameter
     {
         #region Constants
+
         public static Dictionary<ParameterType, string> ParameterAlias = new Dictionary<ParameterType, string>()
         {
-            {ParameterType.INPUT_PARAMETER, "InputParam" }
+            {ParameterType.INPUT_PARAMETER, "InputParam"}
         };
-        public const string TransformedParameterTemplate = "#0";
+
+        public const string TransformedParameterImageTemplate = "#0";
 
         private Regex BaseParameterRegex = new Regex("\\${.*?}");
         private Regex ParameterNameExtractorRegex = new Regex("((?![\\${]).*(?=:))");
         private Regex ParameterNumberExtractorRegex = new Regex("((?<=[:]).*(?=}))");
+
         #endregion
 
         #region External Dependencies
+
         private InputConfiguration InputConfiguration;
-        private GameInputManager GameInputManager;
+
         #endregion
 
         #region State
+
         private List<IParameterDisplayContent> parameterDisplayContent;
         private ReadOnlyCollection<InputParameter> InputParameters;
+
         #endregion
 
         #region Data Retrieval
-        public List<IParameterDisplayContent> ParameterDisplayContent { get => parameterDisplayContent; }
+
+        public List<IParameterDisplayContent> ParameterDisplayContent
+        {
+            get => parameterDisplayContent;
+        }
+
         #endregion
 
         public GeneratedTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration)
@@ -53,11 +59,12 @@ namespace CoreGame
                     var ParameterNameMatch = ParameterNameExtractorRegex.Match(parameterMatch.Value);
                     if (ParameterNameMatch.Success && ParameterNameMatch.Value == ParameterAlias[ParameterType.INPUT_PARAMETER])
                     {
+                        //We replace the parameter text by a template that will be hidden by image
                         var parameterOrderNumberMatch = ParameterNumberExtractorRegex.Match(parameterMatch.Value);
                         if (parameterOrderNumberMatch.Success)
                         {
                             var inputConfigurationData = this.InputConfiguration.ConfigurationInherentData[this.InputParameters[Convert.ToInt32(parameterOrderNumberMatch.Value)].inputID];
-                            
+
                             InputImageType instaciatedImage = InputImageType.Instantiate(inputConfigurationData);
 
                             if (instaciatedImage != null)
@@ -65,8 +72,8 @@ namespace CoreGame
                                 instaciatedImage.gameObject.SetActive(false);
 
                                 inputText = inputText.Substring(0, parameterMatch.Index)
-                                              + TransformedParameterTemplate
-                                              + inputText.Substring(parameterMatch.Index + parameterMatch.Value.Length, inputText.Length - (parameterMatch.Index + parameterMatch.Value.Length));
+                                            + TransformedParameterImageTemplate
+                                            + inputText.Substring(parameterMatch.Index + parameterMatch.Value.Length, inputText.Length - (parameterMatch.Index + parameterMatch.Value.Length));
 
                                 this.parameterDisplayContent.Add(new InputParameterDisplayContent(instaciatedImage));
                             }
@@ -74,8 +81,9 @@ namespace CoreGame
                     }
                     else
                     {
+                        //We remove the parameter text
                         inputText = inputText.Substring(0, parameterMatch.Index)
-                                      + inputText.Substring(parameterMatch.Index + parameterMatch.Value.Length, inputText.Length - (parameterMatch.Index + parameterMatch.Value.Length));
+                                    + inputText.Substring(parameterMatch.Index + parameterMatch.Value.Length, inputText.Length - (parameterMatch.Index + parameterMatch.Value.Length));
                     }
                 }
             } while (parameterMatch.Success);
@@ -86,42 +94,41 @@ namespace CoreGame
         public int ProcessParametersOnFinalTextMesh(TextMesh textMesh, TransformedParameterCounterTracker TransformedParameterCounterTracker)
         {
             int transformedParameterCount = 0 + TransformedParameterCounterTracker.TransformedParameterCurrentCountOffset;
-            foreach (var imageVertices in textMesh.FindOccurences(TransformedParameterTemplate))
+            foreach (var imageVertices in textMesh.FindOccurences(TransformedParameterImageTemplate))
             {
                 if (this.parameterDisplayContent[transformedParameterCount].GetType() == typeof(InputParameterDisplayContent))
                 {
-                    var InputParameterDisplayContent = (InputParameterDisplayContent)this.parameterDisplayContent[transformedParameterCount];
-                    if (InputParameterDisplayContent.GetInputImageTypeInstanceType() != InputImageTypeInstanceType.NONE)
-                    {
-                        Vector2 imagePosition = imageVertices.Center();
-                        InputParameterDisplayContent.IconImage.gameObject.SetActive(true);
-                        InputParameterDisplayContent.IconImage.transform.SetParent(textMesh.CanvasRenderer.transform);
-                        InputParameterDisplayContent.IconImage.transform.localPosition = imagePosition;
-                        ((RectTransform)(InputParameterDisplayContent.IconImage.transform)).sizeDelta = Vector2.one * imageVertices.Width();
-                        InputParameterDisplayContent.IconImage.transform.localScale = Vector3.one;
-                        transformedParameterCount += 1;
+                    var InputParameterDisplayContent = (InputParameterDisplayContent) this.parameterDisplayContent[transformedParameterCount];
+                    Vector2 imagePosition = imageVertices.Center();
+                    InputParameterDisplayContent.ImageGameObject.SetActive(true);
+                    InputParameterDisplayContent.ImageGameObject.transform.SetParent(textMesh.CanvasRenderer.transform);
+                    InputParameterDisplayContent.ImageGameObject.transform.localPosition = imagePosition;
+                    ((RectTransform) (InputParameterDisplayContent.ImageGameObject.transform)).sizeDelta = Vector2.one * imageVertices.Width();
+                    InputParameterDisplayContent.ImageGameObject.transform.localScale = Vector3.one;
+                    transformedParameterCount += 1;
 
-                        if (InputParameterDisplayContent.GetInputImageTypeInstanceType() == InputImageTypeInstanceType.KEY)
-                        {
-                            InputParameterDisplayContent.IconImage.SetTextFontSize((int)Math.Floor(imageVertices.Width() * 0.75f));
-                        }
+                    if (InputParameterDisplayContent.GetInputImageTypeInstanceType() == InputImageTypeInstanceType.KEY)
+                    {
+                        InputParameterDisplayContent.IconImage.SetTextFontSize((int) Math.Floor(imageVertices.Width() * 0.75f));
                     }
                 }
             }
+
             return transformedParameterCount;
         }
 
         public string GetFullTransformedParameterTemplate(char firstChar)
         {
-            if (firstChar == TransformedParameterTemplate[0])
+            if (firstChar == TransformedParameterImageTemplate[0])
             {
-                return TransformedParameterTemplate;
+                return TransformedParameterImageTemplate;
             }
 
             return firstChar.ToString();
         }
 
         #region External Events
+
         public void OnDiscussionContinue()
         {
             if (this.parameterDisplayContent != null)
@@ -129,6 +136,7 @@ namespace CoreGame
                 this.parameterDisplayContent.ForEach((parameter) => parameter.OnDiscussionContinue());
             }
         }
+
         public void OnDiscussionTerminated()
         {
             if (this.parameterDisplayContent != null)
@@ -136,6 +144,7 @@ namespace CoreGame
                 this.parameterDisplayContent.ForEach((parameter) => parameter.OnDiscussionTerminated());
             }
         }
+
         #endregion
     }
 
@@ -147,11 +156,11 @@ namespace CoreGame
 
     public class InputParameterDisplayContent : IParameterDisplayContent
     {
-        public InputImageType IconImage;
+        public GameObject ImageGameObject;
 
-        public InputParameterDisplayContent( InputImageType iconImage)
+        public InputParameterDisplayContent(GameObject imageGameObject)
         {
-            IconImage = iconImage;
+            this.ImageGameObject = imageGameObject;
         }
 
         public InputImageTypeInstanceType GetInputImageTypeInstanceType()
@@ -161,15 +170,15 @@ namespace CoreGame
 
         public void OnDiscussionContinue()
         {
-            if (this.IconImage.gameObject.activeSelf)
+            if (this.ImageGameObject.activeSelf)
             {
-                this.IconImage.gameObject.SetActive(false);
+                this.ImageGameObject.SetActive(false);
             }
         }
 
         public void OnDiscussionTerminated()
         {
-            MonoBehaviour.Destroy(this.IconImage.gameObject);
+            MonoBehaviour.Destroy(this.ImageGameObject);
         }
     }
 
@@ -183,10 +192,16 @@ namespace CoreGame
         private int transformedParameterCurrentCountOffset = 0;
 
         #region Data Retrieval
-        public int TransformedParameterCurrentCountOffset { get => transformedParameterCurrentCountOffset; }
+
+        public int TransformedParameterCurrentCountOffset
+        {
+            get => transformedParameterCurrentCountOffset;
+        }
+
         #endregion
 
         #region External Events
+
         public void OnDiscussionEngineIncremented(in TextPlayerEngine DiscussionTextPlayerEngine, int parameterNbInThisIncrement)
         {
             if (!DiscussionTextPlayerEngine.IsAllowedToIncrementEngine())
@@ -194,6 +209,8 @@ namespace CoreGame
                 this.transformedParameterCurrentCountOffset += parameterNbInThisIncrement;
             }
         }
+
         #endregion
     }
+    */
 }
