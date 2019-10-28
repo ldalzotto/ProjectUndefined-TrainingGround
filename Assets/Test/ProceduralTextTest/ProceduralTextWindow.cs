@@ -8,21 +8,48 @@ namespace Test.ProceduralTextTest
     public class ProceduralTextWindow
     {
         public ProceduralTextWindowGameObject ProceduralTextWindowGameObject { get; private set; }
+        private ProceduralTextWindowDefinition ProceduralTextWindowDefinition;
         private ProceduralText ProceduralText;
+        private float ElapsedTime;
 
-        public ProceduralTextWindow(GameObject parent, ProceduralTextWindowDefinition ProceduralTextWindowDefinition)
+        public ProceduralTextWindow(GameObject parent, string textToDisplay, ProceduralTextWindowDefinition ProceduralTextWindowDefinition, ProceduralTextParametersV2 ProceduralTextParametersV2 = null)
         {
+            this.ProceduralTextWindowDefinition = ProceduralTextWindowDefinition;
             this.ProceduralTextWindowGameObject = new ProceduralTextWindowGameObject(parent, ProceduralTextWindowDefinition);
-            this.ProceduralText = new ProceduralText(LOREM, ProceduralTextWindowDefinition.GeneratedTextDimensionsComponent, this.ProceduralTextWindowGameObject.TextComponent);
+            this.ProceduralText = new ProceduralText(textToDisplay, ProceduralTextWindowDefinition.GeneratedTextDimensionsComponent, this.ProceduralTextWindowGameObject.TextComponent, ProceduralTextParametersV2);
+            this.ElapsedTime = 0f;
         }
 
-        public void Increment()
+        public void Play()
+        {
+            this.CalculateCurrentPage();
+        }
+
+        public void Tick(float d)
+        {
+            if (!this.ProceduralText.IsDisplayEngineFinished())
+            {
+                this.ElapsedTime += d;
+                while (this.ElapsedTime >= this.ProceduralTextWindowDefinition.TextLetterDeltaTime)
+                {
+                    this.Increment();
+                    this.ElapsedTime -= this.ProceduralTextWindowDefinition.TextLetterDeltaTime;
+                }
+            }
+        }
+
+        public void GUITick()
+        {
+            this.ProceduralText.GUITick();
+        }
+
+        private void Increment()
         {
             this.ProceduralText.Increment();
             this.ProceduralTextWindowGameObject.OnIncrement(this.ProceduralText);
         }
 
-        public void CalculateCurrentPage()
+        private void CalculateCurrentPage()
         {
             this.ProceduralText.CalculateCurrentPage();
         }
@@ -41,9 +68,6 @@ namespace Test.ProceduralTextTest
         {
             this.ProceduralTextWindowGameObject.SetTransformPosition(position);
         }
-
-        private static string LOREM =
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
     }
 
     public class ProceduralTextWindowGameObject
@@ -171,6 +195,7 @@ namespace Test.ProceduralTextTest
         public PivotType WindowPivot;
         public Text TextPrefabDefinition;
         public Image BackgroundImagePrefab;
+        public float TextLetterDeltaTime;
         public GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
         public ProceduralTextWindowMargins ProceduralTextWindowMargins;
     }

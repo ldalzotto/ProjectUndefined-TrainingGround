@@ -11,7 +11,7 @@ namespace CoreGame
             this.GeneratedTextDimensionsComponent = GeneratedTextDimensionsComponent;
         }
 
-        public float GetMaxWindowHeight(TextMesh TextMesh)
+        public float GetMaxWindowHeight()
         {
             return this.GeneratedTextDimensionsComponent.MaxWindowHeight;
         }

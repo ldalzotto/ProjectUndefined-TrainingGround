@@ -9,6 +9,7 @@ namespace CoreGame
 {
     public class ProceduralText
     {
+        public static Regex RichTextQuadRegex = new Regex("<quad.*?>");
         private char[] TrimmedCharForSanitaze = new char[] {' ', '\n'};
 
         #region State
@@ -31,18 +32,22 @@ namespace CoreGame
         private TextMesh TextMesh;
         private GeneratedTextDimensions textDimensions;
         private TextPlayerEngine TextPlayerEngine;
+        public ProceduralTextParametersV2 ProceduralTextParametersV2 { get; private set; }
 
         #endregion
 
-        public ProceduralText(string initialRawText /*,  GeneratedTextParameter GeneratedTextParameter*/, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent, Text textAreaText)
+        public ProceduralText(string initialRawText, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent, Text textAreaText, ProceduralTextParametersV2 ProceduralTextParametersV2 = null)
         {
             this.initialRawText = initialRawText;
             this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
+            this.ProceduralTextParametersV2 = ProceduralTextParametersV2;
 
             #region Special Character Image mapping
 
-            //  this.DiscussionTextParameter = GeneratedTextParameter;
-            //   this.transformedInitialRawText = this.DiscussionTextParameter.ParseParameters(this.transformedInitialRawText);
+            if (this.ProceduralTextParametersV2 != null)
+            {
+                this.transformedInitialRawText = this.ProceduralTextParametersV2.ParseParameters(this.transformedInitialRawText);
+            }
 
             #endregion
 
@@ -50,6 +55,11 @@ namespace CoreGame
             this.TextPlayerEngine = new TextPlayerEngine(GeneratedTextDimensionsComponent, this.textDimensions);
 
             this.TextMesh = new TextMesh(textAreaText);
+        }
+
+        public void GUITick()
+        {
+            this.TextPlayerEngine.GUITick(this.TextMesh, this.ProceduralTextParametersV2);
         }
 
         #region Data Retrieval
@@ -85,7 +95,7 @@ namespace CoreGame
 
         public void Increment()
         {
-            this.TextPlayerEngine.Increment(this.TextMesh /*, this.DiscussionTextParameter*/);
+            this.TextPlayerEngine.Increment(this.TextMesh, this.ProceduralTextParametersV2);
         }
 
         #endregion
@@ -108,6 +118,7 @@ namespace CoreGame
             this.overlappedText = string.Empty;
             this.linedTruncatedText.Clear();
             this.TextMesh.Clear();
+            this.ProceduralTextParametersV2.Clear();
             this.CalculateCurrentPage();
         }
 
@@ -122,14 +133,14 @@ namespace CoreGame
 
         public void CalculateCurrentPage()
         {
-            var generatedText = this.TextMesh.ForceRefreshInternalGeneration(this.transformedInitialRawText, new Vector2(this.textDimensions.GetMaxWindowWidth(), this.textDimensions.GetMaxWindowHeight(this.TextMesh)));
+            var generatedText = this.TextMesh.ForceRefreshInternalGeneration(this.transformedInitialRawText, new Vector2(this.textDimensions.GetMaxWindowWidth(), this.textDimensions.GetMaxWindowHeight()));
 
             var truncatedText = this.transformedInitialRawText.Substring(0, generatedText.characterCountVisible);
             this.overlappedText = this.transformedInitialRawText.Substring(generatedText.characterCountVisible, this.transformedInitialRawText.Length - generatedText.characterCountVisible);
 
             truncatedText = truncatedText.Trim(this.TrimmedCharForSanitaze);
 
-            generatedText = this.TextMesh.ForceRefreshInternalGeneration(truncatedText, new Vector2(this.textDimensions.GetMaxWindowWidth(), this.textDimensions.GetMaxWindowHeight(this.TextMesh)));
+            generatedText = this.TextMesh.ForceRefreshInternalGeneration(truncatedText, new Vector2(this.textDimensions.GetMaxWindowWidth(), this.textDimensions.GetMaxWindowHeight()));
 
             this.linedTruncatedText = new List<string>();
             for (int i = 0; i < generatedText.lines.Count; i++)
@@ -141,7 +152,7 @@ namespace CoreGame
                 int length = endIndex - startIndex;
 
                 string lineToAdd = truncatedText.Substring(startIndex, length).Trim(this.TrimmedCharForSanitaze);
-                this.linedTruncatedText.Add(lineToAdd);
+                this.linedTruncatedText.Add(RichTextQuadRegex.Replace(lineToAdd, "@"));
             }
 
             this.TextMesh.GenerateFinalMeshFromTextGenerator();
@@ -151,7 +162,7 @@ namespace CoreGame
         public void GenerateAndDisplayAllText()
         {
             this.CalculateCurrentPage();
-            this.TextPlayerEngine.RenderEverything(this.TextMesh /*, this.DiscussionTextParameter*/);
+            this.TextPlayerEngine.RenderEverything(this.TextMesh, this.ProceduralTextParametersV2);
         }
 
         #endregion
@@ -161,7 +172,7 @@ namespace CoreGame
     {
         #region Trackers
 
-        //   private TransformedParameterCounterTracker TransformedParameterCounterTracker;
+        private int VisibleQuadTotalCounter;
 
         #endregion
 
@@ -173,6 +184,7 @@ namespace CoreGame
         {
             this.GeneratedTextDimensionsComponent = GeneratedTextDimensionsComponent;
             this.GeneratedTextDimensions = GeneratedTextDimensions;
+            this.VisibleQuadTotalCounter = 0;
             // this.TransformedParameterCounterTracker = new TransformedParameterCounterTracker();
         }
 
@@ -180,43 +192,55 @@ namespace CoreGame
         private string currentDisplayedTextUnModified;
 
 
+        public void GUITick(TextMesh TextMesh, ProceduralTextParametersV2 ProceduralTextParametersV2)
+        {
+            if (ProceduralTextParametersV2 != null)
+            {
+                ProceduralTextParametersV2.GUITick(TextMesh);
+            }
+        }
+
         public void StartWriting(ProceduralText discussionText)
         {
             this.targetText = String.Join("\n", discussionText.LinedTruncatedText.ToArray());
             this.currentDisplayedTextUnModified = String.Empty;
         }
 
-        public void Increment(TextMesh TextMesh /*, GeneratedTextParameter DiscussionTextParameter*/)
+        public void Increment(TextMesh TextMesh, ProceduralTextParametersV2 ProceduralTextParametersV2 = null)
         {
-            var parameterNbInThisIncrement = 0;
             if (currentDisplayedTextUnModified.Length < targetText.Length)
             {
                 var stringToAdd = targetText[currentDisplayedTextUnModified.Length].ToString();
-                // var stringToAdd = DiscussionTextParameter.GetFullTransformedParameterTemplate(targetText[currentDisplayedTextUnModified.Length]);
 
                 for (var i = 0; i < stringToAdd.Length; i++)
                 {
-                    TextMesh.IncrementChar(stringToAdd[i]);
+                    if (stringToAdd[i] != ' ' && stringToAdd[i] != '\n')
+                    {
+                        TextMesh.IncrementChar(stringToAdd[i]);
+                        if (ProceduralTextParametersV2 != null)
+                        {
+                            ProceduralTextParametersV2.OnIncrement(TextMesh, stringToAdd[i], this.VisibleQuadTotalCounter);
+                        }
+
+                        this.VisibleQuadTotalCounter += 1;
+                    }
+
                     currentDisplayedTextUnModified += stringToAdd[i];
                 }
-
-                //   parameterNbInThisIncrement = Math.Max(parameterNbInThisIncrement, DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh, this.TransformedParameterCounterTracker));
-
-                //       this.TransformedParameterCounterTracker.OnDiscussionEngineIncremented(this, parameterNbInThisIncrement);
             }
         }
 
-        public void RenderEverything(TextMesh TextMesh /*, GeneratedTextParameter DiscussionTextParameter*/)
+        public void RenderEverything(TextMesh TextMesh, ProceduralTextParametersV2 ProceduralTextParametersV2 = null)
         {
             while (currentDisplayedTextUnModified.Length != targetText.Length)
             {
-                this.Increment(TextMesh /*, DiscussionTextParameter*/);
+                this.Increment(TextMesh, ProceduralTextParametersV2);
             }
         }
 
         public bool IsDisplayEngineFinished()
         {
-            return currentDisplayedTextUnModified.Length != targetText.Length;
+            return currentDisplayedTextUnModified.Length == targetText.Length;
         }
     }
 
@@ -227,10 +251,11 @@ namespace CoreGame
         private TextGenerator textGenerator;
 
         private Color textColor;
-        private string lastTextUsedToSet;
         private string lastMeshedText;
 
         private Mesh mesh;
+        private Vector3[] meshVerticesCopy;
+
         private MeshDimensions MeshDimensions;
 
         public TextMesh(Text text)
@@ -262,60 +287,49 @@ namespace CoreGame
         public void GenerateFinalMeshFromTextGenerator()
         {
             this.TextGenToMesh(this.textGenerator, ref this.mesh);
-            this.lastTextUsedToSet = string.Empty;
             this.lastMeshedText = string.Empty;
             this.canvasRenderer.SetMesh(this.mesh);
         }
 
         public void IncrementChar(char characterAdded)
         {
-            this.lastTextUsedToSet += characterAdded;
-            if (characterAdded != ' ' && characterAdded != '\n')
-            {
-                this.lastMeshedText += characterAdded;
-                var newColors = this.mesh.colors;
-                newColors[((this.lastMeshedText.Length - 1) * 4)] = this.textColor;
-                newColors[((this.lastMeshedText.Length - 1) * 4) + 1] = this.textColor;
-                newColors[((this.lastMeshedText.Length - 1) * 4) + 2] = this.textColor;
-                newColors[((this.lastMeshedText.Length - 1) * 4) + 3] = this.textColor;
+            this.lastMeshedText += characterAdded;
+            var newColors = this.mesh.colors;
+            newColors[((this.lastMeshedText.Length - 1) * 4)] = this.textColor;
+            newColors[((this.lastMeshedText.Length - 1) * 4) + 1] = this.textColor;
+            newColors[((this.lastMeshedText.Length - 1) * 4) + 2] = this.textColor;
+            newColors[((this.lastMeshedText.Length - 1) * 4) + 3] = this.textColor;
 
-                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4)]);
-                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4) + 1]);
-                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4) + 2]);
-                this.MeshDimensions.OnLetterVerticesShowed(this.mesh.vertices[((this.lastMeshedText.Length - 1) * 4) + 3]);
+            this.MeshDimensions.OnLetterVerticesShowed(this.meshVerticesCopy[((this.lastMeshedText.Length - 1) * 4)]);
+            this.MeshDimensions.OnLetterVerticesShowed(this.meshVerticesCopy[((this.lastMeshedText.Length - 1) * 4) + 1]);
+            this.MeshDimensions.OnLetterVerticesShowed(this.meshVerticesCopy[((this.lastMeshedText.Length - 1) * 4) + 2]);
+            this.MeshDimensions.OnLetterVerticesShowed(this.meshVerticesCopy[((this.lastMeshedText.Length - 1) * 4) + 3]);
 
-                this.mesh.colors = newColors;
+            this.mesh.colors = newColors;
 
-                this.canvasRenderer.SetMesh(this.mesh);
-            }
+            this.canvasRenderer.SetMesh(this.mesh);
         }
 
-        public List<LetterVertices> FindOccurences(string patternToFind)
+        public LetterVertices GetLetterAtIndex(int idx)
         {
-            var sanitizedLastTextUsedForGeneration = this.lastTextUsedToSet.Replace(" ", "").Replace("\n", "");
-            List<LetterVertices> foundVertices = new List<LetterVertices>();
-            var meshVertices = this.mesh.vertices;
-            foreach (Match match in new Regex(patternToFind).Matches(sanitizedLastTextUsedForGeneration))
-            {
-                if (match.Success)
-                {
-                    foundVertices.Add(new LetterVertices()
-                    {
-                        TopLeft = meshVertices[match.Index * 4],
-                        TopRight = meshVertices[((match.Index + match.Length - 1) * 4) + 1],
-                        BottomRight = meshVertices[((match.Index + match.Length - 1) * 4) + 2],
-                        BottomLeft = meshVertices[(match.Index * 4) + 3]
-                    });
-                }
-            }
+            return new LetterVertices(new[] {idx * 4, (idx * 4) + 1, (idx * 4) + 2, (idx * 4) + 3});
+        }
 
-            return foundVertices;
+        public Vector3 GetVertex(int index)
+        {
+            return this.meshVerticesCopy[index];
+        }
+
+        public int GetVertexCount()
+        {
+            return this.meshVerticesCopy.Length;
         }
 
         private void TextGenToMesh(TextGenerator generator, ref Mesh mesh)
         {
             var scaleMatrix = Matrix4x4.Scale(new Vector3(this.textGenerationSettings.scaleFactor, this.textGenerationSettings.scaleFactor, this.textGenerationSettings.scaleFactor)).inverse;
-            mesh.vertices = generator.verts.Select(v => scaleMatrix.MultiplyPoint(v.position)).ToArray();
+            this.meshVerticesCopy = generator.verts.Select(v => scaleMatrix.MultiplyPoint(v.position)).ToArray();
+            mesh.vertices = this.meshVerticesCopy;
             mesh.colors32 = new Color32[mesh.vertexCount];
             mesh.uv = generator.verts.Select(v => v.uv0).ToArray();
             var triangles = new int[generator.vertexCount * 6];
@@ -368,19 +382,11 @@ namespace CoreGame
 
     public class LetterVertices
     {
-        public Vector3 TopLeft;
-        public Vector3 TopRight;
-        public Vector3 BottomRight;
-        public Vector3 BottomLeft;
+        public int[] Indices;
 
-        public Vector2 Center()
+        public LetterVertices(int[] indices)
         {
-            return (this.TopLeft + this.TopRight + this.BottomLeft + this.BottomRight) / 4f;
-        }
-
-        public float Width()
-        {
-            return Mathf.Abs(this.TopRight.x - this.TopLeft.x);
+            Indices = indices;
         }
     }
 
