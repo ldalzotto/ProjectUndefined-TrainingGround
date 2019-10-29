@@ -1,8 +1,9 @@
 ﻿using System;
+using TextMesh;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TextMesh
+namespace TextWindows
 {
     public class ProceduralTextWindow
     {

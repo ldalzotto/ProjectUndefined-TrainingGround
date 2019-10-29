@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TextMesh
+namespace TextWindows
 {
     public static class RectTransformHelper
     {
