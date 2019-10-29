@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace CoreGame
+namespace TextMesh
 {
     public class ProceduralTextParametersV2
     {

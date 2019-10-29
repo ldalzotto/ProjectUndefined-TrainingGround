@@ -1,13 +1,12 @@
-﻿using CoreGame;
+﻿using System;
 using System.Collections.Generic;
+using TextMesh;
 using UnityEngine;
 
 namespace CoreGame
 {
-
     public class ChoicePopup : MonoBehaviour
     {
-
         private const string CHOICES_CONTAINER_OBJECT_NAME = "ChoicesContainer";
         private const string CHOICES_SELECTION_RECTANGLE_OBJECT_NAME = "SelectionRectangle";
 
@@ -30,12 +29,16 @@ namespace CoreGame
         }
 
         #region External Events
+
         public void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices, Vector2 localPosition, DiscussionTextConfiguration DiscussionTextRepertoire)
         {
             var corePrefabConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration;
+
             #region Internal Dependencies
+
             choicesContainerObject = gameObject.FindChildObjectRecursively(CHOICES_CONTAINER_OBJECT_NAME);
             var choicesSelectionRectangle = gameObject.FindChildObjectRecursively(CHOICES_SELECTION_RECTANGLE_OBJECT_NAME);
+
             #endregion
 
             transform.localPosition = localPosition;
@@ -48,7 +51,7 @@ namespace CoreGame
                 choicePopupTexts.Add(choicesPopupText);
             }
 
-            ChoicePopupDimensionsManager = new ChoicePopupDimensionsManager(ChoicePopupDimensionsComponent, (RectTransform)choicesContainerObject.transform, (RectTransform)transform);
+            ChoicePopupDimensionsManager = new ChoicePopupDimensionsManager(ChoicePopupDimensionsComponent, (RectTransform) choicesContainerObject.transform, (RectTransform) transform);
             ChoicePopupSelectionManager = new ChoicePopupSelectionManager(choicesSelectionRectangle, ChoicePopupSelectionManagerComponent, choicePopupTexts);
             DiscussionChoiceSelectionInputManager = new DiscussionChoiceSelectionInputManager(this, CoreGameSingletonInstances.GameInputManager);
             ChoicePopupAnimationManager = new ChoicePopupAnimationManager(GetComponent<Animator>());
@@ -60,25 +63,28 @@ namespace CoreGame
         #endregion
 
         #region Internal Events
+
         public void OnSelectChoiceUp()
         {
             ChoicePopupSelectionManager.OnSelectChoiceUp();
         }
+
         public void OnSelectChoiceDown()
         {
             ChoicePopupSelectionManager.OnSelectChoiceDown();
         }
+
         #endregion
 
         public DiscussionChoice GetSelectedDiscussionChoice()
         {
             return ChoicePopupSelectionManager.CurrentSelectedChoice.DiscussionChoice;
         }
-
     }
 
     #region PopupDimensions
-    [System.Serializable]
+
+    [Serializable]
     public class ChoicePopupDimensionsComponent
     {
         public float Margin;
@@ -114,18 +120,21 @@ namespace CoreGame
             foreach (var choice in discussionChoices)
             {
                 var choiceHeight = choice.GetTextCharacterHeight();
-                ((RectTransform)choice.transform).anchoredPosition = new Vector2(choice.transform.localPosition.x, -allChoicesHeight - (ChoicePopupDimensionsComponent.ChoicesSpacing * discussionChoices.IndexOf(choice)));
-                ((RectTransform)choice.transform).sizeDelta = new Vector2(1, choiceHeight);
+                ((RectTransform) choice.transform).anchoredPosition = new Vector2(choice.transform.localPosition.x, -allChoicesHeight - (ChoicePopupDimensionsComponent.ChoicesSpacing * discussionChoices.IndexOf(choice)));
+                ((RectTransform) choice.transform).sizeDelta = new Vector2(1, choiceHeight);
                 allChoicesHeight += choiceHeight;
             }
+
             allChoicesHeight += ((discussionChoices.Count - 1) * ChoicePopupDimensionsComponent.ChoicesSpacing);
 
             ChoicePopupTransform.sizeDelta = new Vector2(longuestSentenceLength + (ChoicePopupDimensionsComponent.Margin * 2), allChoicesHeight + (ChoicePopupDimensionsComponent.Margin * 2));
         }
     }
+
     #endregion
 
     #region Discussion Choice Selection Input
+
     class DiscussionChoiceSelectionInputManager
     {
         private ChoicePopup ChoicePopupReference;
@@ -149,6 +158,7 @@ namespace CoreGame
                 {
                     ChoicePopupReference.OnSelectChoiceUp();
                 }
+
                 isPressed = true;
             }
             else if (leftStickAxis.z <= -0.5)
@@ -157,19 +167,21 @@ namespace CoreGame
                 {
                     ChoicePopupReference.OnSelectChoiceDown();
                 }
+
                 isPressed = true;
             }
             else
             {
                 isPressed = false;
             }
-
         }
     }
+
     #endregion
 
     #region
-    [System.Serializable]
+
+    [Serializable]
     public class ChoicePopupSelectionManagerComponent
     {
         public float TransitionSpeed;
@@ -177,7 +189,6 @@ namespace CoreGame
 
     class ChoicePopupSelectionManager
     {
-
         private ChoicePopupSelectionManagerComponent ChoicePopupSelectionManagerComponent;
         private List<ChoicePopupText> choicePopupTexts;
 
@@ -187,7 +198,10 @@ namespace CoreGame
         private RectTransform targetSelectionRectangleObjectPosition;
         private bool isTransitioning;
 
-        public ChoicePopupText CurrentSelectedChoice { get => currentSelectedChoice; }
+        public ChoicePopupText CurrentSelectedChoice
+        {
+            get => currentSelectedChoice;
+        }
 
         public ChoicePopupSelectionManager(GameObject selectionRectangleObject, ChoicePopupSelectionManagerComponent ChoicePopupSelectionManagerComponent, List<ChoicePopupText> choicePopupTexts)
         {
@@ -202,7 +216,7 @@ namespace CoreGame
         {
             if (isTransitioning)
             {
-                var selectionRectangleObjectTransform = (RectTransform)SelectionRectangleObject.transform;
+                var selectionRectangleObjectTransform = (RectTransform) SelectionRectangleObject.transform;
                 selectionRectangleObjectTransform.anchoredPosition = Vector2.Lerp(selectionRectangleObjectTransform.anchoredPosition, Vector2.zero, d * ChoicePopupSelectionManagerComponent.TransitionSpeed);
 
                 if (Vector2.Distance(selectionRectangleObjectTransform.anchoredPosition, Vector2.zero) <= 0.05)
@@ -234,15 +248,17 @@ namespace CoreGame
         private void OnSelectedChoiceChange(ChoicePopupText newSelectedChoice)
         {
             currentSelectedChoice = newSelectedChoice;
-            targetSelectionRectangleObjectPosition = (RectTransform)newSelectedChoice.transform;
+            targetSelectionRectangleObjectPosition = (RectTransform) newSelectedChoice.transform;
             SelectionRectangleObject.transform.SetParent(newSelectedChoice.transform);
-            ((RectTransform)SelectionRectangleObject.transform).sizeDelta = Vector2.one;
+            ((RectTransform) SelectionRectangleObject.transform).sizeDelta = Vector2.one;
             isTransitioning = true;
         }
     }
+
     #endregion
 
     #region Choice Popup Animation
+
     class ChoicePopupAnimationManager
     {
         private const string ENTER_ANIMATION = "PopupChoiceEnterAnimation";
@@ -259,5 +275,6 @@ namespace CoreGame
             popupAnimator.Play(ENTER_ANIMATION);
         }
     }
+
     #endregion
 }

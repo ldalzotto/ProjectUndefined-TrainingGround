@@ -57,9 +57,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\TextMesh\Text\GeneratedTextDimensions.cs" />
-     <Compile Include="Assets\TextMesh\Text\GeneratedTextParameter.cs" />
      <Compile Include="Assets\TextMesh\Text\ProceduralText.cs" />
      <Compile Include="Assets\TextMesh\Text\ProceduralTextParametersV2.cs" />
+     <Compile Include="Assets\TextMesh\TextWindows\ProceduralTextWindow.cs" />
+     <Compile Include="Assets\TextMesh\TextWindows\RectTransformHelper.cs" />
      <None Include="Assets\TextMesh\TextMesh.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

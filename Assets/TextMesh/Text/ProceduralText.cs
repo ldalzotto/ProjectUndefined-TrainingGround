@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CoreGame
+namespace TextMesh
 {
     public class ProceduralText
     {

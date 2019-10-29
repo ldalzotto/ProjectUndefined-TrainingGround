@@ -1,9 +1,8 @@
 ﻿using System;
-using CoreGame;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Test.ProceduralTextTest
+namespace TextMesh
 {
     public class ProceduralTextWindow
     {

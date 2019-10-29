@@ -1,5 +1,6 @@
 using CoreGame;
 using LevelManagement;
+using TextMesh;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,13 +23,6 @@ namespace RTPuzzle
 
 
         public bool TriggerLevelSuccessEvent;
-
-
-        /*
-         *        public ProceduralText(string initialRawText ,  GeneratedTextParameter GeneratedTextParameter, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent,
-            //DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText)
-         * 
-         */
 
         public bool ShowDiscussionWindow;
         public string TextDisplayed;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CoreGame
+namespace TextMesh
 {
     public static class RectTransformHelper
     {

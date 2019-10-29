@@ -83,7 +83,6 @@
      <Compile Include="Assets\~CoreGame\_Helpers\ProceduralTextureHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\QuaterionHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\RandomHelper.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\RectTransformHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\RendererRetrievableHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\SceneLoadingHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\SerializationHelper.cs" />
@@ -141,7 +140,6 @@
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
-     <Compile Include="Assets\Test\ProceduralTextTest\ProceduralTextWindow.cs" />
      <Compile Include="Assets\Test\ProceduralTextTest\RectTransformSize.cs" />
      <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
      <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />

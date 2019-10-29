@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using CoreGame;
-using Test.ProceduralTextTest;
+using TextMesh;
 using UnityEngine;
 
 public class RectTransformSize : MonoBehaviour
