@@ -1,7 +1,9 @@
 {
     "name": "TextWindows",
     "references": [
-        "TextMesh"
+        "TextMesh",
+"CoreGame",
+"Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

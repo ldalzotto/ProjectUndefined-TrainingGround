@@ -1,6 +1,8 @@
 {
     "name": "TextMesh",
-    "references": [],
+    "references": [
+"CoreGame"
+],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -76,7 +76,6 @@
      <Compile Include="Assets\~CoreGame\_Helpers\ComputeBufferHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\DynamicComputeBufferManager.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\FunctionalExtensions.cs" />
-     <Compile Include="Assets\~CoreGame\_Helpers\GameInputHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\GizmoHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\MultiValueDictionary.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\MyEditorStyles.cs" />
@@ -116,11 +115,7 @@
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
      <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionTextInherentData.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Images\InputImageType.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionManager.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionMarker.cs" />
      <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionsType.cs" />
@@ -136,7 +131,6 @@
      <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
      <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV3.cs" />
-     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\AnimationDataManager.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
      <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
@@ -734,10 +728,6 @@
     <ProjectReference Include="SequencedAction.csproj">
       <Project>{DEA32955-3A4C-91B9-1014-A38CB08C83D6}</Project>
       <Name>SequencedAction</Name>
-    </ProjectReference>
-    <ProjectReference Include="TextMesh.csproj">
-      <Project>{A8C85C7F-A9C4-1162-A549-6BC528F2F0F2}</Project>
-      <Name>TextMesh</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

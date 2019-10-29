@@ -25,8 +25,9 @@ namespace Tutorial
             #endregion
 
             base.FirstExecutionAction();
-            this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.ActionWheelTutorialStepActionDefinition.DiscussionTextID],
-                DiscussionPositionManager.Get().GetDiscussionPosition(this.ActionWheelTutorialStepActionDefinition.DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
+            //TODO
+            // this.DiscussionWindow.OnDiscussionWindowAwakeV2(discussionTextConfiguration.ConfigurationInherentData[this.ActionWheelTutorialStepActionDefinition.DiscussionTextID],
+            //   DiscussionPositionManager.Get().GetDiscussionPosition(this.ActionWheelTutorialStepActionDefinition.DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
         }
 
         protected override ITutorialTextActionManager GetTutorialTextManager()

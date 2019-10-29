@@ -7,13 +7,13 @@ namespace TextMesh
 {
     public class ProceduralTextParametersV2
     {
-        private Regex BaseParameterRegex = new Regex("\\${.*?}");
+        public static Regex BaseParameterRegex = new Regex("\\${.*?}");
         private Regex ParameterNameExtractorRegex = new Regex("((?![\\${]).*(?=:))");
         private Regex ParameterNumberExtractorRegex = new Regex("((?<=[:]).*(?=}))");
 
         private ProceduralTextParameterParser ProceduralTextParameterParser;
-        private Stack<Texture2D> ParametersImage = new Stack<Texture2D>();
-        private List<GameObjectDisplayed> CurrentlyDisplayedParametersImage = new List<GameObjectDisplayed>();
+        private Stack<IParameterImage> ParametersImage = new Stack<IParameterImage>();
+        private List<ParameterImageDisplayed> CurrentlyDisplayedParametersImage = new List<ParameterImageDisplayed>();
 
         public ProceduralTextParametersV2(ProceduralTextParameterParser proceduralTextParameterParser)
         {
@@ -26,7 +26,7 @@ namespace TextMesh
             Match parameterMatch = null;
             do
             {
-                parameterMatch = this.BaseParameterRegex.Match(inputText);
+                parameterMatch = BaseParameterRegex.Match(inputText);
                 if (parameterMatch.Success)
                 {
                     var ParameterNameMatch = ParameterNameExtractorRegex.Match(parameterMatch.Value);
@@ -65,7 +65,7 @@ namespace TextMesh
 
             for (int i = cnt - 1; i >= 0; i--)
             {
-                this.ParametersImage.Push(ProceduralTextParameterParser.ImagesParameters[i]);
+                this.ParametersImage.Push(ProceduralTextParameterParser.ImagesParametersOrdered[i]);
             }
             //End text parameters
 
@@ -77,7 +77,7 @@ namespace TextMesh
             //if this is an image
             if (incrementedChar == '@')
             {
-                this.CurrentlyDisplayedParametersImage.Add(new GameObjectDisplayed(this.ParametersImage.Pop(), textMesh.GetLetterAtIndex(charIdx)));
+                this.CurrentlyDisplayedParametersImage.Add(new ParameterImageDisplayed(this.ParametersImage.Pop(), textMesh.GetLetterAtIndex(charIdx)));
             }
         }
 
@@ -93,8 +93,9 @@ namespace TextMesh
                 var bottomRight = textMesh.GetVertex(vertexCount - (displayedImageIndex * 4) + 2);
                 var bottomLeft = textMesh.GetVertex(vertexCount - (displayedImageIndex * 4) + 3);
                 var pos = textMesh.CanvasRenderer.transform.TransformPoint(topLeft);
-                GUI.DrawTexture(new Rect(new Vector2(pos.x, Screen.height - pos.y),
-                    new Vector2(bottomRight.x - bottomLeft.x, topLeft.y - bottomLeft.y)), this.CurrentlyDisplayedParametersImage[i].Texture2D);
+                this.CurrentlyDisplayedParametersImage[i].ImageParameter.GUITick(new Rect(new Vector2(pos.x, Screen.height - pos.y),
+                    new Vector2(bottomRight.x - bottomLeft.x, topLeft.y - bottomLeft.y)));
+                //  GUI.DrawTexture(, this.CurrentlyDisplayedParametersImage[i].ImageParameter);
             }
         }
 
@@ -103,17 +104,41 @@ namespace TextMesh
             this.ParametersImage.Clear();
             this.CurrentlyDisplayedParametersImage.Clear();
         }
+
+        public static List<Match> ExtractParameters(string source, string ParameterName)
+        {
+            List<Match> results = null;
+            var matches = BaseParameterRegex.Matches(source);
+
+            if (matches != null)
+            {
+                foreach (Match match in matches)
+                {
+                    if (match.Value.Contains(ParameterName))
+                    {
+                        if (results == null)
+                        {
+                            results = new List<Match>();
+                        }
+
+                        results.Add(match);
+                    }
+                }
+            }
+
+            return results;
+        }
     }
 
     public class ProceduralTextParameterParser
     {
         public Dictionary<ProceduralTextParameterParserKey, string> TextParameter;
-        public List<Texture2D> ImagesParameters;
+        public List<IParameterImage> ImagesParametersOrdered;
 
-        public ProceduralTextParameterParser(Dictionary<ProceduralTextParameterParserKey, string> textParameter, List<Texture2D> imagesParameters = null)
+        public ProceduralTextParameterParser(Dictionary<ProceduralTextParameterParserKey, string> textParameter, List<IParameterImage> imagesParametersOrdered = null)
         {
             TextParameter = textParameter;
-            ImagesParameters = imagesParameters;
+            ImagesParametersOrdered = imagesParametersOrdered;
         }
     }
 
@@ -147,14 +172,19 @@ namespace TextMesh
         }
     }
 
-    public class GameObjectDisplayed
+    public interface IParameterImage
     {
-        public Texture2D Texture2D;
+        void GUITick(Rect RenderRect);
+    }
+
+    public class ParameterImageDisplayed
+    {
+        public IParameterImage ImageParameter;
         public LetterVertices ImageVertices;
 
-        public GameObjectDisplayed(Texture2D Texture2D, LetterVertices imageVertices)
+        public ParameterImageDisplayed(IParameterImage imageParameter, LetterVertices imageVertices)
         {
-            this.Texture2D = Texture2D;
+            this.ImageParameter = imageParameter;
             ImageVertices = imageVertices;
         }
     }

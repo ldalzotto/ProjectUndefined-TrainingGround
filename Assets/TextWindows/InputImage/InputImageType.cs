@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem.Controls;
-using UnityEngine.UI;
-
-namespace CoreGame
+﻿namespace CoreGame
 {
+    /*
     public class InputImageType : MonoBehaviour
     {
         private InputImageTypeInstanceType inputImageTypeInstanceType;
@@ -15,7 +12,7 @@ namespace CoreGame
             InputImageType InputImageType = null;
             InputImageType prefabToInstanciate = null;
 
-            var InputImageTypeInstanceType = GameInputHelper.GetInputImageType(InputConfigurationInherentData);
+            var InputImageTypeInstanceType = GetInputImageType(InputConfigurationInherentData);
 
             if (InputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
             {
@@ -30,18 +27,29 @@ namespace CoreGame
                 prefabToInstanciate = corePrefabConfiguration.RightMouseBaseImage;
             }
 
-            if (parent != null) { InputImageType = MonoBehaviour.Instantiate(prefabToInstanciate, parent); }
-            else { InputImageType = MonoBehaviour.Instantiate(prefabToInstanciate); }
+            if (parent != null)
+            {
+                InputImageType = Instantiate(prefabToInstanciate, parent);
+            }
+            else
+            {
+                InputImageType = Instantiate(prefabToInstanciate);
+            }
 
             InputImageType.Init(InputImageTypeInstanceType, InputConfigurationInherentData, animate);
             return InputImageType;
         }
 
         #region Internal Dependencies
+
         private Text KeyText;
+
         #endregion
 
-        public InputImageTypeInstanceType InputImageTypeInstanceType { get => inputImageTypeInstanceType; }
+        public InputImageTypeInstanceType InputImageTypeInstanceType
+        {
+            get => inputImageTypeInstanceType;
+        }
 
         public void Init(InputImageTypeInstanceType InputImageTypeInstanceType, InputConfigurationInherentData InputConfigurationInherentData, bool animate)
         {
@@ -74,6 +82,41 @@ namespace CoreGame
                 this.KeyText.fontSize = fontSize;
             }
         }
+
+        public static InputImageTypeInstanceType GetInputImageType(InputConfigurationInherentData inputConfigurationInherentData)
+        {
+            InputImageTypeInstanceType InputImageTypeInstanceType = InputImageTypeInstanceType.NONE;
+            var keyAttributedButton = inputConfigurationInherentData.GetAssociatedInputKey();
+            if (keyAttributedButton != Key.None)
+            {
+                InputImageTypeInstanceType = InputImageTypeInstanceType.KEY;
+            }
+            else
+            {
+                var mouseAttributedButton = inputConfigurationInherentData.GetAssociatedMouseButton();
+                if (mouseAttributedButton != MouseButton.NONE)
+                {
+                    if (mouseAttributedButton == MouseButton.LEFT_BUTTON)
+                    {
+                        InputImageTypeInstanceType = InputImageTypeInstanceType.LEFT_MOUSE;
+                    }
+                    else if (mouseAttributedButton == MouseButton.RIGHT_BUTTON)
+                    {
+                        InputImageTypeInstanceType = InputImageTypeInstanceType.RIGHT_MOUSE;
+                    }
+                }
+                else
+                {
+                    var scrollAttributedButton = inputConfigurationInherentData.GetAssociatedMouseScroll();
+                    if (scrollAttributedButton != MouseScroll.NONE)
+                    {
+                        InputImageTypeInstanceType = InputImageTypeInstanceType.SCROLL;
+                    }
+                }
+            }
+
+            return InputImageTypeInstanceType;
+        }
     }
 
     public enum InputImageTypeInstanceType
@@ -84,4 +127,5 @@ namespace CoreGame
         RIGHT_MOUSE = 3,
         SCROLL = 4
     }
+    */
 }

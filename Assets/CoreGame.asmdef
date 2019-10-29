@@ -6,7 +6,6 @@
         "OdinSerializer",
         "GameConfigurationID",
 "SequencedAction",
-"TextMesh",
         "Unity.InputSystem",
         "Unity.RenderPipelines.Lightweight.Runtime"
     ],

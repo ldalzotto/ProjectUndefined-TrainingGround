@@ -19,16 +19,6 @@ namespace TextMesh
         private string overlappedText;
         private List<string> linedTruncatedText;
 
-        #endregion
-
-        #region Internal Managers
-
-        #region Parameters management
-
-        //  private GeneratedTextParameter DiscussionTextParameter;
-
-        #endregion
-
         private TextMesh TextMesh;
         private GeneratedTextDimensions textDimensions;
         private TextPlayerEngine TextPlayerEngine;
@@ -64,20 +54,7 @@ namespace TextMesh
 
         #region Data Retrieval
 
-        public List<string> LinedTruncatedText
-        {
-            get => linedTruncatedText;
-        }
-
-        public string OverlappedText
-        {
-            get => overlappedText;
-        }
-
-        public float GetWindowHeight(int lineNb)
-        {
-            return this.textDimensions.GetWindowHeight(this.TextMesh);
-        }
+        public List<string> LinedTruncatedText => this.linedTruncatedText;
 
         public float GetWindowHeight()
         {
@@ -113,18 +90,12 @@ namespace TextMesh
 
         public void MoveToNextPage()
         {
-            //   this.DiscussionTextParameter.OnDiscussionContinue();
             this.transformedInitialRawText = this.overlappedText;
             this.overlappedText = string.Empty;
             this.linedTruncatedText.Clear();
             this.TextMesh.Clear();
             this.ProceduralTextParametersV2.Clear();
             this.CalculateCurrentPage();
-        }
-
-        public void OnDiscussionTerminated()
-        {
-            // this.DiscussionTextParameter.OnDiscussionTerminated();
         }
 
         #endregion
@@ -185,7 +156,6 @@ namespace TextMesh
             this.GeneratedTextDimensionsComponent = GeneratedTextDimensionsComponent;
             this.GeneratedTextDimensions = GeneratedTextDimensions;
             this.VisibleQuadTotalCounter = 0;
-            // this.TransformedParameterCounterTracker = new TransformedParameterCounterTracker();
         }
 
         private string targetText;
