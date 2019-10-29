@@ -13,7 +13,6 @@ namespace StartMenu
             var startLevelManager = StartLevelManager.Get();
             var StartMenuPrefabConfiguration = StartMenuSingletonInstances.StartMenuStaticConfigurationManager.StartMenuStaticConfiguration.StartMenuPrefabConfiguration;
             var StartMenuCanvas = CoreGameSingletonInstances.GameCanvas;
-            var GlobalGameConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.GlobalGameConfiguration;
 
             IGameProgressionStateManagerDataRetriever IGameProgressionStateManagerDataRetriever = StartMenuSingletonInstances.GameProgressionStateManager;
 

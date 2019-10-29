@@ -1,5 +1,5 @@
 ﻿using AnimatorPlayable;
-using CoreGame;
+using Input;
 using InteractiveObject_Animation;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
@@ -42,16 +42,16 @@ namespace PlayerObject
 
             #region External Dependencies
 
-            var GameInputManager = CoreGameSingletonInstances.GameInputManager;
+            var gameInputManager = GameInputManager.Get();
 
             #endregion
 
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
 
-            PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, GameInputManager, this.InteractiveGameObject.PhysicsRigidbody);
+            PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInteractiveObjectInitializerData.SpeedMultiplicationFactor, cameraPivotPoint.transform, gameInputManager, this.InteractiveGameObject.PhysicsRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.InteractiveGameObject.PhysicsRigidbody, this.InteractiveGameObject.PhysicsCollider, PlayerInteractiveObjectInitializerData.MinimumDistanceToStick);
-            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(this, GameInputManager,
+            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(this, gameInputManager,
                 PlayerActionEntryPoint.Get());
 
             //Getting persisted position
@@ -129,7 +129,7 @@ namespace PlayerObject
     internal class PlayerSelectionWheelManager
     {
         private PlayerInteractiveObject PlayerInteractiveObjectRef;
-        private IGameInputManager GameInputManager;
+        private GameInputManager GameInputManager;
 
         #region External Dependencies
 
@@ -137,7 +137,7 @@ namespace PlayerObject
 
         #endregion
 
-        public PlayerSelectionWheelManager(PlayerInteractiveObject PlayerInteractiveObject, IGameInputManager gameInputManager,
+        public PlayerSelectionWheelManager(PlayerInteractiveObject PlayerInteractiveObject, GameInputManager gameInputManager,
             PlayerActionEntryPoint playerActionEntryPoint)
         {
             GameInputManager = gameInputManager;

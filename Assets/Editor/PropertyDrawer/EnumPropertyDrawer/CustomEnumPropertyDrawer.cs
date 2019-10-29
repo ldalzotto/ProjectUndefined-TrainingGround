@@ -1,7 +1,7 @@
-﻿using ConfigurationEditor;
+﻿using System;
+using ConfigurationEditor;
 using Editor_GameDesigner;
 using Editor_MainGameCreationWizard;
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,22 +19,19 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        CustomEnum searchableEnum = (CustomEnum)attribute;
+        CustomEnum searchableEnum = (CustomEnum) attribute;
         lineNB = 0;
         if (searchableEnum.IsSearchable)
         {
             lineNB += 1;
         }
-        if (searchableEnum.ChoosedOpenRepertoire)
-        {
-            lineNB += 1;
-        }
+
         return EditorGUI.GetPropertyHeight(property) * lineNB;
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        CustomEnum searchableEnum = (CustomEnum)attribute;
+        CustomEnum searchableEnum = (CustomEnum) attribute;
         if (property.propertyType == SerializedPropertyType.Enum)
         {
             EditorGUI.BeginProperty(position, null, property);
@@ -56,7 +53,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                         windowInstance = EditorWindow.CreateInstance<EnumSearchGUIWindow>();
                         windowInstance.Init(targetEnum, (newSelectedEnum) =>
                         {
-                            property.longValue = (int)Convert.ChangeType(newSelectedEnum, newSelectedEnum.GetTypeCode());
+                            property.longValue = (int) Convert.ChangeType(newSelectedEnum, newSelectedEnum.GetTypeCode());
                             property.serializedObject.ApplyModifiedProperties();
                             property.serializedObject.Update();
                             EditorUtility.SetDirty(property.serializedObject.targetObject);
@@ -65,20 +62,8 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
                     var windowRect = new Rect(GUIUtility.GUIToScreenPoint(enumPopupRect.position), new Vector2(0, enumPopupRect.height));
                     windowInstance.ShowAsDropDown(windowRect, new Vector2(enumPopupRect.width, 500));
-
                 }
 
-                currentLineNB += 1;
-            }
-            
-            if (searchableEnum.ChoosedOpenRepertoire)
-            {
-                Rect lineRect = this.GetRectFromLineNb(currentLineNB, position);
-
-                if (GUI.Button(lineRect, "Open Repertoire"))
-                {
-                    ConfigurationInspector.OpenTextRepertoireAtID(targetEnum.ToString());
-                }
                 currentLineNB += 1;
             }
 
@@ -89,7 +74,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                     var foundAssets = AssetFinder.SafeAssetFind("t:" + searchableEnum.ConfigurationType.Name);
                     if (foundAssets != null && foundAssets.Count > 0)
                     {
-                        var configuration = (IConfigurationSerialization)foundAssets[0];
+                        var configuration = (IConfigurationSerialization) foundAssets[0];
                         configuration.GetEntryTry(targetEnum, out ScriptableObject so);
                         if (so != null)
                         {
@@ -102,6 +87,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                             this.ConfigurationFoldableArea = null;
                         }
                     }
+
                     updateConfigurationView = false;
                 }
 
@@ -126,7 +112,9 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                         });
                         GUI.backgroundColor = oldBackGroundColor;
                     }
-                    catch (Exception) { }
+                    catch (Exception)
+                    {
+                    }
                 }
                 else if (CachedConfigurationEditor == null)
                 {
@@ -138,7 +126,9 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                             GameCreationWizard.InitWithSelected(targetEnum.GetType().Name.Replace("ID", "CreationWizard"));
                         }
                     }
-                    catch (Exception) { }
+                    catch (Exception)
+                    {
+                    }
                 }
             }
 
@@ -156,11 +146,13 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                             var currentGameModule = gameDesignerEditor.GetCrrentGameDesignerModule();
                             if (typeof(IConfigurationModule).IsAssignableFrom(currentGameModule.GetType()))
                             {
-                                ((IConfigurationModule)currentGameModule).SetSearchString(targetEnum.ToString());
+                                ((IConfigurationModule) currentGameModule).SetSearchString(targetEnum.ToString());
                             }
                         }
                     }
-                    catch (Exception) { }
+                    catch (Exception)
+                    {
+                    }
                 }
             }
 

@@ -11,7 +11,8 @@
 "Persistence",
 "SequencedAction",
 "AnimatorPlayable",
-"InteractiveObject_Animation"
+"InteractiveObject_Animation",
+"Input"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

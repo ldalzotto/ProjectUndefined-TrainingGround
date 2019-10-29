@@ -5,7 +5,8 @@
 "LevelManagement",
 "PlayerObject",
 "Persistence",
-"Timelines"
+"Timelines",
+"Input"
 ],
     "includePlatforms": [],
     "excludePlatforms": [],

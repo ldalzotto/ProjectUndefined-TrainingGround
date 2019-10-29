@@ -1,4 +1,4 @@
-﻿using CoreGame;
+﻿using Input;
 using UnityEngine;
 
 namespace PlayerObject
@@ -67,9 +67,9 @@ namespace PlayerObject
     public class PlayerInputMoveManager : PlayerMoveManager
     {
         private Transform CameraPivotPoint;
-        private IGameInputManager GameInputManager;
+        private GameInputManager GameInputManager;
 
-        public PlayerInputMoveManager(float SpeedMultiplicationFactor, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
+        public PlayerInputMoveManager(float SpeedMultiplicationFactor, Transform cameraPivotPoint, GameInputManager gameInputManager, Rigidbody playerRigidBody)
             : base(SpeedMultiplicationFactor, playerRigidBody)
         {
             CameraPivotPoint = cameraPivotPoint;

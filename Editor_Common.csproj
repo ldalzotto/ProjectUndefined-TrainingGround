@@ -58,16 +58,6 @@
   <ItemGroup>
      <Compile Include="Assets\Editor_Common\ConfigurationEditor\EditorHelper\DictionaryEnumSearchAttribute.cs" />
      <Compile Include="Assets\Editor_Common\ConfigurationEditor\EditorHelper\FileUtil.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\ExpressionEval\EventClasses.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\ExpressionEval\ExprEval.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\ExpressionEval\FunctionEval.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\ExpressionEval\IExpression.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\ExpressionEval\Properties\AssemblyInfo.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\ExpressionEval\RegexObjects.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\GUILayout\NodeEditorGUILayout.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\NodeEdgeProfile.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\NodeEditorProfile.cs" />
-     <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\NodeProfile.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\CustomEnum.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\IncludeConfiguration.cs" />
      <Compile Include="Assets\Editor_Common\PropertyAttributes\List\ReorderableListAttribute.cs" />

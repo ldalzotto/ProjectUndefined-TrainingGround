@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CoreGame;
 using InteractiveObjects;
 using InteractiveObjects_Interfaces;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace VisualFeedback
         {
             InteractiveGameObjectRef = InteractiveGameObject;
             //position calculation
-            positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(InteractiveGameObject.AverageModelBounds);
+            positionOffsetFromNPC = Vector3.up * InteractiveGameObject.AverageModelBounds.Bounds.max.y;
         }
 
         public override void Tick(float d)

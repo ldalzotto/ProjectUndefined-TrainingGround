@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
+using Input;
 using SelectableObjects_Interfaces;
 
 namespace SelectableObject
@@ -21,7 +22,7 @@ namespace SelectableObject
 
         #endregion
 
-        public void Init(IGameInputManager GameInputManager)
+        public void Init(GameInputManager GameInputManager)
         {
             #region Exnternal Dependencies
 
@@ -85,7 +86,7 @@ namespace SelectableObject
 
         #region External Dependencies
 
-        private IGameInputManager GameInputManager;
+        private GameInputManager GameInputManager;
         private SelectableObjectEventsManager SelectableObjectEventsManager = SelectableObjectEventsManager.Get();
 
         #endregion

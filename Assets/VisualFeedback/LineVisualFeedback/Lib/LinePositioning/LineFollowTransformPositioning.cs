@@ -11,7 +11,7 @@ namespace VisualFeedback
         public LineFollowTransformPositioning(Transform TransformToFollow, ExtendedBounds AverageModelBounds)
         {
             this.TransformToFollow = TransformToFollow;
-            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(AverageModelBounds);
+            this.targetWorldPositionOffset = (Vector3.up * AverageModelBounds.Bounds.max.y);
         }
 
         public Vector3 GetEndPosition(Vector3 startPosition)

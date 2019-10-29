@@ -658,6 +658,10 @@
       <Project>{0E88EFEB-BC03-DBFA-6206-66F073959B55}</Project>
       <Name>InteractiveObject_Animation</Name>
     </ProjectReference>
+    <ProjectReference Include="Input.csproj">
+      <Project>{73912B02-42F4-0831-0126-BFB1D89A0C3F}</Project>
+      <Name>Input</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

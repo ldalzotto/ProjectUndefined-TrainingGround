@@ -20,79 +20,78 @@ namespace ConfigurationEditor
     public class DictionaryEnumGUI<K, V> : IDictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
     {
         #region Add Entry
+
         private K idToAdd;
-        [SerializeField]
-        private string keySearchString;
+        [SerializeField] private string keySearchString;
         private Regex keySearchRegex;
         private String keySearchRegexErrorMessage;
         private GUIStyle keySearchRegexErrorMessageStyle;
+
         #endregion
 
         #region  Sensitive Operations
-        [SerializeField]
-        private bool sensitiveOperationsEnabled;
+
+        [SerializeField] private bool sensitiveOperationsEnabled;
+
         #endregion
 
         #region Search Field
+
         private SearchField keySearchField;
 
         private GUIStyle keySearchFieldStyle;
-        [SerializeField]
-        private bool alphabeticalOrder;
-        [SerializeField]
-        private bool searchFilterFoldout;
-        [SerializeField]
-        private DictionaryEnumGUIFilterContainer<V> searchFilter = new DictionaryEnumGUIFilterContainer<V>();
-        [SerializeField]
-        private Vector2 filtersScrollPosition;
+        [SerializeField] private bool alphabeticalOrder;
+        [SerializeField] private Vector2 filtersScrollPosition;
+
         #endregion
 
         #region Search Result
-        [SerializeField]
-        private Vector2 searchResultScrollPosition;
 
-        [SerializeField]
-        private DictionaryEnumGUIResultPagination DictionaryEnumGUIResultPagination;
+        [SerializeField] private Vector2 searchResultScrollPosition;
+
+        [SerializeField] private DictionaryEnumGUIResultPagination DictionaryEnumGUIResultPagination;
+
         #endregion
 
         #region Modifying Entry
+
         private Dictionary<K, V> valuesToSet = new Dictionary<K, V>();
         private Dictionary<K, V> valuesToRemove = new Dictionary<K, V>();
+
         #endregion
 
         #region Entry Look
-        [SerializeField]
-        private List<K> valuesToLook;
-        [SerializeField]
-        private bool forceLookOfAll;
+
+        [SerializeField] private List<K> valuesToLook;
+        [SerializeField] private bool forceLookOfAll;
         private GUIStyle removeButtonDeactivatedStyle;
         private Dictionary<K, Editor> cachedEditors;
         private bool clearCacheRequested;
+
         #endregion
 
         #region External Events
+
         public void RequestClearEditorCache()
         {
             this.clearCacheRequested = true;
         }
+
         public void SetSearchFilter(string searchFilter)
         {
             this.keySearchString = searchFilter;
         }
+
         #endregion
-        
+
         public void GUITick(ref Dictionary<K, V> dictionaryEditorValues)
         {
-
             this.DoClearEditorCache();
 
             DoInit(ref dictionaryEditorValues);
             DoAddEntry(ref dictionaryEditorValues);
 
             EditorGUILayout.LabelField(typeof(V).Name + " : ", EditorStyles.boldLabel);
-
-
-            DoSearchFilter(ref dictionaryEditorValues);
 
             var dictionaryEditorEntryValues = dictionaryEditorValues.ToList();
             if (this.alphabeticalOrder)
@@ -123,7 +122,7 @@ namespace ConfigurationEditor
 
 
                 if ((this.keySearchString == null || this.keySearchString == "" || isKeyMatchingRegex /* dictionaryEditorEntry.Key.ToString().ToLower().Contains(keySearchString.ToLower())*/)
-                    && searchFilter.ComputeFieldFilters(dictionaryEditorEntry.Value))
+                )
                 {
                     if (displayedCounter >= startElementNb && displayedCounter < endElementNb)
                     {
@@ -136,12 +135,13 @@ namespace ConfigurationEditor
                                 {
                                     this.cachedEditors.Add(dictionaryEditorEntry.Key, DynamicEditorCreation.Get().CreateEditor(dictionaryEditorEntry.Value));
                                 }
-                                
+
                                 this.cachedEditors[dictionaryEditorEntry.Key].OnInspectorGUI();
                                 EditorGUILayout.Space();
                             }
                         }
                     }
+
                     displayedCounter += 1;
                 }
             }
@@ -150,6 +150,7 @@ namespace ConfigurationEditor
             {
                 EditorGUILayout.LabelField("No elements found.");
             }
+
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndScrollView();
 
@@ -159,25 +160,28 @@ namespace ConfigurationEditor
                 {
                     dictionaryEditorValues[valueToSet.Key] = valueToSet.Value;
                 }
+
                 valuesToSet.Clear();
             }
+
             if (valuesToRemove.Count > 0)
             {
                 foreach (var valueToRemove in valuesToRemove)
                 {
                     dictionaryEditorValues.Remove(valueToRemove.Key);
                 }
+
                 valuesToRemove.Clear();
             }
-
         }
-        
+
         private void DoClearEditorCache()
         {
             if (this.clearCacheRequested)
             {
                 this.cachedEditors = new Dictionary<K, Editor>();
             }
+
             this.clearCacheRequested = false;
         }
 
@@ -192,6 +196,7 @@ namespace ConfigurationEditor
             {
                 dictionaryEditorValues = new Dictionary<K, V>();
             }
+
             if (keySearchField == null)
             {
                 keySearchField = new SearchField();
@@ -209,22 +214,27 @@ namespace ConfigurationEditor
             {
                 this.DictionaryEnumGUIResultPagination = new DictionaryEnumGUIResultPagination();
             }
+
             if (this.valuesToSet == null)
             {
                 this.valuesToSet = new Dictionary<K, V>();
             }
+
             if (this.valuesToRemove == null)
             {
                 this.valuesToRemove = new Dictionary<K, V>();
             }
+
             if (this.cachedEditors == null)
             {
                 this.cachedEditors = new Dictionary<K, Editor>();
             }
+
             if (this.keySearchRegex == null && !(this.keySearchString == String.Empty && this.keySearchString == null))
             {
                 this.UpdateSearchStringRegex();
             }
+
             if (this.keySearchRegexErrorMessageStyle == null)
             {
                 this.keySearchRegexErrorMessageStyle = new GUIStyle(EditorStyles.label);
@@ -256,7 +266,7 @@ namespace ConfigurationEditor
                     var alreadyAddedEnums = dictionaryEditorValues.Keys;
                     foreach (int i in Enum.GetValues(typeof(K)))
                     {
-                        var currentEnum = (K)Enum.Parse(typeof(K), i.ToString());
+                        var currentEnum = (K) Enum.Parse(typeof(K), i.ToString());
                         if (!alreadyAddedEnums.Contains(currentEnum))
                         {
                             dictionaryEditorValues.Add(currentEnum, null);
@@ -264,96 +274,15 @@ namespace ConfigurationEditor
                     }
                 }
             }
+
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
             EditorGUILayout.BeginVertical();
-            var parsedIdToAdd = (Enum)Enum.Parse(typeof(K), idToAdd.ToString());
-            this.idToAdd = (K)Enum.Parse(typeof(K), EditorGUILayout.EnumPopup(parsedIdToAdd).ToString());
+            var parsedIdToAdd = (Enum) Enum.Parse(typeof(K), idToAdd.ToString());
+            this.idToAdd = (K) Enum.Parse(typeof(K), EditorGUILayout.EnumPopup(parsedIdToAdd).ToString());
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Separator();
-        }
-
-        private void DoSearchFilter(ref Dictionary<K, V> dictionaryEditorValues)
-        {
-            EditorGUILayout.BeginVertical(this.keySearchFieldStyle);
-
-            EditorGUI.BeginChangeCheck();
-            string keySearchString = this.keySearchField.OnGUI(this.keySearchString);
-            if (EditorGUI.EndChangeCheck())
-            {
-                this.keySearchString = keySearchString;
-                this.UpdateSearchStringRegex();
-            }
-            if (this.keySearchRegexErrorMessage != null && this.keySearchRegexErrorMessage != String.Empty)
-            {
-                EditorGUILayout.LabelField(this.keySearchRegexErrorMessage, this.keySearchRegexErrorMessageStyle);
-            }
-
-            EditorGUILayout.Separator();
-            EditorGUILayout.Space();
-
-            EditorGUILayout.BeginHorizontal(GUILayout.Width(30f));
-            EditorGUI.BeginChangeCheck();
-            bool sensitiveOperationsEnabled = GUILayout.Toggle(this.sensitiveOperationsEnabled, new GUIContent("!", "Authorize sensitive operations."), EditorStyles.miniButtonLeft);
-            bool alphabeticalOrder = GUILayout.Toggle(this.alphabeticalOrder, new GUIContent("A↑", "Alphabetical order."), EditorStyles.miniButtonMid);
-            bool forceLookAll = GUILayout.Toggle(this.forceLookOfAll, new GUIContent("L*", "Show all elements detail."), EditorStyles.miniButtonRight);
-            if (EditorGUI.EndChangeCheck())
-            {
-                if (forceLookAll)
-                {
-                    this.valuesToLook = dictionaryEditorValues.Keys.ToList();
-                }
-                else
-                {
-                    this.valuesToLook.Clear();
-                }
-                this.sensitiveOperationsEnabled = sensitiveOperationsEnabled;
-                this.alphabeticalOrder = alphabeticalOrder;
-                this.forceLookOfAll = forceLookAll;
-
-            }
-
-            if (GUILayout.Button(new GUIContent("Fø", "Deactivate all filters."), EditorStyles.miniButtonLeft))
-            {
-                this.searchFilter.DeactivateAllFilters();
-            }
-            if (GUILayout.Button(new GUIContent("F┘", "Collapse all filters."), EditorStyles.miniButtonRight))
-            {
-                this.searchFilterFoldout = false;
-                this.searchFilter.ColapseAllFilters();
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            if (this.searchFilterFoldout)
-            {
-                this.filtersScrollPosition = EditorGUILayout.BeginScrollView(this.filtersScrollPosition, GUILayout.MaxHeight(400), GUILayout.MinHeight(100));
-            }
-
-            EditorGUILayout.BeginVertical(EditorStyles.textField);
-            EditorGUILayout.BeginHorizontal();
-            EditorGUI.BeginChangeCheck();
-            var searchFilterFoldout = EditorGUILayout.Foldout(this.searchFilterFoldout, "Filters", true, EditorStyles.foldout);
-            if (EditorGUI.EndChangeCheck())
-            {
-                this.searchFilterFoldout = searchFilterFoldout;
-            }
-            EditorGUILayout.EndHorizontal();
-            if (this.searchFilterFoldout)
-            {
-                searchFilter.GUITick();
-            }
-
-            EditorGUILayout.EndVertical();
-            if (this.searchFilterFoldout)
-            {
-                EditorGUILayout.EndScrollView();
-            }
-
-            EditorGUILayout.EndVertical();
-
-            EditorGUILayout.Space();
         }
 
         private void DoDisplayEntry(ref Dictionary<K, V> dictionaryEditorValues, KeyValuePair<K, V> dictionaryEditorEntry)
@@ -361,8 +290,8 @@ namespace ConfigurationEditor
             EditorGUILayout.BeginHorizontal();
 
             EditorGUI.BeginChangeCheck();
-            var parsedEntry = (Enum)Enum.Parse(typeof(K), dictionaryEditorEntry.Key.ToString());
-            var selectedNewKey = (K)Enum.Parse(typeof(K), EditorGUILayout.EnumPopup(parsedEntry).ToString());
+            var parsedEntry = (Enum) Enum.Parse(typeof(K), dictionaryEditorEntry.Key.ToString());
+            var selectedNewKey = (K) Enum.Parse(typeof(K), EditorGUILayout.EnumPopup(parsedEntry).ToString());
             if (EditorGUI.EndChangeCheck())
             {
                 if (!dictionaryEditorValues.ContainsKey(selectedNewKey))
@@ -406,6 +335,7 @@ namespace ConfigurationEditor
             {
                 buttonStyle = this.removeButtonDeactivatedStyle;
             }
+
             if (GUILayout.Button(new GUIContent("-", "Delete element."), buttonStyle, GUILayout.Width(20f)))
             {
                 if (sensitiveOperationsEnabled)
@@ -413,6 +343,7 @@ namespace ConfigurationEditor
                     valuesToRemove[dictionaryEditorEntry.Key] = configurationObjectField;
                 }
             }
+
             EditorGUILayout.EndHorizontal();
         }
 
@@ -428,9 +359,7 @@ namespace ConfigurationEditor
                 this.keySearchRegexErrorMessage = e.Message;
                 this.keySearchRegex = null;
             }
-
         }
-
     }
 }
 

@@ -58,16 +58,12 @@
   <ItemGroup>
      <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
      <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
-     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
      <Compile Include="Assets\~CoreGame\__Game\Scripts\GameLogHandler.cs" />
      <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
      <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\CoreGameSingletonInstances.cs" />
      <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\GameSingleton.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
      <Compile Include="Assets\~CoreGame\_Constants\LayerConstants.cs" />
      <Compile Include="Assets\~CoreGame\_Constants\NavMeshConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\PointOfInterestTypeConstants.cs" />
-     <Compile Include="Assets\~CoreGame\_Constants\SceneConstants.cs" />
      <Compile Include="Assets\~CoreGame\_Constants\StringConstants.cs" />
      <Compile Include="Assets\~CoreGame\_Constants\TagConstants.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\BoundsHelper.cs" />
@@ -88,68 +84,58 @@
      <Compile Include="Assets\~CoreGame\_Helpers\StructHelper.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\TransformChangeListener.cs" />
      <Compile Include="Assets\~CoreGame\_Helpers\TransformExtensions.cs" />
-     <Compile Include="Assets\~CoreGame\_Interfaces\DataRetrieval\IMeshRendererRetrievable.cs" />
-     <Compile Include="Assets\~CoreGame\_Interfaces\DataRetrieval\IRenderBoundRetrievable.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
-     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
-     <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\ConfigurationGameObjectManager.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
      <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CorePrefabConfiguration\CorePrefabConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionTextConfiguration\DiscussionTextConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\GlobalGameConfiguration\GlobalGameConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\Input\CoreInputConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTree.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfiguration.cs" />
-     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfigurationInherentData.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForNavAgentDestinationReached.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForParticlesToNotEmit.cs" />
      <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
      <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionTextInherentData.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionManager.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionMarker.cs" />
-     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\EnumDependantProperty\ByEnumProperty.cs" />
      <Compile Include="Assets\~CoreGame\EventVariables\BoolVariable.cs" />
      <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
      <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
      <Compile Include="Assets\~CoreGame\Math\FrustumPointsPositions.cs" />
      <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
-     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
      <Compile Include="Assets\~CoreGame\Math\ShapeDefinitions.cs" />
      <Compile Include="Assets\~CoreGame\Math\Types\StartEndSlice.cs" />
      <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
      <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
      <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV3.cs" />
-     <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
-     <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
      <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
      <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
      <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2Include.cginc" />
      <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
      <None Include="Assets\_Shader\VertexLit\VertexLitForwardPass.hlsl" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
      <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2VertexDisplacement.cginc" />
      <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
      <None Include="Assets\_Shader\VertexLit\VertexLit.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
      <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
      <None Include="Assets\_Shader\FX\Smoke\SmokeShaderParticles.shader" />
      <None Include="Assets\_Shader\Noise\noiseSimplex.cginc" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
+     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
      <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
      <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2_Transparent.shader" />
-     <None Include="Assets\~CoreGame\Discussion\Font\LICENSE.txt" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\CoreGame.asmdef" />
      <None Include="Assets\_Shader\ImageBlitShader\AddBlitShader.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
  <Reference Include="Unity.Postprocessing.Runtime">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
  </Reference>
@@ -158,6 +144,9 @@
  </Reference>
  <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>G:/GameProjects/No Entry_0.0.164/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

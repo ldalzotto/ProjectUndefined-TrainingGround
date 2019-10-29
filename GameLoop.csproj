@@ -632,6 +632,10 @@
       <Project>{86D2DBA8-BC22-7FE3-44CC-06B764F94632}</Project>
       <Name>Timelines</Name>
     </ProjectReference>
+    <ProjectReference Include="Input.csproj">
+      <Project>{73912B02-42F4-0831-0126-BFB1D89A0C3F}</Project>
+      <Name>Input</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

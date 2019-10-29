@@ -1,4 +1,3 @@
-using CoreGame;
 using LevelManagement;
 using TextMesh;
 using UnityEngine;
@@ -28,7 +27,6 @@ namespace RTPuzzle
         public string TextDisplayed;
         public GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
         public Text TextObject;
-        public DiscussionTextInherentData DiscussionTextInherentData;
         private ProceduralText ProceduralText;
 
         public void Init()

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CoreGame;
+using Input;
 using LevelManagement;
 using Persistence;
 using Timelines;
@@ -21,11 +22,11 @@ namespace GameLoop
             StartLevelManager.Get().Init();
             if (levelType == LevelType.STARTMENU)
             {
-                CoreGameSingletonInstances.GameInputManager.Init(CursorLockMode.Confined);
+                GameInputManager.Get().Init(CursorLockMode.Confined);
             }
             else
             {
-                CoreGameSingletonInstances.GameInputManager.Init(CursorLockMode.Locked);
+                GameInputManager.Get().Init(CursorLockMode.Locked);
             }
 
             LevelAvailabilityManager.Get().Init();

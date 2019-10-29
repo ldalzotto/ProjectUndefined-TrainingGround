@@ -5,9 +5,10 @@
         "Editor_Common",
         "OdinSerializer",
         "GameConfigurationID",
-"SequencedAction",
+        "SequencedAction",
         "Unity.InputSystem",
-        "Unity.RenderPipelines.Lightweight.Runtime"
+        "Unity.RenderPipelines.Lightweight.Runtime",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

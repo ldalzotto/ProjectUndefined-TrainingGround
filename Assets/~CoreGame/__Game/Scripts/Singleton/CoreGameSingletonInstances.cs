@@ -5,19 +5,9 @@ namespace CoreGame
 {
     public static class CoreGameSingletonInstances
     {
-        private static GameInputManager gameInputManager;
         private static Coroutiner coroutiner;
-        private static CoreConfigurationManager coreConfigurationManager;
-        private static CoreStaticConfigurationContainer coreStaticConfigurationContainer;
-        private static DiscussionPositionsType discussionPositionsType;
         private static Canvas persistantCanvas;
-
-        public static GameInputManager GameInputManager => FindAndSetInstanceIfNull(gameInputManager, obj => gameInputManager = obj);
-
         public static Coroutiner Coroutiner => FindAndSetInstanceIfNull(coroutiner, obj => coroutiner = obj);
-        public static CoreConfigurationManager CoreConfigurationManager => FindAndSetInstanceIfNull(coreConfigurationManager, obj => coreConfigurationManager = obj);
-
-        public static CoreStaticConfigurationContainer CoreStaticConfigurationContainer => FindAndSetInstanceIfNull(coreStaticConfigurationContainer, obj => coreStaticConfigurationContainer = obj);
 
         public static Canvas GameCanvas
         {
@@ -42,8 +32,6 @@ namespace CoreGame
 
             return persistantCanvas;
         }
-
-        public static DiscussionPositionsType DiscussionPositionsType => FindAndSetInstanceIfNull(discussionPositionsType, obj => discussionPositionsType = obj);
 
         public static T FindAndSetInstanceIfNull<T>(T obj, Action<T> setter) where T : Behaviour
         {

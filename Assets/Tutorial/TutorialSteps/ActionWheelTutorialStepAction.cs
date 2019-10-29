@@ -20,7 +20,7 @@ namespace Tutorial
         {
             #region External Dependencies
 
-            var discussionTextConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.DiscussionTextConfiguration;
+            //    var discussionTextConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.DiscussionTextConfiguration;
 
             #endregion
 

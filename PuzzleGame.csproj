@@ -740,6 +740,14 @@
       <Project>{A8C85C7F-A9C4-1162-A549-6BC528F2F0F2}</Project>
       <Name>TextMesh</Name>
     </ProjectReference>
+    <ProjectReference Include="Input.csproj">
+      <Project>{73912B02-42F4-0831-0126-BFB1D89A0C3F}</Project>
+      <Name>Input</Name>
+    </ProjectReference>
+    <ProjectReference Include="CameraManagement.csproj">
+      <Project>{75B47827-9468-98A0-CC43-F62747983306}</Project>
+      <Name>CameraManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

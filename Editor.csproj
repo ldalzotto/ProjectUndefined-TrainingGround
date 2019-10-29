@@ -60,15 +60,7 @@
      <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
      <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
      <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUIFilter.cs" />
      <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUIResultPagination.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\AbstractDictionaryEnumGUIFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\ExpressionFilterOperation.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\NativeTypeDictionaryEnumFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\ObjectTypeDictionaryEnumFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\RegexFilterOperation.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\StringTypeDictionaryEnumFilter.cs" />
-     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\UnityObjectTypeDictionaryEnumFilter.cs" />
      <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\ScriptableObjectListGUI.cs" />
      <Compile Include="Assets\Editor\CreateScriptableObject\CreateScriptableObjectEditor.cs" />
      <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditor.cs" />
@@ -111,7 +103,6 @@
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\EditorInformations.cs" />
      <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\_Generics\GenericConfigurationCreation\Module\GenericConfiugrationCreation.cs" />
      <Compile Include="Assets\Editor\DynamicEditorCreation\DynamicEditorCreation.cs" />
-     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
      <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
      <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
      <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
@@ -120,7 +111,6 @@
      <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
-     <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
      <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
      <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
      <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />

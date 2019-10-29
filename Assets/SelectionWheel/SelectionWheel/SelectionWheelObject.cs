@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CoreGame;
+using Input;
 using UnityEngine;
 
 namespace SelectionWheel
@@ -36,16 +37,10 @@ namespace SelectionWheel
                     SelectionWheelObjectAnimation = new SelectionWheelObjectAnimation(SelectionWheelGameObject, SelectionWheelGlobalConfiguration.SelectionWheelEnterAnimation, OnExitAnimationFinished);
                 }
 
-                #region External Dependencies
-
-                var GameInputManager = CoreGameSingletonInstances.GameInputManager;
-
-                #endregion
-
                 SelectionWheelPositionManager = new SelectionWheelPositionManager(this, SelectionWheelGlobalConfiguration, this.followingWorldTransform);
                 SelectionWheelObjectAnimation.PlayEnterAnimation();
                 ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(SelectionWheelGlobalConfiguration.NonSelectedMaterial, SelectionWheelGlobalConfiguration.SelectedMaterial);
-                ActionWheelNodePositionManager = new ActionWheelNodePositionManager(SelectionWheelGlobalConfiguration.ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);
+                ActionWheelNodePositionManager = new ActionWheelNodePositionManager(SelectionWheelGlobalConfiguration.ActionWheelNodePositionManagerComponent, GameInputManager.Get(), ActionWheelActiveNodeManager);
                 wheelNodes = new SelectionWheelNode[wheelNodeDatas.Count];
                 for (var i = 0; i < wheelNodeDatas.Count; i++)
                 {

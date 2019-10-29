@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace CoreGame
 {
@@ -6,9 +7,11 @@ namespace CoreGame
     {
         void OnDestroy();
     }
+
     public abstract class GameSingleton<T> : IGameSingleton where T : IGameSingleton, new()
     {
         private static T Instance;
+
         public static T Get()
         {
             if (Instance == null)
@@ -16,8 +19,16 @@ namespace CoreGame
                 Instance = new T();
                 GameSingletonManagers.Get().OnGameSingletonCreated(Instance);
             }
+
             return Instance;
         }
+
+#if UNITY_EDITOR
+        public static void SetInstance(T t)
+        {
+            Instance = t;
+        }
+#endif
 
         public virtual void OnDestroy()
         {
@@ -28,9 +39,14 @@ namespace CoreGame
     public class GameSingletonManagers
     {
         private static GameSingletonManagers Instance;
+
         public static GameSingletonManagers Get()
         {
-            if (Instance == null) { Instance = new GameSingletonManagers(); }
+            if (Instance == null)
+            {
+                Instance = new GameSingletonManagers();
+            }
+
             return Instance;
         }
 
@@ -51,6 +67,7 @@ namespace CoreGame
                     gameSingleton.OnDestroy();
                 }
             }
+
             Instance = null;
         }
     }

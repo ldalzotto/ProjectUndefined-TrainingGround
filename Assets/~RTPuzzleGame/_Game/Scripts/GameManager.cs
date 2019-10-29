@@ -1,5 +1,7 @@
+using CameraManagement;
 using CoreGame;
 using GameLoop;
+using Input;
 using InteractiveObjects;
 using LevelManagement;
 using Obstacle;
@@ -34,7 +36,6 @@ namespace RTPuzzle
         private void Start()
         {
             OnStart();
-            var gameInputManager = CoreGameSingletonInstances.GameInputManager;
 
 
             RangeObjectV2Manager.Get().Init();
@@ -45,7 +46,7 @@ namespace RTPuzzle
 
             CircleFillBarRendererManager.Get().Init();
             TutorialManager.Get().Init();
-            SelectableObjectManagerV2.Get().Init(CoreGameSingletonInstances.GameInputManager);
+            SelectableObjectManagerV2.Get().Init(GameInputManager.Get());
 
             PlayerActionEntryPoint.Get().Init();
 #if UNITY_EDITOR

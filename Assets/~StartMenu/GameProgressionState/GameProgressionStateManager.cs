@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using LevelManagement;
+﻿using LevelManagement;
 
 namespace StartMenu
 {
@@ -12,14 +11,12 @@ namespace StartMenu
     {
         #region External Dependencies
 
-        private GlobalGameConfiguration GlobalGameConfiguration;
         private StartLevelManager StartLevelManager = StartLevelManager.Get();
 
         #endregion
 
         public void Init()
         {
-            this.GlobalGameConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.GlobalGameConfiguration;
         }
 
         #region IGameProgressionStateManagerDataRetriever

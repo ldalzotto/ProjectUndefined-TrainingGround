@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CoreGame;
+using Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -10,10 +10,7 @@ namespace Tests
     {
         public static void SetupForTestScene()
         {
-            var gameInputManager = FindObjectOfType<GameInputManager>();
-            var gameInputManagerGO = gameInputManager.gameObject;
-            DestroyImmediate(gameInputManager);
-            gameInputManagerGO.AddComponent<GameTestMockedInputManager>();
+            SetInstance(new GameTestMockedInputManager());
         }
 
         public override void Init(CursorLockMode CursorLockMode)

@@ -13,7 +13,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Unity.InputSystem",
-"LevelManagement"
+"LevelManagement",
+"Input"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
